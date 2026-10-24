@@ -1,0 +1,173 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const focusAreas = [
+  'Apple Automation',
+  'Swift & SwiftUI',
+  'Python Engineering',
+  'AI Models & Agents',
+];
+
+const projects = [
+  {
+    name: 'Athena-Agent',
+    summary: 'Local macOS agent, RU/EN, Apple Silicon preview',
+    tags: ['Swift', 'macOS', 'AI', 'MCP'],
+    url: 'https://github.com/Slipcast-dev/Athena-Agent',
+    release: 'https://github.com/Slipcast-dev/Athena-Agent/releases',
+  },
+  {
+    name: 'Ares-Agent',
+    summary: 'Local macOS agent, RU/EN, Apple Silicon preview',
+    tags: ['Swift', 'macOS', 'AI', 'MCP'],
+    url: 'https://github.com/Slipcast-dev/Ares-Agent',
+    release: 'https://github.com/Slipcast-dev/Ares-Agent/releases',
+  },
+  {
+    name: 'Rdragon K530RGB — Keyboard Port',
+    summary: 'Native macOS port of the Redragon K530RGB keyboard utility',
+    tags: ['Swift', 'SwiftUI', 'IOKit', 'HID'],
+    url: 'https://github.com/Slipcast-dev/Rdragon-K530RGB-Keyboard-Port',
+  },
+  {
+    name: 'Slipcast-dev',
+    summary: 'GitHub profile and automation portfolio',
+    tags: ['Python'],
+    url: 'https://github.com/Slipcast-dev/Slipcast-dev',
+  },
+  {
+    name: 'translator-Koto',
+    summary: 'In progress — no description yet',
+    tags: [],
+    url: 'https://github.com/Slipcast-dev/translator-Koto',
+  },
+];
+---
+
+<Layout
+  title="Slipcast / Dev — Building useful software"
+  description="Independent developer building native macOS tools, intelligent automation and developer utilities."
+>
+  <main class="shell">
+    <div class="frame">
+      <header class="topbar">
+        <span class="brand">Slipcast / Dev</span>
+        <span class="role">Independent Developer</span>
+      </header>
+
+      <div class="grid">
+        <section class="intro">
+          <p class="eyebrow">Developer / macOS / AI</p>
+          <h1>Building useful software.</h1>
+          <p class="lede">
+            Native macOS tools, intelligent automation and developer utilities.
+          </p>
+
+          <div class="divider intro-divider"></div>
+
+          <h2 class="section-label">What I focus on</h2>
+          <ul class="focus">
+            {focusAreas.map((area) => <li>{area}</li>)}
+          </ul>
+
+          <div class="intro-footer">
+            <div class="divider"></div>
+            <a
+              class="profile-link"
+              href="https://github.com/Slipcast-dev"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <svg
+                viewBox="0 0 16 16"
+                width="18"
+                height="18"
+                aria-hidden="true"
+                fill="currentColor"
+              >
+                <path
+                  d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z"
+                ></path>
+              </svg>
+              <span>github.com/Slipcast-dev</span>
+            </a>
+          </div>
+        </section>
+
+        <section class="work">
+          <div class="work-head">
+            <p class="eyebrow">Open Source</p>
+            <div class="work-head-row">
+              <h2>Projects</h2>
+              <a
+                class="ghost-link"
+                href="https://github.com/Slipcast-dev"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                GitHub <span class="arrow">↗</span>
+              </a>
+            </div>
+          </div>
+
+          <ul class="projects">
+            {projects.map((project) => (
+              <li class="project">
+                <a
+                  class="project-link"
+                  href={project.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <div class="project-top">
+                    <h3>{project.name}</h3>
+                    <span class="project-actions">
+                      {project.release && (
+                        <span
+                          class="badge"
+                          title="Installers / releases"
+                          aria-label="Releases"
+                        >
+                          ⬇
+                        </span>
+                      )}
+                      <span class="arrow" aria-hidden="true">↗</span>
+                    </span>
+                  </div>
+                  <p class="project-summary">{project.summary}</p>
+                  <p class:list={['tags', { empty: project.tags.length === 0 }]}>
+                    {project.tags.map((tag, i) => (
+                      <>
+                        {i > 0 && <span class="dot">·</span>}
+                        <span class="tag">{tag}</span>
+                      </>
+                    ))}
+                  </p>
+                </a>
+              </li>
+            ))}
+          </ul>
+
+          <div class="work-footer">
+            <div class="divider"></div>
+            <p class="eyebrow">Repository Directory</p>
+            <a
+              class="directory-link"
+              href="https://github.com/Slipcast-dev?tab=repositories"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <span>Explore source code on GitHub</span>
+              <span class="arrow" aria-hidden="true">↗</span>
+            </a>
+          </div>
+        </section>
+      </div>
+
+      <footer class="footer">
+        <span>© 2026 Slipcast</span>
+        <span>Built with Astro</span>
+      </footer>
+    </div>
+  </main>
+</Layout>
