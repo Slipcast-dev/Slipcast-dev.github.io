@@ -52,8 +52,8 @@ public/
 - **Athena-Agent** — локальный macOS-агент, RU/EN, Apple Silicon preview (Swift)
 - **Ares-Agent** — локальный macOS-агент, RU/EN, Apple Silicon preview (Swift)
 - **Rdragon K530RGB — Keyboard Port** — нативный порт утилиты клавиатуры Redragon на macOS (Swift)
-- **Slipcast-dev** — профиль-портфолио и автоматизация (Python)
+- **translator-Koto** — в разработке, описание и теги появятся позже
 
-Пустой репозиторий `translator-Koto` (без файлов и описания) в витрину не выводится.
+Репозиторий профиля `Slipcast-dev` в витрину не выводится — он нужен только для GitHub Actions, которые подтягивают список репозиториев в README.
 
 Палитра и отступы вынесены в `:root` в `src/styles/global.css` — правьте переменные, чтобы перекрасить сайт.
