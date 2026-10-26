@@ -36,41 +36,9 @@ jobs:
         with:
           path: dist
 
-  hosting:
-    name: Check GitHub Pages availability
+  deploy:
     needs: build
     if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
-    runs-on: ubuntu-latest
-    permissions:
-      pages: read
-    outputs:
-      enabled: ${{ steps.pages.outputs.enabled }}
-    steps:
-      - id: pages
-        name: Check configured Pages site
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          # 404 означает отсутствие сайта или доступа по тарифу; это не ошибка сборки.
-          status=$(curl --silent --show-error --output /dev/null --write-out '%{http_code}' \
-            --header "Authorization: Bearer $GH_TOKEN" \
-            --header 'Accept: application/vnd.github+json' \
-            "$GITHUB_API_URL/repos/$GITHUB_REPOSITORY/pages")
-          if [ "$status" = '200' ]; then
-            echo 'enabled=true' >> "$GITHUB_OUTPUT"
-          elif [ "$status" = '404' ]; then
-            echo 'enabled=false' >> "$GITHUB_OUTPUT"
-            echo '::warning::Publication skipped: GitHub Pages is unavailable. Check the repository plan and Settings > Pages.'
-            echo '### Publication skipped' >> "$GITHUB_STEP_SUMMARY"
-            echo 'Build and tests passed. GitHub Pages is unavailable for this repository. Check plan support for private repositories and enable GitHub Actions in Settings > Pages.' >> "$GITHUB_STEP_SUMMARY"
-          else
-            echo "::error::Cannot check GitHub Pages (HTTP $status)."
-            exit 1
-          fi
-
-  deploy:
-    needs: [build, hosting]
-    if: needs.hosting.outputs.enabled == 'true'
     runs-on: ubuntu-latest
     permissions:
       pages: write
