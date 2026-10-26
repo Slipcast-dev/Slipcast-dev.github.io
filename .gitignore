@@ -3,4 +3,9 @@ dist/
 .astro/
 .DS_Store
 *.log
-Icon
+Icon?
+
+# Локальные ключи никогда не попадают в историю репозитория.
+.env
+.env.*
+!.env.example

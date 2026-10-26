@@ -14,11 +14,11 @@
   /* Ink */
   --ink: #16202c;
   --ink-soft: #33404f;
-  --muted: #6b7889;
+  --muted: #4d5b6c;
   --muted-strong: #556375;
 
   /* Accents */
-  --accent: #4b6ef5;
+  --accent: #284cbb;
   --hairline: #c3ccd6;
   --hairline-soft: #e2e7ed;
 
@@ -298,18 +298,35 @@ p {
   outline-offset: 2px;
 }
 
-.project-actions {
+/* Отдельная область релизов не перекрывает основную ссылку карточки. */
+.release-link {
   display: inline-flex;
   align-items: center;
-  gap: 10px;
-  color: var(--muted);
+  gap: 6px;
+  min-height: 44px;
+  margin: 0 16px 12px;
+  padding: 8px 12px;
+  border: 1px solid currentColor;
+  border-radius: 8px;
+  color: var(--accent);
+  font-size: 12px;
+  font-weight: 600;
 }
 
-.badge {
+.release-link:hover {
+  background: rgba(22, 32, 44, 0.04);
+}
+
+/* Единое видимое состояние фокуса для всех интерактивных ссылок. */
+a:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+.project-version {
+  margin-top: 6px;
+  color: var(--ink-soft);
   font-size: 12px;
-  line-height: 1;
-  color: var(--muted);
-  opacity: 0.75;
 }
 
 .project h3 {

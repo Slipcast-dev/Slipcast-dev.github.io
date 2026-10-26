@@ -7,9 +7,23 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "check": "astro check",
+    "sync:projects": "node scripts/sync-projects.mjs",
+    "banner": "node scripts/render-banner.mjs",
+    "test": "node --test tests/*.test.mjs",
+    "validate": "npm run check && npm run build && npm test"
   },
   "dependencies": {
-    "astro": "^5.13.0"
+    "astro": "^7.4.2"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.12",
+    "parse5": "^8.0.1",
+    "sharp": "^0.35.5",
+    "typescript": "^5.9.3"
+  },
+  "engines": {
+    "node": ">=22.23.4"
   }
 }

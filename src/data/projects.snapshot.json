@@ -1,0 +1,50 @@
+[
+  {
+    "name": "Athena-Agent",
+    "summary": "Athena 0.38.2 — local macOS agent, RU/EN, security fixes, Apple Silicon preview. Source available; ad-hoc signed installers.",
+    "tags": [
+      "Swift",
+      "macOS",
+      "AI",
+      "MCP",
+      "Monitoring"
+    ],
+    "url": "https://github.com/Slipcast-dev/Athena-Agent",
+    "release": "https://github.com/Slipcast-dev/Athena-Agent/releases",
+    "version": "v0.38.2",
+    "prerelease": true,
+    "pushedAt": "2026-10-25T19:27:27Z"
+  },
+  {
+    "name": "Ares-Agent",
+    "summary": "Ares 0.38.2 — local macOS agent, RU/EN, security fixes, Apple Silicon preview. Source available; ad-hoc signed installers.",
+    "tags": [
+      "Swift",
+      "macOS",
+      "AI",
+      "MCP",
+      "File Automation"
+    ],
+    "url": "https://github.com/Slipcast-dev/Ares-Agent",
+    "release": "https://github.com/Slipcast-dev/Ares-Agent/releases",
+    "version": "v0.38.2",
+    "prerelease": true,
+    "pushedAt": "2026-10-25T19:27:21Z"
+  },
+  {
+    "name": "translator-Koto",
+    "summary": "Koto · Slipcast-Dev — переводчик macOS / native macOS translator. Selection, OCR, Apple Translation & optional Qwen. RU/EN docs. Apple Silicon alpha.",
+    "tags": [
+      "Swift",
+      "SwiftUI",
+      "macOS",
+      "Translation",
+      "OCR"
+    ],
+    "url": "https://github.com/Slipcast-dev/translator-Koto",
+    "release": "https://github.com/Slipcast-dev/translator-Koto/releases",
+    "version": "v0.1.0-alpha.13",
+    "prerelease": true,
+    "pushedAt": "2026-10-25T14:34:30Z"
+  }
+]

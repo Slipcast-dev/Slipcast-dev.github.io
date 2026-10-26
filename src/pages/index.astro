@@ -1,40 +1,12 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import { projects } from '../data/projects';
 
 const focusAreas = [
   'Apple Automation',
   'Swift & SwiftUI',
   'Python Engineering',
   'AI Models & Agents',
-];
-
-const projects = [
-  {
-    name: 'Athena-Agent',
-    summary: 'Athena 0.38.1 — local macOS agent, RU/EN, Apple Silicon preview. Monitoring, diagnostics, MCP (Swift)',
-    tags: ['Swift', 'macOS', 'AI', 'MCP', 'Monitoring'],
-    url: 'https://github.com/Slipcast-dev/Athena-Agent',
-    release: 'https://github.com/Slipcast-dev/Athena-Agent/releases',
-  },
-  {
-    name: 'Ares-Agent',
-    summary: 'Ares 0.38.1 — local macOS agent, RU/EN, Apple Silicon preview. File automation, rules, index (Swift)',
-    tags: ['Swift', 'macOS', 'AI', 'MCP', 'File Automation'],
-    url: 'https://github.com/Slipcast-dev/Ares-Agent',
-    release: 'https://github.com/Slipcast-dev/Ares-Agent/releases',
-  },
-  {
-    name: 'Rdragon K530RGB — Keyboard Port',
-    summary: 'Native macOS port of Redragon K530RGB keyboard utility. Static analysis complete; macOS app code not yet written. Research + HID descriptor candidates (Swift/IOKit planned).',
-    tags: ['Swift', 'SwiftUI', 'IOKit', 'HID', 'Research'],
-    url: 'https://github.com/Slipcast-dev/Rdragon-K530RGB-Keyboard-Port',
-  },
-  {
-    name: 'translator-Koto',
-    summary: 'Koto 0.1.0-alpha.11 — native macOS translator. Selection, OCR (Vision), Apple Translation, optional Qwen. Apple Silicon alpha, RU/EN docs.',
-    tags: ['Swift', 'SwiftUI', 'macOS', 'Translation', 'OCR', 'Apple Silicon'],
-    url: 'https://github.com/Slipcast-dev/translator-Koto',
-  },
 ];
 ---
 
@@ -115,20 +87,10 @@ const projects = [
                 >
                   <div class="project-top">
                     <h3>{project.name}</h3>
-                    <span class="project-actions">
-                      {project.release && (
-                        <span
-                          class="badge"
-                          title="Installers / releases"
-                          aria-label="Releases"
-                        >
-                          ⬇
-                        </span>
-                      )}
-                      <span class="arrow" aria-hidden="true">↗</span>
-                    </span>
+                    <span class="arrow" aria-hidden="true">↗</span>
                   </div>
                   <p class="project-summary">{project.summary}</p>
+                  {project.version && <p class="project-version">{project.version}{project.prerelease ? ' · Preview release' : ''}</p>}
                   <p class:list={['tags', { empty: project.tags.length === 0 }]}>
                     {project.tags.map((tag, i) => (
                       <>
@@ -138,6 +100,18 @@ const projects = [
                     ))}
                   </p>
                 </a>
+                {/* Соседняя ссылка остаётся самостоятельной целью для мыши и клавиатуры. */}
+                {project.release && (
+                  <a
+                    class="release-link"
+                    href={project.release}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={`Releases for ${project.name} (opens in a new tab)`}
+                  >
+                    <span aria-hidden="true">↓</span> Releases
+                  </a>
+                )}
               </li>
             ))}
           </ul>
@@ -159,7 +133,7 @@ const projects = [
       </div>
 
       <footer class="footer">
-        <span>© 2026 Slipcast</span>
+        <span>© {new Date().getUTCFullYear()} Slipcast</span>
         <span>Built with Astro</span>
       </footer>
     </div>
