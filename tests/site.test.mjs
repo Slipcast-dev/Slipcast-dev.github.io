@@ -54,9 +54,9 @@ test('canonical and social preview use the production origin', async () => {
   const meta = (key) => attribute(nodes.find((node) => node.tagName === 'meta' &&
     (attribute(node, 'property') === key || attribute(node, 'name') === key)), 'content');
   const canonical = nodes.find((node) => node.tagName === 'link' && attribute(node, 'rel') === 'canonical');
-  assert.equal(attribute(canonical, 'href'), 'https://slipcast.dev/');
-  assert.equal(meta('og:url'), 'https://slipcast.dev/');
-  assert.equal(meta('og:image'), 'https://slipcast.dev/social-preview.png');
+  assert.equal(attribute(canonical, 'href'), 'https://slipcast-dev.github.io/');
+  assert.equal(meta('og:url'), 'https://slipcast-dev.github.io/');
+  assert.equal(meta('og:image'), 'https://slipcast-dev.github.io/social-preview.png');
   assert.equal(meta('twitter:card'), 'summary_large_image');
   assert.equal(meta('twitter:image'), meta('og:image'));
   const image = await sharp(fileURLToPath(new URL('../dist/social-preview.png', import.meta.url))).metadata();

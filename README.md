@@ -4,7 +4,7 @@
 [![Astro 7](https://img.shields.io/badge/Astro-7-332563?logo=astro&logoColor=white)](https://astro.build/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-strict-254b8a?logo=typescript&logoColor=white)](tsconfig.json)
 [![Static HTML](https://img.shields.io/badge/Browser_JavaScript-0-246452)](src/pages/index.astro)
-[![GitHub Pages](https://img.shields.io/badge/Hosting-GitHub_Pages-24364b?logo=github)](https://slipcast.dev)
+[![GitHub Pages](https://img.shields.io/badge/Hosting-GitHub_Pages-24364b?logo=github)](https://slipcast-dev.github.io)
 
 Портфолио **Slipcast / Dev**: нативные macOS-инструменты, автоматизация и AI-агенты.
 Одна статическая страница на Astro, чистый CSS и системные шрифты. Браузер посетителя не выполняет JavaScript и не обращается к GitHub API.
@@ -72,7 +72,7 @@ npm run validate
 
 Автоматическое обновление меняет данные только внутри сборки: workflow **не делает commit/push**. Чтобы обновить снимок в локальном репозитории и истории Git, выполните `npm run sync:projects`, проверьте результат и сохраните изменение обычным коммитом. При сбое обновления новая версия не публикуется, предыдущий сайт остаётся доступным.
 
-В настройках репозитория **Settings → Pages → Source** должен быть выбран **GitHub Actions**. Используется production-адрес `https://slipcast.dev` из `astro.config.mjs`; пользовательский домен и DNS настраиваются в GitHub Pages отдельно. Изменение `site` само по себе домен не подключает.
+В настройках репозитория **Settings → Pages → Source** должен быть выбран **GitHub Actions**. Используется production-адрес `https://slipcast-dev.github.io` из `astro.config.mjs`; домен `slipcast.dev` не подключён. Если он будет подключён позже, сначала настройте DNS и домен в GitHub Pages, затем измените `site` и ожидаемые URL в тестах. Изменение `site` само по себе домен не подключает.
 
 ## Структура и оформление
 
