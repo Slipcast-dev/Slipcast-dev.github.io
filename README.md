@@ -4,7 +4,7 @@
 [![Astro 7](https://img.shields.io/badge/Astro-7-332563?logo=astro&logoColor=white)](https://astro.build/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-strict-254b8a?logo=typescript&logoColor=white)](tsconfig.json)
 [![Static HTML](https://img.shields.io/badge/Browser_JavaScript-0-246452)](src/pages/index.astro)
-[![GitHub Pages](https://img.shields.io/badge/Hosting-GitHub_Pages-24364b?logo=github)](https://slipcast-dev.github.io)
+[![GitHub Pages](https://img.shields.io/badge/Deploy-GitHub_Pages-24364b?logo=github)](https://github.com/Slipcast-dev/Slipcast-dev.github.io/actions/workflows/deploy.yml)
 
 Портфолио **Slipcast / Dev**: нативные macOS-инструменты, автоматизация и AI-агенты.
 Одна статическая страница на Astro, чистый CSS и системные шрифты. Браузер посетителя не выполняет JavaScript и не обращается к GitHub API.
@@ -66,13 +66,15 @@ npm run validate
 
 ## Публикация и CI
 
-[Workflow](.github/workflows/deploy.yml) проверяет pull request без публикации. Push в `main` запускает проверку типов, сборку, тесты и публикацию в GitHub Pages.
+> **Состояние на 26 октября 2026:** исходный репозиторий приватный. GitHub API сообщает, что текущий тариф не поддерживает Pages для него. Сборка и тесты работают; публичная публикация заблокирована тарифом. Workflow показывает предупреждение и пропускает deploy, пока Pages недоступен. Баннеры и документация доступны в репозитории, сайт можно просматривать локально.
+
+[Workflow](.github/workflows/deploy.yml) проверяет pull request без публикации. Push в `main` запускает проверку типов, сборку, тесты и публикацию в GitHub Pages, если сайт включён и поддерживается тарифом.
 
 Дополнительно workflow запускается ежедневно в **06:17 UTC / 09:17 Минск** и вручную через **Actions → Deploy to GitHub Pages → Run workflow**. Эти запуски сначала обновляют публичные метаданные, затем проверяют и публикуют сайт. Расписание GitHub может выполняться с задержкой.
 
 Автоматическое обновление меняет данные только внутри сборки: workflow **не делает commit/push**. Чтобы обновить снимок в локальном репозитории и истории Git, выполните `npm run sync:projects`, проверьте результат и сохраните изменение обычным коммитом. При сбое обновления новая версия не публикуется, предыдущий сайт остаётся доступным.
 
-В настройках репозитория **Settings → Pages → Source** должен быть выбран **GitHub Actions**. Используется production-адрес `https://slipcast-dev.github.io` из `astro.config.mjs`; домен `slipcast.dev` не подключён. Если он будет подключён позже, сначала настройте DNS и домен в GitHub Pages, затем измените `site` и ожидаемые URL в тестах. Изменение `site` само по себе домен не подключает.
+Для публикации приватного репозитория требуется тариф с поддержкой GitHub Pages. После его подключения в **Settings → Pages → Source** выберите **GitHub Actions** и запустите workflow вручную. Проверка доступности Pages автоматически разрешит deploy; дополнительных переменных CI не требуется. Используется production-адрес `https://slipcast-dev.github.io` из `astro.config.mjs`; домен `slipcast.dev` не подключён. Если он будет подключён позже, сначала настройте DNS и домен в GitHub Pages, затем измените `site` и ожидаемые URL в тестах. Изменение `site` само по себе домен не подключает.
 
 ## Структура и оформление
 
