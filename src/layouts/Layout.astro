@@ -16,6 +16,16 @@ const image = new URL('/social-preview.png', Astro.site);
 <html lang="en">
   <head>
     <meta charset="utf-8" />
+    {/* На production-сайте нет JS, внешних ресурсов, форм или сетевых запросов.
+        В dev CSP отключена, чтобы не ломать hot reload и инструменты Astro.
+        frame-ancestors требует HTTP-заголовка и здесь намеренно не имитируется. */}
+    {!import.meta.env.DEV && (
+      <meta
+        http-equiv="Content-Security-Policy"
+        content="default-src 'none'; script-src 'none'; style-src 'self'; img-src 'self'; font-src 'self'; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'; upgrade-insecure-requests"
+      />
+    )}
+    <meta name="referrer" content="no-referrer" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <title>{title}</title>

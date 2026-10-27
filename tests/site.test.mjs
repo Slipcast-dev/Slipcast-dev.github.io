@@ -92,3 +92,31 @@ test('small text meets WCAG AA on all surfaces where it is used', () => {
     assert.ok(contrast >= 4.5, `${foreground} on ${background}: ${contrast.toFixed(2)}:1`);
   }
 });
+
+test('production CSP permits only local assets and blocks executable content', () => {
+  const meta = nodes.find((node) => node.tagName === 'meta' &&
+    attribute(node, 'http-equiv')?.toLowerCase() === 'content-security-policy');
+  assert.ok(meta, 'Production HTML must include a CSP');
+  const policy = Object.fromEntries(attribute(meta, 'content').split(';').map((directive) => {
+    const [name, ...values] = directive.trim().split(/\s+/);
+    return [name, values];
+  }));
+  for (const name of ['default-src', 'script-src', 'connect-src', 'object-src', 'base-uri', 'form-action']) {
+    assert.deepEqual(policy[name], ["'none'"], `${name} must deny access`);
+  }
+  for (const name of ['style-src', 'img-src', 'font-src']) {
+    assert.deepEqual(policy[name], ["'self'"], `${name} must be local`);
+  }
+  assert.ok(!attribute(meta, 'content').includes('unsafe-'));
+  // Нельзя добавлять неподдерживаемую в meta директиву и считать её защитой от iframe.
+  assert.ok(!('frame-ancestors' in policy));
+  assert.equal(attribute(nodes.find((node) => node.tagName === 'meta' &&
+    attribute(node, 'name') === 'referrer'), 'content'), 'no-referrer');
+  for (const node of nodes) {
+    assert.ok(!['script', 'style', 'iframe', 'object', 'embed', 'form', 'base'].includes(node.tagName));
+    for (const attr of node.attrs ?? []) {
+      assert.ok(!/^on/i.test(attr.name), `Inline handler: ${attr.name}`);
+      assert.notEqual(attr.name, 'style', 'Inline style conflicts with the CSP');
+    }
+  }
+});
