@@ -1,18 +1,6 @@
-node_modules/
 dist/
-.astro/
+node_modules/
 .DS_Store
 *.log
-Icon?
-
-# Локальные ключи никогда не попадают в историю репозитория.
 .env
 .env.*
-!.env.example
-
-# Приватные ключи, сертификаты и локальные учётные данные не коммитятся.
-*.pem
-*.key
-*.p12
-*.pfx
-.npmrc

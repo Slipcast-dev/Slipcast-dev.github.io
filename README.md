@@ -1,117 +1,77 @@
-![Slipcast / Dev — Building useful software](docs/assets/banner.svg)
+# Slipcast-Dev — Personal Terminal
 
-[![Deploy to GitHub Pages](https://github.com/Slipcast-dev/Slipcast-dev.github.io/actions/workflows/deploy.yml/badge.svg)](https://github.com/Slipcast-dev/Slipcast-dev.github.io/actions/workflows/deploy.yml)
-[![Astro 7](https://img.shields.io/badge/Astro-7-332563?logo=astro&logoColor=white)](https://astro.build/)
-[![TypeScript](https://img.shields.io/badge/TypeScript-strict-254b8a?logo=typescript&logoColor=white)](tsconfig.json)
-[![Static HTML](https://img.shields.io/badge/Browser_JavaScript-0-246452)](src/pages/index.astro)
-[![Website](https://img.shields.io/badge/Website-slipcast--dev.github.io-24364b?logo=github)](https://slipcast-dev.github.io/)
+[Открыть сайт / Open website](https://slipcast-dev.github.io/) · [Публикация / Deployment](https://github.com/Slipcast-dev/Slipcast-dev.github.io/actions/workflows/deploy.yml)
 
-**Адрес публикации: [slipcast-dev.github.io](https://slipcast-dev.github.io/).**
+Личный сайт в стиле терминала: чёрный фон, зелёные акценты, русский и английский интерфейс. Четыре статические страницы без сторонних библиотек и без запросов к GitHub API из браузера посетителя.
 
-> На 27 октября 2026 репозиторий снова приватный; GitHub Pages недоступен на текущем тарифе, публичный адрес возвращает 404. Видимость в ходе аудита не менялась. Локальная сборка работает; подробности — в [отчёте безопасности](docs/security-audit.md).
+Personal website with a terminal interface, black background and green accents. Russian and English UI, four static pages, no third-party runtime libraries. Public GitHub data is refreshed by GitHub Actions; visitors only download static files.
 
-Портфолио **Slipcast / Dev**: нативные macOS-инструменты, автоматизация и AI-агенты.
-Одна статическая страница на Astro, чистый CSS и системные шрифты. Браузер посетителя не выполняет JavaScript и не обращается к GitHub API.
+## Страницы
 
-![Лёгкая статическая сборка, проверки перед публикацией и актуальные данные проектов](docs/assets/info.svg)
+- `index.html` — первое приветствие, затем второе, появление навигации и цикл команд macOS, Linux, Git и GitHub CLI. Команды только отображаются. При возврате в той же вкладке вступление пропускается.
+- `developer.html` — аватар, биография и кнопка открытия чата Telegram `@slipcast666` в установленном приложении.
+- `projects.html` — «Журнал разработок» / Development Log: публичные репозитории, названия, описания и последние опубликованные версии, включая prerelease.
+- `websites.html` — две фиксированные карточки: [Grizzly](https://slipcast-dev.github.io/grizzly-website/) и [Koto](https://slipcast-dev.github.io/koto-website/), с изолированными живыми превью.
 
-## Проекты
+Язык выбирается по предпочтениям браузера. RU / EN в правом верхнем углу сохраняет ручной выбор. Названия, описания и версии GitHub показываются в оригинале репозитория. `prefers-reduced-motion` отключает печать и мигание.
 
-| Проект | Направление | Исходники и релизы |
-| --- | --- | --- |
-| Athena-Agent | Локальный macOS-агент, мониторинг, диагностика, MCP | [Код](https://github.com/Slipcast-dev/Athena-Agent) · [Релизы](https://github.com/Slipcast-dev/Athena-Agent/releases) |
-| Ares-Agent | Локальный macOS-агент, файловая автоматизация, MCP | [Код](https://github.com/Slipcast-dev/Ares-Agent) · [Релизы](https://github.com/Slipcast-dev/Ares-Agent/releases) |
-| translator-Koto | Переводчик для macOS, выделение текста, OCR, Apple Translation | [Код](https://github.com/Slipcast-dev/translator-Koto) · [Релизы](https://github.com/Slipcast-dev/translator-Koto/releases) |
+## Запуск и проверки
 
-Текущие версии, публичные описания и даты push хранятся в [снимке данных](src/data/projects.snapshot.json). Они не дублируются в этой таблице, чтобы README не отставал от релизов. Приватные проекты в публичную витрину не включаются.
+Нужен Node.js 24 или новее. Устанавливать npm-пакеты не требуется: зависимостей нет.
 
-## Локальный запуск
-
-Требуется **Node.js 22.23.4 или новее**; рекомендуемая версия **24** указана в `.nvmrc`.
-
-```bash
-nvm use                       # если установлен nvm
-npm ci --ignore-scripts       # lock-файл, без lifecycle-скриптов зависимостей
-npm run dev                   # http://127.0.0.1:4321
+```sh
+npm run dev       # http://127.0.0.1:4321, исходники site/
+npm run validate  # сборка dist/ и тесты
+node scripts/serve.mjs dist  # предпросмотр собранного сайта на том же порту
 ```
 
-Обычный запуск и сборка используют сохранённый снимок и не требуют токенов GitHub или доступа к API.
+Исходники также можно открыть как локальные HTML-файлы. Проекты отображаются из встроенного снимка; для превью внешних сайтов нужен интернет.
 
-## Проверки и сборка
+## Автоматическое обновление и публикация
 
-```bash
-npm run check                 # проверка Astro и TypeScript
-npm run build                 # статический сайт в dist/
-npm test                      # регрессионные проверки после сборки
-npm run validate              # check → build → test одной командой
-npm run preview               # просмотр dist/ на http://127.0.0.1:4321
-npm run astro -- preview stop # остановка preview-сервера Astro 7
-```
+`.github/workflows/deploy.yml` запускается при push в `main`, вручную и каждый час в **:17 UTC**. GitHub может задерживать запуск по расписанию. Pull request выполняет сборку и тесты, но не публикует сайт и не запускает синхронизацию с токеном.
 
-Тесты проверяют отдельные ссылки на репозитории и релизы, отсутствие вложенных ссылок, защиту внешних ссылок, сортировку карточек, canonical, социальное PNG-превью, отсутствие клиентского JavaScript, контраст основных сочетаний текста и фона по WCAG AA, production CSP и разделение прав CI. Это не заменяет полную проверку доступности в браузере.
+Порядок публикации:
 
-## Обновление проектов
+1. Сборка копирует `site/` в `dist/`, добавляет CSP с хешами встроенных скриптов и `.nojekyll`.
+2. `scripts/sync-projects.mjs dist` получает публичные репозитории владельца `Slipcast-dev`, проверяет их публичность, исключает сайты и получает релизы с пагинацией.
+3. Обновлённые `projects.json` и `projects-data.js` включаются только в артефакт сборки. Тесты должны пройти до deploy.
+4. GitHub Pages публикует артефакт на `https://slipcast-dev.github.io/`. Автоматических коммитов и прав записи исходников у workflow нет.
 
-```bash
+При ошибке синхронизации публикация прекращается: уже опубликованный сайт остаётся доступным. Первые карточки загружаются синхронно из `projects-data.js`. Открытая страница дополнительно проверяет локальный `projects.json` не чаще раза в 15 минут. Посетители не расходуют лимит GitHub API; ошибка сети не очищает карточки. Новые проекты появляются после следующей успешной публикации, а не мгновенно.
+
+Сайты исключаются по отдельным словам `website`, `web-site`, `site`, `landing`, `landing-page` в имени, суффиксу `.github.io` или topics `website`, `web-site`, `landing-page`, `github-pages`. Для сайта с произвольным названием задайте topic `website`. Поле `homepage` не исключает приложение из списка. Если релизов нет, показывается «Без релиза» / No release.
+
+Для ручного обновления снимка в исходниках:
+
+```sh
 npm run sync:projects
 npm run validate
 ```
 
-Скрипт `scripts/sync-projects.mjs` обращается к публичному GitHub REST API:
+Скрипт использует необязательную переменную окружения `GITHUB_TOKEN`. Локальный запуск без неё работает в рамках анонимных лимитов. В Actions применяется автоматически выданный `github.token` с чтением содержимого. Токен никогда не записывается в файлы сайта. `.env` автоматически не читается; секреты в репозиторий не добавляются.
 
-- обрабатывает только явно перечисленные публичные проекты;
-- получает описание и дату последнего push, сортирует карточки по этой дате;
-- просматривает опубликованные релизы с пагинацией, включая prerelease;
-- выбирает последний опубликованный релиз по `published_at`, скрывает кнопку, если релизов нет;
-- оставляет названия витрины и тематические теги под редакционным контролем;
-- заменяет JSON только после успешного получения всех данных; ошибка сети или API завершает команду с ненулевым кодом, прежний снимок сохраняется.
-
-Без токена действуют анонимные лимиты GitHub API. Для ручного запуска при необходимости можно передать `GITHUB_TOKEN` через окружение. Токен не сохраняется в исходники; `.env` не загружается автоматически.
-
-## Публикация и CI
-
-[Workflow](.github/workflows/deploy.yml) проверяет pull request без публикации. Push в `main` запускает npm audit, проверку типов, сборку и тесты. Затем отдельная задача проверяет доступность GitHub Pages: при 404 публикация явно пропускается с предупреждением, при других ошибках проверка завершается неуспешно. Если Pages доступен, выполняется deploy; его ошибки не скрываются.
-
-Дополнительно workflow запускается ежедневно в **06:17 UTC / 09:17 Минск** и вручную через **Actions → Deploy to GitHub Pages → Run workflow**. Эти запуски сначала обновляют публичные метаданные, затем проверяют и публикуют сайт. Расписание GitHub может выполняться с задержкой.
-
-Автоматическое обновление меняет данные только внутри сборки: workflow **не делает commit/push**. Чтобы обновить снимок в локальном репозитории и истории Git, выполните `npm run sync:projects`, проверьте результат и сохраните изменение обычным коммитом. При сбое обновления новая версия не публикуется, предыдущий сайт остаётся доступным.
-
-Для публикации Pages должен быть включён с источником **GitHub Actions**, а тариф и видимость репозитория должны поддерживать этот сервис. Повторный запуск доступен через Actions без изменения файлов; workflow не меняет тариф или видимость. Используется production-адрес `https://slipcast-dev.github.io` из `astro.config.mjs`; домен `slipcast.dev` не подключён. Если он будет подключён позже, сначала настройте DNS и домен в GitHub Pages, затем измените `site` и ожидаемые URL в тестах. Изменение `site` само по себе домен не подключает.
-
-## Структура и оформление
+## Редактирование
 
 ```text
-src/
-  data/projects.ts              # интерфейс Project и импорт снимка
-  data/projects.snapshot.json   # актуальные публичные метаданные
-  layouts/Layout.astro          # HTML, canonical, Open Graph, Twitter Card
-  pages/index.astro             # контент и карточки с отдельными ссылками
-  styles/global.css             # палитра, сетка, адаптивность, фокус
+site/
+  index.html, developer.html, projects.html, websites.html
+  i18n.js                  # RU/EN, биография, подписи, переключение языка
+  projects-data.js          # начальный публичный снимок для локального просмотра
+  projects.json            # тот же снимок в JSON
+  assets/avatar.jpg        # аватар владельца
+  favicon.svg, robots.txt, sitemap.xml, 404.html
 scripts/
-  sync-projects.mjs             # обновление снимка через GitHub API
-  render-banner.mjs             # генерация PNG из SVG-баннера
-tests/site.test.mjs              # проверки результата сборки и контраста
-docs/assets/                    # редактируемые SVG-баннеры README
-public/
-  favicon.svg
-  social-preview.png            # социальное превью 1200 × 630
+  build.mjs                # статическая сборка и CSP
+  sync-projects.mjs         # GitHub API на сервере, только публичные данные
+  serve.mjs                # локальный сервер на 127.0.0.1
+ tests/                    # проверки интерфейса, данных, ссылок и публикации
 ```
 
-Палитра настраивается через CSS-переменные в `:root`. Фон карточек чередуется через `:nth-child(odd)`; отдельного поля `highlighted` нет. Кнопка **Releases** — самостоятельная ссылка рядом с основной ссылкой карточки, доступная с клавиатуры.
+Для обновления биографии редактируйте RU и EN в `site/i18n.js`. Карточки сайтов заданы в `site/websites.html`, их описания — в словаре. Превью напрямую встраивают главные страницы в sandbox; они требуют доступности сайтов и разрешения на встраивание. Фото хранится локально, оригинальная копия с рабочего стола не нужна для публикации.
 
-Для обновления баннера отредактируйте `docs/assets/banner.svg`, затем выполните:
+## Настройки GitHub
 
-```bash
-npm run banner
-npm run validate
-```
+GitHub Pages должен использовать источник **GitHub Actions**. Окружение `github-pages` разрешает публикацию из `main`. Для самостоятельного переноса репозитория включите эти настройки в Settings → Pages и Settings → Environments. Прямые Actions закреплены на commit SHA, Dependabot еженедельно предлагает их обновления.
 
-SVG используется в README, а сгенерированный PNG — в Open Graph и Twitter Card. Информационные панели находятся в `docs/assets/info.svg`. Изображения не зависят от внешнего генератора баннеров; небольшие статусные бейджи загружаются с GitHub и Shields.io.
-
-## Безопасность
-
-Политика сообщений об уязвимостях и ограничения — в [SECURITY.md](SECURITY.md). Результаты проверки исходников, доступной истории и настроек GitHub — в [отчёте аудита](docs/security-audit.md).
-
-Dependabot проверяет npm и Actions еженедельно; обновления приходят pull request без автоматического merge. Все прямые Actions закреплены на commit SHA. Установка зависимостей CI не запускает lifecycle-скрипты; токен checkout не сохраняется в Git config. Production CSP запрещает клиентский JS и внешние ресурсы; в dev она отключена для работы Astro hot reload.
-
-Подробности изменений — в [CHANGELOG.md](CHANGELOG.md).
+Устаревший сайт Astro, старые зависимости, иллюстрации и отчёты удалены из текущей версии. Их можно восстановить из истории Git. Политика безопасности: [SECURITY.md](SECURITY.md). Изменения: [CHANGELOG.md](CHANGELOG.md).

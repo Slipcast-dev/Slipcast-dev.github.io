@@ -1,19 +1,7 @@
 version: 2
 updates:
-  # Обновления приходят PR: без автоматического merge или публикации.
-  - package-ecosystem: npm
-    directory: /
-    schedule:
-      interval: weekly
-      day: monday
-      time: '07:00'
-      timezone: Europe/Minsk
-    open-pull-requests-limit: 5
   - package-ecosystem: github-actions
     directory: /
     schedule:
       interval: weekly
-      day: monday
-      time: '07:30'
-      timezone: Europe/Minsk
     open-pull-requests-limit: 5

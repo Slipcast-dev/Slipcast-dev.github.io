@@ -1,4 +1,4 @@
-name: Deploy to GitHub Pages
+name: Deploy website
 
 on:
   push:
@@ -7,8 +7,8 @@ on:
     branches: [main]
   workflow_dispatch:
   schedule:
-    # GitHub использует UTC: 06:17 соответствует 09:17 по Минску.
-    - cron: '17 6 * * *'
+    # Каждый час в :17 UTC. GitHub может задерживать запланированные запуски.
+    - cron: '17 * * * *'
 
 permissions:
   contents: read
@@ -19,82 +19,32 @@ concurrency:
 
 jobs:
   build:
-    timeout-minutes: 10
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
-      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
         with:
-          # Зависимости сборки не должны читать токен из локального Git config.
           persist-credentials: false
-      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
         with:
           node-version-file: .nvmrc
-          cache: npm
-      # Запрещаем install-скрипты зависимостей; сборка использует готовые бинарные пакеты.
-      - run: npm ci --ignore-scripts
-      - run: npm audit --audit-level=high
-      # Обновляем только сборку: workflow не получает токен записи и не делает коммиты.
-      - run: npm run sync:projects
-        if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
-      - run: npm run validate
-      - name: Package Pages artifact
-        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
-        run: |
-          # Не следуем симлинкам из результата сборки за пределы dist.
-          if find dist -type l -print -quit | grep -q .; then
-            echo '::error::Static output must not contain symbolic links.'
-            exit 1
-          fi
-          # Pages ожидает ZIP-артефакт с одним artifact.tar, без ссылок и Git metadata.
-          tar --directory dist --create --hard-dereference \
-            --file "$RUNNER_TEMP/artifact.tar" --exclude=.git --exclude=.github .
-      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+      - run: npm run build
+      - name: Refresh public projects
+        if: github.event_name != 'pull_request'
+        run: node scripts/sync-projects.mjs dist
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+      - run: npm test
+      - uses: actions/upload-pages-artifact@7b1f4a764d45c48632c6b24a0339c27f5614fb0b # v4
         if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
         with:
-          name: github-pages
-          path: ${{ runner.temp }}/artifact.tar
-          retention-days: 1
-          if-no-files-found: error
-
-  hosting:
-    name: Check GitHub Pages availability
-    needs: build
-    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
-    timeout-minutes: 2
-    runs-on: ubuntu-latest
-    permissions:
-      pages: read
-    outputs:
-      enabled: ${{ steps.pages.outputs.enabled }}
-    steps:
-      - id: pages
-        name: Check configured Pages site
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          # Не меняем видимость репозитория и не пытаемся включить платный сервис.
-          status=$(curl --silent --show-error --connect-timeout 10 --max-time 30 \
-            --output /dev/null --write-out '%{http_code}' \
-            --header "Authorization: Bearer $GH_TOKEN" \
-            --header 'Accept: application/vnd.github+json' \
-            "$GITHUB_API_URL/repos/$GITHUB_REPOSITORY/pages")
-          if [ "$status" = '200' ]; then
-            echo 'enabled=true' >> "$GITHUB_OUTPUT"
-          elif [ "$status" = '404' ]; then
-            echo 'enabled=false' >> "$GITHUB_OUTPUT"
-            echo '::warning::Publication skipped: GitHub Pages is unavailable. Check visibility, plan support and Settings > Pages.'
-            echo '### Publication unavailable' >> "$GITHUB_STEP_SUMMARY"
-            echo 'Build and security checks passed. Deploy was skipped because GitHub Pages is not configured or supported for this repository. Repository visibility was not changed.' >> "$GITHUB_STEP_SUMMARY"
-          else
-            echo "::error::Cannot check GitHub Pages (HTTP $status)."
-            exit 1
-          fi
+          path: dist
 
   deploy:
-    needs: [build, hosting]
-    if: needs.hosting.outputs.enabled == 'true'
-    timeout-minutes: 10
+    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+    needs: build
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     permissions:
       pages: write
       id-token: write
@@ -103,5 +53,5 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/configure-pages@983d7736d9b0ae728b81ab479565c72886d7745b # v5
-      - id: deployment
-        uses: actions/deploy-pages@d6db90164ac5ed86f2b6aed7e0febac5b3c0c03e # v4
+      - uses: actions/deploy-pages@d6db90164ac5ed86f2b6aed7e0febac5b3c0c03e # v4
+        id: deployment
