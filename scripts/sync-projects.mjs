@@ -43,7 +43,8 @@ export async function collectProjects({ fetchImpl = fetch, token = process.env.G
     const batch = await github(`/users/${OWNER}/repos?type=owner&sort=updated&per_page=100&page=${page}`);
     for (const repo of batch) {
       if (!repo || repo.private !== false || repo.owner?.login?.toLowerCase() !== OWNER.toLowerCase()
-        || !Number.isInteger(repo.id) || typeof repo.name !== 'string' || !repo.name || isWebsite(repo)) continue;
+        || !Number.isInteger(repo.id) || typeof repo.name !== 'string' || !repo.name
+        || repo.name.toLowerCase() === OWNER.toLowerCase() || isWebsite(repo)) continue;
       unique.set(repo.id, repo);
     }
     if (batch.length < 100) { complete = true; break; }

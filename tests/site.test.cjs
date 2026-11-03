@@ -59,7 +59,8 @@ test('Проекты выводятся сразу без GitHub API, прива
   const data = { repositories: [
     { id: 1, name: '<script>', private: false, owner: { login: 'Slipcast-dev' }, description: '<img onerror=alert(1)>', version: 'v1' },
     { id: 2, name: 'secret', private: true, owner: { login: 'Slipcast-dev' } },
-    { id: 3, name: 'test-website', private: false, owner: { login: 'Slipcast-dev' } }
+    { id: 3, name: 'test-website', private: false, owner: { login: 'Slipcast-dev' } },
+    { id: 4, name: 'SLIPCAST-DEV', private: false, owner: { login: 'Slipcast-dev' } }
   ] };
   page.context.testSnapshot = data;
   vm.runInContext('renderProjects(testSnapshot)', page.context);

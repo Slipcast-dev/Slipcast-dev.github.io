@@ -3,17 +3,6 @@
   "fetchedAt": "2026-11-03T12:38:35.832Z",
   "repositories": [
     {
-      "id": 1255396847,
-      "name": "Slipcast-dev",
-      "description": "GitHub profile portfolio of Slipcast-dev",
-      "private": false,
-      "owner": {
-        "login": "Slipcast-dev"
-      },
-      "topics": [],
-      "version": null
-    },
-    {
       "id": 1428396071,
       "name": "translator-Koto",
       "description": "Koto · Slipcast-Dev — переводчик macOS / native macOS translator. Selection, OCR, Apple Translation & optional Qwen, Chrome & Safari. RU/EN docs. Apple Silicon alpha.",
