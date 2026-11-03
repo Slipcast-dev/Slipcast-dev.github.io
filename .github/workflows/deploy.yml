@@ -7,8 +7,8 @@ on:
     branches: [main]
   workflow_dispatch:
   schedule:
-    # Каждый час в :17 UTC. GitHub может задерживать запланированные запуски.
-    - cron: '17 * * * *'
+    # Каждые 10 минут со смещением от начала часа. GitHub может задерживать запланированные запуски.
+    - cron: '7,17,27,37,47,57 * * * *'
 
 permissions:
   contents: read

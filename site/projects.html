@@ -138,7 +138,7 @@
     async function refreshProjects() {
       // Посетители читают только локальный JSON. GitHub API доступен исключительно сборке.
       if (loading || document.hidden || location.protocol === 'file:') return;
-      if (Date.now() - lastAttempt < 15 * 60 * 1000) return;
+      if (Date.now() - lastAttempt < 2 * 60 * 1000) return;
       loading = true;
       lastAttempt = Date.now();
       try {

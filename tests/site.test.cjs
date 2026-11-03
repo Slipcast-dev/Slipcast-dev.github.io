@@ -111,7 +111,7 @@ test('Сборка включает локальные ресурсы, стра�
 
 test('Workflow публикует main, обновляет данные на сервере и ограничивает права', () => {
   const workflow = fs.readFileSync(path.resolve(root, '../.github/workflows/deploy.yml'), 'utf8');
-  assert.ok(workflow.includes("cron: '17 * * * *'"));
+  assert.ok(workflow.includes("cron: '7,17,27,37,47,57 * * * *'"));
   assert.ok(workflow.includes('node scripts/sync-projects.mjs dist'));
   assert.ok(workflow.includes('persist-credentials: false'));
   assert.ok(workflow.includes('contents: read'));
