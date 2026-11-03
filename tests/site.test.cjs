@@ -85,7 +85,7 @@ test('Ошибка сети не удаляет карточки; успешно
 
 test('Сборка включает локальные ресурсы, страницы и точные хеши CSP', () => {
   const pages = fs.readdirSync(dist).filter(file => file.endsWith('.html'));
-  assert.equal(pages.length, 5);
+  assert.equal(pages.length, 6);
   for (const name of pages) {
     const html = fs.readFileSync(path.join(dist, name), 'utf8');
     for (const match of html.matchAll(/(?:src|href)="([^"]+)"/g)) {
@@ -118,4 +118,24 @@ test('Workflow публикует main, обновляет данные на с�
   assert.ok(workflow.includes('pages: write'));
   assert.ok(workflow.includes("github.event_name != 'pull_request'"));
   assert.ok([...workflow.matchAll(/uses: (\S+)/g)].every(match => /@[a-f0-9]{40}$/.test(match[1])));
+});
+
+test('Превью RU/EN содержат описание без JavaScript и имеют разные канонические URL', () => {
+  for (const [name, description, locale] of [
+    ['index.html', 'Программное обеспечение, ИИ Агенты, Скилы', 'ru_RU'],
+    ['index-en.html', 'Software, AI Agents, Skills', 'en_US']
+  ]) {
+    const html = fs.readFileSync(path.join(dist, name), 'utf8');
+    assert.ok(html.includes(`name="description" content="${description}"`));
+    assert.ok(html.includes(`property="og:description" content="${description}"`));
+    assert.ok(html.includes(`name="twitter:description" content="${description}"`));
+    assert.ok(html.includes(`property="og:locale" content="${locale}"`));
+    assert.ok(!html.includes('Личный сайт в стиле терминала:'));
+  }
+  const en = fs.readFileSync(path.join(dist, 'index-en.html'), 'utf8');
+  assert.ok(en.includes('property="og:url" content="https://slipcast-dev.github.io/index-en.html"'));
+  const page = setup('index.html', { languages: ['ru'] });
+  assert.equal(page.document.querySelector('meta[name="description"]').content, 'Программное обеспечение, ИИ Агенты, Скилы');
+  page.click('en');
+  assert.equal(page.document.querySelector('meta[name="description"]').content, 'Software, AI Agents, Skills');
 });

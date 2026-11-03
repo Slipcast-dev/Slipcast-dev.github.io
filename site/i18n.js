@@ -14,7 +14,7 @@
       grizzlyWebsiteDescription: 'Сайт Grizzly — приложения для чтения и редактирования Markdown, текста и кода на macOS и Windows.',
       kotoWebsiteDescription: 'Сайт Koto — нативного переводчика для Mac: перевод текста, выделения и области экрана.',
       homeTitle: 'Личный терминал — Slipcast-Dev', projectsTitle: 'Проекты — Slipcast-Dev',
-      homeDescription: 'Личный сайт Slipcast-Dev: разработчик, проекты и веб-сайты.',
+      homeDescription: 'Программное обеспечение, ИИ Агенты, Скилы',
       projectsDescription: 'Публичные проекты Slipcast-dev: версии, названия и описания из GitHub.',
       heading: 'Личный сайт — разработчик, проекты и веб-сайты', developer: 'Разработчик', projects: 'Проекты', websites: 'Вэб-сайты',
       access: 'Вход разрешен.', welcome: 'Добро пожаловать в репозиторий Slipcast-Dev',
@@ -40,7 +40,7 @@
       grizzlyWebsiteDescription: 'The Grizzly website: a Markdown, text and source code reader and editor for macOS and Windows.',
       kotoWebsiteDescription: 'The Koto website: a native Mac translator for text, selections and screen regions.',
       homeTitle: 'Personal Terminal — Slipcast-Dev', projectsTitle: 'Projects — Slipcast-Dev',
-      homeDescription: 'Slipcast-Dev personal website: developer, projects and websites.',
+      homeDescription: 'Software, AI Agents, Skills',
       projectsDescription: 'Public Slipcast-dev projects: releases, names and descriptions from GitHub.',
       heading: 'Personal website — developer, projects and websites', developer: 'Developer', projects: 'Projects', websites: 'Websites',
       access: 'Access granted.', welcome: 'Welcome to the Slipcast-Dev repository.',
@@ -62,7 +62,8 @@
   // Браузер предоставляет языковые предпочтения пользователя, а не прямой доступ к настройкам ОС.
   const preferred = (navigator.languages?.length ? navigator.languages : [navigator.language || 'en'])
     .map(value => value.toLowerCase().split('-')[0]).find(valid) || 'en';
-  let language = valid(query) ? query : valid(saved) ? saved : preferred;
+  const englishPage = new URL(location.href).pathname.endsWith('/index-en.html');
+  let language = valid(query) ? query : englishPage ? 'en' : valid(saved) ? saved : preferred;
   document.documentElement.lang = language;
   const t = key => strings[language][key] || strings.en[key] || key;
   function message(node, key) {
@@ -74,6 +75,7 @@
     document.documentElement.lang = language;
     document.querySelectorAll('[data-i18n]').forEach(node => { node.textContent = t(node.dataset.i18n); });
     document.querySelectorAll('[data-i18n-label]').forEach(node => { node.setAttribute('aria-label', t(node.dataset.i18nLabel)); });
+    document.querySelectorAll('[data-i18n-content]').forEach(node => { node.content = t(node.dataset.i18nContent); });
     const page = document.body.dataset.page;
     document.title = t(page === 'developer' ? 'developerTitle' : page === 'websites' ? 'websitesTitle' : page === 'projects' ? 'projectsTitle' : 'homeTitle');
     document.querySelector('meta[name="description"]').content = t(page === 'developer' ? 'developerMetaDescription' : page === 'websites' ? 'websitesMetaDescription' : page === 'projects' ? 'projectsDescription' : 'homeDescription');
@@ -84,8 +86,11 @@
     // Параметр сохраняет язык между локальными файлами даже при изоляции хранилищ браузером.
     document.querySelectorAll('a[href]').forEach(link => {
       const href = link.getAttribute('href');
-      if (!/^(index|projects|websites|developer)\.html(?:[?#]|$)/.test(href)) return;
+      if (!/^(index|index-en|projects|websites|developer)\.html(?:[?#]|$)/.test(href)) return;
       const url = new URL(href, location.href);
+      if (location.protocol !== 'file:' && /\/index(?:-en)?\.html$/.test(url.pathname)) {
+        url.pathname = url.pathname.replace(/index(?:-en)?\.html$/, language === 'en' ? 'index-en.html' : 'index.html');
+      }
       url.searchParams.set('lang', language);
       link.setAttribute('href', url.pathname.split('/').pop() + url.search + url.hash);
     });
@@ -96,7 +101,11 @@
     try { localStorage.setItem('slipcast-language', next); } catch { /* Ссылки с lang работают и без хранилища. */ }
     // Обновляем текущий URL без перезагрузки; file:// может запрещать History API.
     try {
-      const url = new URL(location.href); url.searchParams.set('lang', next);
+      const url = new URL(location.href);
+      if (location.protocol !== 'file:' && document.body.dataset.page === 'home') {
+        url.pathname = url.pathname.replace(/(?:index(?:-en)?\.html)?$/, next === 'en' ? 'index-en.html' : 'index.html');
+      }
+      url.searchParams.set('lang', next);
       history.replaceState(null, '', url.href);
     } catch { /* Текущая страница остаётся работоспособной без History API. */ }
     apply();

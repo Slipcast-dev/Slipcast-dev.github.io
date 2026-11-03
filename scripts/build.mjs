@@ -6,6 +6,19 @@ const destination = fileURLToPath(new URL('../dist/', import.meta.url));
 await rm(destination, { recursive: true, force: true });
 await mkdir(destination, { recursive: true });
 await cp(source, destination, { recursive: true });
+// Роботы превью не выполняют JS и не различают язык по query-параметру на GitHub Pages.
+// Отдельный HTML даёт английское описание непосредственно в HTTP-ответе.
+const russianHome = await readFile(`${destination}/index.html`, 'utf8');
+const englishHome = russianHome
+  .replace('<html lang="ru">', '<html lang="en">')
+  .replaceAll('Программное обеспечение, ИИ Агенты, Скилы', 'Software, AI Agents, Skills')
+  .replaceAll('Личный терминал — Slipcast-Dev', 'Personal Terminal — Slipcast-Dev')
+  .replace('<title>Личный терминал</title>', '<title>Personal Terminal — Slipcast-Dev</title>')
+  .replace('<link rel="canonical" href="https://slipcast-dev.github.io/">', '<link rel="canonical" href="https://slipcast-dev.github.io/index-en.html">')
+  .replace('<meta property="og:url" content="https://slipcast-dev.github.io/">', '<meta property="og:url" content="https://slipcast-dev.github.io/index-en.html">')
+  .replace('property="og:locale" content="ru_RU"', 'property="og:locale" content="en_US"')
+  .replace('property="og:locale:alternate" content="en_US"', 'property="og:locale:alternate" content="ru_RU"');
+await writeFile(`${destination}/index-en.html`, englishHome);
 for (const entry of await readdir(destination, { withFileTypes: true })) {
   if (!entry.isFile() || !entry.name.endsWith('.html')) continue;
   const path = `${destination}/${entry.name}`;
