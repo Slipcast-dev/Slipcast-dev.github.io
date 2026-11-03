@@ -85,7 +85,7 @@ test('Ошибка сети не удаляет карточки; успешно
 
 test('Сборка включает локальные ресурсы, страницы и точные хеши CSP', () => {
   const pages = fs.readdirSync(dist).filter(file => file.endsWith('.html'));
-  assert.equal(pages.length, 6);
+  assert.equal(pages.length, 7);
   for (const name of pages) {
     const html = fs.readFileSync(path.join(dist, name), 'utf8');
     for (const match of html.matchAll(/(?:src|href)="([^"]+)"/g)) {
@@ -123,6 +123,7 @@ test('Workflow публикует main, обновляет данные на с�
 test('Превью RU/EN содержат описание без JavaScript и имеют разные канонические URL', () => {
   for (const [name, description, locale] of [
     ['index.html', 'Программное обеспечение, ИИ Агенты, Скилы', 'ru_RU'],
+    ['index-ru.html', 'Программное обеспечение, ИИ Агенты, Скилы', 'ru_RU'],
     ['index-en.html', 'Software, AI Agents, Skills', 'en_US']
   ]) {
     const html = fs.readFileSync(path.join(dist, name), 'utf8');
@@ -138,4 +139,14 @@ test('Превью RU/EN содержат описание без JavaScript и 
   assert.equal(page.document.querySelector('meta[name="description"]').content, 'Программное обеспечение, ИИ Агенты, Скилы');
   page.click('en');
   assert.equal(page.document.querySelector('meta[name="description"]').content, 'Software, AI Agents, Skills');
+});
+
+test('Русская ссылка имеет собственные canonical и og:url и не содержит старого превью', () => {
+  const html = fs.readFileSync(path.join(dist, 'index-ru.html'), 'utf8');
+  assert.ok(html.includes('rel="canonical" href="https://slipcast-dev.github.io/index-ru.html"'));
+  assert.ok(html.includes('property="og:url" content="https://slipcast-dev.github.io/index-ru.html"'));
+  assert.ok(html.includes('property="og:image" content="https://slipcast-dev.github.io/assets/avatar.jpg"'));
+  assert.ok(!/Building useful software|Independent developer building|social-preview\.png/.test(html));
+  const page = setup('index.html', { protocol: 'https:', languages: ['ru'] });
+  assert.ok(page.document.querySelector('a[href]').attrs.href.includes('lang=ru'));
 });

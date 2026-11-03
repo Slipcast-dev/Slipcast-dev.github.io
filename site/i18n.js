@@ -86,10 +86,10 @@
     // Параметр сохраняет язык между локальными файлами даже при изоляции хранилищ браузером.
     document.querySelectorAll('a[href]').forEach(link => {
       const href = link.getAttribute('href');
-      if (!/^(index|index-en|projects|websites|developer)\.html(?:[?#]|$)/.test(href)) return;
+      if (!/^(index|index-ru|index-en|projects|websites|developer)\.html(?:[?#]|$)/.test(href)) return;
       const url = new URL(href, location.href);
-      if (location.protocol !== 'file:' && /\/index(?:-en)?\.html$/.test(url.pathname)) {
-        url.pathname = url.pathname.replace(/index(?:-en)?\.html$/, language === 'en' ? 'index-en.html' : 'index.html');
+      if (location.protocol !== 'file:' && /\/index(?:-ru|-en)?\.html$/.test(url.pathname)) {
+        url.pathname = url.pathname.replace(/index(?:-ru|-en)?\.html$/, language === 'en' ? 'index-en.html' : 'index-ru.html');
       }
       url.searchParams.set('lang', language);
       link.setAttribute('href', url.pathname.split('/').pop() + url.search + url.hash);
@@ -103,7 +103,7 @@
     try {
       const url = new URL(location.href);
       if (location.protocol !== 'file:' && document.body.dataset.page === 'home') {
-        url.pathname = url.pathname.replace(/(?:index(?:-en)?\.html)?$/, next === 'en' ? 'index-en.html' : 'index.html');
+        url.pathname = url.pathname.replace(/(?:index(?:-ru|-en)?\.html)?$/, next === 'en' ? 'index-en.html' : 'index-ru.html');
       }
       url.searchParams.set('lang', next);
       history.replaceState(null, '', url.href);

@@ -19,6 +19,11 @@ const englishHome = russianHome
   .replace('property="og:locale" content="ru_RU"', 'property="og:locale" content="en_US"')
   .replace('property="og:locale:alternate" content="en_US"', 'property="og:locale:alternate" content="ru_RU"');
 await writeFile(`${destination}/index-en.html`, englishHome);
+// Новый постоянный адрес RU имеет собственный og:url и не использует идентичность старого сайта.
+const russianShareHome = russianHome
+  .replace('<link rel="canonical" href="https://slipcast-dev.github.io/">', '<link rel="canonical" href="https://slipcast-dev.github.io/index-ru.html">')
+  .replace('<meta property="og:url" content="https://slipcast-dev.github.io/">', '<meta property="og:url" content="https://slipcast-dev.github.io/index-ru.html">');
+await writeFile(`${destination}/index-ru.html`, russianShareHome);
 for (const entry of await readdir(destination, { withFileTypes: true })) {
   if (!entry.isFile() || !entry.name.endsWith('.html')) continue;
   const path = `${destination}/${entry.name}`;
