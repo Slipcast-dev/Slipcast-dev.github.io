@@ -34,9 +34,9 @@
     .intro { width: 100%; text-align: center; margin: 0 auto 58px; }
     h1 { margin: 0; color: var(--green); font-size: clamp(25px, 3.8vw, 36px); line-height: 1.4; font-weight: 700; }
     .intro p { max-width: 650px; margin: 18px auto 0; color: var(--muted); font-size: 13px; line-height: 1.9; }
-    .project-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 40px; }
+    .project-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 24px; }
     /* Наклонная грань и градиент повторяют геометрию референса без наклона текста. */
-    .project-card { position: relative; isolation: isolate; min-height: 152px; padding: 28px 46px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; transition: filter .22s ease; }
+    .project-card { position: relative; isolation: isolate; min-height: 120px; padding: 18px 40px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; transition: filter .22s ease; }
     .project-card::before { content: ""; position: absolute; z-index: -1; inset: 0; background: linear-gradient(105deg, #00ff660d, #00ff6605 60%, #0000); clip-path: polygon(28px 0, 100% 0, calc(100% - 28px) 100%, 0 100%); background-color: transparent; transition: background-color .22s ease; }
     .project-card::after { content: ""; position: absolute; inset: 0 auto 0 0; width: 32px; background: var(--green); opacity: .72; clip-path: polygon(28px 0, 32px 0, 4px 100%, 0 100%); transition: opacity .2s; }
     /* Подсветка ограничена наведённой карточкой и использует только зелёную палитру. */
@@ -47,7 +47,7 @@
     .project-card:is(:hover, :focus-visible) .status { color: #a0ffc4; }
     .project-card:is(:hover, :focus-visible) p { color: #c2ebd2; }
     .status { color: #92e6b3; text-transform: none; letter-spacing: .14em; font-size: 11px; line-height: 1.7; }
-    h2 { margin: 9px 0 10px; color: #d8ffe6; font-size: clamp(18px, 2.5vw, 22px); line-height: 1.4; font-weight: 600; }
+    h2 { margin: 6px 0 8px; color: #d8ffe6; font-size: clamp(18px, 2.5vw, 22px); line-height: 1.4; font-weight: 600; }
     .project-card p { max-width: 760px; margin: 0; color: #9ab8a5; font-size: 14px; line-height: 1.85; }
     .project-card h2, .project-card .status, .project-card p { transition: color .22s ease; }
     .load-status { text-align: center; color: var(--muted); font-size: 13px; line-height: 1.8; margin: 0 0 32px; }
@@ -63,8 +63,8 @@
       main { width: calc(100% - 36px); padding-top: 72px; }
       .intro { margin-bottom: 38px; }
       .intro p { font-size: 12px; padding: 0 8px; }
-      .project-list { gap: 26px; }
-      .project-card { min-height: 170px; padding: 24px 30px; }
+      .project-list { gap: 18px; }
+      .project-card { min-height: 132px; padding: 16px 28px; }
       .project-card p { font-size: 12px; }
       .status { font-size: 10px; }
     }
