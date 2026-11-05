@@ -71,14 +71,14 @@ test('Проекты выводятся сразу без GitHub API, прива
   assert.equal(cards[0].children[0].children[2].textContent, '<img onerror=alert(1)>');
 });
 
-test('Ошибка сети не удаляет карточки; успешное обновление читает только свой JSON', async () => {
+test('Ошибка сети не удаляет карточки; резервный JSON применяется при недоступном API', async () => {
   const page = setup('projects.html', { protocol: 'https:' });
   const initial = page.document.querySelector('#project-list').children.length;
   await flush();
   assert.equal(page.document.querySelector('#project-list').children.length, initial);
-  assert.ok(page.calls.every(call => call.url === 'projects.json'));
+  assert.ok(page.calls.some(call => call.url.startsWith('https://api.github.com/users/')));
   assert.equal(page.document.querySelector('#load-status').textContent, '');
-  const refreshed = setup('projects.html', { protocol: 'https:', respond: async () => ({ ok: true, json: async () => ({ repositories: [] }) }) });
+  const refreshed = setup('projects.html', { protocol: 'https:', respond: async url => url === 'projects.json' ? ({ ok: true, json: async () => ({ fetchedAt: '2099-01-01', repositories: [] }) }) : ({ ok: false, status: 403 }) });
   await flush();
   assert.equal(refreshed.document.querySelector('#project-list').children.length, 0);
   assert.equal(refreshed.document.querySelector('#load-status').textContent, 'Публичных проектов пока нет.');
@@ -230,4 +230,29 @@ test('Общий поиск сопоставляет кириллицу и ла�
   page.context.futureSnapshot.repositories.push({ id: 999, name: 'FutureApp', description: 'New application', private: false, owner: { login: 'Slipcast-dev' } });
   vm.runInContext('renderProjects(futureSnapshot)', page.context);
   assert.deepEqual(run('футуреапп'), ['FutureApp']);
+});
+
+test('GitHub обновляет название, описание, релиз и состав карточек без публикации сайта', async () => {
+  const repo = { id: 1, name: 'renamed-app', description: 'Fresh description', private: false,
+    owner: { login: 'Slipcast-dev' }, topics: [] };
+  const page = setup('projects.html', { protocol: 'https:', respond: async (url, options) => {
+    assert.equal(options.credentials, 'omit');
+    assert.equal(options.headers?.Authorization, undefined);
+    return { ok: true, json: async () => url === 'projects.json'
+      ? { fetchedAt: '2020-01-01', repositories: [] }
+      : url.includes('/users/') ? [repo]
+      : [{ draft: false, tag_name: 'v99', published_at: '2026-11-05' }] };
+  } });
+  await flush();
+  const cards = page.document.querySelector('#project-list').children;
+  assert.equal(cards.length, 1);
+  const card = cards[0].children[0];
+  assert.equal(card.children[0].textContent, 'v99');
+  assert.equal(card.children[1].textContent, 'renamed-app');
+  assert.equal(card.children[2].textContent, 'Fresh description');
+  const count = page.calls.length;
+  await vm.runInContext('lastAttempt = 0; refreshProjects()', page.context);
+  assert.equal(page.calls.length, count + 1);
+  assert.equal(page.document.querySelector('#project-list').children[0].children[0].children[0].textContent, 'v99');
+  assert.ok(page.session.get('projects-live-snapshot').includes('renamed-app'));
 });

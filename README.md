@@ -2,9 +2,9 @@
 
 [Открыть сайт / Open website](https://slipcast-dev.github.io/) · [Публикация / Deployment](https://github.com/Slipcast-dev/Slipcast-dev.github.io/actions/workflows/deploy.yml)
 
-Личный сайт в стиле терминала: чёрный фон, зелёные акценты, русский и английский интерфейс. Четыре статические страницы без сторонних библиотек и без запросов к GitHub API из браузера посетителя.
+Личный сайт в стиле терминала: чёрный фон, зелёные акценты, русский и английский интерфейс. Четыре статические страницы без сторонних библиотек с обновлением публичных проектов из GitHub API.
 
-Personal website with a terminal interface, black background and green accents. Russian and English UI, four static pages, no third-party runtime libraries. Public GitHub data is refreshed by GitHub Actions; visitors only download static files.
+Personal website with a terminal interface, black background and green accents. Russian and English UI, four static pages, no third-party runtime libraries. GitHub Actions provides a fallback snapshot. The projects page also refreshes public data directly from GitHub without authentication.
 
 ## Страницы
 
@@ -38,7 +38,9 @@ node scripts/serve.mjs dist  # предпросмотр собранного с�
 3. Обновлённые `projects.json` и `projects-data.js` включаются только в артефакт сборки. Тесты должны пройти до deploy.
 4. GitHub Pages публикует артефакт на `https://slipcast-dev.github.io/`. Автоматических коммитов и прав записи исходников у workflow нет.
 
-При ошибке синхронизации публикация прекращается: уже опубликованный сайт остаётся доступным. Первые карточки загружаются синхронно из `projects-data.js`. Открытая страница дополнительно проверяет локальный `projects.json` не чаще раза в 2 минуты. Посетители не расходуют лимит GitHub API; ошибка сети не очищает карточки. Новые проекты появляются после следующей успешной публикации, а не мгновенно.
+При ошибке синхронизации публикация прекращается: уже опубликованный сайт остаётся доступным. Первые карточки загружаются синхронно из `projects-data.js`. Открытая страница проверяет локальный `projects.json` раз в 2 минуты и запрашивает актуальные публичные репозитории и релизы из GitHub API при открытии, затем раз в 15 минут. Изменения названий, описаний, релизов и состава проектов появляются без новой публикации сайта. Общий сборщик `site/projects-api.js` используется и браузером, и сборкой.
+
+Браузер не использует токен и передаёт `credentials: omit`. Для шести проектов один цикл занимает 7 запросов, около 28 в час при непрерывно открытой странице. GitHub ограничивает анонимные запросы по IP, поэтому при общем IP, множестве вкладок или большом числе проектов лимит может быть исчерпан. В этом случае сохраняются последние карточки, повтор выполняется через 15 минут. Снимок и время запроса сохраняются в sessionStorage, чтобы перезагрузка вкладки не расходовала лимит повторно. Сбой отдельного запроса не публикует частичный список. Более старый JSON публикации не затирает свежие данные API. CSP разрешает соединение с GitHub API только на странице проектов.
 
 Репозиторий профиля `Slipcast-dev` исключён из карточек проектов при синхронизации и отображении.
 

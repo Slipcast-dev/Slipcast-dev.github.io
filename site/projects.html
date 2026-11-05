@@ -102,6 +102,7 @@
   </main>
 
   <script src="projects-data.js"></script>
+  <script src="projects-api.js"></script>
   <script>
     'use strict';
     const i18n = window.siteI18n;
@@ -111,6 +112,7 @@
     let currentSnapshot = null;
     let loading = false;
     let lastAttempt = 0;
+    let lastLiveAttempt = 0;
 
     function validProject(repo) {
       if (!repo || repo.private !== false || repo.owner?.login?.toLowerCase() !== 'slipcast-dev'
@@ -174,7 +176,7 @@
     }
 
     async function refreshProjects() {
-      // Посетители читают только локальный JSON. GitHub API доступен исключительно сборке.
+      // Снимок публикации служит резервом. Свежие данные читаем независимо от расписания Actions.
       if (loading || document.hidden || location.protocol === 'file:') return;
       if (Date.now() - lastAttempt < 2 * 60 * 1000) return;
       loading = true;
@@ -182,9 +184,26 @@
       try {
         const response = await fetch('projects.json', { cache: 'no-cache', credentials: 'omit', signal: AbortSignal.timeout(12000) });
         if (!response.ok) throw new Error(`Snapshot HTTP ${response.status}`);
-        renderProjects(await response.json());
+        const snapshot = await response.json();
+        // Старая публикация не должна затирать уже полученные свежие данные GitHub.
+        if (!currentSnapshot?.fetchedAt || Date.parse(snapshot.fetchedAt) > Date.parse(currentSnapshot.fetchedAt)) {
+          renderProjects(snapshot);
+        }
       } catch {
         // Ошибка сети не убирает карточки: начальный снимок уже загружен локальным JS.
+      }
+      try {
+        // Ограничиваем обращения без токена: для шести проектов это около 28 запросов в час.
+        // При ошибке не применяем частичный результат и сохраняем карточки.
+        if (Date.now() - lastLiveAttempt >= 15 * 60 * 1000) {
+          lastLiveAttempt = Date.now();
+          try { sessionStorage.setItem('projects-live-attempt', String(lastLiveAttempt)); } catch {}
+          const snapshot = await globalThis.publicProjectsApi.collectProjects();
+          renderProjects(snapshot);
+          try { sessionStorage.setItem('projects-live-snapshot', JSON.stringify(snapshot)); } catch {}
+        }
+      } catch {
+        // Лимит API или сбой сети допускает повтор через 15 минут.
       } finally {
         loading = false;
       }
@@ -197,6 +216,14 @@
       }
     });
     renderProjects(window.publicProjectsSnapshot);
+    // Переходы между страницами и перезагрузка вкладки не расходуют лимит повторно.
+    try {
+      const cached = JSON.parse(sessionStorage.getItem('projects-live-snapshot') || 'null');
+      if (cached && Date.parse(cached.fetchedAt) > Date.parse(currentSnapshot.fetchedAt)) renderProjects(cached);
+      lastLiveAttempt = Number(sessionStorage.getItem('projects-live-attempt')) || 0;
+    } catch {
+      // Хранилище может быть запрещено настройками браузера.
+    }
     setInterval(refreshProjects, 60 * 1000);
     document.addEventListener('visibilitychange', () => { if (!document.hidden) refreshProjects(); });
     refreshProjects();

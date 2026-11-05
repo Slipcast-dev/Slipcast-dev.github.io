@@ -33,7 +33,7 @@ for (const entry of await readdir(destination, { withFileTypes: true })) {
     .filter(match => match[1].trim())
     .map(match => `'sha256-${createHash('sha256').update(match[1]).digest('base64')}'`);
   const policy = ["default-src 'self'", `script-src 'self' ${hashes.join(' ')}`, "style-src 'self' 'unsafe-inline'",
-    "img-src 'self' data:", "connect-src 'self'", 'frame-src https://slipcast-dev.github.io',
+    "img-src 'self' data:", (entry.name === 'projects.html' ? "connect-src 'self' https://api.github.com" : "connect-src 'self'"), 'frame-src https://slipcast-dev.github.io',
     "object-src 'none'", "base-uri 'none'", "form-action 'none'"].join('; ');
   html = html.replace('<head>', `<head>\n  <meta http-equiv="Content-Security-Policy" content="${policy}">`);
   await writeFile(path, html);
