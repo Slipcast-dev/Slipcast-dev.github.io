@@ -34,6 +34,11 @@
     .intro { width: 100%; text-align: center; margin: 0 auto 58px; }
     h1 { margin: 0; color: var(--green); font-size: clamp(25px, 3.8vw, 36px); line-height: 1.4; font-weight: 700; }
     .intro p { max-width: 650px; margin: 18px auto 0; color: var(--muted); font-size: 13px; line-height: 1.9; }
+    .project-search { width: min(640px, 100%); margin: 28px auto 0; display: flex; align-items: center; gap: 12px; padding: 0 16px; border: 1px solid #00ff6650; border-radius: 5px; background: #00ff6608; text-align: left; transition: border-color .2s, box-shadow .2s; }
+    .project-search:focus-within { border-color: var(--green); box-shadow: 0 0 18px #00ff6618; }
+    .search-prompt { flex: none; color: var(--green); font-size: 16px; }
+    .project-search input { width: 100%; min-width: 0; min-height: 48px; padding: 12px 0; border: 0; outline: none; background: transparent; color: #d8ffe6; caret-color: var(--green); font: inherit; font-size: 16px; line-height: 1.5; }
+    .project-search input::placeholder { color: #88a693; opacity: 1; }
     .project-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 24px; }
     /* Наклонная грань и градиент повторяют геометрию референса без наклона текста. */
     .project-card { position: relative; isolation: isolate; min-height: 120px; padding: 18px 40px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; transition: filter .22s ease; }
@@ -85,6 +90,10 @@
   <main>
     <header class="intro">
       <h1 data-i18n="developmentLog">Журнал разработок</h1>
+      <div class="project-search" role="search" aria-label="Поиск проектов" data-i18n-label="searchProjects">
+        <span class="search-prompt" aria-hidden="true">&gt;_</span>
+        <input id="project-search" type="search" name="q" placeholder="Найти проект…" data-i18n-placeholder="searchProjectsPlaceholder" aria-label="Поиск по названию, описанию или версии" data-i18n-label="searchProjectsLabel" aria-controls="project-list" autocomplete="off" spellcheck="false">
+      </div>
     </header>
     <p id="load-status" class="load-status" role="status" data-i18n="loadingProjects">Загрузка публичных проектов…</p>
     <ol id="project-list" class="project-list" aria-label="Публичные проекты Slipcast-dev" data-i18n-label="projectList" aria-busy="true"></ol>
@@ -98,6 +107,8 @@
     const i18n = window.siteI18n;
     const list = document.querySelector('#project-list');
     const status = document.querySelector('#load-status');
+    const search = document.querySelector('#project-search');
+    let currentSnapshot = null;
     let loading = false;
     let lastAttempt = 0;
 
@@ -113,7 +124,16 @@
 
     function renderProjects(snapshot) {
       if (!snapshot || !Array.isArray(snapshot.repositories)) throw new Error('Invalid public project snapshot');
-      const cards = snapshot.repositories.filter(validProject).map(repo => {
+      currentSnapshot = snapshot;
+      // Все слова запроса должны встретиться в данных карточки; ввод не превращается в HTML или регулярное выражение.
+      const normalize = value => value.normalize('NFKC').toLowerCase();
+      const terms = normalize(search.value || '').trim().split(/\s+/).filter(Boolean);
+      const projects = snapshot.repositories.filter(validProject);
+      const matches = projects.filter(repo => {
+        const text = normalize([repo.name, repo.description, repo.version].filter(value => typeof value === 'string').join(' '));
+        return terms.every(term => text.includes(term));
+      });
+      const cards = matches.map(repo => {
         const item = document.createElement('li');
         const card = document.createElement('a');
         card.className = 'project-card';
@@ -132,7 +152,7 @@
         return item;
       });
       list.replaceChildren(...cards);
-      i18n.message(status, cards.length ? null : 'emptyProjects');
+      i18n.message(status, cards.length ? null : projects.length ? 'noMatchingProjects' : 'emptyProjects');
       list.setAttribute('aria-busy', 'false');
     }
 
@@ -152,6 +172,13 @@
         loading = false;
       }
     }
+    search.addEventListener('input', () => renderProjects(currentSnapshot));
+    search.addEventListener('keydown', event => {
+      if (event.key === 'Escape') {
+        search.value = '';
+        renderProjects(currentSnapshot);
+      }
+    });
     renderProjects(window.publicProjectsSnapshot);
     setInterval(refreshProjects, 60 * 1000);
     document.addEventListener('visibilitychange', () => { if (!document.hidden) refreshProjects(); });

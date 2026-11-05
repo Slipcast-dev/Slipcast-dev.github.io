@@ -4,6 +4,8 @@
   const strings = {
     ru: {
       developmentLog: 'Журнал разработок',
+      searchProjects: 'Поиск проектов', searchProjectsPlaceholder: 'Найти проект…',
+      searchProjectsLabel: 'Поиск по названию, описанию или версии', noMatchingProjects: 'Проекты не найдены. Попробуйте другой запрос.',
       developerTitle: 'Разработчик — Slipcast-Dev', developerMetaDescription: 'Страница разработчика Slipcast-Dev.',
       bioIntro: 'Я разработчик на стыке кода, искусственного интеллекта и автоматизации. Создаю приложения и цифровые инструменты, в которых ИИ становится частью рабочего процесса: помогает анализировать данные, принимать решения и выполнять задачи.',
       bioAgents: 'Проектирую ИИ-агентов, подключаю их к API и сервисам, выстраиваю совместную работу нескольких агентов — от поиска информации до выполнения последовательных действий. Уделяю внимание точности, управляемости и понятным границам их самостоятельности.',
@@ -30,6 +32,8 @@
     },
     en: {
       developmentLog: 'Development Log',
+      searchProjects: 'Project search', searchProjectsPlaceholder: 'Find a project…',
+      searchProjectsLabel: 'Search by name, description or version', noMatchingProjects: 'No matching projects. Try another search.',
       developerTitle: 'Developer — Slipcast-Dev', developerMetaDescription: 'About the developer behind Slipcast-Dev.',
       bioIntro: 'I am a developer working at the intersection of code, artificial intelligence and automation. I build applications and digital tools that make AI part of the workflow: helping analyze data, make decisions and carry out tasks.',
       bioAgents: 'I design AI agents, connect them to APIs and services, and orchestrate collaboration between multiple agents — from finding information to carrying out sequences of actions. I focus on accuracy, control and clear boundaries for their autonomy.',
@@ -75,6 +79,7 @@
     document.documentElement.lang = language;
     document.querySelectorAll('[data-i18n]').forEach(node => { node.textContent = t(node.dataset.i18n); });
     document.querySelectorAll('[data-i18n-label]').forEach(node => { node.setAttribute('aria-label', t(node.dataset.i18nLabel)); });
+    document.querySelectorAll('[data-i18n-placeholder]').forEach(node => { node.setAttribute('placeholder', t(node.dataset.i18nPlaceholder)); });
     document.querySelectorAll('[data-i18n-content]').forEach(node => { node.content = t(node.dataset.i18nContent); });
     const page = document.body.dataset.page;
     document.title = t(page === 'developer' ? 'developerTitle' : page === 'websites' ? 'websitesTitle' : page === 'projects' ? 'projectsTitle' : 'homeTitle');

@@ -151,3 +151,38 @@ test('Русская ссылка имеет собственные canonical и
   const page = setup('index.html', { protocol: 'https:', languages: ['ru'] });
   assert.ok(page.document.querySelector('a[href]').attrs.href.includes('lang=ru'));
 });
+
+
+test('Поиск фильтрует карточки без учёта регистра, поддерживает несколько слов и сохраняется при обновлении', () => {
+  const page = setup('projects.html');
+  const input = page.document.querySelector('#project-search');
+  const list = page.document.querySelector('#project-list');
+  page.context.searchSnapshot = { repositories: [
+    { id: 301, name: 'Grizzly', description: 'Редактор Markdown', version: 'v1.4.2', private: false, owner: { login: 'Slipcast-dev' } },
+    { id: 302, name: 'Koto', description: 'Переводчик текста', version: 'v2.0', private: false, owner: { login: 'Slipcast-dev' } }
+  ] };
+  vm.runInContext('renderProjects(searchSnapshot)', page.context);
+  const search = value => { input.value = value; input.listeners.input.forEach(listener => listener()); };
+  search('  GRIZZLY   редактор  ');
+  assert.equal(list.children.length, 1);
+  assert.equal(list.children[0].children[0].children[1].textContent, 'Grizzly');
+  search('V2.0');
+  assert.equal(list.children[0].children[0].children[1].textContent, 'Koto');
+  search('<script>');
+  assert.equal(list.children.length, 0);
+  assert.equal(page.document.querySelector('#load-status').textContent, 'Проекты не найдены. Попробуйте другой запрос.');
+  page.click('en');
+  assert.equal(input.attrs.placeholder, 'Find a project…');
+  assert.equal(input.attrs['aria-label'], 'Search by name, description or version');
+  assert.equal(page.document.querySelector('#load-status').textContent, 'No matching projects. Try another search.');
+  search('KOTO');
+  vm.runInContext('renderProjects(searchSnapshot)', page.context);
+  assert.equal(input.value, 'KOTO');
+  assert.equal(list.children.length, 1);
+  input.listeners.keydown.forEach(listener => listener({ key: 'Escape' }));
+  assert.equal(input.value, '');
+  assert.equal(list.children.length, 2);
+  search('   ');
+  assert.equal(list.children.length, 2);
+  assert.equal(page.document.querySelector('#load-status').textContent, '');
+});
