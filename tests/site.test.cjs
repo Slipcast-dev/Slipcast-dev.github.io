@@ -197,3 +197,37 @@ test('Поиск фильтрует карточки без учёта реги�
   assert.equal(list.children.length, 2);
   assert.equal(page.document.querySelector('#load-status').textContent, '');
 });
+
+
+test('Общий поиск сопоставляет кириллицу и латиницу для текущих и новых карточек', () => {
+  const page = setup('projects.html');
+  const input = page.document.querySelector('#project-search');
+  const list = page.document.querySelector('#project-list');
+  const projects = [
+    ['Grizzly', 'Markdown editor', 'v1.1'],
+    ['translator-Koto', 'Переводчик текста', 'v2'],
+    ['DragonMacros', 'Keyboard automation', 'v3'],
+    ['codex-user-skills', 'Agent skills', 'v4'],
+    ['Rdragon-K530RGB-Keyboard-Port', 'Hardware control', 'v5'],
+    ['НовыйПроект', 'Будущее приложение', 'v6']
+  ].map(([name, description, version], index) => ({ id: index + 400, name, description, version, private: false, owner: { login: 'Slipcast-dev' } }));
+  page.context.futureSnapshot = { repositories: projects };
+  vm.runInContext('renderProjects(futureSnapshot)', page.context);
+  const run = query => { input.value = query; input.listeners.input.forEach(listener => listener()); return list.children.map(item => item.children[0].children[1].textContent); };
+  for (const [query, expected] of [
+    ['гризли', 'Grizzly'], ['ГРИЗЗЛИ', 'Grizzly'], ['кото', 'translator-Koto'],
+    ['драгон макрос', 'DragonMacros'], ['кодекс', 'codex-user-skills'],
+    ['рдрагон', 'Rdragon-K530RGB-Keyboard-Port'], ['noviiproekt', 'НовыйПроект'],
+    ['perevodchik', 'translator-Koto'], ['гризли markdown', 'Grizzly']
+  ]) assert.deepEqual(run(query), [expected], query);
+  assert.deepEqual(run('v1.11'), []);
+  assert.deepEqual(run('ьъ'), []);
+  assert.deepEqual(run('несуществующее название'), []);
+  assert.deepEqual(run('гризли hardware'), []);
+  assert.equal(run('').length, projects.length);
+  page.click('en');
+  assert.deepEqual(run('КоТо'), ['translator-Koto']);
+  page.context.futureSnapshot.repositories.push({ id: 999, name: 'FutureApp', description: 'New application', private: false, owner: { login: 'Slipcast-dev' } });
+  vm.runInContext('renderProjects(futureSnapshot)', page.context);
+  assert.deepEqual(run('футуреапп'), ['FutureApp']);
+});

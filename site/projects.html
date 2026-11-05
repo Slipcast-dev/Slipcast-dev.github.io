@@ -122,19 +122,33 @@
         && !topics.some(topic => typeof topic === 'string' && ['website', 'web-site', 'landing-page', 'github-pages'].includes(topic.toLowerCase()));
     }
 
+    // Общий ключ поиска: транслитерация и распространённые варианты латинских букв.
+    // Схлопываем только буквы: версии и другие числа должны сохранять все цифры.
+    function searchKey(value) {
+      const letters = {
+        а: 'a', б: 'b', в: 'v', г: 'g', д: 'd', е: 'e', ё: 'e', ж: 'zh',
+        з: 'z', и: 'i', й: 'i', к: 'k', л: 'l', м: 'm', н: 'n', о: 'o',
+        п: 'p', р: 'r', с: 's', т: 't', у: 'u', ф: 'f', х: 'kh', ц: 'ts',
+        ч: 'ch', ш: 'sh', щ: 'shch', ъ: '', ы: 'i', ь: '', э: 'e', ю: 'yu', я: 'ya'
+      };
+      return value.replace(/[а-яё]/g, letter => letters[letter])
+        .replace(/ph/g, 'f').replace(/ck/g, 'k').replace(/c(?=[eiy])/g, 's')
+        .replace(/c(?!h)|q/g, 'k').replace(/x/g, 'ks').replace(/w/g, 'v')
+        .replace(/y/g, 'i').replace(/([a-z])\1+/g, '$1');
+    }
+
     function renderProjects(snapshot) {
       if (!snapshot || !Array.isArray(snapshot.repositories)) throw new Error('Invalid public project snapshot');
       currentSnapshot = snapshot;
       // Все слова запроса должны встретиться в данных карточки; ввод не превращается в HTML или регулярное выражение.
       const normalize = value => value.normalize('NFKC').toLowerCase();
-      const terms = normalize(search.value || '').trim().split(/\s+/).filter(Boolean);
+      const terms = normalize(search.value || '').trim().split(/\s+/).filter(Boolean)
+        .map(term => ({ original: term, key: searchKey(term) }));
       const projects = snapshot.repositories.filter(validProject);
-      // Русские варианты имени дополняют индекс, не изменяя название карточки и точность поиска остальных проектов.
-      const aliases = { grizzly: ['гризли', 'гриззли'] };
       const matches = projects.filter(repo => {
-        const names = Object.hasOwn(aliases, normalize(repo.name)) ? aliases[normalize(repo.name)] : [];
-        const text = normalize([repo.name, repo.description, repo.version, ...names].filter(value => typeof value === 'string').join(' '));
-        return terms.every(term => text.includes(term));
+        const text = normalize([repo.name, repo.description, repo.version].filter(value => typeof value === 'string').join(' '));
+        const key = searchKey(text);
+        return terms.every(term => text.includes(term.original) || (term.key.length > 0 && key.includes(term.key)));
       });
       const cards = matches.map(repo => {
         const item = document.createElement('li');
