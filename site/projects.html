@@ -129,8 +129,11 @@
       const normalize = value => value.normalize('NFKC').toLowerCase();
       const terms = normalize(search.value || '').trim().split(/\s+/).filter(Boolean);
       const projects = snapshot.repositories.filter(validProject);
+      // Русские варианты имени дополняют индекс, не изменяя название карточки и точность поиска остальных проектов.
+      const aliases = { grizzly: ['гризли', 'гриззли'] };
       const matches = projects.filter(repo => {
-        const text = normalize([repo.name, repo.description, repo.version].filter(value => typeof value === 'string').join(' '));
+        const names = Object.hasOwn(aliases, normalize(repo.name)) ? aliases[normalize(repo.name)] : [];
+        const text = normalize([repo.name, repo.description, repo.version, ...names].filter(value => typeof value === 'string').join(' '));
         return terms.every(term => text.includes(term));
       });
       const cards = matches.map(repo => {

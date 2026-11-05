@@ -166,6 +166,17 @@ test('Поиск фильтрует карточки без учёта реги�
   search('  GRIZZLY   редактор  ');
   assert.equal(list.children.length, 1);
   assert.equal(list.children[0].children[0].children[1].textContent, 'Grizzly');
+  for (const query of ['гризли', 'ГРИЗЗЛИ', 'гриз', 'гризли markdown']) {
+    search(query);
+    assert.equal(list.children.length, 1, query);
+    assert.equal(list.children[0].children[0].children[1].textContent, 'Grizzly', query);
+  }
+  search('гризли переводчик');
+  assert.equal(list.children.length, 0);
+  page.click('en');
+  search('гризли');
+  assert.equal(list.children[0].children[0].children[1].textContent, 'Grizzly');
+  page.click('ru');
   search('V2.0');
   assert.equal(list.children[0].children[0].children[1].textContent, 'Koto');
   search('<script>');
