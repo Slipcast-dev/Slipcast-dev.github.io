@@ -256,3 +256,22 @@ test('GitHub обновляет название, описание, релиз �
   assert.equal(page.document.querySelector('#project-list').children[0].children[0].children[0].textContent, 'v99');
   assert.ok(page.session.get('projects-live-snapshot').includes('renamed-app'));
 });
+
+test('Повторное открытие обновляет карточки после двух минут, не дожидаясь фонового цикла', async () => {
+  const repo = { id: 901, name: 'NewProject', private: false, owner: { login: 'Slipcast-dev' } };
+  const respond = async url => ({
+    ok: true,
+    json: async () => url === 'projects.json' ? { fetchedAt: '2020-01-01', repositories: [] }
+      : url.includes('/users/') ? [repo] : []
+  });
+
+  const recent = setup('projects.html', { protocol: 'https:', respond,
+    sessionEntries: [['projects-live-attempt', String(Date.now() - 30_000)]] });
+  const reopened = setup('projects.html', { protocol: 'https:', respond,
+    sessionEntries: [['projects-live-attempt', String(Date.now() - 3 * 60_000)]] });
+  await flush();
+
+  assert.deepEqual(recent.calls.map(call => call.url), ['projects.json']);
+  const cards = reopened.document.querySelector('#project-list').children;
+  assert.deepEqual(cards.map(item => item.children[0].children[1].textContent), ['NewProject']);
+});

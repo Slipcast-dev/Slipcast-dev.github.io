@@ -9,13 +9,13 @@ class E{
  setAttribute(k,v){this.attrs[k]=v}getAttribute(k){return this.attrs[k]??null}addEventListener(e,f){(this.listeners[e]??=[]).push(f)}
  append(...c){this.children.push(...c)}replaceChildren(...c){this.children=c}showModal(){this.open=true}close(){this.open=false}
  querySelector(){return this.frame} getBoundingClientRect(){return {left:0,right:10,top:0,bottom:10}}}
-function setup(page,{languages=['ru-RU'],saved=null,query='',blocked=false,seen=false,protocol='file:',respond=null}={}){
+function setup(page,{languages=['ru-RU'],saved=null,query='',blocked=false,seen=false,protocol='file:',respond=null,sessionEntries=[]}={}){
  const html=fs.readFileSync(root+page,'utf8');const nodes=[];
  for(const m of html.matchAll(/<([a-z][\w-]*)\b([^>]*?)>/g)){
  const attrs={};for(const a of m[2].matchAll(/([\w-]+)="([^"]*)"/g))attrs[a[1]]=a[2];nodes.push(new E(m[1],attrs))}
  for(let i=0;i<nodes.length;i++)if((nodes[i].attrs.class||'').includes('website-preview')){nodes[i].clientWidth=400;nodes[i].frame=nodes.slice(i+1).find(n=>n.tag==='iframe')}
  function matches(n,s){if(s[0]==='#')return n.attrs.id===s.slice(1);if(s[0]==='.')return(n.attrs.class||'').split(' ').includes(s.slice(1));const m=s.match(/^(\w+)?\[([\w-]+)(?:="([^"]*)")?\]$/);if(m){const key=m[2].startsWith('data-')?m[2].slice(5).replace(/-([a-z])/g,(_,c)=>c.toUpperCase()):null;const value=key?n.dataset[key]:n.attrs[m[2]];return(!m[1]||n.tag===m[1])&&value!==undefined&&(m[3]===undefined||value===m[3]);}return n.tag===s}
- const events={},timers=new Map();let serial=0;const local=new Map(saved?[['slipcast-language',saved]]:[]),session=new Map(seen?[['slipcast-navigation-seen','1']]:[]);
+ const events={},timers=new Map();let serial=0;const local=new Map(saved?[['slipcast-language',saved]]:[]),session=new Map([...(seen?[['slipcast-navigation-seen','1']]:[]),...sessionEntries]);
  const store=map=>({getItem(k){if(blocked)throw Error('blocked');return map.get(k)},setItem(k,v){if(blocked)throw Error('blocked');map.set(k,v)}});
  const document={hidden:false,documentElement:nodes.find(n=>n.tag==='html'),body:nodes.find(n=>n.tag==='body'),
  querySelector:s=>nodes.find(n=>matches(n,s)),querySelectorAll:s=>nodes.filter(n=>matches(n,s)),createElement:tag=>{const n=new E(tag);nodes.push(n);return n},
