@@ -96,6 +96,10 @@ test('Ошибка сети не удаляет карточки; резервн
 test('Сборка включает локальные ресурсы, страницы и точные хеши CSP', () => {
   const pages = fs.readdirSync(dist).filter(file => file.endsWith('.html'));
   assert.equal(pages.length, 8);
+  for (const name of ['i18n.js', 'projects-api.js']) {
+    const version = createHash('sha256').update(fs.readFileSync(path.join(dist, name))).digest('hex').slice(0, 12);
+    assert.ok(fs.readFileSync(path.join(dist, 'projects.html'), 'utf8').includes(`src="${name}?v=${version}"`));
+  }
   for (const name of pages) {
     const html = fs.readFileSync(path.join(dist, name), 'utf8');
     for (const match of html.matchAll(/(?:src|href)="([^"]+)"/g)) {

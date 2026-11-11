@@ -28,6 +28,11 @@ for (const entry of await readdir(destination, { withFileTypes: true })) {
   if (!entry.isFile() || !entry.name.endsWith('.html')) continue;
   const path = `${destination}/${entry.name}`;
   let html = await readFile(path, 'utf8');
+  // Изменённый общий JS получает новый адрес, чтобы старый кеш не ломал новые страницы.
+  for (const name of ['i18n.js', 'projects-api.js']) {
+    const version = createHash('sha256').update(await readFile(destination + name)).digest('hex').slice(0, 12);
+    html = html.replaceAll(`src="${name}"`, `src="${name}?v=${version}"`);
+  }
   // Разрешены только локальные JS-файлы и точные хеши встроенных сценариев этой сборки.
   const hashes = [...html.matchAll(/<script\b[^>]*>([\s\S]*?)<\/script>/g)]
     .filter(match => match[1].trim())
