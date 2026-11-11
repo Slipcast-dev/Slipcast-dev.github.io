@@ -326,6 +326,9 @@ test('Новый раздел доступен из меню; фильтры и 
   const navigation = home.document.querySelector('[data-i18n="skillsAgents"]');
   assert.equal(navigation.textContent, 'Скиллы и агенты');
   assert.equal(navigation.attrs.href, 'skills-agents.html?lang=ru');
+  const menu = home.nodes.filter(node => (node.attrs.class || '').split(' ').includes('nav-button'));
+  assert.deepEqual(menu.map(node => node.dataset.i18n), ['skillsAgents', 'projects', 'developer', 'websites']);
+  assert.ok(menu[2].attrs.class.includes('nav-secondary'));
   home.click('en');
   assert.equal(navigation.textContent, 'Skills & Agents');
   assert.equal(navigation.attrs.href, 'skills-agents.html?lang=en');
@@ -335,6 +338,11 @@ test('Новый раздел доступен из меню; фильтры и 
   assert.equal(page.document.title, 'Скиллы и агенты — Slipcast-Dev');
   assert.ok(page.nodes.some(node => node.tag === 'a' && node.attrs.href === 'https://github.com/Slipcast-dev/codex-skills'));
   assert.ok(page.nodes.some(node => node.tag === 'a' && node.attrs.href === 'https://github.com/Slipcast-dev/claude-skills'));
+  const installationLinks = page.document.querySelectorAll('[data-i18n="skillInstallation"]');
+  assert.deepEqual(installationLinks.map(node => node.attrs.href), [
+    'https://github.com/Slipcast-dev/codex-skills/releases/latest',
+    'https://github.com/Slipcast-dev/claude-skills/releases/latest'
+  ]);
   const cards = page.document.querySelectorAll('[data-collection]');
   assert.equal(cards.length, 2);
   const choose = name => page.document.querySelector('[data-filter="' + name + '"]').listeners.click[0]();
