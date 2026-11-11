@@ -11,7 +11,7 @@ test('Синхронизация фильтрует приватные, чужи
     return { ok: true, status: 200, json: async () => url.includes('/users/') ? [
       makeRepo(1, 'app'), makeRepo(2, 'test-website'), makeRepo(3, 'hidden', { private: true }),
       makeRepo(4, 'other', { owner: { login: 'other' } }), makeRepo(5, 'no-release'), makeRepo(6, 'SLIPCAST-DEV')
-    ] : url.includes('/app/') ? [
+    ] : url.includes('/repositories/1/releases?') ? [
       { draft: false, tag_name: 'v1', published_at: '2026-01-01' },
       { draft: false, tag_name: 'v2-alpha', prerelease: true, published_at: '2026-02-01' },
       { draft: true, tag_name: 'v3', published_at: '2026-03-01' }
@@ -36,4 +36,28 @@ test('Обход репозиториев учитывает пагинацию 
 test('Ошибка API прекращает синхронизацию, а не публикует частичный список', async () => {
   const { collectProjects } = await import('../scripts/sync-projects.mjs');
   await assert.rejects(collectProjects({ token: '', fetchImpl: async () => ({ ok: false, status: 403 }) }), /HTTP 403/);
+});
+
+test('Переименование MindNotes не прерывает получение релизов по постоянному ID', async () => {
+  const { collectProjects } = await import('../scripts/sync-projects.mjs');
+  let renamed = false;
+  const fetchImpl = async url => {
+    if (url.includes('/users/')) {
+      return { ok: true, json: async () => [makeRepo(1449438166,
+        renamed ? 'MindNotes-Apple-Silicon' : 'Minerva-Noema-Apple-Silicon',
+        { description: renamed ? 'MindNotes knowledge base' : 'Minerva Noema' })] };
+    }
+    // После переименования старый адрес релизов возвращает 301.
+    if (!url.includes('/repositories/1449438166/releases?')) return { ok: false, status: 301 };
+    return { ok: true, json: async () => [{
+      draft: false, tag_name: renamed ? 'v1.2.0' : 'v1.0.0', published_at: '2026-11-11'
+    }] };
+  };
+  const before = await collectProjects({ token: '', fetchImpl });
+  renamed = true;
+  const after = await collectProjects({ token: '', fetchImpl });
+  assert.equal(before.repositories[0].version, 'v1.0.0');
+  assert.equal(after.repositories[0].name, 'MindNotes-Apple-Silicon');
+  assert.equal(after.repositories[0].description, 'MindNotes knowledge base');
+  assert.equal(after.repositories[0].version, 'v1.2.0');
 });

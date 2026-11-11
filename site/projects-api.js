@@ -59,7 +59,8 @@
         let latest = null;
         let releasesComplete = false;
         for (let page = 1; page <= 20; page++) {
-          const releases = await github(`/repos/${OWNER}/${encodeURIComponent(repo.name)}/releases?per_page=100&page=${page}`);
+          // ID сохраняется при переименовании: устаревшее имя из списка не вызывает 301 и срыв синхронизации.
+          const releases = await github(`/repositories/${repo.id}/releases?per_page=100&page=${page}`);
           for (const release of releases) {
             if (release.draft !== false || typeof release.tag_name !== 'string' || !release.tag_name.trim()
               || !Number.isFinite(Date.parse(release.published_at))) continue;
