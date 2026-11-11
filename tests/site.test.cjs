@@ -325,13 +325,13 @@ test('Новый раздел доступен из меню; фильтры и 
   const home = setup('index.html', { languages: ['ru'], seen: true });
   const navigation = home.document.querySelector('[data-i18n="skillsAgents"]');
   assert.equal(navigation.textContent, 'Скиллы и агенты');
-  assert.equal(navigation.attrs.href, 'skills-agents.html?lang=ru');
+  assert.equal(navigation.attrs.href, 'skills-agents.html?v=2&lang=ru');
   const menu = home.nodes.filter(node => (node.attrs.class || '').split(' ').includes('nav-button'));
   assert.deepEqual(menu.map(node => node.dataset.i18n), ['skillsAgents', 'projects', 'developer', 'websites']);
   assert.ok(menu[2].attrs.class.includes('nav-secondary'));
   home.click('en');
   assert.equal(navigation.textContent, 'Skills & Agents');
-  assert.equal(navigation.attrs.href, 'skills-agents.html?lang=en');
+  assert.equal(navigation.attrs.href, 'skills-agents.html?v=2&lang=en');
 
   const page = setup('skills-agents.html', { languages: ['ru'] });
   assert.equal(page.document.querySelector('h1').textContent, 'Скиллы и агенты');
