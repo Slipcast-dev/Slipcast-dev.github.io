@@ -10,7 +10,9 @@ test('Синхронизация фильтрует приватные, чужи
     assert.equal(options.headers.Authorization, 'Bearer test-token');
     return { ok: true, status: 200, json: async () => url.includes('/users/') ? [
       makeRepo(1, 'app'), makeRepo(2, 'test-website'), makeRepo(3, 'hidden', { private: true }),
-      makeRepo(4, 'other', { owner: { login: 'other' } }), makeRepo(5, 'no-release'), makeRepo(6, 'SLIPCAST-DEV')
+      makeRepo(4, 'other', { owner: { login: 'other' } }), makeRepo(5, 'no-release'), makeRepo(6, 'SLIPCAST-DEV'),
+      makeRepo(1444783625, 'renamed-codex-collection'), makeRepo(1446028185, 'claude-skills'),
+      makeRepo(10, 'codex-user-skills')
     ] : url.includes('/repositories/1/releases?') ? [
       { draft: false, tag_name: 'v1', published_at: '2026-01-01' },
       { draft: false, tag_name: 'v2-alpha', prerelease: true, published_at: '2026-02-01' },

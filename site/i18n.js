@@ -3,6 +3,17 @@
   'use strict';
   const strings = {
     ru: {
+      skillsAgents: 'Скиллы и агенты',
+      skillsAgentsTitle: 'Скиллы и агенты — Slipcast-Dev',
+      skillsAgentsDescription: 'Коллекции скиллов для Codex и Claude Code: каталоги, репозитории и инструкции установки.',
+      skillsIntro: 'Коллекции навыков для разработки, анализа, работы с документами и автоматизации.',
+      skillCollections: 'Коллекции скиллов и агентов',
+      filterCollections: 'Фильтр коллекций', allCollections: 'Все', skillsFilter: 'Скиллы', agentsFilter: 'Агенты',
+      noAgents: 'Коллекции агентов пока не опубликованы.',
+      codexSkillsDescription: 'Пользовательские навыки для Codex, распределённые по темам: разработка, ИИ, документы, бизнес и личные задачи.',
+      claudeSkillsDescription: 'Коллекция Agent Skills для Claude Code: тематические категории, каталог и сценарий установки.',
+      skillCatalog: 'Каталог', skillInstallation: 'Установка',
+
       developmentLog: 'Журнал разработок',
       searchProjects: 'Поиск проектов', searchProjectsPlaceholder: 'Найти проект…',
       searchProjectsLabel: 'Поиск по названию, описанию или версии', noMatchingProjects: 'Проекты не найдены. Попробуйте другой запрос.',
@@ -19,7 +30,7 @@
       homeTitle: 'Личный терминал — Slipcast-Dev', projectsTitle: 'Проекты — Slipcast-Dev',
       homeDescription: 'Программное обеспечение, ИИ Агенты, Скилы',
       projectsDescription: 'Публичные проекты Slipcast-dev: версии, названия и описания из GitHub.',
-      heading: 'Личный сайт — разработчик, проекты и веб-сайты', developer: 'Разработчик', projects: 'Проекты', websites: 'Вэб-сайты',
+      heading: 'Личный сайт — разработчик, проекты, скиллы, агенты и веб-сайты', developer: 'Разработчик', projects: 'Проекты', websites: 'Вэб-сайты',
       access: 'Вход разрешен.', welcome: 'Добро пожаловать в репозиторий Slipcast-Dev',
       terminalSummary: 'Вход разрешен. Добро пожаловать в репозиторий Slipcast-Dev. Декоративная анимация команд macOS, Linux и GitHub CLI.',
       sections: 'Разделы сайта', navigation: 'Навигация сайта', back: '← Назад в терминал', terminal: '← Терминал',
@@ -32,6 +43,17 @@
       timeout: 'GitHub не ответил вовремя. Обновление повторится автоматически.', offline: 'Не удалось связаться с GitHub. Проверьте интернет. Обновление повторится автоматически.'
     },
     en: {
+      skillsAgents: 'Skills & Agents',
+      skillsAgentsTitle: 'Skills & Agents — Slipcast-Dev',
+      skillsAgentsDescription: 'Skill collections for Codex and Claude Code: catalogs, repositories and installation guides.',
+      skillsIntro: 'Skill collections for development, analysis, documents and automation.',
+      skillCollections: 'Skill and agent collections',
+      filterCollections: 'Filter collections', allCollections: 'All', skillsFilter: 'Skills', agentsFilter: 'Agents',
+      noAgents: 'No agent collections have been published yet.',
+      codexSkillsDescription: 'User skills for Codex, organized by topic: development, AI, documents, business and everyday tasks.',
+      claudeSkillsDescription: 'An Agent Skills collection for Claude Code, with topic categories, a catalog and an installation script.',
+      skillCatalog: 'Catalog', skillInstallation: 'Installation',
+
       developmentLog: 'Development Log',
       searchProjects: 'Project search', searchProjectsPlaceholder: 'Find a project…',
       searchProjectsLabel: 'Search by name, description or version', noMatchingProjects: 'No matching projects. Try another search.',
@@ -48,7 +70,7 @@
       homeTitle: 'Personal Terminal — Slipcast-Dev', projectsTitle: 'Projects — Slipcast-Dev',
       homeDescription: 'Software, AI Agents, Skills',
       projectsDescription: 'Public Slipcast-dev projects: releases, names and descriptions from GitHub.',
-      heading: 'Personal website — developer, projects and websites', developer: 'Developer', projects: 'Projects', websites: 'Websites',
+      heading: 'Personal website — developer, projects, skills, agents and websites', developer: 'Developer', projects: 'Projects', websites: 'Websites',
       access: 'Access granted.', welcome: 'Welcome to the Slipcast-Dev repository.',
       terminalSummary: 'Access granted. Welcome to the Slipcast-Dev repository. Decorative macOS, Linux and GitHub CLI command animation.',
       sections: 'Website sections', navigation: 'Website navigation', back: '← Back to terminal', terminal: '← Terminal',
@@ -84,8 +106,8 @@
     document.querySelectorAll('[data-i18n-placeholder]').forEach(node => { node.setAttribute('placeholder', t(node.dataset.i18nPlaceholder)); });
     document.querySelectorAll('[data-i18n-content]').forEach(node => { node.content = t(node.dataset.i18nContent); });
     const page = document.body.dataset.page;
-    document.title = t(page === 'developer' ? 'developerTitle' : page === 'websites' ? 'websitesTitle' : page === 'projects' ? 'projectsTitle' : 'homeTitle');
-    document.querySelector('meta[name="description"]').content = t(page === 'developer' ? 'developerMetaDescription' : page === 'websites' ? 'websitesMetaDescription' : page === 'projects' ? 'projectsDescription' : 'homeDescription');
+    document.title = t(page === 'skills-agents' ? 'skillsAgentsTitle' : page === 'developer' ? 'developerTitle' : page === 'websites' ? 'websitesTitle' : page === 'projects' ? 'projectsTitle' : 'homeTitle');
+    document.querySelector('meta[name="description"]').content = t(page === 'skills-agents' ? 'skillsAgentsDescription' : page === 'developer' ? 'developerMetaDescription' : page === 'websites' ? 'websitesMetaDescription' : page === 'projects' ? 'projectsDescription' : 'homeDescription');
     document.querySelectorAll('[data-language]').forEach(button => {
       const active = button.dataset.language === language;
       button.setAttribute('aria-pressed', String(active));
@@ -93,7 +115,7 @@
     // Параметр сохраняет язык между локальными файлами даже при изоляции хранилищ браузером.
     document.querySelectorAll('a[href]').forEach(link => {
       const href = link.getAttribute('href');
-      if (!/^(index|index-ru|index-en|projects|websites|developer)\.html(?:[?#]|$)/.test(href)) return;
+      if (!/^(index|index-ru|index-en|projects|websites|developer|skills-agents)\.html(?:[?#]|$)/.test(href)) return;
       const url = new URL(href, location.href);
       if (location.protocol !== 'file:' && /\/index(?:-ru|-en)?\.html$/.test(url.pathname)) {
         url.pathname = url.pathname.replace(/index(?:-ru|-en)?\.html$/, language === 'en' ? 'index-en.html' : 'index-ru.html');

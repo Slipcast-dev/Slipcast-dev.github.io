@@ -119,11 +119,9 @@
     function validProject(repo) {
       if (!repo || repo.private !== false || repo.owner?.login?.toLowerCase() !== 'slipcast-dev'
           || !Number.isInteger(repo.id) || typeof repo.name !== 'string' || !repo.name.length) return false;
-      const topics = Array.isArray(repo.topics) ? repo.topics : [];
       return repo.name.toLowerCase() !== 'slipcast-dev'
-        && !/(^|[-_.])(website|web-site|site|landing|landing-page)([-_.]|$)/i.test(repo.name)
-        && !repo.name.toLowerCase().endsWith('.github.io')
-        && !topics.some(topic => typeof topic === 'string' && ['website', 'web-site', 'landing-page', 'github-pages'].includes(topic.toLowerCase()));
+        && !globalThis.publicProjectsApi.isWebsite(repo)
+        && !globalThis.publicProjectsApi.isSkillCollection(repo);
     }
 
     // Общий ключ поиска: транслитерация и распространённые варианты латинских букв.

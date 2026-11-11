@@ -55,10 +55,11 @@
     .typed-content { grid-area: 1 / 1; }
     .cursor { display: inline-block; width: .57em; height: 1.1em; margin-left: .12em; background: var(--green); vertical-align: -.14em; animation: blink 1s steps(1) infinite; box-shadow: 0 0 12px #00ff6620; }
     @keyframes blink { 50% { opacity: 0; } }
-    .navigation { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; width: min(570px, 100%); margin: 44px auto 0; transition: opacity .65s ease, transform .65s ease; }
+    .navigation { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; width: min(606px, 100%); margin: 44px auto 0; transition: opacity .65s ease, transform .65s ease; }
+    .nav-skills { grid-column: 2; grid-row: 2; }
     .navigation-ready .navigation { transition: none; }
     .navigation.pending { opacity: 0; transform: translateY(12px); visibility: hidden; }
-    .nav-button { color: var(--green); border: 1px solid var(--green); border-radius: 5px; background: #00190733; cursor: pointer; min-height: 44px; padding: 11px 16px; font-size: 16px; transition: background .18s, box-shadow .18s; }
+    .nav-button { color: var(--green); border: 1px solid var(--green); border-radius: 5px; background: #00190733; cursor: pointer; height: 44px; min-height: 44px; width: 100%; padding: 10px; white-space: nowrap; font-size: 16px; transition: background .18s, box-shadow .18s; }
     a.nav-button { display: flex; align-items: center; justify-content: center; text-decoration: none; }
     .nav-button:hover { background: #00ff6614; box-shadow: 0 0 20px #00ff661b, inset 0 0 16px #00ff6609; }
     :focus-visible { outline: 2px solid #b5ffcf; outline-offset: 6px; }
@@ -66,6 +67,7 @@
     @media (max-width: 600px) {
       .screen { padding: 88px 20px 40px; }
       .navigation { grid-template-columns: 1fr; gap: 12px; width: min(240px, 100%); margin-top: 32px; }
+      .nav-skills { grid-column: 1; grid-row: auto; }
       .nav-button { font-size: 15px; padding: 11px 14px; }
     }
     /* Учитываем системную настройку: убираем печать, мигание и переходы. */
@@ -81,7 +83,7 @@
   </div>
   <main class="screen">
     <div class="terminal">
-      <h1 class="sr-only" data-i18n="heading">Личный сайт — разработчик, проекты и веб-сайты</h1>
+      <h1 class="sr-only" data-i18n="heading">Личный сайт — разработчик, проекты, скиллы, агенты и веб-сайты</h1>
       <!-- Посимвольная анимация скрыта от скринридера, чтобы не зачитывать каждую букву. -->
       <div class="terminal-output" aria-hidden="true">
         <p class="prompt"><span>&gt;</span><span class="typed-line" id="typed-line" data-reserve="Вход разрешен."><span class="typed-content"><span id="terminal-text">Вход разрешен.</span><span class="cursor"></span></span></span></p>
@@ -90,6 +92,7 @@
       <nav class="navigation" aria-label="Разделы сайта" data-i18n-label="sections">
         <a class="nav-button" href="developer.html" data-i18n="developer">Разработчик</a>
         <a class="nav-button" href="projects.html" data-i18n="projects">Проекты</a>
+        <a class="nav-button nav-skills" href="skills-agents.html" data-i18n="skillsAgents">Скиллы и агенты</a>
         <a class="nav-button" href="websites.html" data-i18n="websites">Вэб-сайты</a>
       </nav>
       <noscript><p>Для анимации включите JavaScript. / Enable JavaScript for the animation.</p></noscript>

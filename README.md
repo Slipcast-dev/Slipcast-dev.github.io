@@ -10,8 +10,9 @@ Personal website with a terminal interface, black background and green accents. 
 
 - `index.html` — первое приветствие, затем второе, появление навигации и цикл команд macOS, Linux, Git и GitHub CLI. Команды только отображаются. При возврате в той же вкладке вступление пропускается.
 - `developer.html` — аватар, биография и кнопка открытия чата Telegram `@slipcast666` в установленном приложении.
+- `skills-agents.html` — «Скиллы и агенты» / Skills & Agents: коллекции `codex-skills` и `claude-skills`, фильтры, ссылки на каталоги и установку. Кнопка расположена под «Проекты» на главной странице.
 - `projects.html` — «Журнал разработок» / Development Log: публичные репозитории, названия, описания и последние опубликованные версии, включая prerelease.
-- `websites.html` — две фиксированные карточки: [Grizzly](https://slipcast-dev.github.io/grizzly-website/) и [Koto](https://slipcast-dev.github.io/koto-website/), с изолированными живыми превью.
+- `websites.html` — фиксированные карточки: [Grizzly](https://slipcast-dev.github.io/grizzly-website/), [Koto](https://slipcast-dev.github.io/koto-website/) и [VibeWave](https://slipcast-dev.github.io/vibewave-website/), с изолированными живыми превью.
 
 Язык выбирается по предпочтениям браузера. RU / EN в правом верхнем углу сохраняет ручной выбор. Названия, описания и версии GitHub показываются в оригинале репозитория. `prefers-reduced-motion` отключает печать и мигание.
 
@@ -48,7 +49,7 @@ node scripts/serve.mjs dist  # предпросмотр собранного с�
 
 Репозиторий профиля `Slipcast-dev` исключён из карточек проектов при синхронизации и отображении.
 
-Сайты исключаются по отдельным словам `website`, `web-site`, `site`, `landing`, `landing-page` в имени, суффиксу `.github.io` или topics `website`, `web-site`, `landing-page`, `github-pages`. Для сайта с произвольным названием задайте topic `website`. Поле `homepage` не исключает приложение из списка. Если релизов нет, показывается «Без релиза» / No release.
+Сайты исключаются по отдельным словам `website`, `web-site`, `site`, `landing`, `landing-page` в имени, суффиксу `.github.io` или topics `website`, `web-site`, `landing-page`, `github-pages`. Для сайта с произвольным названием задайте topic `website`. Поле `homepage` не исключает приложение из списка. Коллекции `codex-skills` и `claude-skills` перенесены в отдельный раздел и исключаются из проектов по ID и известным именам, в том числе при чтении старого кеша. Если релизов нет, показывается «Без релиза» / No release.
 
 Для ручного обновления снимка в исходниках:
 
@@ -65,7 +66,7 @@ npm run validate
 
 ```text
 site/
-  index.html, developer.html, projects.html, websites.html
+  index.html, developer.html, projects.html, websites.html, skills-agents.html
   # index-en.html создаётся в dist/ при сборке, не редактируется отдельно
   i18n.js                  # RU/EN, биография, подписи, переключение языка
   projects-data.js          # начальный публичный снимок для локального просмотра

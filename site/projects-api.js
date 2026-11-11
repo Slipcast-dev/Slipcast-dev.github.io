@@ -2,6 +2,12 @@
 (() => {
   const OWNER = 'Slipcast-dev';
 
+  /** Перенесённые коллекции исключаем из проектов и после переименования. */
+  function isSkillCollection(repo) {
+    return [1444783625, 1446028185].includes(repo.id)
+      || ['codex-skills', 'codex-user-skills', 'claude-skills'].includes(repo.name.toLowerCase());
+  }
+
   /** Определяем сайты по явным метаданным, не исключая приложения с собственным homepage. */
   function isWebsite(repo) {
     return /(^|[-_.])(website|web-site|site|landing|landing-page)([-_.]|$)/i.test(repo.name)
@@ -54,7 +60,7 @@
       for (const repo of batch) {
         if (!repo || repo.private !== false || repo.owner?.login?.toLowerCase() !== OWNER.toLowerCase()
           || !Number.isInteger(repo.id) || typeof repo.name !== 'string' || !repo.name
-          || repo.name.toLowerCase() === OWNER.toLowerCase() || isWebsite(repo)) continue;
+          || repo.name.toLowerCase() === OWNER.toLowerCase() || isWebsite(repo) || isSkillCollection(repo)) continue;
         unique.set(repo.id, repo);
       }
       if (batch.length < 100) { complete = true; break; }
@@ -131,5 +137,5 @@
   }
 
   // Один сборщик для публикации и браузера сохраняет одинаковую фильтрацию и выбор релизов.
-  globalThis.publicProjectsApi = Object.freeze({ OWNER, isWebsite, collectProjects });
+  globalThis.publicProjectsApi = Object.freeze({ OWNER, isWebsite, isSkillCollection, collectProjects });
 })();

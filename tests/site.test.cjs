@@ -66,7 +66,10 @@ test('Проекты выводятся сразу без GitHub API, прива
     { id: 1, name: '<script>', private: false, owner: { login: 'Slipcast-dev' }, description: '<img onerror=alert(1)>', version: 'v1' },
     { id: 2, name: 'secret', private: true, owner: { login: 'Slipcast-dev' } },
     { id: 3, name: 'test-website', private: false, owner: { login: 'Slipcast-dev' } },
-    { id: 4, name: 'SLIPCAST-DEV', private: false, owner: { login: 'Slipcast-dev' } }
+    { id: 4, name: 'SLIPCAST-DEV', private: false, owner: { login: 'Slipcast-dev' } },
+    { id: 1444783625, name: 'renamed-codex-collection', private: false, owner: { login: 'Slipcast-dev' } },
+    { id: 1446028185, name: 'claude-skills', private: false, owner: { login: 'Slipcast-dev' } },
+    { id: 10, name: 'codex-user-skills', private: false, owner: { login: 'Slipcast-dev' } }
   ] };
   page.context.testSnapshot = data;
   vm.runInContext('renderProjects(testSnapshot)', page.context);
@@ -92,7 +95,7 @@ test('Ошибка сети не удаляет карточки; резервн
 
 test('Сборка включает локальные ресурсы, страницы и точные хеши CSP', () => {
   const pages = fs.readdirSync(dist).filter(file => file.endsWith('.html'));
-  assert.equal(pages.length, 7);
+  assert.equal(pages.length, 8);
   for (const name of pages) {
     const html = fs.readFileSync(path.join(dist, name), 'utf8');
     for (const match of html.matchAll(/(?:src|href)="([^"]+)"/g)) {
@@ -213,7 +216,7 @@ test('Общий поиск сопоставляет кириллицу и ла�
     ['Grizzly', 'Markdown editor', 'v1.1'],
     ['translator-Koto', 'Переводчик текста', 'v2'],
     ['DragonMacros', 'Keyboard automation', 'v3'],
-    ['codex-user-skills', 'Agent skills', 'v4'],
+    ['codex-toolkit', 'Development tools', 'v4'],
     ['Rdragon-K530RGB-Keyboard-Port', 'Hardware control', 'v5'],
     ['НовыйПроект', 'Будущее приложение', 'v6']
   ].map(([name, description, version], index) => ({ id: index + 400, name, description, version, private: false, owner: { login: 'Slipcast-dev' } }));
@@ -222,7 +225,7 @@ test('Общий поиск сопоставляет кириллицу и ла�
   const run = query => { input.value = query; input.listeners.input.forEach(listener => listener()); return list.children.map(item => item.children[0].children[1].textContent); };
   for (const [query, expected] of [
     ['гризли', 'Grizzly'], ['ГРИЗЗЛИ', 'Grizzly'], ['кото', 'translator-Koto'],
-    ['драгон макрос', 'DragonMacros'], ['кодекс', 'codex-user-skills'],
+    ['драгон макрос', 'DragonMacros'], ['кодекс', 'codex-toolkit'],
     ['рдрагон', 'Rdragon-K530RGB-Keyboard-Port'], ['noviiproekt', 'НовыйПроект'],
     ['perevodchik', 'translator-Koto'], ['гризли markdown', 'Grizzly']
   ]) assert.deepEqual(run(query), [expected], query);
@@ -312,4 +315,36 @@ test('Медленный локальный JSON не задерживает о�
   await flush();
   assert.equal(list.children.length, 1);
   assert.equal(list.children[0].children[0].children[0].textContent, 'v10');
+});
+
+test('Новый раздел доступен из меню; фильтры и перевод работают, репозитории связаны с GitHub', () => {
+  const home = setup('index.html', { languages: ['ru'], seen: true });
+  const navigation = home.document.querySelector('[data-i18n="skillsAgents"]');
+  assert.equal(navigation.textContent, 'Скиллы и агенты');
+  assert.equal(navigation.attrs.href, 'skills-agents.html?lang=ru');
+  home.click('en');
+  assert.equal(navigation.textContent, 'Skills & Agents');
+  assert.equal(navigation.attrs.href, 'skills-agents.html?lang=en');
+
+  const page = setup('skills-agents.html', { languages: ['ru'] });
+  assert.equal(page.document.querySelector('h1').textContent, 'Скиллы и агенты');
+  assert.equal(page.document.title, 'Скиллы и агенты — Slipcast-Dev');
+  assert.ok(page.nodes.some(node => node.tag === 'a' && node.attrs.href === 'https://github.com/Slipcast-dev/codex-skills'));
+  assert.ok(page.nodes.some(node => node.tag === 'a' && node.attrs.href === 'https://github.com/Slipcast-dev/claude-skills'));
+  const cards = page.document.querySelectorAll('[data-collection]');
+  assert.equal(cards.length, 2);
+  const choose = name => page.document.querySelector('[data-filter="' + name + '"]').listeners.click[0]();
+  choose('agents');
+  assert.ok(cards.every(card => card.hidden));
+  assert.equal(page.document.querySelector('#empty-collections').hidden, false);
+  page.click('en');
+  assert.equal(page.document.querySelector('h1').textContent, 'Skills & Agents');
+  assert.equal(page.document.title, 'Skills & Agents — Slipcast-Dev');
+  assert.equal(page.document.querySelector('#empty-collections').textContent, 'No agent collections have been published yet.');
+  assert.ok(cards.every(card => card.hidden));
+  choose('skills');
+  assert.ok(cards.every(card => !card.hidden));
+  assert.equal(page.document.querySelector('#empty-collections').hidden, true);
+  choose('all');
+  assert.ok(cards.every(card => !card.hidden));
 });

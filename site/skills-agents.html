@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="canonical" href="https://slipcast-dev.github.io/skills-agents.html">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://slipcast-dev.github.io/skills-agents.html">
+  <meta property="og:site_name" content="Slipcast-Dev">
+  <meta property="og:image" content="https://slipcast-dev.github.io/assets/avatar.jpg">
+  <meta name="twitter:card" content="summary">
+  <meta name="theme-color" content="#000000">
+  <meta name="description" content="Коллекции скиллов для Codex и Claude Code: каталоги, репозитории и инструкции установки.">
+  <title>Скиллы и агенты — Slipcast-Dev</title>
+  <script src="i18n.js"></script>
+  <style>
+    .language-switch { position: absolute; z-index: 2; top: 18px; right: 22px; display: flex; gap: 4px; padding: 3px; border: 1px solid #00ff6640; border-radius: 5px; background: #000; }
+    .language-switch button { min-height: 38px; min-width: 42px; padding: 6px 10px; border: 1px solid transparent; border-radius: 3px; background: transparent; color: #77a98a; font: inherit; font-size: 12px; cursor: pointer; }
+    .language-switch button[aria-pressed="true"] { color: #00ff66; background: #00ff6612; border-color: #00ff6660; }
+    .language-switch button:hover { color: #00ff66; background: #00ff661a; }
+    :root { color-scheme: dark; --green: #00ff66; --text: #d2ebdc; --muted: #88a693; }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: #000; color: var(--text); font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace; }
+    a { color: inherit; text-decoration: none; -webkit-tap-highlight-color: transparent; }
+    :focus-visible { outline: 2px solid var(--green); outline-offset: 6px; }
+    .topbar { border-bottom: 1px solid #00ff6614; }
+    .topbar-inner { max-width: 1120px; min-height: 64px; margin: auto; padding: 0 150px 0 28px; display: flex; align-items: center; justify-content: space-between; gap: 24px; }
+    .home-link { display: inline-flex; align-items: center; min-height: 44px; font-size: 13px; color: #9fbeaa; transition: color .2s; }
+    .home-link:hover { color: var(--green); }
+    .path { font-size: 12px; color: var(--green); letter-spacing: .04em; }
+    main { width: min(1000px, calc(100% - 64px)); margin: 0 auto; padding: 116px 0 64px; }
+    .intro { width: 100%; text-align: center; margin: 0 auto 58px; }
+    h1 { margin: 0; color: var(--green); font-size: clamp(25px, 3.8vw, 36px); line-height: 1.4; font-weight: 700; }
+    .intro p { max-width: 650px; margin: 18px auto 0; color: var(--muted); font-size: 13px; line-height: 1.9; }
+    .project-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 40px; }
+    /* Наклонная грань и градиент повторяют геометрию референса без наклона текста. */
+    .project-card { position: relative; isolation: isolate; min-height: 152px; padding: 28px 46px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; transition: filter .22s ease; }
+    .project-card::before { content: ""; position: absolute; z-index: -1; inset: 0; background: linear-gradient(105deg, #00ff660d, #00ff6605 60%, #0000); clip-path: polygon(28px 0, 100% 0, calc(100% - 28px) 100%, 0 100%); background-color: transparent; transition: background-color .22s ease; }
+    .project-card::after { content: ""; position: absolute; inset: 0 auto 0 0; width: 32px; background: var(--green); opacity: .72; clip-path: polygon(28px 0, 32px 0, 4px 100%, 0 100%); transition: opacity .2s; }
+    /* Подсветка ограничена наведённой карточкой и использует только зелёную палитру. */
+    .project-card:is(:hover, :focus-visible, :focus-within) { filter: drop-shadow(0 0 18px #00ff6626); }
+    .project-card:is(:hover, :focus-visible, :focus-within)::before { background-color: #00ff6624; }
+    .project-card:is(:hover, :focus-visible, :focus-within)::after { opacity: 1; }
+    .project-card:is(:hover, :focus-visible, :focus-within) h2 { color: var(--green); }
+    .project-card:is(:hover, :focus-visible, :focus-within) .status { color: #a0ffc4; }
+    .project-card:is(:hover, :focus-visible, :focus-within) p { color: #c2ebd2; }
+    .status { color: #92e6b3; text-transform: none; letter-spacing: .14em; font-size: 11px; line-height: 1.7; }
+    h2 { margin: 9px 0 10px; color: #d8ffe6; font-size: clamp(18px, 2.5vw, 22px); line-height: 1.4; font-weight: 600; }
+    .project-card p { max-width: 760px; margin: 0; color: #9ab8a5; font-size: 14px; line-height: 1.85; }
+    .project-card h2, .project-card .status, .project-card p { transition: color .22s ease; }
+    .load-status { text-align: center; color: var(--muted); font-size: 13px; line-height: 1.8; margin: 0 0 32px; }
+    .load-status:empty { display: none; }
+    .project-card h2 { overflow-wrap: anywhere; max-width: 100%; }
+    .project-card { color: inherit; }
+    .end { display: flex; justify-content: center; margin-top: 54px; }
+    .back { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; border: 1px solid #00ff6670; border-radius: 5px; padding: 11px 20px; color: var(--green); font-size: 13px; transition: background .2s; }
+    .back:hover { background: #00ff6614; }
+    @media (max-width: 600px) {
+      .topbar-inner { padding: 0 136px 0 20px; min-height: 78px; gap: 12px; }
+      .path { display: none; }
+      main { width: calc(100% - 36px); padding-top: 72px; }
+      .intro { margin-bottom: 38px; }
+      .intro p { font-size: 12px; padding: 0 8px; }
+      .project-list { gap: 26px; }
+      .project-card { min-height: 170px; padding: 24px 30px; }
+      .project-card p { font-size: 12px; }
+      .status { font-size: 10px; }
+    }
+    .collection-filters { display: flex; justify-content: center; flex-wrap: wrap; gap: 10px; margin: -20px 0 36px; }
+    .collection-filters button { min-height: 42px; padding: 10px 18px; border: 1px solid #00ff6640; border-radius: 5px; background: #000; color: var(--muted); font: inherit; font-size: 13px; cursor: pointer; }
+    .collection-filters button[aria-pressed="true"] { border-color: var(--green); color: var(--green); background: #00ff6612; }
+    .collection-links { display: flex; justify-content: center; flex-wrap: wrap; gap: 8px 24px; margin-top: 22px; color: var(--green); font-size: 13px; }
+    .collection-links a { display: inline-flex; align-items: center; min-height: 44px; text-decoration: underline; text-underline-offset: 4px; }
+    [hidden] { display: none !important; }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition: none !important; } }
+  </style>
+</head>
+<body data-page="skills-agents">
+  <div class="language-switch" role="group" aria-label="Language / Язык">
+    <button type="button" data-language="ru" lang="ru" aria-label="Русский" aria-pressed="false">RU</button>
+    <button type="button" data-language="en" lang="en" aria-label="English" aria-pressed="false">EN</button>
+  </div>
+  <header class="topbar">
+    <nav class="topbar-inner" aria-label="Навигация сайта" data-i18n-label="navigation">
+      <a class="home-link" href="index.html" data-i18n="terminal">← Терминал</a>
+      <a class="path" href="skills-agents.html" aria-current="page">~/skills-agents</a>
+    </nav>
+  </header>
+  <main>
+    <header class="intro">
+      <h1 data-i18n="skillsAgents">Скиллы и агенты</h1>
+      <p data-i18n="skillsIntro">Коллекции навыков для разработки, анализа, работы с документами и автоматизации.</p>
+    </header>
+    <div class="collection-filters" role="group" aria-label="Фильтр коллекций" data-i18n-label="filterCollections">
+      <button type="button" data-filter="all" aria-pressed="true" data-i18n="allCollections">Все</button>
+      <button type="button" data-filter="skills" aria-pressed="false" data-i18n="skillsFilter">Скиллы</button>
+      <button type="button" data-filter="agents" aria-pressed="false" data-i18n="agentsFilter">Агенты</button>
+    </div>
+    <p id="empty-collections" class="load-status" role="status" data-i18n="noAgents" hidden>Коллекции агентов пока не опубликованы.</p>
+    <ol class="project-list" aria-label="Коллекции скиллов и агентов" data-i18n-label="skillCollections">
+      <li data-collection="skills">
+        <article class="project-card" aria-labelledby="codex-skills-title">
+          <span class="status">Codex · SKILL.md</span>
+          <h2 id="codex-skills-title">codex-skills</h2>
+          <p data-i18n="codexSkillsDescription">Пользовательские навыки для Codex, распределённые по темам: разработка, ИИ, документы, бизнес и личные задачи.</p>
+          <div class="collection-links">
+            <a href="https://github.com/Slipcast-dev/codex-skills">GitHub ↗</a>
+            <a href="https://github.com/Slipcast-dev/codex-skills/blob/main/CATALOG.md" data-i18n="skillCatalog">Каталог</a>
+            <a href="https://github.com/Slipcast-dev/codex-skills#установка-одного-навыка" data-i18n="skillInstallation">Установка</a>
+          </div>
+        </article>
+      </li>
+      <li data-collection="skills">
+        <article class="project-card" aria-labelledby="claude-skills-title">
+          <span class="status">Claude Code · SKILL.md</span>
+          <h2 id="claude-skills-title">claude-skills</h2>
+          <p data-i18n="claudeSkillsDescription">Коллекция Agent Skills для Claude Code: тематические категории, каталог и сценарий установки.</p>
+          <div class="collection-links">
+            <a href="https://github.com/Slipcast-dev/claude-skills">GitHub ↗</a>
+            <a href="https://github.com/Slipcast-dev/claude-skills#catalog" data-i18n="skillCatalog">Каталог</a>
+            <a href="https://github.com/Slipcast-dev/claude-skills#installation" data-i18n="skillInstallation">Установка</a>
+          </div>
+        </article>
+      </li>
+    </ol>
+    <footer class="end"><a class="back" href="index.html" data-i18n="back">← Назад в терминал</a></footer>
+  </main>
+
+  <script>
+    // Фильтруем локальные карточки. Выбор сохраняется при смене языка.
+    const filterButtons = document.querySelectorAll('[data-filter]');
+    const collections = document.querySelectorAll('[data-collection]');
+    const emptyCollections = document.querySelector('#empty-collections');
+    filterButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        const selected = button.dataset.filter;
+        filterButtons.forEach(control => control.setAttribute('aria-pressed', String(control === button)));
+        collections.forEach(collection => {
+          collection.hidden = selected !== 'all' && collection.dataset.collection !== selected;
+        });
+        emptyCollections.hidden = Array.from(collections).some(collection => !collection.hidden);
+      });
+    });
+  </script>
+</body>
+</html>
