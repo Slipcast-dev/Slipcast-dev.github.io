@@ -110,11 +110,11 @@
     const status = document.querySelector('#load-status');
     const search = document.querySelector('#project-search');
     const snapshotRefreshInterval = 2 * 60 * 1000;
-    const liveRefreshInterval = 15 * 60 * 1000;
     let currentSnapshot = null;
     let loading = false;
     let lastAttempt = 0;
     let lastLiveAttempt = 0;
+    let retryLiveAt = 0;
 
     function validProject(repo) {
       if (!repo || repo.private !== false || repo.owner?.login?.toLowerCase() !== 'slipcast-dev'
@@ -162,7 +162,8 @@
         const version = document.createElement('span');
         version.className = 'status';
         if (typeof repo.version === 'string' && repo.version.trim()) version.textContent = repo.version;
-        else i18n.message(version, 'noRelease');
+        else i18n.message(version, repo.releaseState === 'loading' ? 'loadingVersion'
+          : repo.releaseState === 'unavailable' ? 'versionUnavailable' : 'noRelease');
         const title = document.createElement('h2');
         title.textContent = repo.name;
         const description = document.createElement('p');
@@ -177,36 +178,50 @@
       list.setAttribute('aria-busy', 'false');
     }
 
-    async function refreshProjects(minLiveInterval = liveRefreshInterval) {
+    async function refreshProjects() {
       // Снимок публикации служит резервом. Свежие данные читаем независимо от расписания Actions.
       if (loading || document.hidden || location.protocol === 'file:') return;
       if (Date.now() - lastAttempt < snapshotRefreshInterval) return;
       loading = true;
       lastAttempt = Date.now();
-      try {
-        const response = await fetch('projects.json', { cache: 'no-cache', credentials: 'omit', signal: AbortSignal.timeout(12000) });
-        if (!response.ok) throw new Error(`Snapshot HTTP ${response.status}`);
-        const snapshot = await response.json();
-        // Старая публикация не должна затирать уже полученные свежие данные GitHub.
-        if (!currentSnapshot?.fetchedAt || Date.parse(snapshot.fetchedAt) > Date.parse(currentSnapshot.fetchedAt)) {
-          renderProjects(snapshot);
+      // Локальный снимок не задерживает прямой запрос к GitHub при медленном соединении.
+      const snapshotRequest = (async () => {
+        try {
+          const response = await fetch('projects.json', { cache: 'no-cache', credentials: 'omit', signal: AbortSignal.timeout(12000) });
+          if (!response.ok) throw new Error(`Snapshot HTTP ${response.status}`);
+          const snapshot = await response.json();
+          // Старая публикация не должна затирать уже полученные свежие данные GitHub.
+          if (!currentSnapshot?.fetchedAt || Date.parse(snapshot.fetchedAt) > Date.parse(currentSnapshot.fetchedAt)) {
+            renderProjects(snapshot);
+          }
+        } catch {
+          // Ошибка сети не убирает карточки: начальный снимок уже загружен локальным JS.
         }
-      } catch {
-        // Ошибка сети не убирает карточки: начальный снимок уже загружен локальным JS.
-      }
+      })();
       try {
-        // Ограничиваем обращения без токена: для шести проектов это около 28 запросов в час.
-        // При ошибке не применяем частичный результат и сохраняем карточки.
-        if (Date.now() - lastLiveAttempt >= minLiveInterval) {
+        // Список проверяется раз в две минуты. Сборщик использует кеш релизов
+        // и сообщает готовые карточки, пока остальные запросы ещё выполняются.
+        if (Date.now() >= retryLiveAt && Date.now() - lastLiveAttempt >= snapshotRefreshInterval) {
           lastLiveAttempt = Date.now();
           try { sessionStorage.setItem('projects-live-attempt', String(lastLiveAttempt)); } catch {}
-          const snapshot = await globalThis.publicProjectsApi.collectProjects();
-          renderProjects(snapshot);
-          try { sessionStorage.setItem('projects-live-snapshot', JSON.stringify(snapshot)); } catch {}
+          const applySnapshot = snapshot => {
+            renderProjects(snapshot);
+            try { sessionStorage.setItem('projects-live-snapshot', JSON.stringify(snapshot)); } catch {}
+          };
+          await globalThis.publicProjectsApi.collectProjects({
+            previousSnapshot: currentSnapshot,
+            tolerateReleaseErrors: true,
+            onProgress: applySnapshot
+          });
         }
-      } catch {
+      } catch (error) {
+        if ([403, 429].includes(error.status)) {
+          retryLiveAt = error.retryAt;
+          try { sessionStorage.setItem('projects-live-retry-at', String(retryLiveAt)); } catch {}
+        }
         // При сбое сохраняем последние данные до следующей попытки.
       } finally {
+        await snapshotRequest;
         loading = false;
       }
     }
@@ -223,15 +238,16 @@
       const cached = JSON.parse(sessionStorage.getItem('projects-live-snapshot') || 'null');
       if (cached && Date.parse(cached.fetchedAt) > Date.parse(currentSnapshot.fetchedAt)) renderProjects(cached);
       lastLiveAttempt = Number(sessionStorage.getItem('projects-live-attempt')) || 0;
+      retryLiveAt = Number(sessionStorage.getItem('projects-live-retry-at')) || 0;
     } catch {
       // Хранилище может быть запрещено настройками браузера.
     }
     setInterval(refreshProjects, 60 * 1000);
     // Возврат к странице проверяет GitHub раньше фонового цикла, если данные уже могли измениться.
     document.addEventListener('visibilitychange', () => {
-      if (!document.hidden) refreshProjects(snapshotRefreshInterval);
+      if (!document.hidden) refreshProjects();
     });
-    refreshProjects(snapshotRefreshInterval);
+    refreshProjects();
   </script>
 </body>
 </html>

@@ -61,3 +61,69 @@ test('Переименование MindNotes не прерывает получ�
   assert.equal(after.repositories[0].description, 'MindNotes knowledge base');
   assert.equal(after.repositories[0].version, 'v1.2.0');
 });
+
+test('Список и готовые версии доступны до завершения медленного запроса релиза', async () => {
+  const { collectProjects } = await import('../scripts/sync-projects.mjs');
+  const repos = [makeRepo(1, 'fast'), makeRepo(2, 'slow')];
+  const progress = [];
+  let finishSlow;
+  const slow = new Promise(resolve => { finishSlow = resolve; });
+  let fastReady;
+  const ready = new Promise(resolve => { fastReady = resolve; });
+  const pending = collectProjects({
+    token: '',
+    onProgress(snapshot) {
+      progress.push(JSON.parse(JSON.stringify(snapshot)));
+      if (snapshot.repositories[0]?.version === 'v2') fastReady();
+    },
+    fetchImpl: async url => {
+      if (url.includes('/users/')) return { ok: true, json: async () => repos };
+      if (url.includes('/repositories/2/')) await slow;
+      return { ok: true, json: async () => [{ draft: false, tag_name: 'v2', published_at: '2026-11-11' }] };
+    }
+  });
+  await ready;
+  assert.equal(progress[0].repositories.length, 2);
+  assert.equal(progress[0].repositories[1].releaseState, 'loading');
+  assert.equal(progress.at(-1).repositories[0].version, 'v2');
+  assert.equal(progress.at(-1).repositories[1].releaseState, 'loading');
+  finishSlow();
+  assert.equal((await pending).repositories[1].version, 'v2');
+});
+
+test('Неизменённые релизы кешируются, изменение репозитория и истечение срока вызывают проверку', async () => {
+  const { collectProjects } = await import('../scripts/sync-projects.mjs');
+  let repo = makeRepo(1, 'app', { updated_at: '2026-11-11T12:00:00Z', pushed_at: '2026-11-11T12:00:00Z' });
+  let releases = 0;
+  const fetchImpl = async url => ({
+    ok: true, json: async () => url.includes('/users/') ? [repo]
+      : (releases++, [{ draft: false, tag_name: 'v' + releases, published_at: '2026-11-11' }])
+  });
+  const first = await collectProjects({ token: '', fetchImpl });
+  const cached = await collectProjects({ token: '', fetchImpl, previousSnapshot: first });
+  assert.equal(releases, 1);
+  assert.equal(cached.repositories[0].version, 'v1');
+  repo = { ...repo, pushed_at: '2026-11-11T12:10:00Z' };
+  const changed = await collectProjects({ token: '', fetchImpl, previousSnapshot: cached });
+  assert.equal(changed.repositories[0].version, 'v2');
+  changed.repositories[0].releaseCheckedAt = new Date(Date.now() - 16 * 60_000).toISOString();
+  const expired = await collectProjects({ token: '', fetchImpl, previousSnapshot: changed });
+  assert.equal(expired.repositories[0].version, 'v3');
+});
+
+test('Сбой отдельного релиза сохраняет его версию и обновляет остальные данные в браузере', async () => {
+  const { collectProjects } = await import('../scripts/sync-projects.mjs');
+  const result = await collectProjects({
+    token: '', tolerateReleaseErrors: true,
+    previousSnapshot: { repositories: [{ ...makeRepo(1, 'old-name'), version: 'v1' }] },
+    fetchImpl: async url => url.includes('/users/')
+      ? { ok: true, json: async () => [makeRepo(1, 'new-name'), makeRepo(2, 'other')] }
+      : url.includes('/repositories/1/')
+        ? { ok: false, status: 404 }
+        : { ok: true, json: async () => [{ draft: false, tag_name: 'v3', published_at: '2026-11-11' }] }
+  });
+  assert.equal(result.repositories[0].name, 'new-name');
+  assert.equal(result.repositories[0].version, 'v1');
+  assert.equal(result.repositories[0].releaseState, 'stale');
+  assert.equal(result.repositories[1].version, 'v3');
+});

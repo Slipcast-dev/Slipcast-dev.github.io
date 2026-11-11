@@ -275,3 +275,35 @@ test('Повторное открытие обновляет карточки п
   const cards = reopened.document.querySelector('#project-list').children;
   assert.deepEqual(cards.map(item => item.children[0].children[1].textContent), ['NewProject']);
 });
+
+test('После исчерпания лимита браузер соблюдает срок ожидания GitHub', async () => {
+  const retryAt = Date.now() + 30 * 60_000;
+  const page = setup('projects.html', { protocol: 'https:', respond: async url => url === 'projects.json'
+    ? { ok: true, json: async () => ({ fetchedAt: '2020-01-01', repositories: [] }) }
+    : { ok: false, status: 403, headers: { get: name => name === 'x-ratelimit-reset' ? String(Math.ceil(retryAt / 1000)) : null } }
+  });
+  await flush();
+  const count = page.calls.filter(call => call.url.startsWith('https://api.github.com')).length;
+  assert.equal(count, 1);
+  await vm.runInContext('lastAttempt = 0; lastLiveAttempt = 0; refreshProjects()', page.context);
+  assert.equal(page.calls.filter(call => call.url.startsWith('https://api.github.com')).length, count);
+  assert.ok(Number(page.session.get('projects-live-retry-at')) >= retryAt);
+});
+
+test('Медленный локальный JSON не задерживает обновление из GitHub и не затирает его', async () => {
+  let finishSnapshot;
+  const pendingSnapshot = new Promise(resolve => { finishSnapshot = resolve; });
+  const repo = { id: 930, name: 'FreshProject', private: false, owner: { login: 'Slipcast-dev' } };
+  const page = setup('projects.html', { protocol: 'https:', respond: async url => url === 'projects.json'
+    ? pendingSnapshot
+    : { ok: true, json: async () => url.includes('/users/') ? [repo]
+      : [{ draft: false, tag_name: 'v10', published_at: '2026-11-11' }] }
+  });
+  await flush();
+  const list = page.document.querySelector('#project-list');
+  assert.equal(list.children[0].children[0].children[0].textContent, 'v10');
+  finishSnapshot({ ok: true, json: async () => ({ fetchedAt: '2020-01-01', repositories: [] }) });
+  await flush();
+  assert.equal(list.children.length, 1);
+  assert.equal(list.children[0].children[0].children[0].textContent, 'v10');
+});
