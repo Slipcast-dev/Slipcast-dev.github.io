@@ -48,8 +48,14 @@ test('Страницы разработчика и сайтов переведе
   assert.ok(fs.existsSync(path.join(root, 'assets/avatar.jpg')));
   const websites = setup('websites.html', { languages: ['en'] });
   assert.equal(websites.document.querySelector('h1').textContent, 'Websites');
-  assert.equal(websites.nodes.filter(node => node.tag === 'iframe').length, 2);
+  assert.equal(websites.nodes.filter(node => node.tag === 'iframe').length, 3);
   assert.ok(websites.nodes.filter(node => node.tag === 'iframe').every(node => node.attrs.sandbox === 'allow-scripts'));
+  assert.ok(websites.nodes.some(node => node.tag === 'iframe' && node.attrs.src === 'https://slipcast-dev.github.io/vibewave-website/'));
+  assert.ok(websites.nodes.some(node => node.tag === 'a' && node.attrs.href === 'https://slipcast-dev.github.io/vibewave-website/'));
+  const vibewaveDescription = websites.document.querySelector('[data-i18n="vibewaveWebsiteDescription"]');
+  assert.ok(vibewaveDescription.textContent.startsWith('The VibeWave website:'));
+  websites.click('ru');
+  assert.ok(vibewaveDescription.textContent.startsWith('Сайт VibeWave'));
 });
 
 test('Проекты выводятся сразу без GitHub API, приватные и сайты исключаются', () => {
