@@ -2,6 +2,11 @@
 (() => {
   const OWNER = 'Slipcast-dev';
 
+  /** Скрытый владельцем MindNotes исключается по постоянному ID, включая будущие переименования. */
+  function isHiddenProject(repo) {
+    return repo.id === 1449438166;
+  }
+
   /** Перенесённые коллекции исключаем из проектов и после переименования. */
   function isSkillCollection(repo) {
     return [1444783625, 1446028185].includes(repo.id)
@@ -60,7 +65,7 @@
       for (const repo of batch) {
         if (!repo || repo.private !== false || repo.owner?.login?.toLowerCase() !== OWNER.toLowerCase()
           || !Number.isInteger(repo.id) || typeof repo.name !== 'string' || !repo.name
-          || repo.name.toLowerCase() === OWNER.toLowerCase() || isWebsite(repo) || isSkillCollection(repo)) continue;
+          || repo.name.toLowerCase() === OWNER.toLowerCase() || isWebsite(repo) || isSkillCollection(repo) || isHiddenProject(repo)) continue;
         unique.set(repo.id, repo);
       }
       if (batch.length < 100) { complete = true; break; }
@@ -137,5 +142,5 @@
   }
 
   // Один сборщик для публикации и браузера сохраняет одинаковую фильтрацию и выбор релизов.
-  globalThis.publicProjectsApi = Object.freeze({ OWNER, isWebsite, isSkillCollection, collectProjects });
+  globalThis.publicProjectsApi = Object.freeze({ OWNER, isWebsite, isSkillCollection, isHiddenProject, collectProjects });
 })();

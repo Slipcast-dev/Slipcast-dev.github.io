@@ -121,7 +121,8 @@
           || !Number.isInteger(repo.id) || typeof repo.name !== 'string' || !repo.name.length) return false;
       return repo.name.toLowerCase() !== 'slipcast-dev'
         && !globalThis.publicProjectsApi.isWebsite(repo)
-        && !globalThis.publicProjectsApi.isSkillCollection(repo);
+        && !globalThis.publicProjectsApi.isSkillCollection(repo)
+        && !globalThis.publicProjectsApi.isHiddenProject(repo);
     }
 
     // Общий ключ поиска: транслитерация и распространённые варианты латинских букв.

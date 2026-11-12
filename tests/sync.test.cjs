@@ -40,17 +40,17 @@ test('Ошибка API прекращает синхронизацию, а не 
   await assert.rejects(collectProjects({ token: '', fetchImpl: async () => ({ ok: false, status: 403 }) }), /HTTP 403/);
 });
 
-test('Переименование MindNotes не прерывает получение релизов по постоянному ID', async () => {
+test('Переименование проекта не прерывает получение релизов по постоянному ID', async () => {
   const { collectProjects } = await import('../scripts/sync-projects.mjs');
   let renamed = false;
   const fetchImpl = async url => {
     if (url.includes('/users/')) {
-      return { ok: true, json: async () => [makeRepo(1449438166,
-        renamed ? 'MindNotes-Apple-Silicon' : 'Minerva-Noema-Apple-Silicon',
-        { description: renamed ? 'MindNotes knowledge base' : 'Minerva Noema' })] };
+      return { ok: true, json: async () => [makeRepo(901,
+        renamed ? 'RenamedApp' : 'OriginalApp',
+        { description: renamed ? 'New description' : 'Original description' })] };
     }
     // После переименования старый адрес релизов возвращает 301.
-    if (!url.includes('/repositories/1449438166/releases?')) return { ok: false, status: 301 };
+    if (!url.includes('/repositories/901/releases?')) return { ok: false, status: 301 };
     return { ok: true, json: async () => [{
       draft: false, tag_name: renamed ? 'v1.2.0' : 'v1.0.0', published_at: '2026-11-11'
     }] };
@@ -59,8 +59,8 @@ test('Переименование MindNotes не прерывает получ�
   renamed = true;
   const after = await collectProjects({ token: '', fetchImpl });
   assert.equal(before.repositories[0].version, 'v1.0.0');
-  assert.equal(after.repositories[0].name, 'MindNotes-Apple-Silicon');
-  assert.equal(after.repositories[0].description, 'MindNotes knowledge base');
+  assert.equal(after.repositories[0].name, 'RenamedApp');
+  assert.equal(after.repositories[0].description, 'New description');
   assert.equal(after.repositories[0].version, 'v1.2.0');
 });
 
@@ -128,4 +128,18 @@ test('Сбой отдельного релиза сохраняет его ве�
   assert.equal(result.repositories[0].version, 'v1');
   assert.equal(result.repositories[0].releaseState, 'stale');
   assert.equal(result.repositories[1].version, 'v3');
+});
+
+test('Скрытый MindNotes не возвращается из API или кеша после переименования', async () => {
+  const { collectProjects } = await import('../scripts/sync-projects.mjs');
+  const hidden = makeRepo(1449438166, 'renamed-hidden-project');
+  const result = await collectProjects({
+    token: '',
+    previousSnapshot: { repositories: [hidden] },
+    fetchImpl: async url => {
+      assert.ok(url.includes('/users/'), 'Релизы скрытого проекта не запрашиваются');
+      return { ok: true, json: async () => [hidden] };
+    }
+  });
+  assert.deepEqual(result.repositories, []);
 });
