@@ -132,13 +132,13 @@ test('Сбой отдельного релиза сохраняет его ве�
 
 test('Скрытый MindNotes не возвращается из API или кеша после переименования', async () => {
   const { collectProjects } = await import('../scripts/sync-projects.mjs');
-  const hidden = makeRepo(1449438166, 'renamed-hidden-project');
+  const hidden = [makeRepo(1449438166, 'renamed-hidden-project'), makeRepo(1456992734, 'renamed-webclipper')];
   const result = await collectProjects({
     token: '',
-    previousSnapshot: { repositories: [hidden] },
+    previousSnapshot: { repositories: hidden },
     fetchImpl: async url => {
       assert.ok(url.includes('/users/'), 'Релизы скрытого проекта не запрашиваются');
-      return { ok: true, json: async () => [hidden] };
+      return { ok: true, json: async () => hidden };
     }
   });
   assert.deepEqual(result.repositories, []);
