@@ -71,6 +71,7 @@ test('Проекты выводятся сразу без GitHub API, прива
     { id: 1446028185, name: 'claude-skills', private: false, owner: { login: 'Slipcast-dev' } },
     { id: 1449438166, name: 'renamed-mindnotes', private: false, owner: { login: 'Slipcast-dev' } },
     { id: 1456992734, name: 'renamed-webclipper', private: false, owner: { login: 'Slipcast-dev' } },
+    { id: 1457278588, name: 'renamed-github-plugin', private: false, owner: { login: 'Slipcast-dev' } },
     { id: 10, name: 'codex-user-skills', private: false, owner: { login: 'Slipcast-dev' } }
   ] };
   page.context.testSnapshot = data;
