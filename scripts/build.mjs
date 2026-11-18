@@ -5,7 +5,11 @@ const source = fileURLToPath(new URL('../site/', import.meta.url));
 const destination = fileURLToPath(new URL('../dist/', import.meta.url));
 await rm(destination, { recursive: true, force: true });
 await mkdir(destination, { recursive: true });
-await cp(source, destination, { recursive: true });
+// Раздел веб-сайтов остаётся в исходниках для локальной работы, но не попадает в GitHub Pages.
+await cp(source, destination, {
+  recursive: true,
+  filter: path => path !== source + 'websites.html'
+});
 // Роботы превью не выполняют JS и не различают язык по query-параметру на GitHub Pages.
 // Отдельный HTML даёт английское описание непосредственно в HTTP-ответе.
 const russianHome = await readFile(`${destination}/index.html`, 'utf8');

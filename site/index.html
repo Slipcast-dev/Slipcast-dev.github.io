@@ -56,7 +56,6 @@
     .cursor { display: inline-block; width: .57em; height: 1.1em; margin-left: .12em; background: var(--green); vertical-align: -.14em; animation: blink 1s steps(1) infinite; box-shadow: 0 0 12px #00ff6620; }
     @keyframes blink { 50% { opacity: 0; } }
     .navigation { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; width: min(606px, 100%); margin: 44px auto 0; transition: opacity .65s ease, transform .65s ease; }
-    .nav-secondary { grid-column: 2; grid-row: 2; }
     .navigation-ready .navigation { transition: none; }
     .navigation.pending { opacity: 0; transform: translateY(12px); visibility: hidden; }
     .nav-button { color: var(--green); border: 1px solid var(--green); border-radius: 5px; background: #00190733; cursor: pointer; height: 44px; min-height: 44px; width: 100%; padding: 10px; white-space: nowrap; font-size: 16px; transition: background .18s, box-shadow .18s; }
@@ -67,7 +66,6 @@
     @media (max-width: 600px) {
       .screen { padding: 88px 20px 40px; }
       .navigation { grid-template-columns: 1fr; gap: 12px; width: min(240px, 100%); margin-top: 32px; }
-      .nav-secondary { grid-column: 1; grid-row: auto; }
       .nav-button { font-size: 15px; padding: 11px 14px; }
     }
     /* Учитываем системную настройку: убираем печать, мигание и переходы. */
@@ -83,7 +81,7 @@
   </div>
   <main class="screen">
     <div class="terminal">
-      <h1 class="sr-only" data-i18n="heading">Личный сайт — разработчик, проекты, скиллы, агенты и веб-сайты</h1>
+      <h1 class="sr-only" data-i18n="heading">Личный сайт — разработчик, приложения, скиллы и агенты</h1>
       <!-- Посимвольная анимация скрыта от скринридера, чтобы не зачитывать каждую букву. -->
       <div class="terminal-output" aria-hidden="true">
         <p class="prompt"><span>&gt;</span><span class="typed-line" id="typed-line" data-reserve="Вход разрешен."><span class="typed-content"><span id="terminal-text">Вход разрешен.</span><span class="cursor"></span></span></span></p>
@@ -91,9 +89,8 @@
       <p class="sr-only" data-i18n="terminalSummary">Вход разрешен. Добро пожаловать в репозиторий Slipcast-Dev. Анимация строки терминала macOS.</p>
       <nav class="navigation" aria-label="Разделы сайта" data-i18n-label="sections">
         <a class="nav-button" href="skills-agents.html?v=2" data-i18n="skillsAgents">Скиллы и агенты</a>
-        <a class="nav-button" href="projects.html" data-i18n="projects">Проекты</a>
-        <a class="nav-button nav-secondary" href="developer.html" data-i18n="developer">Разработчик</a>
-        <a class="nav-button" href="websites.html" data-i18n="websites">Вэб-сайты</a>
+        <a class="nav-button" href="projects.html" data-i18n="projects">Приложения</a>
+        <a class="nav-button" href="developer.html" data-i18n="developer">Разработчик</a>
       </nav>
       <noscript><p>Для анимации включите JavaScript. / Enable JavaScript for the animation.</p></noscript>
     </div>

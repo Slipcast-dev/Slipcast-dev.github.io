@@ -13,7 +13,7 @@ test('Язык определяется автоматически, ручной
   assert.equal(page.document.documentElement.lang, 'ru');
   page.click('en');
   assert.equal(page.local.get('slipcast-language'), 'en');
-  assert.equal(page.document.querySelector('[data-i18n="projects"]').textContent, 'Projects');
+  assert.equal(page.document.querySelector('[data-i18n="projects"]').textContent, 'Applications');
   assert.ok(page.document.querySelector('a[href]').attrs.href.includes('lang=en'));
   assert.equal(setup('index.html', { languages: ['ru'], saved: 'en' }).document.documentElement.lang, 'en');
   assert.equal(setup('index.html', { languages: ['fr'], blocked: true }).document.documentElement.lang, 'en');
@@ -98,7 +98,10 @@ test('Ошибка сети не удаляет карточки; резервн
 
 test('Сборка включает локальные ресурсы, страницы и точные хеши CSP', () => {
   const pages = fs.readdirSync(dist).filter(file => file.endsWith('.html'));
-  assert.equal(pages.length, 8);
+  assert.equal(pages.length, 7);
+  assert.ok(fs.existsSync(path.join(root, 'websites.html')), 'Исходник раздела сохранён');
+  assert.ok(!fs.existsSync(path.join(dist, 'websites.html')), 'Раздел исключён из публикации');
+  assert.ok(!fs.readFileSync(path.join(dist, 'sitemap.xml'), 'utf8').includes('websites.html'));
   for (const name of ['i18n.js', 'projects-api.js']) {
     const version = createHash('sha256').update(fs.readFileSync(path.join(dist, name))).digest('hex').slice(0, 12);
     assert.ok(fs.readFileSync(path.join(dist, 'projects.html'), 'utf8').includes(`src="${name}?v=${version}"`));
@@ -330,8 +333,11 @@ test('Новый раздел доступен из меню; фильтры и 
   assert.equal(navigation.textContent, 'Скиллы и агенты');
   assert.equal(navigation.attrs.href, 'skills-agents.html?v=2&lang=ru');
   const menu = home.nodes.filter(node => (node.attrs.class || '').split(' ').includes('nav-button'));
-  assert.deepEqual(menu.map(node => node.dataset.i18n), ['skillsAgents', 'projects', 'developer', 'websites']);
-  assert.ok(menu[2].attrs.class.includes('nav-secondary'));
+  assert.deepEqual(menu.map(node => node.dataset.i18n), ['skillsAgents', 'projects', 'developer']);
+  assert.ok(!menu[2].attrs.class.includes('nav-secondary'));
+  assert.equal(menu[1].textContent, 'Приложения');
+  home.click('en');
+  assert.equal(menu[1].textContent, 'Applications');
   home.click('en');
   assert.equal(navigation.textContent, 'Skills & Agents');
   assert.equal(navigation.attrs.href, 'skills-agents.html?v=2&lang=en');
