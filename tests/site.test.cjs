@@ -333,7 +333,7 @@ test('Новый раздел доступен из меню; фильтры и 
   assert.equal(navigation.textContent, 'Скиллы и агенты');
   assert.equal(navigation.attrs.href, 'skills-agents.html?v=2&lang=ru');
   const menu = home.nodes.filter(node => (node.attrs.class || '').split(' ').includes('nav-button'));
-  assert.deepEqual(menu.map(node => node.dataset.i18n), ['skillsAgents', 'projects', 'developer']);
+  assert.deepEqual(menu.map(node => node.dataset.i18n), ['developer', 'projects', 'skillsAgents']);
   assert.ok(!menu[2].attrs.class.includes('nav-secondary'));
   assert.equal(menu[1].textContent, 'Приложения');
   home.click('en');
