@@ -59,6 +59,8 @@
     .load-status:empty { display: none; }
     .project-card h2 { overflow-wrap: anywhere; max-width: 100%; }
     .project-card { color: inherit; }
+    .download-options { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px 16px; }
+    .download-options a { color: var(--green); padding: 8px 4px; font-size: 12px; text-decoration: underline; }
     .end { display: flex; justify-content: center; margin-top: 54px; }
     .back { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; border: 1px solid #00ff6670; border-radius: 5px; padding: 11px 20px; color: var(--green); font-size: 13px; transition: background .2s; }
     .back:hover { background: #00ff6614; }
@@ -155,9 +157,18 @@
       });
       const cards = matches.map(repo => {
         const item = document.createElement('li');
-        const card = document.createElement('a');
+        const builds = globalThis.publicProjectsApi.projectDownloads(repo);
+        const device = navigator.userAgentData?.platform || navigator.platform || '';
+        const platform = /win/i.test(device) ? 'windows' : /mac/i.test(device) ? 'mac'
+          : /linux/i.test(device) ? 'linux' : null;
+        // macOS не всегда раскрывает архитектуру браузеру. Показываем обе сборки, если они есть.
+        const main = builds.find(build => build.platform === platform) || builds[0];
+        const card = document.createElement(main ? 'a' : 'div');
         card.className = 'project-card';
-        card.href = `https://github.com/Slipcast-dev/${encodeURIComponent(repo.name)}`;
+        if (main) {
+          card.href = main.url;
+          card.setAttribute('download', '');
+        }
         const version = document.createElement('span');
         version.className = 'status';
         if (typeof repo.version === 'string' && repo.version.trim()) version.textContent = repo.version;
@@ -170,6 +181,18 @@
         else i18n.message(description, 'noDescription');
         card.append(version, title, description);
         item.append(card);
+        if (builds.length) {
+          const options = document.createElement('div');
+          options.className = 'download-options';
+          for (const build of builds) {
+            const link = document.createElement('a');
+            link.href = build.url;
+            link.setAttribute('download', '');
+            i18n.message(link, 'download' + build.key);
+            options.append(link);
+          }
+          item.append(options);
+        }
         return item;
       });
       list.replaceChildren(...cards);
@@ -235,7 +258,7 @@
     // Переходы между страницами и перезагрузка вкладки не расходуют лимит повторно.
     try {
       const cached = JSON.parse(sessionStorage.getItem('projects-live-snapshot') || 'null');
-      if (cached && Date.parse(cached.fetchedAt) > Date.parse(currentSnapshot.fetchedAt)) renderProjects(cached);
+      if (cached?.repositories?.every(repo => Array.isArray(repo.downloads)) && Date.parse(cached.fetchedAt) > Date.parse(currentSnapshot.fetchedAt)) renderProjects(cached);
       lastLiveAttempt = Number(sessionStorage.getItem('projects-live-attempt')) || 0;
       retryLiveAt = Number(sessionStorage.getItem('projects-live-retry-at')) || 0;
     } catch {

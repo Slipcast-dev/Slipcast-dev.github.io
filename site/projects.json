@@ -1,7 +1,194 @@
 {
   "schemaVersion": 1,
-  "fetchedAt": "2026-11-03T12:38:35.832Z",
+  "fetchedAt": "2026-11-19T22:31:18.852Z",
   "repositories": [
+    {
+      "id": 1461694197,
+      "name": "MindNotes",
+      "description": "MindNotes — personal local knowledge base for Mac (app) + plugins: Web Clipper, GitHub sync. Downloads for Apple silicon, macOS 15+",
+      "private": false,
+      "owner": {
+        "login": "Slipcast-dev"
+      },
+      "topics": [
+        "apple-silicon",
+        "knowledge-base",
+        "macos",
+        "notes",
+        "notion-alternative",
+        "swiftui"
+      ],
+      "version": "v3.3.0",
+      "downloads": [
+        {
+          "name": "Demo-workspace.mindnotesbackup",
+          "url": "https://github.com/Slipcast-dev/MindNotes/releases/download/v3.3.0/Demo-workspace.mindnotesbackup"
+        },
+        {
+          "name": "MindNotes-3.3.0.dmg",
+          "url": "https://github.com/Slipcast-dev/MindNotes/releases/download/v3.3.0/MindNotes-3.3.0.dmg"
+        },
+        {
+          "name": "SHA256SUMS.txt",
+          "url": "https://github.com/Slipcast-dev/MindNotes/releases/download/v3.3.0/SHA256SUMS.txt"
+        }
+      ],
+      "releaseState": "ready",
+      "releaseCheckedAt": "2026-11-19T22:31:15.708Z",
+      "sourceUpdatedAt": "2026-11-19T20:30:02Z",
+      "sourcePushedAt": "2026-11-19T20:50:30Z"
+    },
+    {
+      "id": 1439219299,
+      "name": "DragonMacros",
+      "description": "Native macOS hotkey utility: launch apps and open links with global keyboard shortcuts. Swift + AppKit, Russian and English UI.",
+      "private": false,
+      "owner": {
+        "login": "Slipcast-dev"
+      },
+      "topics": [
+        "app-launcher",
+        "appkit",
+        "automation",
+        "global-hotkeys",
+        "hotkeys",
+        "keyboard-shortcuts",
+        "macos",
+        "macos-app",
+        "macros",
+        "menu-bar",
+        "productivity",
+        "swift"
+      ],
+      "version": "v0.5.1",
+      "downloads": [
+        {
+          "name": "DragonMacros-0.5.1-macOS.dmg",
+          "url": "https://github.com/Slipcast-dev/DragonMacros/releases/download/v0.5.1/DragonMacros-0.5.1-macOS.dmg"
+        },
+        {
+          "name": "DragonMacros-0.5.1-macOS.pkg",
+          "url": "https://github.com/Slipcast-dev/DragonMacros/releases/download/v0.5.1/DragonMacros-0.5.1-macOS.pkg"
+        },
+        {
+          "name": "SHA256SUMS.txt",
+          "url": "https://github.com/Slipcast-dev/DragonMacros/releases/download/v0.5.1/SHA256SUMS.txt"
+        }
+      ],
+      "releaseState": "ready",
+      "releaseCheckedAt": "2026-11-19T22:31:17.247Z",
+      "sourceUpdatedAt": "2026-11-14T14:50:44Z",
+      "sourcePushedAt": "2026-11-14T15:57:28Z"
+    },
+    {
+      "id": 1428347734,
+      "name": "Rdragon-K530RGB-Keyboard-Port",
+      "description": "K530 Lighting — управление подсветкой Redragon K530 RGB на macOS (Intel и Apple Silicon): режим, яркость, скорость, цвет из строки меню",
+      "private": false,
+      "owner": {
+        "login": "Slipcast-dev"
+      },
+      "topics": [
+        "appkit",
+        "hid",
+        "iokit",
+        "keyboard",
+        "macos",
+        "macos-app",
+        "menu-bar-app",
+        "redragon",
+        "reverse-engineering",
+        "rgb",
+        "rgb-keyboard",
+        "rgb-lighting",
+        "swift",
+        "usb-hid"
+      ],
+      "version": "v0.4.0",
+      "downloads": [
+        {
+          "name": "K530Lighting-0.4.0-macOS-universal.dmg",
+          "url": "https://github.com/Slipcast-dev/Rdragon-K530RGB-Keyboard-Port/releases/download/v0.4.0/K530Lighting-0.4.0-macOS-universal.dmg"
+        },
+        {
+          "name": "K530Lighting-0.4.0-macOS-universal.zip",
+          "url": "https://github.com/Slipcast-dev/Rdragon-K530RGB-Keyboard-Port/releases/download/v0.4.0/K530Lighting-0.4.0-macOS-universal.zip"
+        },
+        {
+          "name": "SHA256SUMS",
+          "url": "https://github.com/Slipcast-dev/Rdragon-K530RGB-Keyboard-Port/releases/download/v0.4.0/SHA256SUMS"
+        },
+        {
+          "name": "update.json",
+          "url": "https://github.com/Slipcast-dev/Rdragon-K530RGB-Keyboard-Port/releases/download/v0.4.0/update.json"
+        },
+        {
+          "name": "update.json.sig",
+          "url": "https://github.com/Slipcast-dev/Rdragon-K530RGB-Keyboard-Port/releases/download/v0.4.0/update.json.sig"
+        }
+      ],
+      "releaseState": "ready",
+      "releaseCheckedAt": "2026-11-19T22:31:16.841Z",
+      "sourceUpdatedAt": "2026-11-14T01:45:03Z",
+      "sourcePushedAt": "2026-11-14T01:38:33Z"
+    },
+    {
+      "id": 1451826712,
+      "name": "VibeWave",
+      "description": "Ретро-аудиоплеер для macOS в стиле Windows 95: MP3, FLAC, Ogg Opus/Vorbis, AAC/M4A, WAV, AIFF · Retro Windows 95–style audio player for macOS. Apple Silicon + Intel, 10-band EQ, ReplayGain, gapless, RU/EN, auto-update.",
+      "private": false,
+      "owner": {
+        "login": "Slipcast-dev"
+      },
+      "topics": [
+        "appkit",
+        "apple-silicon",
+        "audio-player",
+        "auto-update",
+        "equalizer",
+        "flac",
+        "gapless-playback",
+        "localization",
+        "macos",
+        "mp3",
+        "ogg",
+        "opus",
+        "replaygain",
+        "retro-ui",
+        "swift",
+        "swiftui",
+        "universal-binary",
+        "vorbis",
+        "windows-95"
+      ],
+      "version": "v2.1.1",
+      "downloads": [
+        {
+          "name": "SHA256SUMS.txt",
+          "url": "https://github.com/Slipcast-dev/VibeWave/releases/download/v2.1.1/SHA256SUMS.txt"
+        },
+        {
+          "name": "update.json",
+          "url": "https://github.com/Slipcast-dev/VibeWave/releases/download/v2.1.1/update.json"
+        },
+        {
+          "name": "VibeWave-2.1.1-macos-universal.dmg",
+          "url": "https://github.com/Slipcast-dev/VibeWave/releases/download/v2.1.1/VibeWave-2.1.1-macos-universal.dmg"
+        },
+        {
+          "name": "VibeWave-2.1.1-macos-universal.pkg",
+          "url": "https://github.com/Slipcast-dev/VibeWave/releases/download/v2.1.1/VibeWave-2.1.1-macos-universal.pkg"
+        },
+        {
+          "name": "VibeWave-2.1.1-macos-universal.zip",
+          "url": "https://github.com/Slipcast-dev/VibeWave/releases/download/v2.1.1/VibeWave-2.1.1-macos-universal.zip"
+        }
+      ],
+      "releaseState": "ready",
+      "releaseCheckedAt": "2026-11-19T22:31:17.932Z",
+      "sourceUpdatedAt": "2026-11-11T13:31:06Z",
+      "sourcePushedAt": "2026-11-19T16:40:03Z"
+    },
     {
       "id": 1428396071,
       "name": "translator-Koto",
@@ -12,14 +199,46 @@
       },
       "topics": [
         "apple-silicon",
+        "chrome-extension",
+        "llama-cpp",
         "local-ai",
         "macos",
         "ocr",
+        "offline-translation",
+        "qwen",
+        "safari-extension",
         "swift",
         "swiftui",
-        "translation"
+        "translation",
+        "translator"
       ],
-      "version": "v0.1.0-alpha.16"
+      "version": "v2.0.0",
+      "downloads": [
+        {
+          "name": "Koto-2.0.0-22-arm64.dmg",
+          "url": "https://github.com/Slipcast-dev/translator-Koto/releases/download/v2.0.0/Koto-2.0.0-22-arm64.dmg"
+        },
+        {
+          "name": "Koto-2.0.0-22-arm64.json",
+          "url": "https://github.com/Slipcast-dev/translator-Koto/releases/download/v2.0.0/Koto-2.0.0-22-arm64.json"
+        },
+        {
+          "name": "Koto-Chrome-0.1.5.zip",
+          "url": "https://github.com/Slipcast-dev/translator-Koto/releases/download/v2.0.0/Koto-Chrome-0.1.5.zip"
+        },
+        {
+          "name": "SHA256SUMS.txt",
+          "url": "https://github.com/Slipcast-dev/translator-Koto/releases/download/v2.0.0/SHA256SUMS.txt"
+        },
+        {
+          "name": "SHA256SUMS.txt.sig",
+          "url": "https://github.com/Slipcast-dev/translator-Koto/releases/download/v2.0.0/SHA256SUMS.txt.sig"
+        }
+      ],
+      "releaseState": "ready",
+      "releaseCheckedAt": "2026-11-19T22:31:18.207Z",
+      "sourceUpdatedAt": "2026-11-09T19:52:03Z",
+      "sourcePushedAt": "2026-11-19T18:32:02Z"
     },
     {
       "id": 1435902203,
@@ -32,53 +251,53 @@
       "topics": [
         "code-viewer",
         "csv",
+        "desktop-app",
         "electron",
         "macos",
         "markdown",
+        "markdown-editor",
         "markdown-reader",
         "markdown-viewer",
+        "quicklook",
         "reader",
+        "swift",
         "swiftui",
         "syntax-highlighting",
+        "text-editor",
         "text-viewer",
         "windows"
       ],
-      "version": "v1.4.2"
-    },
-    {
-      "id": 1439219299,
-      "name": "DragonMacros",
-      "description": "Native macOS hotkey utility: launch apps and open links with global keyboard shortcuts. Swift + AppKit, Russian and English UI.",
-      "private": false,
-      "owner": {
-        "login": "Slipcast-dev"
-      },
-      "topics": [
-        "automation",
-        "macos",
-        "productivity",
-        "swift"
+      "version": "v2.1.1",
+      "downloads": [
+        {
+          "name": "Grizzly-2.1.1-arm64.dmg",
+          "url": "https://github.com/Slipcast-dev/Grizzly/releases/download/v2.1.1/Grizzly-2.1.1-arm64.dmg"
+        },
+        {
+          "name": "Grizzly-2.1.1-portable.exe",
+          "url": "https://github.com/Slipcast-dev/Grizzly/releases/download/v2.1.1/Grizzly-2.1.1-portable.exe"
+        },
+        {
+          "name": "Grizzly-2.1.1-x64.dmg",
+          "url": "https://github.com/Slipcast-dev/Grizzly/releases/download/v2.1.1/Grizzly-2.1.1-x64.dmg"
+        },
+        {
+          "name": "Grizzly-patch-2.1.0-to-2.1.1-arm64.zip",
+          "url": "https://github.com/Slipcast-dev/Grizzly/releases/download/v2.1.1/Grizzly-patch-2.1.0-to-2.1.1-arm64.zip"
+        },
+        {
+          "name": "Grizzly-patch-2.1.0-to-2.1.1-x64.zip",
+          "url": "https://github.com/Slipcast-dev/Grizzly/releases/download/v2.1.1/Grizzly-patch-2.1.0-to-2.1.1-x64.zip"
+        },
+        {
+          "name": "SHA256SUMS.txt",
+          "url": "https://github.com/Slipcast-dev/Grizzly/releases/download/v2.1.1/SHA256SUMS.txt"
+        }
       ],
-      "version": "v0.3"
-    },
-    {
-      "id": 1428347734,
-      "name": "Rdragon-K530RGB-Keyboard-Port",
-      "description": "K530 Lighting — управление подсветкой Redragon K530 RGB на macOS (Intel и Apple Silicon): режим, яркость, скорость, цвет из строки меню",
-      "private": false,
-      "owner": {
-        "login": "Slipcast-dev"
-      },
-      "topics": [
-        "hid",
-        "macos",
-        "menu-bar-app",
-        "redragon",
-        "reverse-engineering",
-        "rgb-keyboard",
-        "swift"
-      ],
-      "version": "v0.1.0"
+      "releaseState": "ready",
+      "releaseCheckedAt": "2026-11-19T22:31:18.852Z",
+      "sourceUpdatedAt": "2026-11-09T14:23:32Z",
+      "sourcePushedAt": "2026-11-19T15:02:51Z"
     }
   ]
 }

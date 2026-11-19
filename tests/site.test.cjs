@@ -79,7 +79,7 @@ test('Проекты выводятся сразу без GitHub API, прива
   const cards = page.document.querySelector('#project-list').children;
   assert.equal(cards.length, 1);
   assert.equal(cards[0].children[0].children[1].textContent, '<script>');
-  assert.ok(cards[0].children[0].href.includes('%3Cscript%3E'));
+  assert.equal(cards[0].children[0].href, undefined);
   assert.equal(cards[0].children[0].children[2].textContent, '<img onerror=alert(1)>');
 });
 
@@ -368,4 +368,20 @@ test('Новый раздел доступен из меню; фильтры и 
   assert.equal(page.document.querySelector('#empty-collections').hidden, true);
   choose('all');
   assert.ok(cards.every(card => !card.hidden));
+});
+
+test('Карточка приложения скачивает установщик, сборки для других платформ доступны отдельно', () => {
+  const page = setup('projects.html');
+  const base = 'https://github.com/Slipcast-dev/Grizzly/releases/download/v2/';
+  const names = ['Grizzly-arm64.dmg', 'Grizzly-x64.dmg', 'Grizzly-portable.exe', 'SHA256SUMS.txt'];
+  page.context.testSnapshot = { repositories: [{
+    id: 5, name: 'Grizzly', private: false, owner: { login: 'Slipcast-dev' }, version: 'v2',
+    downloads: [...names.map(name => ({ name, url: base + name })),
+      { name: 'Grizzly.pkg', url: 'https://example.com/Grizzly.pkg' }]
+  }] };
+  vm.runInContext('navigator.platform = "Win32"; renderProjects(testSnapshot)', page.context);
+  const [card, options] = page.document.querySelector('#project-list').children[0].children;
+  assert.equal(card.href, base + 'Grizzly-portable.exe');
+  assert.equal(card.getAttribute('download'), '');
+  assert.deepEqual(options.children.map(link => link.href), names.slice(0, 3).map(name => base + name));
 });

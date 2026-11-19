@@ -22,6 +22,39 @@
         && ['website', 'web-site', 'landing-page', 'github-pages'].includes(topic.toLowerCase()));
   }
 
+  /** Проверяем, что ссылка ведёт на файл релиза именно этого репозитория. */
+  function releaseDownload(repo, asset) {
+    if (typeof asset?.name !== 'string' || !asset.name || /[\\/]/.test(asset.name)
+      || typeof repo.version !== 'string' || !repo.version) return null;
+    const prefix = `https://github.com/${OWNER}/${encodeURIComponent(repo.name)}/releases/download/`;
+    try {
+      const url = new URL(asset.url);
+      return url.href === prefix + encodeURIComponent(repo.version) + '/' + encodeURIComponent(asset.name)
+        ? url.href : null;
+    } catch {
+      return null;
+    }
+  }
+
+  /** Один установщик на платформу и архитектуру. DMG предпочтительнее PKG, MSI — EXE. */
+  function projectDownloads(repo) {
+    const formats = ['dmg', 'pkg', 'msi', 'exe', 'appimage', 'deb', 'rpm'];
+    const builds = new Map();
+    for (const asset of (Array.isArray(repo.downloads) ? repo.downloads : [])) {
+      const url = releaseDownload(repo, asset);
+      if (!url) continue;
+      const filename = asset.name.toLowerCase();
+      const rank = formats.indexOf(filename.split('.').at(-1));
+      if (rank < 0) continue;
+      const platform = rank < 2 ? 'mac' : rank < 4 ? 'windows' : 'linux';
+      const arch = /(?:^|[-_.])(?:arm64|aarch64)(?=[-_.])/.test(filename) ? 'Arm'
+        : /(?:^|[-_.])(?:x64|x86_64|intel)(?=[-_.])/.test(filename) ? 'Intel' : '';
+      const key = platform + arch;
+      if (!builds.has(key) || builds.get(key).rank > rank) builds.set(key, { key, platform, url, rank });
+    }
+    return [...builds.values()].sort((a, b) => a.rank - b.rank || a.key.localeCompare(b.key));
+  }
+
   /** Собираем только публичные данные; браузер работает без токена, сборка может передать его явно. */
   async function collectProjects({
     fetchImpl = fetch, token = '', previousSnapshot = null, onProgress = null,
@@ -84,6 +117,7 @@
         private: false, owner: { login: OWNER },
         topics: Array.isArray(repo.topics) ? repo.topics.filter(topic => typeof topic === 'string') : [],
         version: cached?.version ?? null,
+        downloads: cached?.name === repo.name ? cached.downloads : undefined,
         releaseState: cached?.releaseState ?? (cached ? 'ready' : 'loading'),
         releaseCheckedAt: cached?.releaseCheckedAt ?? null,
         sourceUpdatedAt: cached?.sourceUpdatedAt ?? null,
@@ -100,7 +134,7 @@
         const cached = previous.get(repo.id);
         // Изменённый проект проверяем сразу. Неизменённые релизы проверяем раз в 15 минут,
         // поскольку публикация релиза без push может не изменить pushed_at репозитория.
-        const cacheIsFresh = cached && cached.releaseState === 'ready'
+        const cacheIsFresh = cached && Array.isArray(cached.downloads) && cached.releaseState === 'ready'
           && cached.name === repo.name && cached.description === repo.description
           && cached.sourceUpdatedAt === repo.updated_at && cached.sourcePushedAt === repo.pushed_at
           && Date.now() - Date.parse(cached.releaseCheckedAt) < 15 * 60 * 1000;
@@ -114,6 +148,8 @@
             for (const release of releases) {
               if (release.draft !== false || typeof release.tag_name !== 'string' || !release.tag_name.trim()
                 || !Number.isFinite(Date.parse(release.published_at))) continue;
+              // У MindNotes приложение и плагины публикуются в одном репозитории.
+              if (repo.id === 1461694197 && /^(?:github|webclipper)-/i.test(release.tag_name)) continue;
               if (!latest || Date.parse(release.published_at) > Date.parse(latest.published_at)) latest = release;
             }
             if (releases.length < 100) { releasesComplete = true; break; }
@@ -128,6 +164,10 @@
         }
         Object.assign(result[index], {
           version: latest?.tag_name ?? null, releaseState: 'ready',
+          downloads: (Array.isArray(latest?.assets) ? latest.assets : [])
+            .filter(asset => asset?.state === 'uploaded' && releaseDownload({ name: repo.name, version: latest.tag_name },
+              { name: asset.name, url: asset.browser_download_url }))
+            .map(asset => ({ name: asset.name, url: asset.browser_download_url })),
           releaseCheckedAt: new Date().toISOString(),
           sourceUpdatedAt: repo.updated_at ?? null, sourcePushedAt: repo.pushed_at ?? null
         });
@@ -143,5 +183,5 @@
   }
 
   // Один сборщик для публикации и браузера сохраняет одинаковую фильтрацию и выбор релизов.
-  globalThis.publicProjectsApi = Object.freeze({ OWNER, isWebsite, isSkillCollection, isHiddenProject, collectProjects });
+  globalThis.publicProjectsApi = Object.freeze({ OWNER, isWebsite, isSkillCollection, isHiddenProject, projectDownloads, collectProjects });
 })();
