@@ -380,7 +380,10 @@ test('Карточка приложения скачивает установщ�
       { name: 'Grizzly.pkg', url: 'https://example.com/Grizzly.pkg' }]
   }] };
   vm.runInContext('navigator.platform = "Win32"; renderProjects(testSnapshot)', page.context);
-  const [card, options] = page.document.querySelector('#project-list').children[0].children;
+  const item = page.document.querySelector('#project-list').children[0];
+  const [card, options] = item.children;
+  assert.equal(item.className, 'project-card');
+  assert.equal(options.className, 'download-options');
   assert.equal(card.href, base + 'Grizzly-portable.exe');
   assert.equal(card.getAttribute('download'), '');
   assert.deepEqual(options.children.map(link => link.href), names.slice(0, 3).map(name => base + name));

@@ -45,12 +45,12 @@
     .project-card::before { content: ""; position: absolute; z-index: -1; inset: 0; background: linear-gradient(105deg, #00ff660d, #00ff6605 60%, #0000); clip-path: polygon(28px 0, 100% 0, calc(100% - 28px) 100%, 0 100%); background-color: transparent; transition: background-color .22s ease; }
     .project-card::after { content: ""; position: absolute; inset: 0 auto 0 0; width: 32px; background: var(--green); opacity: .72; clip-path: polygon(28px 0, 32px 0, 4px 100%, 0 100%); transition: opacity .2s; }
     /* Подсветка ограничена наведённой карточкой и использует только зелёную палитру. */
-    .project-card:is(:hover, :focus-visible) { filter: drop-shadow(0 0 18px #00ff6626); }
-    .project-card:is(:hover, :focus-visible)::before { background-color: #00ff6624; }
-    .project-card:is(:hover, :focus-visible)::after { opacity: 1; }
-    .project-card:is(:hover, :focus-visible) h2 { color: var(--green); }
-    .project-card:is(:hover, :focus-visible) .status { color: #a0ffc4; }
-    .project-card:is(:hover, :focus-visible) p { color: #c2ebd2; }
+    .project-card:is(:hover, :focus-within) { filter: drop-shadow(0 0 18px #00ff6626); }
+    .project-card:is(:hover, :focus-within)::before { background-color: #00ff6624; }
+    .project-card:is(:hover, :focus-within)::after { opacity: 1; }
+    .project-card:is(:hover, :focus-within) h2 { color: var(--green); }
+    .project-card:is(:hover, :focus-within) .status { color: #a0ffc4; }
+    .project-card:is(:hover, :focus-within) p { color: #c2ebd2; }
     .status { color: #92e6b3; text-transform: none; letter-spacing: .14em; font-size: 11px; line-height: 1.7; }
     h2 { margin: 6px 0 8px; color: #d8ffe6; font-size: clamp(18px, 2.5vw, 22px); line-height: 1.4; font-weight: 600; }
     .project-card p { max-width: 760px; margin: 0; color: #9ab8a5; font-size: 14px; line-height: 1.85; }
@@ -59,8 +59,10 @@
     .load-status:empty { display: none; }
     .project-card h2 { overflow-wrap: anywhere; max-width: 100%; }
     .project-card { color: inherit; }
-    .download-options { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px 16px; }
-    .download-options a { color: var(--green); padding: 8px 4px; font-size: 12px; text-decoration: underline; }
+    /* Основная ссылка покрывает карточку, а ссылки выбора сборки доступны поверх неё. */
+    .project-card > a::after { content: ""; position: absolute; inset: 0; }
+    .download-options { display: flex; flex-wrap: wrap; justify-content: center; gap: 4px 16px; margin-top: 8px; }
+    .download-options a { position: relative; color: var(--green); padding: 8px 4px; font-size: 12px; text-decoration: underline; }
     .end { display: flex; justify-content: center; margin-top: 54px; }
     .back { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; border: 1px solid #00ff6670; border-radius: 5px; padding: 11px 20px; color: var(--green); font-size: 13px; transition: background .2s; }
     .back:hover { background: #00ff6614; }
@@ -157,6 +159,7 @@
       });
       const cards = matches.map(repo => {
         const item = document.createElement('li');
+        item.className = 'project-card';
         const builds = globalThis.publicProjectsApi.projectDownloads(repo);
         const device = navigator.userAgentData?.platform || navigator.platform || '';
         const platform = /win/i.test(device) ? 'windows' : /mac/i.test(device) ? 'mac'
@@ -164,7 +167,6 @@
         // macOS не всегда раскрывает архитектуру браузеру. Показываем обе сборки, если они есть.
         const main = builds.find(build => build.platform === platform) || builds[0];
         const card = document.createElement(main ? 'a' : 'div');
-        card.className = 'project-card';
         if (main) {
           card.href = main.url;
           card.setAttribute('download', '');
