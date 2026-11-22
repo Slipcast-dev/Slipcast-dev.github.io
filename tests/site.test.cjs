@@ -333,11 +333,14 @@ test('Новый раздел доступен из меню; фильтры и 
   assert.equal(navigation.textContent, 'Скиллы и агенты');
   assert.equal(navigation.attrs.href, 'skills-agents.html?v=2&lang=ru');
   const menu = home.nodes.filter(node => (node.attrs.class || '').split(' ').includes('nav-button'));
-  assert.deepEqual(menu.map(node => node.dataset.i18n), ['developer', 'projects', 'skillsAgents']);
+  assert.deepEqual(menu.map(node => node.dataset.i18n), ['developer', 'projects', 'skillsAgents', 'telegramChannel']);
+  assert.equal(menu[3].attrs.href, 'https://t.me/slipcastdev');
   assert.ok(!menu[2].attrs.class.includes('nav-secondary'));
   assert.equal(menu[1].textContent, 'Приложения');
   home.click('en');
   assert.equal(menu[1].textContent, 'Applications');
+  assert.equal(menu[3].textContent, 'Telegram Channel');
+  assert.equal(menu[3].attrs.href, 'https://t.me/slipcastdev');
   home.click('en');
   assert.equal(navigation.textContent, 'Skills & Agents');
   assert.equal(navigation.attrs.href, 'skills-agents.html?v=2&lang=en');

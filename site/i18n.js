@@ -3,7 +3,7 @@
   'use strict';
   const strings = {
     ru: {
-      skillsAgents: 'Скиллы и агенты',
+      skillsAgents: 'Скиллы и агенты', telegramChannel: 'Telegram-канал',
       skillsAgentsTitle: 'Скиллы и агенты — Slipcast-Dev',
       skillsAgentsDescription: 'Коллекции скиллов для Codex и Claude Code: каталоги, репозитории и инструкции установки.',
       skillsIntro: 'Коллекции навыков для разработки, анализа, работы с документами и автоматизации.',
@@ -48,7 +48,7 @@
       timeout: 'GitHub не ответил вовремя. Обновление повторится автоматически.', offline: 'Не удалось связаться с GitHub. Проверьте интернет. Обновление повторится автоматически.'
     },
     en: {
-      skillsAgents: 'Skills & Agents',
+      skillsAgents: 'Skills & Agents', telegramChannel: 'Telegram Channel',
       skillsAgentsTitle: 'Skills & Agents — Slipcast-Dev',
       skillsAgentsDescription: 'Skill collections for Codex and Claude Code: catalogs, repositories and installation guides.',
       skillsIntro: 'Skill collections for development, analysis, documents and automation.',
