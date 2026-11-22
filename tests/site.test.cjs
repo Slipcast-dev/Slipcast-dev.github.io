@@ -26,13 +26,12 @@ test('Первое вступление последовательно, кноп
   for (let i = 0; i < 2500; i++) {
     const before = vm.runInContext('phase', page.context);
     page.step();
-    const state = vm.runInContext('({phase, mode, itemIndex, navigationVisible})', page.context);
-    if (state.mode === 'intro' && state.itemIndex === 0) assert.equal(state.navigationVisible, false);
+    const state = vm.runInContext('({phase, mode, navigationVisible})', page.context);
+    if (state.mode === 'intro' && state.phase === 'typing') assert.equal(state.navigationVisible, false);
     if (before === 'typing' && state.phase === 'holding') complete.push(page.document.querySelector('#terminal-text').textContent);
   }
-  assert.equal(complete[0], 'Вход разрешен.');
-  assert.equal(complete[1], 'Добро пожаловать в репозиторий Slipcast-Dev');
-  assert.equal(complete[2], 'system_profiler SPHardwareDataType');
+  assert.equal(complete[0], 'Добро пожаловать в репозиторий Slipcast-Dev');
+  assert.equal(complete[1], 'system_profiler SPHardwareDataType');
   assert.equal(page.session.get('slipcast-navigation-seen'), '1');
   const returning = setup('index.html', { seen: true });
   assert.equal(vm.runInContext('mode', returning.context), 'commands');

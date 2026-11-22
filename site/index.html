@@ -86,9 +86,9 @@
       <h1 class="sr-only" data-i18n="heading">Личный сайт — разработчик, приложения, скиллы и агенты</h1>
       <!-- Посимвольная анимация скрыта от скринридера, чтобы не зачитывать каждую букву. -->
       <div class="terminal-output" aria-hidden="true">
-        <p class="prompt"><span>&gt;</span><span class="typed-line" id="typed-line" data-reserve="Вход разрешен."><span class="typed-content"><span id="terminal-text">Вход разрешен.</span><span class="cursor"></span></span></span></p>
+        <p class="prompt"><span>&gt;</span><span class="typed-line" id="typed-line" data-reserve="Добро пожаловать в репозиторий Slipcast-Dev"><span class="typed-content"><span id="terminal-text">Добро пожаловать в репозиторий Slipcast-Dev</span><span class="cursor"></span></span></span></p>
       </div>
-      <p class="sr-only" data-i18n="terminalSummary">Вход разрешен. Добро пожаловать в репозиторий Slipcast-Dev. Анимация строки терминала macOS.</p>
+      <p class="sr-only" data-i18n="terminalSummary">Добро пожаловать в репозиторий Slipcast-Dev. Анимация строки терминала macOS.</p>
       <nav class="navigation" aria-label="Разделы сайта" data-i18n-label="sections">
         <a class="nav-button" href="developer.html" data-i18n="developer">Разработчик</a>
         <a class="nav-button" href="projects.html" data-i18n="projects">Приложения</a>
@@ -105,7 +105,6 @@
     const navigation = document.querySelector('.navigation');
     const motionPreference = window.matchMedia('(prefers-reduced-motion: reduce)');
     const i18n = window.siteI18n;
-    const introduction = ['access', 'welcome'];
     const output = document.querySelector('.terminal-output');
     // Декоративные строки: команды не передаются системе и не выполняются.
     const commands = [
@@ -144,7 +143,7 @@
     }
 
     function currentText() {
-      return mode === 'intro' ? i18n.t(introduction[itemIndex]) : commands[itemIndex];
+      return mode === 'intro' ? i18n.t('welcome') : commands[itemIndex];
     }
 
     function renderLine() {
@@ -164,7 +163,7 @@
         if (position === text.length) {
           phase = 'holding';
           delay = mode === 'intro' ? 1300 : 1900;
-          if (mode === 'intro' && itemIndex === introduction.length - 1) revealNavigation();
+          if (mode === 'intro') revealNavigation();
         }
       } else if (phase === 'holding') {
         phase = 'deleting';
@@ -177,12 +176,11 @@
           delay = 350;
         }
       } else {
-        itemIndex++;
-        if (mode === 'intro' && itemIndex === introduction.length) {
+        if (mode === 'intro') {
           mode = 'commands';
           itemIndex = 0;
-        } else if (mode === 'commands') {
-          itemIndex %= commands.length;
+        } else {
+          itemIndex = (itemIndex + 1) % commands.length;
         }
         phase = 'typing';
         delay = 100;
@@ -196,7 +194,7 @@
       if (motionPreference.matches) {
         // При уменьшении движения приветствие статично, навигация сразу доступна.
         mode = 'intro';
-        itemIndex = introduction.length - 1;
+        itemIndex = 0;
         position = currentText().length;
         phase = 'holding';
         renderLine();
