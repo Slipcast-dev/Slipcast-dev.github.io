@@ -20,22 +20,21 @@ test('Язык определяется автоматически, ручной
   assert.equal(setup('index.html', { languages: ['ru'], query: '?lang=en' }).document.documentElement.lang, 'en');
 });
 
-test('Первое вступление последовательно, кнопки доступны только после приветствия', () => {
+test('Меню доступно сразу, а терминал начинает с цикла команд', () => {
   const page = setup('index.html');
+  const menu = page.document.querySelector('.navigation');
+  assert.equal(menu.inert, false);
+  assert.ok(!menu.classList.contains('pending'));
+
   const complete = [];
-  for (let i = 0; i < 2500; i++) {
+  for (let i = 0; i < 250 && complete.length < 2; i++) {
     const before = vm.runInContext('phase', page.context);
     page.step();
-    const state = vm.runInContext('({phase, mode, navigationVisible})', page.context);
-    if (state.mode === 'intro' && state.phase === 'typing') assert.equal(state.navigationVisible, false);
-    if (before === 'typing' && state.phase === 'holding') complete.push(page.document.querySelector('#terminal-text').textContent);
+    if (before === 'typing' && vm.runInContext('phase', page.context) === 'holding') {
+      complete.push(page.document.querySelector('#terminal-text').textContent);
+    }
   }
-  assert.equal(complete[0], 'Добро пожаловать в репозиторий Slipcast-Dev');
-  assert.equal(complete[1], 'system_profiler SPHardwareDataType');
-  assert.equal(page.session.get('slipcast-navigation-seen'), '1');
-  const returning = setup('index.html', { seen: true });
-  assert.equal(vm.runInContext('mode', returning.context), 'commands');
-  assert.ok(!returning.document.querySelector('.navigation').classList.contains('pending'));
+  assert.deepEqual(complete, ['system_profiler SPHardwareDataType', 'defaults read -g AppleLanguages']);
 });
 
 test('Страницы разработчика и сайтов переведены; Telegram, аватар и превью подключены', () => {

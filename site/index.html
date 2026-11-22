@@ -22,17 +22,6 @@
   <meta name="theme-color" content="#000000">
   <meta name="description" content="Программное обеспечение, ИИ Агенты, Скилы">
   <title>Личный терминал</title>
-  <script>
-    // Состояние относится только к текущей вкладке и сохраняется при переходах между страницами.
-    try {
-      if (sessionStorage.getItem('slipcast-navigation-seen') === '1') {
-        document.documentElement.classList.add('navigation-ready');
-      }
-    } catch {
-      // Если браузер запрещает хранилище для локального файла, навигация доступна сразу.
-      document.documentElement.classList.add('navigation-ready');
-    }
-  </script>
   <script src="i18n.js"></script>
   <style>
     .language-switch { position: absolute; z-index: 2; top: 18px; right: 22px; display: flex; gap: 4px; padding: 3px; border: 1px solid #00ff6640; border-radius: 5px; background: #000; }
@@ -55,9 +44,7 @@
     .typed-content { grid-area: 1 / 1; }
     .cursor { display: inline-block; width: .57em; height: 1.1em; margin-left: .12em; background: var(--green); vertical-align: -.14em; animation: blink 1s steps(1) infinite; box-shadow: 0 0 12px #00ff6620; }
     @keyframes blink { 50% { opacity: 0; } }
-    .navigation { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; width: min(606px, 100%); margin: 44px auto 0; transition: opacity .65s ease, transform .65s ease; }
-    .navigation-ready .navigation { transition: none; }
-    .navigation.pending { opacity: 0; transform: translateY(12px); visibility: hidden; }
+    .navigation { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; width: min(606px, 100%); margin: 44px auto 0; }
     .nav-button { color: var(--green); border: 1px solid var(--green); border-radius: 5px; background: #00190733; cursor: pointer; height: 44px; min-height: 44px; width: 100%; padding: 10px; white-space: nowrap; font-size: 16px; transition: background .18s, box-shadow .18s; }
     a.nav-button { display: flex; align-items: center; justify-content: center; text-decoration: none; }
     .nav-telegram { grid-column: 2; }
@@ -86,9 +73,9 @@
       <h1 class="sr-only" data-i18n="heading">Личный сайт — разработчик, приложения, скиллы и агенты</h1>
       <!-- Посимвольная анимация скрыта от скринридера, чтобы не зачитывать каждую букву. -->
       <div class="terminal-output" aria-hidden="true">
-        <p class="prompt"><span>&gt;</span><span class="typed-line" id="typed-line" data-reserve="Добро пожаловать в репозиторий Slipcast-Dev"><span class="typed-content"><span id="terminal-text">Добро пожаловать в репозиторий Slipcast-Dev</span><span class="cursor"></span></span></span></p>
+        <p class="prompt"><span>&gt;</span><span class="typed-line" id="typed-line" data-reserve="system_profiler SPHardwareDataType"><span class="typed-content"><span id="terminal-text" lang="en">system_profiler SPHardwareDataType</span><span class="cursor"></span></span></span></p>
       </div>
-      <p class="sr-only" data-i18n="terminalSummary">Добро пожаловать в репозиторий Slipcast-Dev. Анимация строки терминала macOS.</p>
+      <p class="sr-only" data-i18n="terminalSummary">Декоративная анимация команд macOS, Linux и GitHub CLI.</p>
       <nav class="navigation" aria-label="Разделы сайта" data-i18n-label="sections">
         <a class="nav-button" href="developer.html" data-i18n="developer">Разработчик</a>
         <a class="nav-button" href="projects.html" data-i18n="projects">Приложения</a>
@@ -102,9 +89,7 @@
     'use strict';
     const terminalText = document.querySelector('#terminal-text');
     const typedLine = document.querySelector('#typed-line');
-    const navigation = document.querySelector('.navigation');
     const motionPreference = window.matchMedia('(prefers-reduced-motion: reduce)');
-    const i18n = window.siteI18n;
     const output = document.querySelector('.terminal-output');
     // Декоративные строки: команды не передаются системе и не выполняются.
     const commands = [
@@ -123,47 +108,27 @@
       'gh release list --repo Slipcast-dev/Grizzly',
       'gh pr list --repo Slipcast-dev/Grizzly --state open'
     ];
-    let navigationVisible = document.documentElement.classList.contains('navigation-ready');
-    let mode = navigationVisible ? 'commands' : 'intro';
     let itemIndex = 0;
     let position = 0;
     let phase = 'typing';
     let timer;
 
-    function revealNavigation() {
-      if (navigationVisible) return;
-      navigationVisible = true;
-      try {
-        sessionStorage.setItem('slipcast-navigation-seen', '1');
-      } catch {
-        // Отказ хранилища не должен прерывать анимацию и обработчики навигации.
-      }
-      navigation.classList.remove('pending');
-      navigation.inert = false;
-    }
-
-    function currentText() {
-      return mode === 'intro' ? i18n.t('welcome') : commands[itemIndex];
-    }
-
     function renderLine() {
-      const text = currentText();
+      const text = commands[itemIndex];
       typedLine.dataset.reserve = text;
       output.style.setProperty('--line-units', String(Math.max(28, (text.length + 4) * .65)));
       terminalText.textContent = text.slice(0, position);
-      terminalText.lang = mode === 'intro' ? i18n.language : 'en';
     }
 
-    // Один таймер проводит вступление и бесконечный цикл команд через общие состояния.
+    // Один таймер повторяет цикл печати и удаления команд.
     function tick() {
-      const text = currentText();
-      let delay = mode === 'intro' ? 68 : 85;
+      const text = commands[itemIndex];
+      let delay = 85;
       if (phase === 'typing') {
         position++;
         if (position === text.length) {
           phase = 'holding';
-          delay = mode === 'intro' ? 1300 : 1900;
-          if (mode === 'intro') revealNavigation();
+          delay = 1900;
         }
       } else if (phase === 'holding') {
         phase = 'deleting';
@@ -176,12 +141,7 @@
           delay = 350;
         }
       } else {
-        if (mode === 'intro') {
-          mode = 'commands';
-          itemIndex = 0;
-        } else {
-          itemIndex = (itemIndex + 1) % commands.length;
-        }
+        itemIndex = (itemIndex + 1) % commands.length;
         phase = 'typing';
         delay = 100;
       }
@@ -192,29 +152,17 @@
     function synchronizeAnimation() {
       window.clearTimeout(timer);
       if (motionPreference.matches) {
-        // При уменьшении движения приветствие статично, навигация сразу доступна.
-        mode = 'intro';
-        itemIndex = 0;
-        position = currentText().length;
+        // При уменьшении движения команда отображается целиком, без печати.
+        position = commands[itemIndex].length;
         phase = 'holding';
         renderLine();
-        revealNavigation();
         return;
       }
       if (document.hidden) return;
-      if (!navigationVisible) {
-        navigation.classList.add('pending');
-        navigation.inert = true;
-      }
       renderLine();
       timer = window.setTimeout(tick, 450);
     }
 
-    document.addEventListener('languagechange', () => {
-      // Смена языка перезапускает только текущую вступительную фразу, сохраняя доступность кнопок.
-      if (mode === 'intro') { position = 0; phase = 'typing'; }
-      synchronizeAnimation();
-    });
     motionPreference.addEventListener('change', synchronizeAnimation);
     document.addEventListener('visibilitychange', synchronizeAnimation);
     synchronizeAnimation();

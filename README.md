@@ -8,7 +8,7 @@ Personal website with a terminal interface, black background and green accents. 
 
 ## Страницы
 
-- `index.html` — приветствие, появление навигации и цикл команд macOS, Linux, Git и GitHub CLI. Команды только отображаются. При возврате в той же вкладке вступление пропускается.
+- `index.html` — навигация доступна сразу. Цикл команд macOS, Linux, Git и GitHub CLI служит оформлением.
 - `developer.html` — аватар, биография и кнопка открытия чата Telegram `@slipcast666` в установленном приложении.
 - `skills-agents.html` — «Скиллы и агенты» / Skills & Agents: коллекции `codex-skills` и `claude-skills`, фильтры, ссылки на каталоги и последние релизы для установки. Главное меню содержит один ряд из трёх кнопок — «Разработчик», «Приложения» и «Скиллы и агенты».
 - `projects.html` — «Журнал разработок» / Development Log: публичные репозитории, названия, описания и последние опубликованные версии, включая prerelease.
