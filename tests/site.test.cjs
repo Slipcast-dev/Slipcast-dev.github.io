@@ -14,7 +14,7 @@ test('Язык определяется автоматически, ручной
   page.click('en');
   assert.equal(page.local.get('slipcast-language'), 'en');
   assert.equal(page.document.querySelector('[data-i18n="projects"]').textContent, 'Applications');
-  assert.ok(page.document.querySelector('a[href]').attrs.href.includes('lang=en'));
+  assert.ok(page.document.querySelector('[data-i18n="projects"]').attrs.href.includes('lang=en'));
   assert.equal(setup('index.html', { languages: ['ru'], saved: 'en' }).document.documentElement.lang, 'en');
   assert.equal(setup('index.html', { languages: ['fr'], blocked: true }).document.documentElement.lang, 'en');
   assert.equal(setup('index.html', { languages: ['ru'], query: '?lang=en' }).document.documentElement.lang, 'en');
@@ -166,7 +166,7 @@ test('Русская ссылка имеет собственные canonical и
   assert.ok(html.includes('property="og:image" content="https://slipcast-dev.github.io/assets/avatar.jpg"'));
   assert.ok(!/Building useful software|Independent developer building|social-preview\.png/.test(html));
   const page = setup('index.html', { protocol: 'https:', languages: ['ru'] });
-  assert.ok(page.document.querySelector('a[href]').attrs.href.includes('lang=ru'));
+  assert.ok(page.document.querySelector('[data-i18n="projects"]').attrs.href.includes('lang=ru'));
 });
 
 
@@ -331,14 +331,14 @@ test('Новый раздел доступен из меню; фильтры и 
   assert.equal(navigation.textContent, 'Скиллы и агенты');
   assert.equal(navigation.attrs.href, 'skills-agents.html?v=2&lang=ru');
   const menu = home.nodes.filter(node => (node.attrs.class || '').split(' ').includes('nav-button'));
-  assert.deepEqual(menu.map(node => node.dataset.i18n), ['developer', 'projects', 'skillsAgents', 'telegramChannel']);
-  assert.equal(menu[3].attrs.href, 'https://t.me/slipcastdev');
-  assert.ok(!menu[2].attrs.class.includes('nav-secondary'));
+  assert.deepEqual(menu.map(node => node.dataset.i18n), ['telegramChannel', 'projects', 'skillsAgents', 'developer']);
+  assert.equal(menu[0].attrs.href, 'https://t.me/slipcastdev');
+  assert.deepEqual(menu.filter(node => node.attrs.class.split(' ').includes('nav-second-row')), [menu[3]]);
   assert.equal(menu[1].textContent, 'Приложения');
   home.click('en');
   assert.equal(menu[1].textContent, 'Applications');
-  assert.equal(menu[3].textContent, 'Telegram Channel');
-  assert.equal(menu[3].attrs.href, 'https://t.me/slipcastdev');
+  assert.equal(menu[0].textContent, 'Telegram Channel');
+  assert.equal(menu[0].attrs.href, 'https://t.me/slipcastdev');
   home.click('en');
   assert.equal(navigation.textContent, 'Skills & Agents');
   assert.equal(navigation.attrs.href, 'skills-agents.html?v=2&lang=en');
