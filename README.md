@@ -10,7 +10,7 @@ Personal website with a terminal interface, black background and green accents. 
 
 - `index.html` — навигация доступна сразу. Цикл команд macOS, Linux, Git и GitHub CLI служит оформлением.
 - `developer.html` — аватар, биография и кнопка открытия чата Telegram `@slipcast666` в установленном приложении.
-- `skills-agents.html` — «Скиллы и агенты» / Skills & Agents: коллекции `codex-skills` и `claude-skills`, фильтры, ссылки на каталоги и последние релизы для установки. На широком экране в верхнем ряду меню расположены «Telegram-канал», «Приложения» и «Скиллы и агенты». Кнопка «Разработчик» находится под «Приложениями».
+- `skills-agents.html` — «Скиллы и агенты» / Skills & Agents: коллекции `codex-skills` и `claude-skills`, фильтры, ссылки на каталоги и последние релизы для установки. Все четыре кнопки главного меню находятся в одном ряду. На узких экранах подписи могут переноситься внутри кнопок.
 - `projects.html` — «Журнал разработок» / Development Log: публичные репозитории, названия, описания и последние опубликованные версии, включая prerelease.
 - `websites.html` — локально сохранённый раздел, исключённый из сборки и sitemap. На опубликованном сайте этот адрес возвращает 404. Исходник содержит фиксированные карточки: [Grizzly](https://slipcast-dev.github.io/grizzly-website/), [Koto](https://slipcast-dev.github.io/koto-website/) и [VibeWave](https://slipcast-dev.github.io/vibewave-website/), с изолированными живыми превью.
 

@@ -333,7 +333,7 @@ test('Новый раздел доступен из меню; фильтры и 
   const menu = home.nodes.filter(node => (node.attrs.class || '').split(' ').includes('nav-button'));
   assert.deepEqual(menu.map(node => node.dataset.i18n), ['telegramChannel', 'projects', 'skillsAgents', 'developer']);
   assert.equal(menu[0].attrs.href, 'https://t.me/slipcastdev');
-  assert.deepEqual(menu.filter(node => node.attrs.class.split(' ').includes('nav-second-row')), [menu[3]]);
+  assert.equal(menu[3].attrs.href, 'developer.html?lang=ru');
   assert.equal(menu[1].textContent, 'Приложения');
   home.click('en');
   assert.equal(menu[1].textContent, 'Applications');
