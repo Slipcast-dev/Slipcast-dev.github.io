@@ -327,20 +327,20 @@ test('Медленный локальный JSON не задерживает о�
 
 test('Новый раздел доступен из меню; фильтры и перевод работают, репозитории связаны с GitHub', () => {
   const home = setup('index.html', { languages: ['ru'], seen: true });
-  const navigation = home.document.querySelector('[data-i18n="skillsAgents"]');
-  assert.equal(navigation.textContent, 'Скиллы и агенты');
+  const navigation = home.document.querySelector('[data-i18n="skillsAgentsNav"]');
+  assert.equal(navigation.textContent, 'Скиллы и\u00a0агенты');
   assert.equal(navigation.attrs.href, 'skills-agents.html?v=2&lang=ru');
   const menu = home.nodes.filter(node => (node.attrs.class || '').split(' ').includes('nav-button'));
-  assert.deepEqual(menu.map(node => node.dataset.i18n), ['telegramChannel', 'projects', 'skillsAgents', 'developer']);
-  assert.equal(menu[0].attrs.href, 'https://t.me/slipcastdev');
+  assert.deepEqual(menu.map(node => node.dataset.i18n), ['projects', 'skillsAgentsNav', 'telegramChannel', 'developer']);
+  assert.equal(menu[2].attrs.href, 'https://t.me/slipcastdev');
   assert.equal(menu[3].attrs.href, 'developer.html?lang=ru');
-  assert.equal(menu[1].textContent, 'Приложения');
+  assert.equal(menu[0].textContent, 'Приложения');
   home.click('en');
-  assert.equal(menu[1].textContent, 'Applications');
-  assert.equal(menu[0].textContent, 'Telegram Channel');
-  assert.equal(menu[0].attrs.href, 'https://t.me/slipcastdev');
+  assert.equal(menu[0].textContent, 'Applications');
+  assert.equal(menu[2].textContent, 'Telegram Channel');
+  assert.equal(menu[2].attrs.href, 'https://t.me/slipcastdev');
   home.click('en');
-  assert.equal(navigation.textContent, 'Skills & Agents');
+  assert.equal(navigation.textContent, 'Skills &\u00a0Agents');
   assert.equal(navigation.attrs.href, 'skills-agents.html?v=2&lang=en');
 
   const page = setup('skills-agents.html', { languages: ['ru'] });

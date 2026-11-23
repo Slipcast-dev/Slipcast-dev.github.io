@@ -47,6 +47,7 @@
     .navigation { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; width: min(596px, 100%); margin: 44px auto 0; }
     .nav-button { color: var(--green); border: 1px solid var(--green); border-radius: 5px; background: #00190733; cursor: pointer; min-height: 44px; width: 100%; padding: 6px 8px; overflow-wrap: anywhere; font-size: 14px; transition: background .18s, box-shadow .18s; }
     a.nav-button { display: flex; align-items: center; justify-content: center; text-decoration: none; }
+    .nav-button[data-i18n="skillsAgentsNav"] { text-align: center; text-wrap: balance; line-height: 1.2; }
     .nav-button:hover { background: #00ff6614; box-shadow: 0 0 20px #00ff661b, inset 0 0 16px #00ff6609; }
     :focus-visible { outline: 2px solid #b5ffcf; outline-offset: 6px; }
     .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0; }
@@ -75,9 +76,9 @@
       </div>
       <p class="sr-only" data-i18n="terminalSummary">Декоративная анимация команд macOS, Linux и GitHub CLI.</p>
       <nav class="navigation" aria-label="Разделы сайта" data-i18n-label="sections">
-        <a class="nav-button" href="https://t.me/slipcastdev" data-i18n="telegramChannel">Telegram-канал</a>
         <a class="nav-button" href="projects.html" data-i18n="projects">Приложения</a>
-        <a class="nav-button" href="skills-agents.html?v=2" data-i18n="skillsAgents">Скиллы и агенты</a>
+        <a class="nav-button" href="skills-agents.html?v=2" data-i18n="skillsAgentsNav">Скиллы и&nbsp;агенты</a>
+        <a class="nav-button" href="https://t.me/slipcastdev" data-i18n="telegramChannel">Telegram-канал</a>
         <a class="nav-button" href="developer.html" data-i18n="developer">Разработчик</a>
       </nav>
       <noscript><p>Для анимации включите JavaScript. / Enable JavaScript for the animation.</p></noscript>
