@@ -130,9 +130,15 @@ test('Сбой отдельного релиза сохраняет его ве�
   assert.equal(result.repositories[1].version, 'v3');
 });
 
-test('Скрытый MindNotes не возвращается из API или кеша после переименования', async () => {
+test('Скрытые проекты не возвращаются из API или кеша после переименования', async () => {
   const { collectProjects } = await import('../scripts/sync-projects.mjs');
-  const hidden = [makeRepo(1449438166, 'renamed-hidden-project'), makeRepo(1456992734, 'renamed-webclipper'), makeRepo(1457278588, 'renamed-github-plugin')];
+  const hidden = [
+    makeRepo(1449438166, 'renamed-hidden-project'),
+    makeRepo(1456992734, 'renamed-webclipper'),
+    makeRepo(1457278588, 'renamed-github-plugin'),
+    makeRepo(1461694197, 'renamed-desktop-app'),
+    makeRepo(1469982790, 'renamed-ipad-app')
+  ];
   const result = await collectProjects({
     token: '',
     previousSnapshot: { repositories: hidden },

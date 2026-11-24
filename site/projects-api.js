@@ -5,7 +5,7 @@
   /** Скрытые владельцем проекты исключаются по постоянным ID, включая переименования.
    * Возвращать их на сайт можно только по явному указанию владельца. */
   function isHiddenProject(repo) {
-    return [1449438166, 1456992734, 1457278588].includes(repo.id);
+    return [1449438166, 1456992734, 1457278588, 1461694197, 1469982790].includes(repo.id);
   }
 
   /** Перенесённые коллекции исключаем из проектов и после переименования. */
@@ -148,8 +148,6 @@
             for (const release of releases) {
               if (release.draft !== false || typeof release.tag_name !== 'string' || !release.tag_name.trim()
                 || !Number.isFinite(Date.parse(release.published_at))) continue;
-              // У MindNotes приложение и плагины публикуются в одном репозитории.
-              if (repo.id === 1461694197 && /^(?:github|webclipper)-/i.test(release.tag_name)) continue;
               if (!latest || Date.parse(release.published_at) > Date.parse(latest.published_at)) latest = release;
             }
             if (releases.length < 100) { releasesComplete = true; break; }

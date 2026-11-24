@@ -4,42 +4,6 @@ window.publicProjectsSnapshot = {
   "fetchedAt": "2026-11-19T22:31:18.852Z",
   "repositories": [
     {
-      "id": 1461694197,
-      "name": "MindNotes",
-      "description": "MindNotes — personal local knowledge base for Mac (app) + plugins: Web Clipper, GitHub sync. Downloads for Apple silicon, macOS 15+",
-      "private": false,
-      "owner": {
-        "login": "Slipcast-dev"
-      },
-      "topics": [
-        "apple-silicon",
-        "knowledge-base",
-        "macos",
-        "notes",
-        "notion-alternative",
-        "swiftui"
-      ],
-      "version": "v3.3.0",
-      "downloads": [
-        {
-          "name": "Demo-workspace.mindnotesbackup",
-          "url": "https://github.com/Slipcast-dev/MindNotes/releases/download/v3.3.0/Demo-workspace.mindnotesbackup"
-        },
-        {
-          "name": "MindNotes-3.3.0.dmg",
-          "url": "https://github.com/Slipcast-dev/MindNotes/releases/download/v3.3.0/MindNotes-3.3.0.dmg"
-        },
-        {
-          "name": "SHA256SUMS.txt",
-          "url": "https://github.com/Slipcast-dev/MindNotes/releases/download/v3.3.0/SHA256SUMS.txt"
-        }
-      ],
-      "releaseState": "ready",
-      "releaseCheckedAt": "2026-11-19T22:31:15.708Z",
-      "sourceUpdatedAt": "2026-11-19T20:30:02Z",
-      "sourcePushedAt": "2026-11-19T20:50:30Z"
-    },
-    {
       "id": 1439219299,
       "name": "DragonMacros",
       "description": "Native macOS hotkey utility: launch apps and open links with global keyboard shortcuts. Swift + AppKit, Russian and English UI.",
