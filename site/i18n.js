@@ -5,14 +5,14 @@
     ru: {
       skillsAgents: 'Скиллы и агенты', skillsAgentsNav: 'Скиллы и\u00a0агенты', telegramChannel: 'Telegram-канал',
       skillsAgentsTitle: 'Скиллы и агенты — Slipcast-Dev',
-      skillsAgentsDescription: 'Коллекции скиллов для Codex и Claude Code: каталоги, репозитории и инструкции установки.',
+      skillsAgentsDescription: 'Коллекции скиллов для Codex и Claude Code: архивы для скачивания.',
       skillsIntro: 'Коллекции навыков для разработки, анализа, работы с документами и автоматизации.',
       skillCollections: 'Коллекции скиллов и агентов',
       filterCollections: 'Фильтр коллекций', allCollections: 'Все', skillsFilter: 'Скиллы', agentsFilter: 'Агенты',
       noAgents: 'Коллекции агентов пока не опубликованы.',
       codexSkillsDescription: 'Пользовательские навыки для Codex, распределённые по темам: разработка, ИИ, документы, бизнес и личные задачи.',
       claudeSkillsDescription: 'Коллекция Agent Skills для Claude Code: тематические категории, каталог и сценарий установки.',
-      skillCatalog: 'Каталог', skillInstallation: 'Установка',
+      skillDownload: 'Скачать ZIP',
 
       developmentLog: 'Журнал разработок',
       searchProjects: 'Поиск проектов', searchProjectsPlaceholder: 'Найти проект…',
@@ -49,14 +49,14 @@
     en: {
       skillsAgents: 'Skills & Agents', skillsAgentsNav: 'Skills &\u00a0Agents', telegramChannel: 'Telegram Channel',
       skillsAgentsTitle: 'Skills & Agents — Slipcast-Dev',
-      skillsAgentsDescription: 'Skill collections for Codex and Claude Code: catalogs, repositories and installation guides.',
+      skillsAgentsDescription: 'Skill collections for Codex and Claude Code: downloadable archives.',
       skillsIntro: 'Skill collections for development, analysis, documents and automation.',
       skillCollections: 'Skill and agent collections',
       filterCollections: 'Filter collections', allCollections: 'All', skillsFilter: 'Skills', agentsFilter: 'Agents',
       noAgents: 'No agent collections have been published yet.',
       codexSkillsDescription: 'User skills for Codex, organized by topic: development, AI, documents, business and everyday tasks.',
       claudeSkillsDescription: 'An Agent Skills collection for Claude Code, with topic categories, a catalog and an installation script.',
-      skillCatalog: 'Catalog', skillInstallation: 'Installation',
+      skillDownload: 'Download ZIP',
 
       developmentLog: 'Development Log',
       searchProjects: 'Project search', searchProjectsPlaceholder: 'Find a project…',

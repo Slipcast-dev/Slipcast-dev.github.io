@@ -37,6 +37,14 @@ for (const entry of await readdir(destination, { withFileTypes: true })) {
     const version = createHash('sha256').update(await readFile(destination + name)).digest('hex').slice(0, 12);
     html = html.replaceAll(`src="${name}"`, `src="${name}?v=${version}"`);
   }
+  if (entry.name === 'skills-agents.html') {
+    // После замены ZIP меняется адрес скачивания, чтобы браузер получил архив из новой сборки.
+    for (const archive of ['codex-skills.zip', 'claude-skills.zip']) {
+      const relativePath = `downloads/${archive}`;
+      const version = createHash('sha256').update(await readFile(destination + relativePath)).digest('hex').slice(0, 16);
+      html = html.replace(`href="${relativePath}"`, `href="${relativePath}?v=${version}"`);
+    }
+  }
   // Разрешены только локальные JS-файлы и точные хеши встроенных сценариев этой сборки.
   const hashes = [...html.matchAll(/<script\b[^>]*>([\s\S]*?)<\/script>/g)]
     .filter(match => match[1].trim())

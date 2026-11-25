@@ -12,7 +12,7 @@
   <meta property="og:image" content="https://slipcast-dev.github.io/assets/avatar.jpg">
   <meta name="twitter:card" content="summary">
   <meta name="theme-color" content="#000000">
-  <meta name="description" content="Коллекции скиллов для Codex и Claude Code: каталоги, репозитории и инструкции установки.">
+  <meta name="description" content="Коллекции скиллов для Codex и Claude Code: архивы для скачивания.">
   <title>Скиллы и агенты — Slipcast-Dev</title>
   <script src="i18n.js"></script>
   <style>
@@ -71,8 +71,7 @@
     .collection-filters { display: flex; justify-content: center; flex-wrap: wrap; gap: 10px; margin: -20px 0 36px; }
     .collection-filters button { min-height: 42px; padding: 10px 18px; border: 1px solid #00ff6640; border-radius: 5px; background: #000; color: var(--muted); font: inherit; font-size: 13px; cursor: pointer; }
     .collection-filters button[aria-pressed="true"] { border-color: var(--green); color: var(--green); background: #00ff6612; }
-    .collection-links { display: flex; justify-content: center; flex-wrap: wrap; gap: 8px 24px; margin-top: 22px; color: var(--green); font-size: 13px; }
-    .collection-links a { display: inline-flex; align-items: center; min-height: 44px; text-decoration: underline; text-underline-offset: 4px; }
+    .collection-download { display: inline-flex; align-items: center; min-height: 44px; margin-top: 22px; color: var(--green); font-size: 13px; text-decoration: underline; text-underline-offset: 4px; }
     [hidden] { display: none !important; }
     @media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition: none !important; } }
   </style>
@@ -101,28 +100,20 @@
     <p id="empty-collections" class="load-status" role="status" data-i18n="noAgents" hidden>Коллекции агентов пока не опубликованы.</p>
     <ol class="project-list" aria-label="Коллекции скиллов и агентов" data-i18n-label="skillCollections">
       <li data-collection="skills">
-        <article class="project-card" aria-labelledby="codex-skills-title">
+        <a class="project-card" href="downloads/codex-skills.zip" download="codex-skills.zip" aria-labelledby="codex-skills-title codex-skills-download">
           <span class="status">Codex · SKILL.md</span>
           <h2 id="codex-skills-title">codex-skills</h2>
           <p data-i18n="codexSkillsDescription">Пользовательские навыки для Codex, распределённые по темам: разработка, ИИ, документы, бизнес и личные задачи.</p>
-          <div class="collection-links">
-            <a href="https://github.com/Slipcast-dev/codex-skills">GitHub ↗</a>
-            <a href="https://github.com/Slipcast-dev/codex-skills/blob/main/CATALOG.md" data-i18n="skillCatalog">Каталог</a>
-            <a href="https://github.com/Slipcast-dev/codex-skills/releases/latest" data-i18n="skillInstallation">Установка</a>
-          </div>
-        </article>
+          <span class="collection-download" id="codex-skills-download" data-i18n="skillDownload">Скачать ZIP</span>
+        </a>
       </li>
       <li data-collection="skills">
-        <article class="project-card" aria-labelledby="claude-skills-title">
+        <a class="project-card" href="downloads/claude-skills.zip" download="claude-skills.zip" aria-labelledby="claude-skills-title claude-skills-download">
           <span class="status">Claude Code · SKILL.md</span>
           <h2 id="claude-skills-title">claude-skills</h2>
           <p data-i18n="claudeSkillsDescription">Коллекция Agent Skills для Claude Code: тематические категории, каталог и сценарий установки.</p>
-          <div class="collection-links">
-            <a href="https://github.com/Slipcast-dev/claude-skills">GitHub ↗</a>
-            <a href="https://github.com/Slipcast-dev/claude-skills#catalog" data-i18n="skillCatalog">Каталог</a>
-            <a href="https://github.com/Slipcast-dev/claude-skills/releases/latest" data-i18n="skillInstallation">Установка</a>
-          </div>
-        </article>
+          <span class="collection-download" id="claude-skills-download" data-i18n="skillDownload">Скачать ZIP</span>
+        </a>
       </li>
     </ol>
     <footer class="end"><a class="back" href="index.html" data-i18n="back">← Назад в терминал</a></footer>

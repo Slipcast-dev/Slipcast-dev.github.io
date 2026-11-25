@@ -327,7 +327,7 @@ test('Медленный локальный JSON не задерживает о�
   assert.equal(list.children[0].children[0].children[0].textContent, 'v10');
 });
 
-test('Новый раздел доступен из меню; фильтры и перевод работают, репозитории связаны с GitHub', () => {
+test('Раздел скиллов доступен из меню; карточки скачивают архивы, фильтры и перевод работают', () => {
   const home = setup('index.html', { languages: ['ru'], seen: true });
   const navigation = home.document.querySelector('[data-i18n="skillsAgentsNav"]');
   assert.equal(navigation.textContent, 'Скиллы и\u00a0агенты');
@@ -348,13 +348,16 @@ test('Новый раздел доступен из меню; фильтры и 
   const page = setup('skills-agents.html', { languages: ['ru'] });
   assert.equal(page.document.querySelector('h1').textContent, 'Скиллы и агенты');
   assert.equal(page.document.title, 'Скиллы и агенты — Slipcast-Dev');
-  assert.ok(page.nodes.some(node => node.tag === 'a' && node.attrs.href === 'https://github.com/Slipcast-dev/codex-skills'));
-  assert.ok(page.nodes.some(node => node.tag === 'a' && node.attrs.href === 'https://github.com/Slipcast-dev/claude-skills'));
-  const installationLinks = page.document.querySelectorAll('[data-i18n="skillInstallation"]');
-  assert.deepEqual(installationLinks.map(node => node.attrs.href), [
-    'https://github.com/Slipcast-dev/codex-skills/releases/latest',
-    'https://github.com/Slipcast-dev/claude-skills/releases/latest'
-  ]);
+  const builtPage = fs.readFileSync(path.join(dist, 'skills-agents.html'), 'utf8');
+  for (const name of ['codex-skills.zip', 'claude-skills.zip']) {
+    const url = 'downloads/' + name;
+    const card = page.nodes.find(node => node.tag === 'a' && node.attrs.download === name);
+    assert.equal(card.attrs.href, url);
+    assert.ok(card.attrs.class.split(' ').includes('project-card'));
+    const archive = fs.readFileSync(path.join(dist, url));
+    const version = createHash('sha256').update(archive).digest('hex').slice(0, 16);
+    assert.ok(builtPage.includes(`href="${url}?v=${version}" download="${name}"`));
+  }
   const cards = page.document.querySelectorAll('[data-collection]');
   assert.equal(cards.length, 2);
   const choose = name => page.document.querySelector('[data-filter="' + name + '"]').listeners.click[0]();
