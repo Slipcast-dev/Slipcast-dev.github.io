@@ -12,7 +12,7 @@
       noAgents: 'Коллекции агентов пока не опубликованы.',
       codexSkillsDescription: 'Пользовательские навыки для Codex, распределённые по темам: разработка, ИИ, документы, бизнес и личные задачи.',
       claudeSkillsDescription: 'Коллекция Agent Skills для Claude Code: тематические категории, каталог и сценарий установки.',
-      skillDownload: 'Скачать ZIP',
+      skillDownload: 'Скачать',
 
       developmentLog: 'Журнал разработок',
       searchProjects: 'Поиск проектов', searchProjectsPlaceholder: 'Найти проект…',
@@ -56,7 +56,7 @@
       noAgents: 'No agent collections have been published yet.',
       codexSkillsDescription: 'User skills for Codex, organized by topic: development, AI, documents, business and everyday tasks.',
       claudeSkillsDescription: 'An Agent Skills collection for Claude Code, with topic categories, a catalog and an installation script.',
-      skillDownload: 'Download ZIP',
+      skillDownload: 'Download',
 
       developmentLog: 'Development Log',
       searchProjects: 'Project search', searchProjectsPlaceholder: 'Find a project…',
