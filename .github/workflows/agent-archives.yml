@@ -1,0 +1,47 @@
+name: Publish agent archives
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'site/downloads/agents/*.zip'
+      - '.github/workflows/agent-archives.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: agent-archives-release
+  cancel-in-progress: false
+
+jobs:
+  release:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          ref: refs/heads/main
+          persist-credentials: false
+      - name: Publish latest ZIP files
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          archives=(
+            site/downloads/agents/claude-agents-design-development.zip
+            site/downloads/agents/claude-agents-web-telegram.zip
+            site/downloads/agents/claude-agents-refactoring-security-optimization.zip
+          )
+          # Последний релиз должен содержать полный комплект, даже если обновился только один ZIP.
+          for archive in "${archives[@]}"; do
+            unzip -tq "$archive"
+          done
+          gh release create "agents-${GITHUB_RUN_NUMBER}.${GITHUB_RUN_ATTEMPT}" "${archives[@]}" \
+            --repo "$GITHUB_REPOSITORY" --target "$(git rev-parse HEAD)" --latest \
+            --title "Claude subagents · ${GITHUB_RUN_NUMBER}.${GITHUB_RUN_ATTEMPT}" \
+            --notes "Download the three Claude Code subagent collections from the assets below."

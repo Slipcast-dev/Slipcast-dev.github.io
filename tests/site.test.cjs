@@ -359,18 +359,34 @@ test('Раздел скиллов доступен из меню; карточк
     assert.ok(builtPage.includes(`href="${url}?v=${version}" download="${name}"`));
   }
   const cards = page.document.querySelectorAll('[data-collection]');
-  assert.equal(cards.length, 2);
+  const agents = cards.filter(card => card.dataset.collection === 'agents');
+  const skills = cards.filter(card => card.dataset.collection === 'skills');
+  assert.equal(agents.length, 3);
+  assert.equal(skills.length, 2);
+  const assets = [
+    'claude-agents-design-development.zip',
+    'claude-agents-web-telegram.zip',
+    'claude-agents-refactoring-security-optimization.zip'
+  ];
+  for (const name of assets) {
+    const link = page.nodes.find(node => node.tag === 'a' && node.attrs.download === name);
+    assert.equal(link.attrs.href, 'https://github.com/Slipcast-dev/Slipcast-dev.github.io/releases/latest/download/' + name);
+    assert.ok(fs.statSync(path.join(dist, 'downloads/agents', name)).size > 0);
+  }
   const choose = name => page.document.querySelector('[data-filter="' + name + '"]').listeners.click[0]();
   choose('agents');
-  assert.ok(cards.every(card => card.hidden));
-  assert.equal(page.document.querySelector('#empty-collections').hidden, false);
+  assert.ok(agents.every(card => !card.hidden));
+  assert.ok(skills.every(card => card.hidden));
+  assert.equal(page.document.querySelector('#empty-collections').hidden, true);
   page.click('en');
   assert.equal(page.document.querySelector('h1').textContent, 'Skills & Agents');
   assert.equal(page.document.title, 'Skills & Agents — Slipcast-Dev');
   assert.equal(page.document.querySelector('#empty-collections').textContent, 'No agent collections have been published yet.');
-  assert.ok(cards.every(card => card.hidden));
+  assert.ok(agents.every(card => !card.hidden));
+  assert.ok(skills.every(card => card.hidden));
   choose('skills');
-  assert.ok(cards.every(card => !card.hidden));
+  assert.ok(skills.every(card => !card.hidden));
+  assert.ok(agents.every(card => card.hidden));
   assert.equal(page.document.querySelector('#empty-collections').hidden, true);
   choose('all');
   assert.ok(cards.every(card => !card.hidden));
