@@ -31,6 +31,19 @@ button{min-height:42px;padding:8px 13px}button:hover:not(:disabled){border-color
 @media(max-width:650px){.container{width:calc(100% - 24px)}.workspace{grid-template-columns:1fr}.hero{padding:35px 0 24px}.flow{grid-template-columns:repeat(4,minmax(0,1fr))}.flow li{padding:7px 4px;text-align:center}.flow li:before{display:none}.cards{grid-template-columns:1fr 1fr}.filters{grid-template-columns:1fr}.team small{display:none}}
 @media(max-width:370px){.cards{grid-template-columns:1fr}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation:none!important;transition:none!important}}
+
+/* Тот же фон, шрифт и цвет акцента для всех раскрывающихся списков. */
+.theme-select{position:relative;min-width:0}
+.theme-select-trigger{width:100%;min-height:44px;display:flex;align-items:center;gap:10px;justify-content:space-between;text-align:left;padding:8px 11px}
+.theme-select-trigger span{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.theme-select-trigger::after{content:'';flex:none;width:7px;height:7px;border:solid var(--mint);border-width:0 2px 2px 0;transform:rotate(45deg);margin-right:3px}
+.theme-select-trigger[aria-expanded=true]{border-color:var(--mint)}
+.theme-select-list{position:absolute;z-index:10;inset:calc(100% + 5px) 0 auto;max-height:min(21rem,var(--list-space,45vh));overflow:auto;overscroll-behavior:contain;padding:5px;background:var(--panel2);border:1px solid var(--line);border-radius:8px;box-shadow:0 8px 24px #000b;scroll-behavior:auto}
+.theme-select.opens-up .theme-select-list{inset:auto 0 calc(100% + 5px)}
+.theme-select-heading{padding:9px 9px 4px;color:var(--muted);font-size:.78rem;font-weight:700}
+.theme-select-option{border-radius:5px;padding:8px 9px;cursor:pointer;overflow-wrap:anywhere}
+.theme-select-option[aria-selected=true]{background:#0a2613;color:var(--mint)}
+.theme-select-option:hover,.theme-select-option:focus{background:#10371d;color:var(--text);outline:1px solid #00ff6680;outline-offset:-1px}
 </style>
 </head>
 <body>
@@ -59,7 +72,7 @@ button{min-height:42px;padding:8px 13px}button:hover:not(:disabled){border-color
             <option value="flagship">Флагманская модель</option>
             <option value="inherit">Из текущей сессии</option>
           </select>
-          <span class="model-hint" id="model-hint">Доступность моделей зависит от клиента и тарифа.</span>
+          <span class="model-hint" id="model-hint">Флагманы: Codex — GPT‑6.2 Astra · Claude Code — Claude Fable. Доступ зависит от клиента и тарифа.</span>
         </div>
       </div>
       <button id="recommend" type="submit" class="primary recommend" disabled>Соберите проект</button>
@@ -724,10 +737,6 @@ function updatePicker() {
   const action = pickerAction(projectSettings());
   const button = $('recommend');
   button.disabled = action === 'empty';
-  const { engine } = projectSettings();
-  $('model-hint').textContent = engine
-    ? 'Флагман: ' + environment[engine].flagship[1] + '. Доступ зависит от клиента и тарифа.'
-    : 'Доступность моделей зависит от клиента и тарифа.';
   button.textContent = {
     empty: 'Соберите проект', build: 'Подобрать', reset: 'Сброс проекта', rebuild: 'Пересобрать'
   }[action];
@@ -1017,6 +1026,183 @@ $('category').addEventListener('change', renderCatalog);
 renderCatalog();
 renderResult();
 updatePicker();
+</script>
+<script>
+(() => {
+  'use strict';
+
+  // Нативный select остаётся источником значения и обеспечивает сброс формы.
+  function enhance(select) {
+    const container = document.createElement('div');
+    container.className = 'theme-select';
+    const trigger = document.createElement('button');
+    trigger.type = 'button';
+    trigger.id = select.id + '-trigger';
+    trigger.className = 'theme-select-trigger';
+    trigger.setAttribute('aria-haspopup', 'listbox');
+    trigger.setAttribute('aria-expanded', 'false');
+    const value = document.createElement('span');
+    trigger.append(value);
+    const list = document.createElement('div');
+    list.id = select.id + '-list';
+    list.className = 'theme-select-list';
+    list.hidden = true;
+    list.setAttribute('role', 'listbox');
+    trigger.setAttribute('aria-controls', list.id);
+    const label = select.labels[0];
+    const accessibleName = label?.textContent.trim() || select.getAttribute('aria-label');
+    list.setAttribute('aria-label', accessibleName);
+    const describedBy = select.getAttribute('aria-describedby');
+    if (describedBy) trigger.setAttribute('aria-describedby', describedBy);
+
+    const entries = [];
+    function appendOption(option, group) {
+      if (option.disabled || option.parentElement.disabled) return;
+      const item = document.createElement('div');
+      item.className = 'theme-select-option';
+      item.setAttribute('role', 'option');
+      item.tabIndex = -1;
+      item.textContent = option.label;
+      item.addEventListener('click', () => choose(option));
+      group.append(item);
+      entries.push({ option, item });
+    }
+
+    for (const child of select.children) {
+      if (child.tagName === 'OPTION') {
+        appendOption(child, list);
+      } else {
+        const group = document.createElement('div');
+        group.setAttribute('role', 'group');
+        group.setAttribute('aria-label', child.label);
+        const heading = document.createElement('div');
+        heading.className = 'theme-select-heading';
+        heading.setAttribute('aria-hidden', 'true');
+        heading.textContent = child.label;
+        group.append(heading);
+        for (const option of child.children) appendOption(option, group);
+        list.append(group);
+      }
+    }
+    if (!entries.length) return;
+
+    let active = 0;
+    let search = '';
+    let lastKeyTime = 0;
+    function sync() {
+      const selected = select.selectedOptions[0];
+      value.textContent = selected?.label || '';
+      trigger.setAttribute('aria-label', accessibleName + ': ' + value.textContent);
+      for (const { option, item } of entries) {
+        item.setAttribute('aria-selected', String(option === selected));
+      }
+    }
+
+    function close() {
+      list.hidden = true;
+      trigger.setAttribute('aria-expanded', 'false');
+    }
+
+    function focusOption(index) {
+      active = Math.max(0, Math.min(index, entries.length - 1));
+      const { item } = entries[active];
+      item.focus({ preventScroll: true });
+      item.scrollIntoView({ block: 'nearest' });
+    }
+
+    function open(last = false) {
+      const bounds = trigger.getBoundingClientRect();
+      const below = window.innerHeight - bounds.bottom;
+      const above = bounds.top;
+      const opensUp = below < 240 && above > below;
+      container.classList.toggle('opens-up', opensUp);
+      list.style.setProperty('--list-space', Math.max(120, (opensUp ? above : below) - 12) + 'px');
+      list.hidden = false;
+      trigger.setAttribute('aria-expanded', 'true');
+      search = '';
+      const selectedIndex = entries.findIndex(({ option }) => option.selected);
+      focusOption(selectedIndex < 0 ? (last ? entries.length - 1 : 0) : selectedIndex);
+    }
+
+    function choose(option) {
+      if (select.value !== option.value) {
+        select.value = option.value;
+        select.dispatchEvent(new Event('change', { bubbles: true }));
+      }
+      close();
+      trigger.focus({ preventScroll: true });
+    }
+
+    trigger.addEventListener('click', () => {
+      if (list.hidden) open();
+      else close();
+    });
+    trigger.addEventListener('keydown', event => {
+      if (event.key !== 'ArrowDown' && event.key !== 'ArrowUp') return;
+      event.preventDefault();
+      open(event.key === 'ArrowUp');
+    });
+    list.addEventListener('keydown', event => {
+      switch (event.key) {
+        case 'ArrowDown':
+        case 'ArrowUp':
+          event.preventDefault();
+          focusOption(active + (event.key === 'ArrowDown' ? 1 : -1));
+          return;
+        case 'Home':
+        case 'End':
+          event.preventDefault();
+          focusOption(event.key === 'Home' ? 0 : entries.length - 1);
+          return;
+        case 'Enter':
+        case ' ':
+          event.preventDefault();
+          choose(entries[active].option);
+          return;
+        case 'Escape':
+          event.preventDefault();
+          close();
+          trigger.focus({ preventScroll: true });
+          return;
+        case 'Tab':
+          setTimeout(close);
+          return;
+      }
+      // Поиск по первым буквам помогает пройти длинный список с клавиатуры.
+      if (event.key.length !== 1 || event.ctrlKey || event.metaKey || event.altKey) return;
+      event.preventDefault();
+      const now = Date.now();
+      const character = event.key.toLocaleLowerCase('ru');
+      search = now - lastKeyTime > 700 ? character : search + character;
+      lastKeyTime = now;
+      for (let step = 0; step < entries.length; step += 1) {
+        const index = (active + step + (search.length === 1 ? 1 : 0)) % entries.length;
+        if (!entries[index].option.label.toLocaleLowerCase('ru').startsWith(search)) continue;
+        focusOption(index);
+        break;
+      }
+    });
+    container.addEventListener('focusout', event => {
+      if (!container.contains(event.relatedTarget)) close();
+    });
+    document.addEventListener('pointerdown', event => {
+      if (!container.contains(event.target)) close();
+    });
+    select.addEventListener('change', sync);
+    select.form?.addEventListener('reset', () => queueMicrotask(() => {
+      close();
+      sync();
+    }));
+
+    container.append(trigger, list);
+    select.after(container);
+    if (label) label.htmlFor = trigger.id;
+    select.hidden = true;
+    sync();
+  }
+
+  for (const select of document.querySelectorAll('select')) enhance(select);
+})();
 </script>
 </body>
 </html>
