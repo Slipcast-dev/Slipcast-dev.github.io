@@ -78,9 +78,9 @@ test('Проекты выводятся сразу без GitHub API, прива
   vm.runInContext('renderProjects(testSnapshot)', page.context);
   const cards = page.document.querySelector('#project-list').children;
   assert.equal(cards.length, 1);
-  assert.equal(cards[0].children[0].children[1].textContent, '<script>');
+  assert.equal(cards[0].children[0].children[0].textContent, '<script>');
   assert.equal(cards[0].children[0].href, undefined);
-  assert.equal(cards[0].children[0].children[2].textContent, '<img onerror=alert(1)>');
+  assert.equal(cards[0].children[0].children[1].textContent, '<img onerror=alert(1)>');
 });
 
 test('Ошибка сети не удаляет карточки; резервный JSON применяется при недоступном API', async () => {
@@ -184,20 +184,20 @@ test('Поиск фильтрует карточки без учёта реги�
   const search = value => { input.value = value; input.listeners.input.forEach(listener => listener()); };
   search('  GRIZZLY   редактор  ');
   assert.equal(list.children.length, 1);
-  assert.equal(list.children[0].children[0].children[1].textContent, 'Grizzly');
+  assert.equal(list.children[0].children[0].children[0].textContent, 'Grizzly');
   for (const query of ['гризли', 'ГРИЗЗЛИ', 'гриз', 'гризли markdown']) {
     search(query);
     assert.equal(list.children.length, 1, query);
-    assert.equal(list.children[0].children[0].children[1].textContent, 'Grizzly', query);
+    assert.equal(list.children[0].children[0].children[0].textContent, 'Grizzly', query);
   }
   search('гризли переводчик');
   assert.equal(list.children.length, 0);
   page.click('en');
   search('гризли');
-  assert.equal(list.children[0].children[0].children[1].textContent, 'Grizzly');
+  assert.equal(list.children[0].children[0].children[0].textContent, 'Grizzly');
   page.click('ru');
   search('V2.0');
-  assert.equal(list.children[0].children[0].children[1].textContent, 'Koto');
+  assert.equal(list.children[0].children[0].children[0].textContent, 'Koto');
   search('<script>');
   assert.equal(list.children.length, 0);
   assert.equal(page.document.querySelector('#load-status').textContent, 'Проекты не найдены. Попробуйте другой запрос.');
@@ -232,7 +232,7 @@ test('Общий поиск сопоставляет кириллицу и ла�
   ].map(([name, description, version], index) => ({ id: index + 400, name, description, version, private: false, owner: { login: 'Slipcast-dev' } }));
   page.context.futureSnapshot = { repositories: projects };
   vm.runInContext('renderProjects(futureSnapshot)', page.context);
-  const run = query => { input.value = query; input.listeners.input.forEach(listener => listener()); return list.children.map(item => item.children[0].children[1].textContent); };
+  const run = query => { input.value = query; input.listeners.input.forEach(listener => listener()); return list.children.map(item => item.children[0].children[0].textContent); };
   for (const [query, expected] of [
     ['гризли', 'Grizzly'], ['ГРИЗЗЛИ', 'Grizzly'], ['кото', 'translator-Koto'],
     ['драгон макрос', 'DragonMacros'], ['кодекс', 'codex-toolkit'],
@@ -266,13 +266,13 @@ test('GitHub обновляет название, описание, релиз �
   const cards = page.document.querySelector('#project-list').children;
   assert.equal(cards.length, 1);
   const card = cards[0].children[0];
-  assert.equal(card.children[0].textContent, 'v99');
-  assert.equal(card.children[1].textContent, 'renamed-app');
-  assert.equal(card.children[2].textContent, 'Fresh description');
+  assert.equal(card.children[0].textContent, 'renamed-app');
+  assert.equal(card.children[1].textContent, 'Fresh description');
+  assert.equal(vm.runInContext('currentSnapshot.repositories[0].version', page.context), 'v99');
   const count = page.calls.length;
   await vm.runInContext('lastAttempt = 0; refreshProjects()', page.context);
   assert.equal(page.calls.length, count + 1);
-  assert.equal(page.document.querySelector('#project-list').children[0].children[0].children[0].textContent, 'v99');
+  assert.equal(vm.runInContext('currentSnapshot.repositories[0].version', page.context), 'v99');
   assert.ok(page.session.get('projects-live-snapshot').includes('renamed-app'));
 });
 
@@ -292,7 +292,7 @@ test('Повторное открытие обновляет карточки п
 
   assert.deepEqual(recent.calls.map(call => call.url), ['projects.json']);
   const cards = reopened.document.querySelector('#project-list').children;
-  assert.deepEqual(cards.map(item => item.children[0].children[1].textContent), ['NewProject']);
+  assert.deepEqual(cards.map(item => item.children[0].children[0].textContent), ['NewProject']);
 });
 
 test('После исчерпания лимита браузер соблюдает срок ожидания GitHub', async () => {
@@ -320,11 +320,11 @@ test('Медленный локальный JSON не задерживает о�
   });
   await flush();
   const list = page.document.querySelector('#project-list');
-  assert.equal(list.children[0].children[0].children[0].textContent, 'v10');
+  assert.equal(vm.runInContext('currentSnapshot.repositories[0].version', page.context), 'v10');
   finishSnapshot({ ok: true, json: async () => ({ fetchedAt: '2020-01-01', repositories: [] }) });
   await flush();
   assert.equal(list.children.length, 1);
-  assert.equal(list.children[0].children[0].children[0].textContent, 'v10');
+  assert.equal(vm.runInContext('currentSnapshot.repositories[0].version', page.context), 'v10');
 });
 
 test('Раздел скиллов доступен из меню; карточки скачивают архивы, фильтры и перевод работают', () => {
@@ -406,6 +406,8 @@ test('Карточка приложения скачивает установщ�
   const [card, options] = item.children;
   assert.equal(item.className, 'project-card');
   assert.equal(options.className, 'download-options');
+  assert.equal(card.children[0].textContent, 'Grizzly');
+  assert.match(card.children[1].textContent, /^Просмотр и редактирование Markdown/);
   assert.equal(card.href, base + 'Grizzly-portable.exe');
   assert.equal(card.getAttribute('download'), '');
   assert.deepEqual(options.children.map(link => link.href), names.slice(0, 3).map(name => base + name));
@@ -415,6 +417,7 @@ test('Карточка приложения скачивает установщ�
     'v3.0.0 · 110,7 МБ · Windows 10/11 · x64'
   ]);
   page.click('en');
-  const english = page.document.querySelector('#project-list').children[0].children[1];
+  const [englishCard, english] = page.document.querySelector('#project-list').children[0].children;
+  assert.match(englishCard.children[1].textContent, /^Read and edit Markdown/);
   assert.equal(english.children[2].children[1].textContent, 'v3.0.0 · 110.7 MB · Windows 10/11 · x64');
 });

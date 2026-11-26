@@ -40,6 +40,14 @@
       terminalSummary: 'Декоративная анимация команд macOS, Linux и GitHub CLI.',
       sections: 'Разделы сайта', navigation: 'Навигация сайта', back: '← Назад в терминал', terminal: '← Терминал',
       websitesDescription: 'Раздел для портфолио веб-сайтов: дизайн, разработка и ссылки на опубликованные работы.',
+      // ID репозитория сохраняется при переименовании приложения.
+      projectDescriptions: {
+        1439219299: "Утилита глобальных горячих клавиш для macOS. Запускает приложения и открывает ссылки. Интерфейс на русском и английском.",
+        1428347734: "K530 Lighting управляет подсветкой клавиатуры Redragon K530 RGB в macOS. Режим, яркость, скорость и цвет настраиваются из строки меню.",
+        1451826712: "Ретро-аудиоплеер для macOS в стиле Windows 95. Поддерживает MP3, FLAC, Ogg Opus/Vorbis, AAC/M4A, WAV и AIFF. Есть десятиполосный эквалайзер, ReplayGain, воспроизведение без пауз и автообновление.",
+        1428396071: "Koto — переводчик для macOS. Переводит выделенный текст и распознаёт текст на изображениях. Поддерживает Apple Translation, Qwen по выбору, Chrome и Safari.",
+        1435902203: "Просмотр и редактирование Markdown, текста и исходного кода. Есть теги, проверка орфографии на русском и английском, подсветка синтаксиса и встроенные обновления. Доступны приложение для macOS и портативная сборка для Windows.",
+      },
       projectList: 'Публичные проекты Slipcast-dev', loadingProjects: 'Загрузка публичных проектов…', loadingVersion: 'Загрузка версии…',
       downloadmac: 'Скачать для macOS', downloadmacArm: 'Скачать для Mac с Apple Silicon',
       downloadmacIntel: 'Скачать для Mac с Intel', downloadwindows: 'Скачать для Windows',
@@ -90,6 +98,14 @@
       terminalSummary: 'Decorative macOS, Linux and GitHub CLI command animation.',
       sections: 'Website sections', navigation: 'Website navigation', back: '← Back to terminal', terminal: '← Terminal',
       websitesDescription: 'A website portfolio section for design, development and links to published work.',
+      // ID репозитория сохраняется при переименовании приложения.
+      projectDescriptions: {
+        1439219299: "A native macOS utility for global hotkeys that launch apps and open links. Available in English and Russian.",
+        1428347734: "K530 Lighting controls the Redragon K530 RGB keyboard on macOS. Adjust lighting mode, brightness, speed and color from the menu bar.",
+        1451826712: "A Windows 95–style audio player for macOS. Supports MP3, FLAC, Ogg Opus/Vorbis, AAC/M4A, WAV and AIFF, with a 10-band equalizer, ReplayGain, gapless playback and updates.",
+        1428396071: "Koto is a macOS translator for text selections and text recognized in images. Supports Apple Translation, optional Qwen, Chrome and Safari.",
+        1435902203: "Read and edit Markdown, text and source code with tags, English and Russian spell checking, syntax highlighting and in-app updates. Available as a native macOS app and a portable Windows build.",
+      },
       projectList: 'Public Slipcast-dev projects', loadingProjects: 'Loading public projects…', loadingVersion: 'Loading version…',
       downloadmac: 'Download for macOS', downloadmacArm: 'Download for Apple Silicon Macs',
       downloadmacIntel: 'Download for Intel Macs', downloadwindows: 'Download for Windows',
@@ -160,7 +176,8 @@
     apply();
     document.dispatchEvent(new Event('languagechange'));
   }
-  window.siteI18n = { t, message, get language() { return language; }, setLanguage };
+  const projectDescription = id => strings[language].projectDescriptions[id];
+  window.siteI18n = { t, message, projectDescription, get language() { return language; }, setLanguage };
   document.addEventListener('DOMContentLoaded', () => {
     apply();
     document.querySelectorAll('[data-language]').forEach(button => {

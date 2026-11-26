@@ -51,7 +51,7 @@
     .project-card:is(:hover, :focus-within) h2 { color: var(--green); }
     .project-card:is(:hover, :focus-within) .status { color: #a0ffc4; }
     .project-card:is(:hover, :focus-within) p { color: #c2ebd2; }
-    .status { color: #92e6b3; text-transform: none; letter-spacing: .14em; font-size: 11px; line-height: 1.7; }
+    .status { margin-top: 8px; color: #92e6b3; font-size: 11px; line-height: 1.7; }
     h2 { margin: 6px 0 8px; color: #d8ffe6; font-size: clamp(18px, 2.5vw, 22px); line-height: 1.4; font-weight: 600; }
     .project-card p { max-width: 760px; margin: 0; color: #9ab8a5; font-size: 14px; line-height: 1.85; }
     .project-card h2, .project-card .status, .project-card p { transition: color .22s ease; }
@@ -163,7 +163,7 @@
         .map(term => ({ original: term, key: searchKey(term) }));
       const projects = snapshot.repositories.filter(validProject);
       const matches = projects.filter(repo => {
-        const text = normalize([repo.name, repo.description, repo.version].filter(value => typeof value === 'string').join(' '));
+        const text = normalize([repo.name, i18n.projectDescription(repo.id), repo.description, repo.version].filter(value => typeof value === 'string').join(' '));
         const key = searchKey(text);
         return terms.every(term => text.includes(term.original) || (term.key.length > 0 && key.includes(term.key)));
       });
@@ -181,17 +181,14 @@
           card.href = main.url;
           card.setAttribute('download', '');
         }
-        const version = document.createElement('span');
-        version.className = 'status';
-        if (typeof repo.version === 'string' && repo.version.trim()) version.textContent = repo.version;
-        else i18n.message(version, repo.releaseState === 'loading' ? 'loadingVersion'
-          : repo.releaseState === 'unavailable' ? 'versionUnavailable' : 'noRelease');
         const title = document.createElement('h2');
         title.textContent = repo.name;
         const description = document.createElement('p');
-        if (typeof repo.description === 'string' && repo.description.trim()) description.textContent = repo.description;
+        const descriptionText = i18n.projectDescription(repo.id)
+          || (typeof repo.description === 'string' ? repo.description.trim() : '');
+        if (descriptionText) description.textContent = descriptionText;
         else i18n.message(description, 'noDescription');
-        card.append(version, title, description);
+        card.append(title, description);
         item.append(card);
         if (builds.length) {
           const options = document.createElement('div');
@@ -211,6 +208,12 @@
             options.append(link);
           }
           item.append(options);
+        } else if (!repo.version) {
+          const releaseStatus = document.createElement('span');
+          releaseStatus.className = 'status';
+          i18n.message(releaseStatus, repo.releaseState === 'loading' ? 'loadingVersion'
+            : repo.releaseState === 'unavailable' ? 'versionUnavailable' : 'noRelease');
+          item.append(releaseStatus);
         }
         return item;
       });

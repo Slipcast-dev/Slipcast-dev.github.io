@@ -14,7 +14,7 @@ Personal website with a terminal interface, black background and green accents. 
 - `projects.html` — «Журнал разработок» / Development Log: публичные репозитории, названия, описания и последние опубликованные версии, включая prerelease.
 - `websites.html` — локально сохранённый раздел, исключённый из сборки и sitemap. На опубликованном сайте этот адрес возвращает 404. Исходник содержит фиксированные карточки: [Grizzly](https://slipcast-dev.github.io/grizzly-website/), [Koto](https://slipcast-dev.github.io/koto-website/) и [VibeWave](https://slipcast-dev.github.io/vibewave-website/), с изолированными живыми превью.
 
-Язык выбирается по предпочтениям браузера. RU / EN в правом верхнем углу сохраняет ручной выбор. Названия, описания и версии GitHub показываются в оригинале репозитория. `prefers-reduced-motion` отключает печать и мигание.
+Язык выбирается по предпочтениям браузера. RU / EN в правом верхнем углу сохраняет ручной выбор. Названия и версии приложений берутся из GitHub. Описания известных приложений переведены в `site/i18n.js`, а для остальных используется описание репозитория. `prefers-reduced-motion` отключает печать и мигание.
 
 ## Обновление архивов скиллов
 
