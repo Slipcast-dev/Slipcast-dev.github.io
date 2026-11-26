@@ -62,7 +62,9 @@
     /* Основная ссылка покрывает карточку, а ссылки выбора сборки доступны поверх неё. */
     .project-card > a::after { content: ""; position: absolute; inset: 0; }
     .download-options { display: flex; flex-wrap: wrap; justify-content: center; gap: 4px 16px; margin-top: 8px; }
-    .download-options a { position: relative; color: var(--green); padding: 8px 4px; font-size: 12px; text-decoration: underline; }
+    .download-options a { position: relative; display: flex; flex-direction: column; align-items: center; gap: 4px; color: var(--green); padding: 8px 4px; font-size: 12px; }
+    .download-label { text-decoration: underline; text-underline-offset: 3px; }
+    .download-info { color: var(--muted); font-size: 11px; line-height: 1.5; }
     .end { display: flex; justify-content: center; margin-top: 54px; }
     .back { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; border: 1px solid #00ff6670; border-radius: 5px; padding: 11px 20px; color: var(--green); font-size: 13px; transition: background .2s; }
     .back:hover { background: #00ff6614; }
@@ -144,6 +146,14 @@
         .replace(/y/g, 'i').replace(/([a-z])\1+/g, '$1');
     }
 
+    function formatDownloadSize(bytes) {
+      const unit = bytes >= 1_000_000 ? 'megabyte' : bytes >= 1_000 ? 'kilobyte' : 'byte';
+      const divisor = { megabyte: 1_000_000, kilobyte: 1_000, byte: 1 }[unit];
+      return new Intl.NumberFormat(i18n.language, {
+        style: 'unit', unit, unitDisplay: 'short', maximumFractionDigits: 1
+      }).format(bytes / divisor);
+    }
+
     function renderProjects(snapshot) {
       if (!snapshot || !Array.isArray(snapshot.repositories)) throw new Error('Invalid public project snapshot');
       currentSnapshot = snapshot;
@@ -190,7 +200,14 @@
             const link = document.createElement('a');
             link.href = build.url;
             link.setAttribute('download', '');
-            i18n.message(link, 'download' + build.key);
+            const label = document.createElement('span');
+            label.className = 'download-label';
+            i18n.message(label, 'download' + build.key);
+            const info = document.createElement('span');
+            info.className = 'download-info';
+            info.textContent = [repo.version, build.size && formatDownloadSize(build.size), build.compatibility]
+              .filter(Boolean).join(' · ');
+            link.append(label, info);
             options.append(link);
           }
           item.append(options);
@@ -249,6 +266,7 @@
         loading = false;
       }
     }
+    document.addEventListener('languagechange', () => { if (currentSnapshot) renderProjects(currentSnapshot); });
     search.addEventListener('input', () => renderProjects(currentSnapshot));
     search.addEventListener('keydown', event => {
       if (event.key === 'Escape') {

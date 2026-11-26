@@ -394,11 +394,11 @@ test('Раздел скиллов доступен из меню; карточк
 
 test('Карточка приложения скачивает установщик, сборки для других платформ доступны отдельно', () => {
   const page = setup('projects.html');
-  const base = 'https://github.com/Slipcast-dev/Grizzly/releases/download/v2/';
+  const base = 'https://github.com/Slipcast-dev/Grizzly/releases/download/v3.0.0/';
   const names = ['Grizzly-arm64.dmg', 'Grizzly-x64.dmg', 'Grizzly-portable.exe', 'SHA256SUMS.txt'];
   page.context.testSnapshot = { repositories: [{
-    id: 5, name: 'Grizzly', private: false, owner: { login: 'Slipcast-dev' }, version: 'v2',
-    downloads: [...names.map(name => ({ name, url: base + name })),
+    id: 1435902203, name: 'Grizzly', private: false, owner: { login: 'Slipcast-dev' }, version: 'v3.0.0',
+    downloads: [...names.map(name => ({ name, url: base + name, size: name.endsWith('.exe') ? 110_651_686 : 14_058_439 })),
       { name: 'Grizzly.pkg', url: 'https://example.com/Grizzly.pkg' }]
   }] };
   vm.runInContext('navigator.platform = "Win32"; renderProjects(testSnapshot)', page.context);
@@ -409,4 +409,12 @@ test('Карточка приложения скачивает установщ�
   assert.equal(card.href, base + 'Grizzly-portable.exe');
   assert.equal(card.getAttribute('download'), '');
   assert.deepEqual(options.children.map(link => link.href), names.slice(0, 3).map(name => base + name));
+  assert.deepEqual(options.children.map(link => link.children[1].textContent.replace(/\s/g, ' ')), [
+    'v3.0.0 · 14,1 МБ · macOS 13+ · Apple Silicon',
+    'v3.0.0 · 14,1 МБ · macOS 13+ · Intel',
+    'v3.0.0 · 110,7 МБ · Windows 10/11 · x64'
+  ]);
+  page.click('en');
+  const english = page.document.querySelector('#project-list').children[0].children[1];
+  assert.equal(english.children[2].children[1].textContent, 'v3.0.0 · 110.7 MB · Windows 10/11 · x64');
 });

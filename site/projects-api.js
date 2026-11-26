@@ -36,6 +36,30 @@
     }
   }
 
+  // Требования проверены для указанных релизов. Для новых версий показываем только
+  // платформу и архитектуру, которые можно определить по самому файлу.
+  const verifiedCompatibility = {
+    1439219299: { 'v3.1': { mac: 'macOS 11+ · Apple Silicon / Intel' } },
+    1428347734: { 'v1.0.0': { mac: 'macOS 11+ · Apple Silicon / Intel' } },
+    1451826712: { 'v3.0.0': { mac: 'macOS 13+ · Apple Silicon / Intel' } },
+    1428396071: { 'v3.0.0': { macArm: 'macOS 26+ · Apple Silicon' } },
+    1435902203: { 'v3.0.0': {
+      macArm: 'macOS 13+ · Apple Silicon',
+      macIntel: 'macOS 13+ · Intel',
+      windows: 'Windows 10/11 · x64'
+    } }
+  };
+
+  function buildCompatibility(repo, key, platform, arch, filename) {
+    const verified = verifiedCompatibility[repo.id]?.[repo.version]?.[key];
+    if (verified) return verified;
+    const system = { mac: 'macOS', windows: 'Windows', linux: 'Linux' }[platform];
+    const architecture = arch === 'Arm' ? (platform === 'mac' ? 'Apple Silicon' : 'ARM64')
+      : arch === 'Intel' ? (platform === 'mac' ? 'Intel' : 'x64')
+      : platform === 'mac' && /(?:^|[-_.])universal(?=[-_.])/.test(filename) ? 'Apple Silicon / Intel' : '';
+    return architecture ? system + ' · ' + architecture : system;
+  }
+
   /** Один установщик на платформу и архитектуру. DMG предпочтительнее PKG, MSI — EXE. */
   function projectDownloads(repo) {
     const formats = ['dmg', 'pkg', 'msi', 'exe', 'appimage', 'deb', 'rpm'];
@@ -50,7 +74,13 @@
       const arch = /(?:^|[-_.])(?:arm64|aarch64)(?=[-_.])/.test(filename) ? 'Arm'
         : /(?:^|[-_.])(?:x64|x86_64|intel)(?=[-_.])/.test(filename) ? 'Intel' : '';
       const key = platform + arch;
-      if (!builds.has(key) || builds.get(key).rank > rank) builds.set(key, { key, platform, url, rank });
+      if (!builds.has(key) || builds.get(key).rank > rank) {
+        builds.set(key, {
+          key, platform, url, rank,
+          size: Number.isSafeInteger(asset.size) && asset.size > 0 ? asset.size : null,
+          compatibility: buildCompatibility(repo, key, platform, arch, filename)
+        });
+      }
     }
     return [...builds.values()].sort((a, b) => a.rank - b.rank || a.key.localeCompare(b.key));
   }
@@ -134,7 +164,8 @@
         const cached = previous.get(repo.id);
         // Изменённый проект проверяем сразу. Неизменённые релизы проверяем раз в 15 минут,
         // поскольку публикация релиза без push может не изменить pushed_at репозитория.
-        const cacheIsFresh = cached && Array.isArray(cached.downloads) && cached.releaseState === 'ready'
+        const cacheIsFresh = cached && Array.isArray(cached.downloads) && cached.downloads.every(asset => Object.hasOwn(asset, 'size'))
+          && cached.releaseState === 'ready'
           && cached.name === repo.name && cached.description === repo.description
           && cached.sourceUpdatedAt === repo.updated_at && cached.sourcePushedAt === repo.pushed_at
           && Date.now() - Date.parse(cached.releaseCheckedAt) < 15 * 60 * 1000;
@@ -165,7 +196,10 @@
           downloads: (Array.isArray(latest?.assets) ? latest.assets : [])
             .filter(asset => asset?.state === 'uploaded' && releaseDownload({ name: repo.name, version: latest.tag_name },
               { name: asset.name, url: asset.browser_download_url }))
-            .map(asset => ({ name: asset.name, url: asset.browser_download_url })),
+            .map(asset => ({
+              name: asset.name, url: asset.browser_download_url,
+              size: Number.isSafeInteger(asset.size) && asset.size > 0 ? asset.size : null
+            })),
           releaseCheckedAt: new Date().toISOString(),
           sourceUpdatedAt: repo.updated_at ?? null, sourcePushedAt: repo.pushed_at ?? null
         });

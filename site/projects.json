@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "fetchedAt": "2026-11-19T22:31:18.852Z",
+  "fetchedAt": "2026-11-26T21:09:46.636Z",
   "repositories": [
     {
       "id": 1439219299,
@@ -24,25 +24,28 @@
         "productivity",
         "swift"
       ],
-      "version": "v0.5.1",
+      "version": "v3.1",
       "downloads": [
         {
-          "name": "DragonMacros-0.5.1-macOS.dmg",
-          "url": "https://github.com/Slipcast-dev/DragonMacros/releases/download/v0.5.1/DragonMacros-0.5.1-macOS.dmg"
+          "name": "DragonMacros-3.1-macOS.dmg",
+          "url": "https://github.com/Slipcast-dev/DragonMacros/releases/download/v3.1/DragonMacros-3.1-macOS.dmg",
+          "size": 3004865
         },
         {
-          "name": "DragonMacros-0.5.1-macOS.pkg",
-          "url": "https://github.com/Slipcast-dev/DragonMacros/releases/download/v0.5.1/DragonMacros-0.5.1-macOS.pkg"
+          "name": "DragonMacros-3.1-macOS.pkg",
+          "url": "https://github.com/Slipcast-dev/DragonMacros/releases/download/v3.1/DragonMacros-3.1-macOS.pkg",
+          "size": 2658693
         },
         {
           "name": "SHA256SUMS.txt",
-          "url": "https://github.com/Slipcast-dev/DragonMacros/releases/download/v0.5.1/SHA256SUMS.txt"
+          "url": "https://github.com/Slipcast-dev/DragonMacros/releases/download/v3.1/SHA256SUMS.txt",
+          "size": 186
         }
       ],
       "releaseState": "ready",
-      "releaseCheckedAt": "2026-11-19T22:31:17.247Z",
+      "releaseCheckedAt": "2026-11-26T21:09:45.024Z",
       "sourceUpdatedAt": "2026-11-14T14:50:44Z",
-      "sourcePushedAt": "2026-11-14T15:57:28Z"
+      "sourcePushedAt": "2026-11-26T12:52:56Z"
     },
     {
       "id": 1428347734,
@@ -68,33 +71,38 @@
         "swift",
         "usb-hid"
       ],
-      "version": "v0.4.0",
+      "version": "v1.0.0",
       "downloads": [
         {
-          "name": "K530Lighting-0.4.0-macOS-universal.dmg",
-          "url": "https://github.com/Slipcast-dev/Rdragon-K530RGB-Keyboard-Port/releases/download/v0.4.0/K530Lighting-0.4.0-macOS-universal.dmg"
+          "name": "K530Lighting-1.0.0-macOS-universal.dmg",
+          "url": "https://github.com/Slipcast-dev/Rdragon-K530RGB-Keyboard-Port/releases/download/v1.0.0/K530Lighting-1.0.0-macOS-universal.dmg",
+          "size": 2573185
         },
         {
-          "name": "K530Lighting-0.4.0-macOS-universal.zip",
-          "url": "https://github.com/Slipcast-dev/Rdragon-K530RGB-Keyboard-Port/releases/download/v0.4.0/K530Lighting-0.4.0-macOS-universal.zip"
+          "name": "K530Lighting-1.0.0-macOS-universal.zip",
+          "url": "https://github.com/Slipcast-dev/Rdragon-K530RGB-Keyboard-Port/releases/download/v1.0.0/K530Lighting-1.0.0-macOS-universal.zip",
+          "size": 2183839
         },
         {
           "name": "SHA256SUMS",
-          "url": "https://github.com/Slipcast-dev/Rdragon-K530RGB-Keyboard-Port/releases/download/v0.4.0/SHA256SUMS"
+          "url": "https://github.com/Slipcast-dev/Rdragon-K530RGB-Keyboard-Port/releases/download/v1.0.0/SHA256SUMS",
+          "size": 370
         },
         {
           "name": "update.json",
-          "url": "https://github.com/Slipcast-dev/Rdragon-K530RGB-Keyboard-Port/releases/download/v0.4.0/update.json"
+          "url": "https://github.com/Slipcast-dev/Rdragon-K530RGB-Keyboard-Port/releases/download/v1.0.0/update.json",
+          "size": 295
         },
         {
           "name": "update.json.sig",
-          "url": "https://github.com/Slipcast-dev/Rdragon-K530RGB-Keyboard-Port/releases/download/v0.4.0/update.json.sig"
+          "url": "https://github.com/Slipcast-dev/Rdragon-K530RGB-Keyboard-Port/releases/download/v1.0.0/update.json.sig",
+          "size": 89
         }
       ],
       "releaseState": "ready",
-      "releaseCheckedAt": "2026-11-19T22:31:16.841Z",
+      "releaseCheckedAt": "2026-11-26T21:09:45.455Z",
       "sourceUpdatedAt": "2026-11-14T01:45:03Z",
-      "sourcePushedAt": "2026-11-14T01:38:33Z"
+      "sourcePushedAt": "2026-11-25T23:44:28Z"
     },
     {
       "id": 1451826712,
@@ -125,33 +133,38 @@
         "vorbis",
         "windows-95"
       ],
-      "version": "v2.1.1",
+      "version": "v3.0.0",
       "downloads": [
         {
           "name": "SHA256SUMS.txt",
-          "url": "https://github.com/Slipcast-dev/VibeWave/releases/download/v2.1.1/SHA256SUMS.txt"
+          "url": "https://github.com/Slipcast-dev/VibeWave/releases/download/v3.0.0/SHA256SUMS.txt",
+          "size": 303
         },
         {
           "name": "update.json",
-          "url": "https://github.com/Slipcast-dev/VibeWave/releases/download/v2.1.1/update.json"
+          "url": "https://github.com/Slipcast-dev/VibeWave/releases/download/v3.0.0/update.json",
+          "size": 912
         },
         {
-          "name": "VibeWave-2.1.1-macos-universal.dmg",
-          "url": "https://github.com/Slipcast-dev/VibeWave/releases/download/v2.1.1/VibeWave-2.1.1-macos-universal.dmg"
+          "name": "VibeWave-3.0.0-macos-universal.dmg",
+          "url": "https://github.com/Slipcast-dev/VibeWave/releases/download/v3.0.0/VibeWave-3.0.0-macos-universal.dmg",
+          "size": 4886376
         },
         {
-          "name": "VibeWave-2.1.1-macos-universal.pkg",
-          "url": "https://github.com/Slipcast-dev/VibeWave/releases/download/v2.1.1/VibeWave-2.1.1-macos-universal.pkg"
+          "name": "VibeWave-3.0.0-macos-universal.pkg",
+          "url": "https://github.com/Slipcast-dev/VibeWave/releases/download/v3.0.0/VibeWave-3.0.0-macos-universal.pkg",
+          "size": 4860677
         },
         {
-          "name": "VibeWave-2.1.1-macos-universal.zip",
-          "url": "https://github.com/Slipcast-dev/VibeWave/releases/download/v2.1.1/VibeWave-2.1.1-macos-universal.zip"
+          "name": "VibeWave-3.0.0-macos-universal.zip",
+          "url": "https://github.com/Slipcast-dev/VibeWave/releases/download/v3.0.0/VibeWave-3.0.0-macos-universal.zip",
+          "size": 4859879
         }
       ],
       "releaseState": "ready",
-      "releaseCheckedAt": "2026-11-19T22:31:17.932Z",
+      "releaseCheckedAt": "2026-11-26T21:09:45.733Z",
       "sourceUpdatedAt": "2026-11-11T13:31:06Z",
-      "sourcePushedAt": "2026-11-19T16:40:03Z"
+      "sourcePushedAt": "2026-11-25T05:47:15Z"
     },
     {
       "id": 1428396071,
@@ -176,33 +189,38 @@
         "translation",
         "translator"
       ],
-      "version": "v2.0.0",
+      "version": "v3.0.0",
       "downloads": [
         {
-          "name": "Koto-2.0.0-22-arm64.dmg",
-          "url": "https://github.com/Slipcast-dev/translator-Koto/releases/download/v2.0.0/Koto-2.0.0-22-arm64.dmg"
+          "name": "Koto-3.0.0-23-arm64.dmg",
+          "url": "https://github.com/Slipcast-dev/translator-Koto/releases/download/v3.0.0/Koto-3.0.0-23-arm64.dmg",
+          "size": 11278671
         },
         {
-          "name": "Koto-2.0.0-22-arm64.json",
-          "url": "https://github.com/Slipcast-dev/translator-Koto/releases/download/v2.0.0/Koto-2.0.0-22-arm64.json"
+          "name": "Koto-3.0.0-23-arm64.json",
+          "url": "https://github.com/Slipcast-dev/translator-Koto/releases/download/v3.0.0/Koto-3.0.0-23-arm64.json",
+          "size": 808
         },
         {
-          "name": "Koto-Chrome-0.1.5.zip",
-          "url": "https://github.com/Slipcast-dev/translator-Koto/releases/download/v2.0.0/Koto-Chrome-0.1.5.zip"
+          "name": "Koto-Chrome-0.1.6.zip",
+          "url": "https://github.com/Slipcast-dev/translator-Koto/releases/download/v3.0.0/Koto-Chrome-0.1.6.zip",
+          "size": 39720
         },
         {
           "name": "SHA256SUMS.txt",
-          "url": "https://github.com/Slipcast-dev/translator-Koto/releases/download/v2.0.0/SHA256SUMS.txt"
+          "url": "https://github.com/Slipcast-dev/translator-Koto/releases/download/v3.0.0/SHA256SUMS.txt",
+          "size": 269
         },
         {
           "name": "SHA256SUMS.txt.sig",
-          "url": "https://github.com/Slipcast-dev/translator-Koto/releases/download/v2.0.0/SHA256SUMS.txt.sig"
+          "url": "https://github.com/Slipcast-dev/translator-Koto/releases/download/v3.0.0/SHA256SUMS.txt.sig",
+          "size": 89
         }
       ],
       "releaseState": "ready",
-      "releaseCheckedAt": "2026-11-19T22:31:18.207Z",
+      "releaseCheckedAt": "2026-11-26T21:09:46.206Z",
       "sourceUpdatedAt": "2026-11-09T19:52:03Z",
-      "sourcePushedAt": "2026-11-19T18:32:02Z"
+      "sourcePushedAt": "2026-11-25T11:26:18Z"
     },
     {
       "id": 1435902203,
@@ -231,37 +249,28 @@
         "text-viewer",
         "windows"
       ],
-      "version": "v2.1.1",
+      "version": "v3.0.0",
       "downloads": [
         {
-          "name": "Grizzly-2.1.1-arm64.dmg",
-          "url": "https://github.com/Slipcast-dev/Grizzly/releases/download/v2.1.1/Grizzly-2.1.1-arm64.dmg"
+          "name": "Grizzly-3.0.0-arm64.dmg",
+          "url": "https://github.com/Slipcast-dev/Grizzly/releases/download/v3.0.0/Grizzly-3.0.0-arm64.dmg",
+          "size": 14058439
         },
         {
-          "name": "Grizzly-2.1.1-portable.exe",
-          "url": "https://github.com/Slipcast-dev/Grizzly/releases/download/v2.1.1/Grizzly-2.1.1-portable.exe"
+          "name": "Grizzly-3.0.0-portable.exe",
+          "url": "https://github.com/Slipcast-dev/Grizzly/releases/download/v3.0.0/Grizzly-3.0.0-portable.exe",
+          "size": 110651686
         },
         {
-          "name": "Grizzly-2.1.1-x64.dmg",
-          "url": "https://github.com/Slipcast-dev/Grizzly/releases/download/v2.1.1/Grizzly-2.1.1-x64.dmg"
-        },
-        {
-          "name": "Grizzly-patch-2.1.0-to-2.1.1-arm64.zip",
-          "url": "https://github.com/Slipcast-dev/Grizzly/releases/download/v2.1.1/Grizzly-patch-2.1.0-to-2.1.1-arm64.zip"
-        },
-        {
-          "name": "Grizzly-patch-2.1.0-to-2.1.1-x64.zip",
-          "url": "https://github.com/Slipcast-dev/Grizzly/releases/download/v2.1.1/Grizzly-patch-2.1.0-to-2.1.1-x64.zip"
-        },
-        {
-          "name": "SHA256SUMS.txt",
-          "url": "https://github.com/Slipcast-dev/Grizzly/releases/download/v2.1.1/SHA256SUMS.txt"
+          "name": "Grizzly-3.0.0-x64.dmg",
+          "url": "https://github.com/Slipcast-dev/Grizzly/releases/download/v3.0.0/Grizzly-3.0.0-x64.dmg",
+          "size": 14192290
         }
       ],
       "releaseState": "ready",
-      "releaseCheckedAt": "2026-11-19T22:31:18.852Z",
+      "releaseCheckedAt": "2026-11-26T21:09:46.636Z",
       "sourceUpdatedAt": "2026-11-09T14:23:32Z",
-      "sourcePushedAt": "2026-11-19T15:02:51Z"
+      "sourcePushedAt": "2026-11-24T14:06:49Z"
     }
   ]
 }
