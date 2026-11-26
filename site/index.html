@@ -44,9 +44,9 @@
     .typed-content { grid-area: 1 / 1; }
     .cursor { display: inline-block; width: .57em; height: 1.1em; margin-left: .12em; background: var(--green); vertical-align: -.14em; animation: blink 1s steps(1) infinite; box-shadow: 0 0 12px #00ff6620; }
     @keyframes blink { 50% { opacity: 0; } }
-    .navigation { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; width: min(596px, 100%); margin: 44px auto 0; }
+    .navigation { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 12px; width: min(760px, 100%); margin: 44px auto 0; }
     .nav-button { color: var(--green); border: 1px solid var(--green); border-radius: 5px; background: #00190733; cursor: pointer; min-height: 44px; width: 100%; padding: 6px 8px; overflow-wrap: anywhere; font-size: 14px; transition: background .18s, box-shadow .18s; }
-    a.nav-button { display: flex; align-items: center; justify-content: center; text-decoration: none; }
+    a.nav-button { display: flex; align-items: center; justify-content: center; text-decoration: none; text-align: center; }
     .nav-button[data-i18n="skillsAgentsNav"] { text-align: center; text-wrap: balance; line-height: 1.2; }
     .nav-button:hover { background: #00ff6614; box-shadow: 0 0 20px #00ff661b, inset 0 0 16px #00ff6609; }
     :focus-visible { outline: 2px solid #b5ffcf; outline-offset: 6px; }
@@ -56,6 +56,7 @@
       .navigation { gap: 6px; margin-top: 32px; }
       .nav-button { font-size: clamp(11px, 2.5vw, 14px); padding: 4px 3px; }
     }
+    @media (max-width: 440px) { .navigation { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
     /* Учитываем системную настройку: убираем печать, мигание и переходы. */
     @media (prefers-reduced-motion: reduce) {
       *, *::before, *::after { animation: none !important; transition: none !important; }
@@ -78,6 +79,7 @@
       <nav class="navigation" aria-label="Разделы сайта" data-i18n-label="sections">
         <a class="nav-button" href="projects.html" data-i18n="projects">Приложения</a>
         <a class="nav-button" href="skills-agents.html?v=2" data-i18n="skillsAgentsNav">Скиллы и&nbsp;агенты</a>
+        <a class="nav-button" href="ai-aggregator.html" data-i18n="aiAggregator" hreflang="ru">AI-Агрегатор</a>
         <a class="nav-button" href="https://t.me/slipcastdev" data-i18n="telegramChannel">Telegram-канал</a>
         <a class="nav-button" href="developer.html" data-i18n="developer">Разработчик</a>
       </nav>

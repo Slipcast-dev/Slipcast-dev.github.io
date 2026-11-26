@@ -98,10 +98,13 @@ test('Ошибка сети не удаляет карточки; резервн
 
 test('Сборка включает локальные ресурсы, страницы и точные хеши CSP', () => {
   const pages = fs.readdirSync(dist).filter(file => file.endsWith('.html'));
-  assert.equal(pages.length, 7);
+  assert.equal(pages.length, 8);
+  assert.ok(pages.includes('ai-aggregator.html'));
   assert.ok(fs.existsSync(path.join(root, 'websites.html')), 'Исходник раздела сохранён');
   assert.ok(!fs.existsSync(path.join(dist, 'websites.html')), 'Раздел исключён из публикации');
-  assert.ok(!fs.readFileSync(path.join(dist, 'sitemap.xml'), 'utf8').includes('websites.html'));
+  const sitemap = fs.readFileSync(path.join(dist, 'sitemap.xml'), 'utf8');
+  assert.ok(!sitemap.includes('websites.html'));
+  assert.ok(sitemap.includes('https://slipcast-dev.github.io/ai-aggregator.html'));
   for (const name of ['i18n.js', 'projects-api.js']) {
     const version = createHash('sha256').update(fs.readFileSync(path.join(dist, name))).digest('hex').slice(0, 12);
     assert.ok(fs.readFileSync(path.join(dist, 'projects.html'), 'utf8').includes(`src="${name}?v=${version}"`));
@@ -333,14 +336,18 @@ test('Раздел скиллов доступен из меню; карточк
   assert.equal(navigation.textContent, 'Скиллы и\u00a0агенты');
   assert.equal(navigation.attrs.href, 'skills-agents.html?v=2&lang=ru');
   const menu = home.nodes.filter(node => (node.attrs.class || '').split(' ').includes('nav-button'));
-  assert.deepEqual(menu.map(node => node.dataset.i18n), ['projects', 'skillsAgentsNav', 'telegramChannel', 'developer']);
-  assert.equal(menu[2].attrs.href, 'https://t.me/slipcastdev');
-  assert.equal(menu[3].attrs.href, 'developer.html?lang=ru');
+  assert.deepEqual(menu.map(node => node.dataset.i18n), ['projects', 'skillsAgentsNav', 'aiAggregator', 'telegramChannel', 'developer']);
+  assert.equal(menu[3].attrs.href, 'https://t.me/slipcastdev');
+  assert.equal(menu[4].attrs.href, 'developer.html?lang=ru');
+  assert.equal(menu[2].textContent, 'AI-Агрегатор');
+  assert.equal(menu[2].attrs.href, 'ai-aggregator.html?lang=ru');
   assert.equal(menu[0].textContent, 'Приложения');
   home.click('en');
   assert.equal(menu[0].textContent, 'Applications');
-  assert.equal(menu[2].textContent, 'Telegram Channel');
-  assert.equal(menu[2].attrs.href, 'https://t.me/slipcastdev');
+  assert.equal(menu[2].textContent, 'AI Aggregator');
+  assert.equal(menu[2].attrs.href, 'ai-aggregator.html?lang=en');
+  assert.equal(menu[3].textContent, 'Telegram Channel');
+  assert.equal(menu[3].attrs.href, 'https://t.me/slipcastdev');
   home.click('en');
   assert.equal(navigation.textContent, 'Skills &\u00a0Agents');
   assert.equal(navigation.attrs.href, 'skills-agents.html?v=2&lang=en');

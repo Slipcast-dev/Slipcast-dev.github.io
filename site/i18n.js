@@ -3,7 +3,7 @@
   'use strict';
   const strings = {
     ru: {
-      skillsAgents: 'Скиллы и агенты', skillsAgentsNav: 'Скиллы и\u00a0агенты', telegramChannel: 'Telegram-канал',
+      skillsAgents: 'Скиллы и агенты', skillsAgentsNav: 'Скиллы и\u00a0агенты', telegramChannel: 'Telegram-канал', aiAggregator: 'AI-Агрегатор',
       skillsAgentsTitle: 'Скиллы и агенты — Slipcast-Dev',
       skillsAgentsDescription: 'Коллекции скиллов для Codex и Claude Code: архивы для скачивания.',
       skillsIntro: 'Коллекции навыков для разработки, анализа, работы с документами и автоматизации.',
@@ -61,7 +61,7 @@
       timeout: 'GitHub не ответил вовремя. Обновление повторится автоматически.', offline: 'Не удалось связаться с GitHub. Проверьте интернет. Обновление повторится автоматически.'
     },
     en: {
-      skillsAgents: 'Skills & Agents', skillsAgentsNav: 'Skills &\u00a0Agents', telegramChannel: 'Telegram Channel',
+      skillsAgents: 'Skills & Agents', skillsAgentsNav: 'Skills &\u00a0Agents', telegramChannel: 'Telegram Channel', aiAggregator: 'AI Aggregator',
       skillsAgentsTitle: 'Skills & Agents — Slipcast-Dev',
       skillsAgentsDescription: 'Skill collections for Codex and Claude Code: downloadable archives.',
       skillsIntro: 'Skill collections for development, analysis, documents and automation.',
@@ -151,7 +151,7 @@
     // Параметр сохраняет язык между локальными файлами даже при изоляции хранилищ браузером.
     document.querySelectorAll('a[href]').forEach(link => {
       const href = link.getAttribute('href');
-      if (!/^(index|index-ru|index-en|projects|websites|developer|skills-agents)\.html(?:[?#]|$)/.test(href)) return;
+      if (!/^(index|index-ru|index-en|projects|websites|developer|skills-agents|ai-aggregator)\.html(?:[?#]|$)/.test(href)) return;
       const url = new URL(href, location.href);
       if (location.protocol !== 'file:' && /\/index(?:-ru|-en)?\.html$/.test(url.pathname)) {
         url.pathname = url.pathname.replace(/index(?:-ru|-en)?\.html$/, language === 'en' ? 'index-en.html' : 'index-ru.html');

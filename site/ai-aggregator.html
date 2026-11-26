@@ -1,0 +1,1022 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AI-Агрегатор · Slipcast-Dev</title>
+<meta name="description" content="Подберите команду ИИ-агентов для Codex или Claude Code, получите стартовый промпт и скачайте конфигурации.">
+<link rel="canonical" href="https://slipcast-dev.github.io/ai-aggregator.html">
+<style>
+:root{color-scheme:dark;--bg:#000;--panel:#060d08;--panel2:#09130c;--line:#1b482c;--text:#d8ffe6;--muted:#9ab8a5;--mint:#00ff66;--focus:#b5ffcf;--mono:"SFMono-Regular",Consolas,"Liberation Mono",monospace}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--text);font:15px/1.5 var(--mono)}
+a{color:var(--mint)}button,input,select,textarea{font:inherit}button{cursor:pointer}button:disabled{cursor:default;opacity:.5}:focus-visible{outline:2px solid var(--focus);outline-offset:3px}button,select,input,textarea{border:1px solid var(--line);border-radius:8px;background:#050d07;color:var(--text)}
+button{min-height:42px;padding:8px 13px}button:hover:not(:disabled){border-color:var(--mint)}input,select{width:100%;min-height:44px;padding:8px 11px}textarea{width:100%;padding:12px;resize:vertical}
+[hidden]{display:none!important}.container{width:min(1180px,calc(100% - 42px));margin:auto}
+.hero{text-align:center;padding:76px 0 42px}.hero h1{color:var(--mint);font-size:clamp(1.65rem,4.5vw,2.9rem);line-height:1.2;letter-spacing:.01em;margin:0 0 15px}.hero p:last-child{color:var(--muted);max-width:660px;margin:0 auto;font-size:.9rem}.flow{max-width:455px;margin:24px auto 0;padding:0;list-style:none;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px}.flow li{background:#080f0a;border:1px solid var(--line);border-radius:9px;padding:11px 13px;color:var(--muted);font:500 .78rem/1.4 var(--mono);animation:trace 5s infinite}.flow li:nth-child(2){animation-delay:.32s}.flow li:nth-child(3){animation-delay:.64s}.flow li:nth-child(4){animation-delay:.96s}.flow li:before{content:'◇';color:var(--mint);margin-right:8px}@keyframes trace{0%,67%,100%{border-color:var(--line)}9%{border-color:var(--mint);color:var(--text);transform:translateY(-2px)}}
+.workspace{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;align-items:stretch}.panel{background:var(--panel);border:1px solid var(--line);border-radius:5px;padding:clamp(15px,2.7vw,25px)}.panel h2{font-size:1.35rem;letter-spacing:-.03em;margin:0 0 16px}.field{display:grid;gap:6px;margin:0 0 12px}.field label,legend{font-size:.82rem;color:var(--muted);font-weight:600}fieldset{border:0;padding:0;margin:0 0 14px;min-width:0}.engines{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:7px}.engines input{position:absolute;opacity:0;width:1px;min-height:0}.engines label{display:block;text-align:center;border:1px solid var(--line);border-radius:8px;padding:10px 8px;cursor:pointer;color:var(--muted)}.engines input:checked+label{background:#0a2514;color:var(--mint);border-color:#00ff6680}.engines input:focus-visible+label{outline:2px solid var(--focus);outline-offset:3px}
+.primary{background:var(--mint);border-color:var(--mint);color:#072117;font-weight:750}.primary:hover:not(:disabled){background:#a1ffc3}.workspace>.panel{display:flex;flex-direction:column}.project-settings{display:grid;flex:1;align-content:space-evenly;gap:18px;margin-bottom:20px}
+.project-settings fieldset,.project-settings .field{margin:0}
+.project-settings .field{min-width:0}
+.project-settings select{min-width:0;text-overflow:ellipsis}
+.recommend{width:100%}.model-hint{font-size:.76rem;color:var(--muted)}.team .agent-model{display:block;margin:2px 0 0}
+.recommend:disabled{opacity:1;background:#0a1710;border-color:var(--line);color:var(--muted)}.heading{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap}.count{font:.79rem var(--mono);color:var(--mint)}.summary,.muted{color:var(--muted);margin:0 0 13px;font-size:.88rem}.team{margin:0 0 18px;padding:0;list-style:none;display:grid;gap:5px}.team li{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:7px 8px 7px 12px;background:var(--panel2);border-radius:7px;border:1px solid transparent}.team li.enter{animation:arrive .34s both;animation-delay:calc(var(--index) * 24ms)}@keyframes arrive{from{opacity:.3;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}.team button{min-height:34px;padding:2px 10px}.team{max-height:270px;overflow-y:auto;scroll-padding:5px;padding:4px}.team small{color:var(--muted);margin-left:7px}.prompt-label{display:block;font-weight:700;margin-bottom:7px}.prompt{font:.8rem/1.55 var(--mono);min-height:145px;flex:1;color:#d7f4e2}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.status{min-height:1.4em;margin:8px 0 0;color:var(--mint);font-size:.8rem}.catalog{margin:28px 0 38px}.catalog summary{display:flex;align-items:center;gap:14px;cursor:pointer;list-style:none;min-height:32px}
+.catalog summary::-webkit-details-marker{display:none}
+.catalog summary::after{content:'+';flex:none;display:grid;place-items:center;width:30px;height:30px;border:1px solid var(--line);border-radius:7px;color:var(--mint);font:700 1.1rem var(--mono)}
+.catalog[open] summary::after{content:'−'}
+.catalog summary h2{flex:1;margin:0}
+.catalog[open] .catalog-content{margin-top:17px;animation:arrive .24s ease both}.filters{display:grid;grid-template-columns:1.4fr 1fr;gap:9px;margin-bottom:14px}.catalog-group{margin:0 0 19px}.catalog-group h3{font-size:.92rem;margin:0 0 8px;color:var(--focus)}.cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}.role{display:flex;flex-direction:column;gap:4px;min-height:108px;text-align:left;width:100%;background:var(--panel2)}.role[aria-pressed=true]{border-color:#4a885f;background:#0a2613}.role strong{font-size:.88rem}.role span{font-size:.79rem;color:var(--muted)}.role-mark{color:var(--mint)!important;margin-top:auto;font:.72rem var(--mono)}.footer{display:flex;justify-content:center;padding-bottom:44px}
+.back{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:11px 20px;border:1px solid #00ff6670;border-radius:5px;color:var(--mint);font-size:.85rem;text-decoration:none}
+.back:hover{background:#00ff6614}
+@media(max-width:820px){.cards{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:650px){.container{width:calc(100% - 24px)}.workspace{grid-template-columns:1fr}.hero{padding:35px 0 24px}.flow{grid-template-columns:repeat(4,minmax(0,1fr))}.flow li{padding:7px 4px;text-align:center}.flow li:before{display:none}.cards{grid-template-columns:1fr 1fr}.filters{grid-template-columns:1fr}.team small{display:none}}
+@media(max-width:370px){.cards{grid-template-columns:1fr}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<main class="container">
+  <header class="hero">
+    <div><h1>AI-Агрегатор</h1><p>Соберите команду под свой проект. Выберите среду, задачу и стек, затем заберите промпт и файлы агентов.</p></div>
+    <ol class="flow" aria-label="Как работает подбор"><li>Задача</li><li>Роли</li><li>Промпт</li><li>Агенты</li></ol>
+  </header>
+  <div class="workspace">
+    <form class="panel" id="picker" autocomplete="off">
+      <h2>Настройки проекта</h2>
+      <div class="project-settings">
+        <fieldset><legend>Среда</legend><div class="engines">
+          <input type="radio" name="engine" id="engine-codex" value="codex"><label for="engine-codex">Codex</label>
+          <input type="radio" name="engine" id="engine-claude" value="claude"><label for="engine-claude">Claude Code</label>
+        </div></fieldset>
+        <div class="field"><label for="task">Задача</label><select id="task"><option value="" selected disabled>Выберите задачу</option></select></div>
+        <div class="field"><label for="phase">Этап разработки</label><select id="phase"><option value="" selected disabled>Выберите этап</option></select></div>
+        <div class="field"><label for="platform">Платформа</label><select id="platform">
+          <option value="" selected disabled>Выберите платформу</option><option value="any">Любая</option><option value="web">Веб</option><option value="windows">Windows</option><option value="macos">macOS</option><option value="linux">Linux</option><option value="mobile">iOS / Android</option><option value="cross">Кроссплатформенная</option>
+        </select></div>
+        <div class="field"><label for="language">Язык</label><select id="language"><option value="" selected disabled>Выберите язык</option><option value="auto">Без привязки к языку</option></select></div>
+        <div class="field"><label for="model-profile">Модели агентов</label>
+          <select id="model-profile" aria-describedby="model-hint">
+            <option value="">Автоподбор по ролям</option>
+            <option value="flagship">Флагманская модель</option>
+            <option value="inherit">Из текущей сессии</option>
+          </select>
+          <span class="model-hint" id="model-hint">Доступность моделей зависит от клиента и тарифа.</span>
+        </div>
+      </div>
+      <button id="recommend" type="submit" class="primary recommend" disabled>Соберите проект</button>
+    </form>
+    <section class="panel result" aria-labelledby="team-title">
+      <div class="heading"><h2 id="team-title">Ваша команда</h2><span id="count" class="count" aria-live="polite"></span></div>
+      <p class="summary" id="summary"></p>
+      <ul class="team" id="team"></ul>
+      <p class="muted" id="empty-team">Выберите настройки проекта и нажмите «Подобрать».</p>
+      <label class="prompt-label" for="prompt">Стартовый промпт</label>
+      <textarea id="prompt" class="prompt" readonly rows="7" spellcheck="false"></textarea>
+      <div class="actions"><button id="copy" class="primary" type="button" disabled>Скопировать промпт</button><button id="export" type="button" disabled>Скачать ZIP команды</button></div>
+      <p class="status" id="status" role="status"></p>
+    </section>
+  </div>
+  <details id="catalog" class="panel catalog">
+    <summary><h2>Каталог ролей</h2><span class="count" id="catalog-total"></span></summary>
+    <div class="catalog-content">
+    <p class="muted">После подбора нажмите на роль, чтобы добавить её в команду или убрать.</p>
+    <div class="filters"><input type="search" id="search" aria-label="Поиск по каталогу" placeholder="Поиск по имени, ID или специализации"><select id="category" aria-label="Категория ролей"><option value="all">Все категории</option></select></div>
+    <p class="muted" id="catalog-count" aria-live="polite"></p>
+    <div id="catalog-list"></div>
+    <p class="muted" id="empty-catalog" hidden>По этому запросу роли не найдены.</p>
+    </div>
+  </details>
+  <footer class="footer"><a class="back" id="back-home" href="index.html?lang=ru">← Назад в терминал</a></footer>
+  <noscript>Для интерактивного подбора включите JavaScript.</noscript>
+</main>
+<script id="catalog-data" type="application/json">{"categories":[{"id":"planning","label":"Идея и планирование"},{"id":"architecture","label":"Архитектура"},{"id":"implementation","label":"Разработка"},{"id":"macos","label":"macOS"},{"id":"windows","label":"Windows"},{"id":"quality","label":"Качество и безопасность"},{"id":"release","label":"Выпуск и эксплуатация"},{"id":"languages","label":"Языки программирования"},{"id":"mobile","label":"Мобильная разработка"},{"id":"data-ai","label":"Данные и ИИ"},{"id":"cloud","label":"Облако и DevOps"},{"id":"inclusive","label":"Доступность и локализация"},{"id":"model-work","label":"Работа с ИИ-моделями"},{"id":"prompt-engineering","label":"Промпт-инженерия"},{"id":"verification","label":"Инженерия тестирования и приёмка"},{"id":"agent-tools","label":"Инструменты ИИ-агентов"},{"id":"app-distribution","label":"Мобильные магазины и дистрибуция"},{"id":"privacy","label":"Приватность и управление данными"},{"id":"open-source","label":"Открытый код и сообщество"},{"id":"platform-migration","label":"Переезд между платформами"},{"id":"developer-tooling","label":"Инструменты для разработчиков"},{"id":"agent-coordination","label":"Память и координация ИИ-агентов"},{"id":"browser-extensions","label":"Браузерные расширения"},{"id":"linux-distribution","label":"Linux и дистрибуция"},{"id":"game-development","label":"Игры"},{"id":"subscriptions-billing","label":"Подписки и биллинг"},{"id":"video-multimedia","label":"Видео и мультимедиа"},{"id":"maps-geodata","label":"Картография и геоданные"},{"id":"embedded-iot","label":"Встраиваемые системы и IoT"},{"id":"document-writing","label":"Тексты и отчёты"},{"id":"document-ocr","label":"PDF, сканы и OCR"},{"id":"document-spreadsheets","label":"Таблицы и расчёты"},{"id":"document-presentations","label":"Презентации"},{"id":"document-approval","label":"Ревью и согласование"},{"id":"document-automation","label":"Шаблоны и автоматизация"},{"id":"document-archive","label":"Архив и база знаний"},{"id":"document-publication","label":"Доступность и подготовка к публикации"},{"id":"meeting-notes","label":"Встречи и протоколы"},{"id":"research-sources","label":"Исследования и источники"},{"id":"complex-debugging","label":"Диагностика сложных сбоев"},{"id":"legacy-code","label":"Поддержка старого кода"},{"id":"brand-visuals","label":"Айдентика и визуальные материалы"},{"id":"ux-writing-onboarding","label":"UX-тексты и онбординг"},{"id":"agent-control","label":"Управление автономными действиями"},{"id":"model-training","label":"Обучение и дообучение моделей"},{"id":"generated-video","label":"Генерация видео и анимации"},{"id":"editorial-planning","label":"Редакция и контент-план"},{"id":"content-adaptation","label":"Адаптация материалов"},{"id":"social-platforms","label":"Telegram, YouTube и другие площадки"},{"id":"community-management","label":"Работа с сообществом"},{"id":"daily-planning","label":"Личное планирование"},{"id":"shopping-comparison","label":"Покупки и сравнение вариантов"},{"id":"news-verification","label":"Дайджесты и проверка новостей"},{"id":"api-contract-testing","label":"Тестирование API и контрактов"},{"id":"quality-reliability-testing","label":"Регрессия, нагрузка и устойчивость"},{"id":"defensive-security-audit","label":"Белый хакинг · Защитный аудит"},{"id":"defensive-security-response","label":"Белый хакинг · Исправления и защита"},{"id":"mobile-offline","label":"Мобильные данные и офлайн-режим"},{"id":"mobile-system-features","label":"Уведомления и системные функции"},{"id":"cross-platform-mobile","label":"Кроссплатформенная мобильная разработка"},{"id":"web-pwa","label":"PWA и установка веб-приложений"},{"id":"web-search-visibility","label":"Поиск и видимость сайта"},{"id":"web-cms","label":"Системы управления контентом"},{"id":"creator-production","label":"Съёмка и монтаж"},{"id":"creator-podcasts","label":"Подкасты и интервью"},{"id":"creator-social-visuals","label":"Обложки и визуалы для соцсетей"},{"id":"photo-postprocessing","label":"Ретушь и обработка фотографий"},{"id":"web-image-assets","label":"Изображения для сайтов и каталогов"},{"id":"ai-structured-output","label":"Структурированные ответы моделей"},{"id":"ai-model-routing","label":"Маршрутизация между моделями"},{"id":"ai-realtime-models","label":"Модели в реальном времени"},{"id":"ai-image-workflows","label":"Генерация и редактирование изображений с ИИ"},{"id":"ai-model-release","label":"Выпуск и обновление моделей"}],"roles":[{"id":"analyst","category":"planning","name":"Системный аналитик","description":"Переводит исходную идею в проверяемые требования к поведению продукта.","steps":["Выпиши пользователей, их сценарии и желаемый результат каждого сценария.","Сопоставь новые требования с действующим поведением, данными и ограничениями платформы.","Сформулируй критерии приёмки для основного сценария, ошибок и пустых состояний."],"readOnly":true},{"id":"product","category":"planning","name":"Продуктовый аналитик","description":"Формулирует пользовательскую проблему, ценность решения и способ измерить результат.","steps":["Опиши проблему конкретного сегмента на основании доступных данных.","Определи минимальный сценарий, который приносит пользу пользователю.","Предложи измеримые критерии успеха и объясни, как собрать данные с учётом приватности."],"readOnly":true},{"id":"planner","category":"planning","name":"Планировщик разработки","description":"Строит последовательность поставки с зависимостями, проверками и точками завершения.","steps":["Найди точки входа, зависимости и владельцев существующих компонентов.","Разбей работу на небольшие проверяемые изменения и расположи их по зависимостям.","Для каждого этапа определи результат, проверку, риски совместимости и условие завершения."],"readOnly":true},{"id":"ux","category":"planning","name":"Проектировщик интерфейсов","description":"Прорабатывает пользовательский путь, навигацию и состояния интерфейса.","steps":["Опиши основной путь, обходные сценарии и способы восстановления после ошибки.","Проверь тексты, видимость статуса, доступность действий с клавиатуры и порядок фокуса.","Задай требования к адаптации интерфейса для узких экранов и увеличенного текста."],"readOnly":true},{"id":"architect","category":"architecture","name":"Архитектор системы","description":"Определяет границы компонентов и безопасный путь развития приложения.","steps":["Проследи путь данных от точки входа до хранения и внешних зависимостей.","Предложи границы компонентов, контракты и правила обработки частичных сбоев.","Опиши поэтапный переход с проверками обратной совместимости и вариантом отката."],"readOnly":true},{"id":"api-architect","category":"architecture","name":"Архитектор API","description":"Проектирует устойчивые интерфейсы для внутренних и внешних потребителей.","steps":["Найди существующих клиентов, соглашения о версиях и правила авторизации.","Опиши форматы запросов и ответов, ошибки, пагинацию и идемпотентность по применимости.","Определи контрактные проверки и порядок миграции клиентов."],"readOnly":true},{"id":"data-architect","category":"architecture","name":"Архитектор данных","description":"Проектирует модель данных с понятными ограничениями целостности и сроками хранения.","steps":["Определи источники данных, владельцев и участки с персональной информацией.","Опиши сущности, обязательные связи, уникальность и правила удаления.","Предложи совместимую миграцию данных и проверки целостности на каждом этапе."],"readOnly":true},{"id":"frontend","category":"implementation","name":"Frontend-разработчик","description":"Реализует интерфейсы на Astro, TypeScript и Tailwind CSS с учётом доступности и скорости.","steps":["Найди страницу, компоненты и источники контента, через которые работает сценарий.","Предпочти статический вывод и подключай клиентский JavaScript только для нужных взаимодействий.","Проверь клавиатурную навигацию, адаптивность, сборку и пути к ресурсам на GitHub Pages."],"readOnly":false},{"id":"backend","category":"implementation","name":"Backend-разработчик","description":"Реализует серверную логику и обрабатывает ошибки на границах приложения.","steps":["Проследи запрос от обработчика до сервисов и хранилища, сохрани поддерживаемые контракты.","Проверь валидацию, права доступа, атомарность записи и поведение при повторах.","Запусти подходящие проверки штатного сценария, ошибок и частичных сбоев."],"readOnly":false},{"id":"database","category":"implementation","name":"Инженер баз данных","description":"Изменяет схему и запросы с сохранением целостности и работоспособности старых данных.","steps":["Прочитай ближайшие миграции, ограничения и вызовы изменяемых запросов.","Учитывай объём данных, блокировки и возможность поэтапного применения изменения.","Проверь миграцию на данных старой схемы, ограничения целостности и планы ключевых запросов."],"readOnly":false},{"id":"telegram","category":"implementation","name":"Разработчик Telegram-ботов","description":"Реализует асинхронные обработчики команд и событий Telegram-бота.","steps":["Найди регистрацию маршрутов, конфигурацию и хранилище состояний диалога.","Обработай повторную доставку, недействительные нажатия и ограничение частоты запросов.","Проверь чатовые сценарии, отмену диалога и загрузку токена из окружения."],"readOnly":false},{"id":"integration","category":"implementation","name":"Инженер интеграций","description":"Подключает внешние сервисы и обеспечивает предсказуемую обработку их отказов.","steps":["Определи владельца контракта, формат данных и границу хранения секретов.","Задай таймауты, контролируемые повторы и идемпотентность там, где запрос меняет состояние.","Проверь обработку лимитов, ошибок авторизации и несовместимых ответов по документации и тестовым данным."],"readOnly":false},{"id":"automation","category":"implementation","name":"Инженер автоматизации","description":"Создаёт повторяемые инструменты для рутинных операций разработки.","steps":["Опиши входы, ожидаемые артефакты и команды, которые уже используются в проекте.","Сделай повторный запуск безопасным, ошибки понятными, а параметры явными.","Проверь пустой запуск, пути с пробелами и отсутствие чувствительных значений в журналах."],"readOnly":false},{"id":"content","category":"implementation","name":"Инженер контента","description":"Настраивает публикацию Markdown-контента, метаданные и навигацию статического сайта.","steps":["Проверь схемы коллекций, правила выбора опубликованных материалов и генерацию URL.","Добавь согласованные метаданные, canonical URL и данные для карты сайта.","Собери сайт и проверь ссылки, отображение разметки и исключение черновиков."],"readOnly":false},{"id":"systems","category":"implementation","name":"Разработчик системных компонентов","description":"Реализует переносимые компоненты с контролем ресурсов и явными ошибками.","steps":["Определи платформенные границы, владение ресурсами и требования к потокобезопасности.","Используй существующие интерфейсы освобождения ресурсов и обработки ошибок.","Проверь операции на крайних входах и в поддерживаемых конфигурациях сборки."],"readOnly":false},{"id":"swift","category":"macos","name":"Разработчик Swift","description":"Развивает модель данных и сервисы macOS-приложения на Swift.","steps":["Найди границы между представлениями, состоянием и сервисами приложения.","Проверь изоляцию данных, отмену асинхронной работы и доставку UI-обновлений на MainActor.","Запусти сборку и проверь изменённый путь, включая сценарии отказа и отмены."],"readOnly":false},{"id":"macos-ui","category":"macos","name":"Разработчик интерфейсов macOS","description":"Реализует нативные окна, меню и пользовательские сценарии в SwiftUI и AppKit.","steps":["Сопоставь сценарий с существующей навигацией, окнами и командами меню.","Проверь мышь, клавиатурные сочетания, порядок фокуса и метки VoiceOver.","Проверь изменение размеров, тёмный режим и восстановление состояния окна по применимости."],"readOnly":false},{"id":"macos-build","category":"macos","name":"Инженер сборки macOS","description":"Готовит воспроизводимые сборки и артефакты распространения для macOS.","steps":["Определи схему Xcode или Swift Package Manager, архитектуры и минимальную версию macOS.","Проверь конфигурацию упаковки, подписи и entitlements, необходимые приложению.","Собери артефакт и проверь запуск; для подписанного распространения проверь требования к нотарификации."],"readOnly":false},{"id":"macos-automation","category":"macos","name":"Инженер автоматизации macOS","description":"Автоматизирует рабочие процессы средствами macOS и обрабатывает системные разрешения.","steps":["Определи, подходит ли штатный интерфейс приложения, Shortcuts или AppleScript.","Обработай отсутствие приложения, отмену действия и отказ в системном доступе.","На тестовых данных проверь повторный запуск, пути с пробелами и понятность сообщений об ошибках."],"readOnly":false},{"id":"windows-dotnet","category":"windows","name":"Разработчик .NET для Windows","description":"Реализует прикладную логику Windows-приложений на C# и .NET.","steps":["Определи целевые платформы по проекту и проверь зависимости от Windows API.","Сохрани асинхронную отмену, освобождение ресурсов и контракты сериализации.","Собери проект для заявленных конфигураций и проверь работу с типовыми ошибками Windows."],"readOnly":false},{"id":"windows-ui","category":"windows","name":"Разработчик интерфейсов Windows","description":"Развивает интерфейс Windows-приложения с использованием принятого в проекте UI-фреймворка.","steps":["Найди окно, модели представления, команды и существующие ресурсы приложения.","Проверь обновления UI из фоновых операций, клавиатурное управление и доступные имена элементов.","Проверь масштабирование DPI, размер окна и темы средствами целевой Windows-среды."],"readOnly":false},{"id":"windows-package","category":"windows","name":"Инженер сборки и упаковки Windows","description":"Готовит установочные пакеты Windows с проверяемой установкой и обновлением.","steps":["Определи формат распространения, архитектуры, необходимые компоненты и способ подписи.","Проверь идентичность продукта, правила обновления и размещение пользовательских данных.","Проверь чистую установку, обновление с поддерживаемой версии и удаление тестового пакета."],"readOnly":false},{"id":"reviewer","category":"quality","name":"Ревьюер кода","description":"Ищет конкретные дефекты, несовместимости и регрессии в изменениях.","steps":["Прочитай изменения и ближайшие вызовы изменяемых интерфейсов.","Проверь управление ресурсами, сохранность данных и поведение при отказах.","Приведи выводы с местом в коде, условием проявления и пользовательским последствием."],"readOnly":true},{"id":"security","category":"quality","name":"Инженер защитного ревью","description":"Проверяет границы доверия, полномочия, управление секретами и защиту пользовательских данных.","steps":["Определи чувствительные данные, внешние входы и точки проверки доступа.","Проверь валидацию, минимальные права, безопасные значения по умолчанию и очистку журналов.","Предложи защитное исправление и проверки, подтверждающие корректную обработку недопустимых действий."],"readOnly":true},{"id":"tester","category":"quality","name":"Инженер тестирования","description":"Проверяет контракты и добавляет целевые регрессионные тесты по применимости.","steps":["Сопоставь сценарии приёмки с существующими тестами и средствами запуска.","Проверь штатный сценарий, границы входов и ошибки, характерные для изменения.","Добавь тест для конкретного пробела и зафиксируй условия, которые проверены запуском."],"readOnly":false},{"id":"performance","category":"quality","name":"Инженер производительности","description":"Измеряет задержки, потребление ресурсов и размер артефактов в типовых сценариях.","steps":["Выбери сценарий, измеряемый показатель и исходную конфигурацию.","Сними несколько измерений и определи участок, который даёт основной вклад.","Свяжи предложение с измерениями и укажи условия сопоставимой повторной проверки."],"readOnly":true},{"id":"accessibility","category":"quality","name":"Инженер доступности","description":"Проверяет возможность пользоваться интерфейсом с клавиатурой и вспомогательными технологиями.","steps":["Проверь порядок фокуса, семантику, подписи и сообщения об ошибках.","Пройди главные сценарии с клавиатурой и доступным скринридером.","Укажи для каждого дефекта элемент, наблюдаемую проблему и проверяемый критерий исправления."],"readOnly":true},{"id":"bug-fixer","category":"quality","name":"Инженер исправления дефектов","description":"Локализует причину сбоя, исправляет её и проверяет связанные сценарии.","steps":["Сопоставь ожидаемое и фактическое поведение на согласованном тестовом входе.","Проследи данные и состояние до места расхождения, внеси минимальное исправление.","Подтверди исправление и проверь ближайшие случаи, зависящие от изменённого поведения."],"readOnly":false},{"id":"release","category":"release","name":"Инженер релизов","description":"Готовит проверяемую поставку, артефакты и порядок развёртывания.","steps":["Проверь целевую версию, условия выпуска, изменения конфигурации и миграции.","Собери артефакт из нужной ревизии и проверь его штатный сценарий на целевой платформе.","Подготовь заметки, порядок проверки после развёртывания и шаги отката."],"readOnly":false},{"id":"ci","category":"release","name":"Инженер CI/CD","description":"Настраивает автоматические проверки, сборку и доставку в GitHub Actions.","steps":["Изучи существующие триггеры, матрицу сборки и окружения развёртывания.","Определи минимальные разрешения, способ загрузки секретов и состав передаваемых артефактов.","Проверь условия запуска, обработку отказов и соответствие ссылок и путей GitHub Pages."],"readOnly":false},{"id":"docs","category":"release","name":"Технический писатель","description":"Документирует настройку, запуск, интерфейсы и распространённые ошибки на основе реализации.","steps":["Найди реальные точки входа, поддерживаемые параметры и существующий стиль документации.","Сверь примеры и команды с текущей реализацией, проверь выполнимые шаги.","Опиши зависимости, запуск, ожидаемый результат и восстановление после типовых ошибок."],"readOnly":false},{"id":"operations","category":"release","name":"Инженер эксплуатации","description":"Поддерживает наблюдаемость сервиса и готовность к восстановлению после отказов.","steps":["Определи доступные метрики, журналы, проверки готовности и зависимости.","Согласуй сигналы отказа с пользовательскими симптомами и опиши порядок диагностики.","Проверь процедуры восстановления и обнаружение ошибок в предусмотренной тестовой среде."],"readOnly":false},{"id":"maintenance","category":"release","name":"Инженер сопровождения","description":"Устраняет накопившиеся проблемы проекта и поддерживает совместимость зависимостей.","steps":["Оцени обращения, сбои и устаревшие зависимости по влиянию на пользователей.","Подготовь минимальное совместимое изменение и проверь миграционные заметки по применимости.","Повтори проверки затронутого пути и зафиксируй состояние после изменения."],"readOnly":false},{"id":"support","category":"release","name":"Инженер технической поддержки","description":"Разбирает пользовательские обращения и собирает данные для устранения проблем.","steps":["Зафиксируй симптом, версию, платформу и шаги, которые сообщил пользователь.","Выдели только необходимые диагностические данные и удали персональные сведения из примеров.","Предложи проверяемый временный обход или опиши, что требуется для передачи разработчику."],"readOnly":true},{"id":"lang-python","category":"languages","name":"Специалист по Python","description":"Проверяет технические решения и реализацию для стека Python.","steps":["Определи версию языка и инструменты по файлам проекта. Уточни ограничения среды выполнения.","Следуй PEP 8, аннотируй функции и методы, используй асинхронные вызовы для подходящих операций ввода-вывода.","Проверь изменения штатными командами проекта. Сообщи, какие проверки удалось выполнить и какие остались."],"readOnly":false},{"id":"lang-javascript","category":"languages","name":"Специалист по JavaScript","description":"Проверяет технические решения и реализацию для стека JavaScript.","steps":["Определи версию языка и инструменты по файлам проекта. Уточни ограничения среды выполнения.","Проверь совместимость с целевыми браузерами и объём клиентского кода. Подключай скрипты только там, где нужен интерактив.","Проверь изменения штатными командами проекта. Сообщи, какие проверки удалось выполнить и какие остались."],"readOnly":false},{"id":"lang-typescript","category":"languages","name":"Специалист по TypeScript","description":"Проверяет технические решения и реализацию для стека TypeScript.","steps":["Определи версию языка и инструменты по файлам проекта. Уточни ограничения среды выполнения.","Сохраняй strict mode, валидируй внешние данные на границе и избегай утверждений типов без проверки.","Проверь изменения штатными командами проекта. Сообщи, какие проверки удалось выполнить и какие остались."],"readOnly":false},{"id":"lang-swift","category":"languages","name":"Специалист по Swift","description":"Проверяет технические решения и реализацию для стека Swift.","steps":["Определи версию языка и инструменты по файлам проекта. Уточни ограничения среды выполнения.","Соблюдай изоляцию состояния, проверяй отмену задач и обновляй интерфейс на MainActor.","Проверь изменения штатными командами проекта. Сообщи, какие проверки удалось выполнить и какие остались."],"readOnly":false},{"id":"lang-csharp","category":"languages","name":"Специалист по C#","description":"Проверяет технические решения и реализацию для стека C#.","steps":["Определи версию языка и инструменты по файлам проекта. Уточни ограничения среды выполнения.","Соблюдай nullable annotations, передавай CancellationToken по цепочке и освобождай ресурсы через using или await using.","Проверь изменения штатными командами проекта. Сообщи, какие проверки удалось выполнить и какие остались."],"readOnly":false},{"id":"lang-cpp","category":"languages","name":"Специалист по C++","description":"Проверяет технические решения и реализацию для стека C++.","steps":["Определи версию языка и инструменты по файлам проекта. Уточни ограничения среды выполнения.","Следуй принятому стандарту проекта, используй RAII и выражай владение ресурсами подходящими умными указателями.","Проверь изменения штатными командами проекта. Сообщи, какие проверки удалось выполнить и какие остались."],"readOnly":false},{"id":"lang-go","category":"languages","name":"Специалист по Go","description":"Проверяет технические решения и реализацию для стека Go.","steps":["Определи версию языка и инструменты по файлам проекта. Уточни ограничения среды выполнения.","Передавай context.Context для отменяемой работы, проверяй ошибки и заверши фоновые операции при остановке сервиса.","Проверь изменения штатными командами проекта. Сообщи, какие проверки удалось выполнить и какие остались."],"readOnly":false},{"id":"lang-rust","category":"languages","name":"Специалист по Rust","description":"Проверяет технические решения и реализацию для стека Rust.","steps":["Определи версию языка и инструменты по файлам проекта. Уточни ограничения среды выполнения.","Возвращай восстанавливаемые ошибки через Result, проверяй владение данными и ограничивай небезопасные блоки интерфейсами с явными инвариантами.","Проверь изменения штатными командами проекта. Сообщи, какие проверки удалось выполнить и какие остались."],"readOnly":false},{"id":"lang-java","category":"languages","name":"Специалист по Java","description":"Проверяет технические решения и реализацию для стека Java.","steps":["Определи версию языка и инструменты по файлам проекта. Уточни ограничения среды выполнения.","Соблюдай целевую версию JDK, определяй границы транзакций и освобождай ресурсы через try-with-resources.","Проверь изменения штатными командами проекта. Сообщи, какие проверки удалось выполнить и какие остались."],"readOnly":false},{"id":"lang-kotlin","category":"languages","name":"Специалист по Kotlin","description":"Проверяет технические решения и реализацию для стека Kotlin.","steps":["Определи версию языка и инструменты по файлам проекта. Уточни ограничения среды выполнения.","Используй структурированную конкурентность, проверяй платформенные типы Java и сохраняй отмену корутин.","Проверь изменения штатными командами проекта. Сообщи, какие проверки удалось выполнить и какие остались."],"readOnly":false},{"id":"lang-sql","category":"languages","name":"Специалист по SQL","description":"Проверяет технические решения и реализацию для стека SQL.","steps":["Определи версию языка и инструменты по файлам проекта. Уточни ограничения среды выполнения.","Учитывай конкретный диалект и параметры запросов, проверяй ограничения, планы выполнения и влияние миграций на блокировки.","Проверь изменения штатными командами проекта. Сообщи, какие проверки удалось выполнить и какие остались."],"readOnly":false},{"id":"lang-powershell","category":"languages","name":"Специалист по PowerShell","description":"Проверяет технические решения и реализацию для стека PowerShell.","steps":["Определи версию языка и инструменты по файлам проекта. Уточни ограничения среды выполнения.","Учитывай версию PowerShell, используй явные параметры и возвращай ненулевой код при прерывании операции.","Проверь изменения штатными командами проекта. Сообщи, какие проверки удалось выполнить и какие остались."],"readOnly":false},{"id":"lang-ruby","category":"languages","name":"Специалист по Ruby","description":"Проверяет технические решения и реализацию для стека Ruby.","steps":["Определи версию языка и инструменты по файлам проекта. Уточни ограничения среды выполнения.","Ориентируйся на версию Ruby из проекта, проверяй переходы состояния и обрабатывай ожидаемые сбои на границах.","Проверь изменения штатными командами проекта. Сообщи, какие проверки удалось выполнить и какие остались."],"readOnly":false},{"id":"lang-php","category":"languages","name":"Специалист по PHP","description":"Проверяет технические решения и реализацию для стека PHP.","steps":["Определи версию языка и инструменты по файлам проекта. Уточни ограничения среды выполнения.","Соблюдай целевую версию PHP и Composer, указывай типы и параметризуй запросы к базе данных.","Проверь изменения штатными командами проекта. Сообщи, какие проверки удалось выполнить и какие остались."],"readOnly":false},{"id":"lang-applescript","category":"languages","name":"Специалист по AppleScript","description":"Проверяет технические решения и реализацию для стека AppleScript.","steps":["Определи версию языка и инструменты по файлам проекта. Уточни ограничения среды выполнения.","Используй словари приложений, проверяй разрешения автоматизации и обрабатывай отмену отдельно от отказа.","Проверь изменения штатными командами проекта. Сообщи, какие проверки удалось выполнить и какие остались."],"readOnly":false},{"id":"feature","category":"implementation","name":"Разработчик функциональности","description":"Реализует вертикальный срез задачи через реальные точки входа проекта.","steps":["Уточни наблюдаемый результат, границы задачи и контракт существующих точек входа.","Внеси минимальное связное изменение с обработкой существенных ошибок и поддержкой существующих данных.","Проверь штатный сценарий и критические сбои. Передай список изменений и результаты проверок ревьюеру."],"readOnly":false},{"id":"ios","category":"mobile","name":"Разработчик iOS","description":"Реализует функции приложения для iPhone и iPad.","steps":["Сверь поддерживаемые версии iOS и iPadOS, адаптацию интерфейса и правила жизненного цикла.","Обработай восстановление состояния, разрешения и слабую сеть.","Проверь сценарий на симуляторе и перечисли проверки для устройства."],"readOnly":false},{"id":"android","category":"mobile","name":"Разработчик Android","description":"Реализует Android-функции на Kotlin с учётом различий устройств.","steps":["Сверь minSdk, targetSdk и соглашения проекта.","Учти жизненный цикл, выдачу разрешений и восстановление после остановки процесса.","Проверь сценарии на поддерживаемых уровнях API и зафиксируй ограничения."],"readOnly":false},{"id":"mobile-release","category":"mobile","name":"Инженер мобильного релиза","description":"Проверяет готовность мобильной сборки к выпуску.","steps":["Проверь версии, подпись, идентификаторы и список разрешений.","Сверь артефакты, конфигурации окружений и сценарий установки обновления.","Подготовь список проверок публикации и план действий при неудачном обновлении."],"readOnly":true},{"id":"data-engineer","category":"data-ai","name":"Инженер данных","description":"Проектирует загрузку и преобразование данных с проверяемым результатом.","steps":["Зафиксируй схему, источники и владельцев данных.","Предусмотри повторный запуск, контроль дубликатов и обработку несоответствий.","Добавь проверки качества данных и измерь стоимость повторной обработки."],"readOnly":false},{"id":"ai-integrator","category":"data-ai","name":"Инженер ИИ-интеграций","description":"Подключает модель к приложению, учитывая стоимость, приватность и ошибки.","steps":["Уточни сценарий, данные, которые разрешено передавать, и формат ответа.","Предусмотри таймауты, лимиты, валидацию ответа и безопасный резервный сценарий.","Измерь задержку, расход и качество на репрезентативных примерах."],"readOnly":false},{"id":"ai-evaluator","category":"data-ai","name":"Инженер оценки ИИ","description":"Проверяет результаты модели на понятном наборе задач.","steps":["Определи критерии качества и базовый результат для сравнения.","Подбери обычные, граничные и спорные случаи без личных данных.","Отдели воспроизводимые ошибки от случайных отклонений и сообщи, что стоит проверить снова."],"readOnly":true},{"id":"cloud-architect","category":"cloud","name":"Архитектор облака","description":"Подбирает сервисы и проверяет их стоимость и отказоустойчивость.","steps":["Уточни нагрузку, бюджет и требования к доступности и хранению данных.","Предложи границы окружений, роли доступа и план восстановления.","Оцени операционные расходы и укажи допущения, влияющие на расчёт."],"readOnly":true},{"id":"infra-engineer","category":"cloud","name":"Инженер инфраструктуры","description":"Описывает окружения как код и проверяет план изменений.","steps":["Сверь текущие ресурсы и правило хранения состояния.","Раздели настройки окружений и храни секреты отдельно от исходников.","Проверь план без применения, отметь разрушительные операции и порядок отката."],"readOnly":false},{"id":"observability","category":"cloud","name":"Инженер мониторинга","description":"Настраивает метрики, журналы и оповещения для диагностики.","steps":["Свяжи наблюдаемые показатели с важными пользовательскими сценариями.","Настрой понятные сигналы и исключи секреты и личные данные из журналов.","Проверь оповещения на тестовом сценарии и опиши действия при сбое."],"readOnly":false},{"id":"localization-engineer","category":"inclusive","name":"Инженер локализации","description":"Настраивает переводы и проверяет форматирование для разных локалей.","steps":["Отдели переводимый текст от логики и используй ключи проекта.","Проверь длинные строки, множественное число, даты и числа.","Проверь переключение языка, запасную локаль и отсутствие смешанных строк."],"readOnly":false},{"id":"inclusive-design","category":"inclusive","name":"Ревьюер интерфейсов","description":"Проверяет, как интерфейс работает с клавиатурой, масштабированием и скринридером.","steps":["Пройди основной сценарий только с клавиатурой и проверь видимость фокуса.","Проверь структуру заголовков, подписи, ошибки и состояние загрузки.","Опиши каждый барьер, затронутый сценарий и критерий исправления."],"readOnly":true},{"id":"content-localizer","category":"inclusive","name":"Редактор интерфейсного текста","description":"Адаптирует формулировки и терминологию к языку и задачам пользователя.","steps":["Составь небольшой словарь терминов и сверяй тексты с реальными действиями.","Сохрани переменные в строках и объясни причину каждого нестандартного перевода.","Проверь тексты сообщений об ошибках, пустых состояний и мобильных экранов."],"readOnly":false},{"id":"model-advisor","category":"model-work","name":"Подборщик моделей","description":"Подбирает модель под задачу, ограничения данных, задержку и бюджет.","readOnly":true,"steps":["Составь матрицу требований к модальности, качеству, контексту, приватности и цене.","Сверь кандидатов по официальным спецификациям и общей тестовой выборке.","Предложи основной и резервный варианты, укажи условия, при которых выбор изменится."]},{"id":"llm-engineer","category":"model-work","name":"Инженер текстовых и рассуждающих моделей","description":"Проектирует работу с текстовыми моделями и структурированными ответами.","readOnly":false,"steps":["Определи схему входа и выхода и критерии принятия результата.","Учти размер контекста, таймауты, прерванные ответы и ограничения структурированного вывода.","Замерь качество и расход на обычных и сложных примерах."]},{"id":"vision-engineer","category":"model-work","name":"Инженер моделей зрения","description":"Настраивает разбор изображений, документов и скриншотов.","readOnly":false,"steps":["Раздели распознавание текста, поиск областей и визуальную интерпретацию.","Обработай поворот, низкое разрешение, неправильный формат и пропущенные элементы.","Проверь результаты по размеченным примерам и отмечай поля, требующие ручной сверки."]},{"id":"image-generation-specialist","category":"model-work","name":"Специалист по генерации изображений","description":"Готовит воспроизводимый процесс генерации и правки изображений.","readOnly":false,"steps":["Собери бриф с сюжетом, форматом, композицией, референсами и ограничениями прав использования.","Раздели генерацию и точечные правки, зафиксируй входы каждого варианта.","Сверь итог с брифом и проверь читаемость обязательного текста."]},{"id":"speech-engineer","category":"model-work","name":"Инженер речевых моделей","description":"Настраивает распознавание и синтез речи с учётом языка и качества аудио.","readOnly":false,"steps":["Уточни языки, условия записи, требования к задержке и согласие на обработку аудио.","Проверь сегментацию, таймкоды, произношение и повторный запуск при ошибке.","Оцени качество на шумных и многоязычных примерах, отметь фрагменты с низкой уверенностью."]},{"id":"embedding-rag-engineer","category":"model-work","name":"Инженер эмбеддингов и RAG","description":"Настраивает поиск контекста для ответов по документам.","readOnly":false,"steps":["Определи границы коллекций, права доступа и правила обновления индекса.","Сравни разбиение на фрагменты и методы поиска на одной выборке вопросов.","Отдельно оцени полноту найденных источников и фактическую точность ответов."]},{"id":"local-model-engineer","category":"model-work","name":"Инженер локальных моделей","description":"Подбирает запуск модели под доступную память и оборудование.","readOnly":false,"steps":["Сверь лицензию весов, поддержку ускорителя и доступную память.","Измерь скорость и качество нескольких подходящих вариантов квантования на одних входах.","Оформи воспроизводимую конфигурацию и проверь сценарий без сети."]},{"id":"model-economics","category":"model-work","name":"Инженер производительности моделей","description":"Измеряет расходы и задержку, подбирает маршрутизацию и кэширование.","readOnly":false,"steps":["Собери базовые метрики по типам запросов, объёму входа и пиковому трафику.","Сравни маршрутизацию, кэширование и ограничения токенов при одинаковых требованиях к качеству.","Введи защиту от превышения бюджета и повторно проверь поведение при недоступности модели."]},{"id":"prompt-engineer","category":"prompt-engineering","name":"Промпт-инженер","description":"Пишет инструкции с чёткой задачей, контекстом и критериями результата.","readOnly":false,"steps":["Уточни назначение промпта, его входы, выходы и границы ответственности.","Раздели инструкции, входные данные и примеры так, чтобы их не перепутать.","Проверь базовую версию на обычных и противоречивых примерах."]},{"id":"prompt-template-author","category":"prompt-engineering","name":"Автор шаблонов промптов","description":"Создаёт параметризованные шаблоны с понятными полями и примерами.","readOnly":false,"steps":["Определи обязательные и необязательные параметры, ограничения и значения по умолчанию.","Подготовь минимальный шаблон и пример заполнения с реалистичными входными данными.","Проверь пропущенные поля, длинные входы и специальные символы."]},{"id":"prompt-evaluator","category":"prompt-engineering","name":"Тестировщик промптов","description":"Сравнивает варианты промпта на одинаковых задачах и измеряет регрессии.","readOnly":true,"steps":["Раздели набор примеров на разработку и независимую проверку.","Используй одинаковые параметры модели и заранее заданные критерии для сравнения.","Сообщи, что улучшилось, где появился риск регрессии и насколько убедителен результат."]},{"id":"prompt-workflow-architect","category":"prompt-engineering","name":"Архитектор цепочек промптов","description":"Разбивает сложную задачу на шаги с проверяемыми выходами.","readOnly":true,"steps":["Определи результат каждого шага и минимальный контекст, который ему нужен.","Опиши контракты между шагами и обработку неполного ответа.","Укажи, где нужна ручная проверка и где достаточно автоматической валидации."]},{"id":"prompt-safety-reviewer","category":"prompt-engineering","name":"Ревьюер инструкций и контекста","description":"Проверяет границы доверия, приватность и полномочия промпта.","readOnly":true,"steps":["Отметь, какие данные приходят от пользователя, документов и внешних источников.","Проверь разделение доверенных инструкций и входного текста, объём данных и права инструментов.","Сформулируй защитные правки и простые проверки ожидаемого отказа на тестовых данных."]},{"id":"researcher","category":"planning","name":"Исследователь пользователей","description":"Проверяет гипотезы о пользователях и их рабочих сценариях.","steps":["Сформулируй вопросы и критерии проверки гипотез.","Опиши план интервью или наблюдений и выборку.","Раздели факты, интерпретации и открытые вопросы."],"readOnly":true},{"id":"feasibility","category":"planning","name":"Инженер прототипирования","description":"Проверяет техническую осуществимость перед основной разработкой.","steps":["Выдели главное техническое допущение.","Сделай минимальный эксперимент с измеримым результатом.","Зафиксируй ограничения и решение, к которому ведут результаты."],"readOnly":false},{"id":"design-system","category":"implementation","name":"Инженер дизайн-системы","description":"Проектирует повторно используемые компоненты интерфейса, состояния и токены.","steps":["Выдели повторяющиеся паттерны и состояния.","Определи контракты компонентов, токены и адаптивное поведение.","Проверь клавиатурную навигацию и добавь примеры использования."],"readOnly":false},{"id":"threat-modeler","category":"architecture","name":"Архитектор безопасности","description":"Разбирает модель угроз и предлагает защитные меры до реализации.","steps":["Опиши активы, потоки данных и границы доверия.","Определи риски и необходимые защитные меры.","Укажи, как проверить эффективность каждой меры."],"readOnly":true},{"id":"test-architect","category":"verification","name":"Архитектор тестирования","description":"Определяет стратегию и уровни тестирования.","steps":["Разложи критичные сценарии по уровням тестирования.","Выбери правила покрытия и тестовые данные.","Задай критерии прохождения и ограничения прогона."],"readOnly":true},{"id":"e2e-engineer","category":"verification","name":"Инженер сквозных тестов","description":"Автоматизирует проверку пользовательских сценариев.","steps":["Выбери ключевые маршруты пользователя и негативные сценарии.","Подготовь воспроизводимые данные и устойчивые проверки.","Запусти сценарии и зафиксируй причины падений."],"readOnly":false},{"id":"compatibility-tester","category":"verification","name":"Инженер совместимости","description":"Проверяет приложение на заявленных ОС, устройствах и версиях среды.","steps":["Составь матрицу поддерживаемых конфигураций.","Проверь установку, запуск, обновление и ключевые функции.","Укажи проверенные конфигурации и пробелы покрытия."],"readOnly":true},{"id":"acceptance-lead","category":"verification","name":"Координатор приёмки","description":"Сверяет результат с критериями готовности и фиксирует открытые вопросы.","steps":["Привяжи сценарии приёмки к требованиям.","Проверь результаты и собери замечания.","Зафиксируй статус готовности и причины блокировки."],"readOnly":true},{"id":"beta-coordinator","category":"release","name":"Координатор бета-тестирования","description":"Планирует пробный выпуск и обработку обратной связи.","steps":["Определи участников, сценарии и критерии выхода из беты.","Подготовь способ сбора и приоритизации замечаний.","Сведи итоги и предложи решение по выпуску."],"readOnly":true},{"id":"migration-engineer","category":"implementation","name":"Инженер миграций","description":"Переносит данные или настройки с проверкой полноты и возможностью отката.","steps":["Опиши исходную и целевую схемы и правила переноса.","Подготовь повторяемую миграцию и проверь её на тестовых данных.","Сверь результаты и проверь путь восстановления."],"readOnly":false},{"id":"incident-coordinator","category":"release","name":"Координатор инцидентов","description":"Помогает установить масштаб сбоя и восстановить работу сервиса.","steps":["Собери хронологию, симптомы и затронутые компоненты.","Определи шаги восстановления и критерии его проверки.","Собери действия по итогам разбора причин."],"readOnly":true},{"id":"decommission-planner","category":"release","name":"Планировщик вывода из эксплуатации","description":"Готовит завершение поддержки или отключение устаревшего компонента.","steps":["Определи потребителей, зависимости и сроки уведомлений.","Спланируй перенос данных и замену для пользователей.","Опиши условия отключения и способ восстановления."],"readOnly":true},{"id":"mcp-developer","category":"agent-tools","name":"Разработчик MCP-серверов","description":"Подключает возможности проекта к ИИ-агентам через MCP.","steps":["Выдели операции и опиши их входы, результаты и типовые ошибки.","Реализуй сервер с явной проверкой параметров и контролем доступа к ресурсам.","Проверь подключение из выбранной среды и сценарии отказа."],"readOnly":false},{"id":"agent-tool-designer","category":"agent-tools","name":"Проектировщик инструментов","description":"Проектирует понятные контракты инструментов для моделей и агентов.","steps":["Сопоставь задачи агентов с минимальным набором операций.","Опиши параметры, ответы, ошибки и побочные эффекты каждой операции.","Подготовь примеры вызовов и критерии качества инструментов."],"readOnly":true},{"id":"permissions-reviewer","category":"agent-tools","name":"Ревьюер разрешений","description":"Проверяет права доступа и границы полномочий агентов.","steps":["Составь список инструментов, ресурсов и доступных действий.","Найди избыточные права и операции, требующие подтверждения.","Предложи ограничения и проверки, подтверждающие их действие."],"readOnly":true},{"id":"store-compliance","category":"app-distribution","name":"Специалист по требованиям App Store и Google Play","description":"Сверяет сборку и её материалы с требованиями выбранного магазина.","steps":["Сверь применимые требования с актуальной официальной документацией магазина.","Проверь разрешения, данные о приватности и материалы для ревью.","Составь список замечаний и критерии готовности к отправке."],"readOnly":true},{"id":"store-listing-editor","category":"app-distribution","name":"Редактор карточек приложений","description":"Готовит описания, материалы и локализации для карточек приложений.","steps":["Собери подтверждённые сведения о функциях и целевой аудитории.","Подготовь название, описания и сценарии для скриншотов под выбранный магазин.","Сверь локализации и заявления о функциях с фактической сборкой."],"readOnly":false},{"id":"mobile-signing","category":"app-distribution","name":"Инженер подписания мобильных сборок","description":"Настраивает подпись и проверяет пригодность сборок для выбранного канала.","steps":["Определи требования к тестовой и релизной сборкам.","Настрой защищённое использование сертификатов или ключей подписи.","Проверь подпись, идентификаторы и установку тестовой сборки."],"readOnly":false},{"id":"data-deidentification","category":"privacy","name":"Инженер обезличивания данных","description":"Готовит наборы данных с уменьшенным риском повторной идентификации.","steps":["Найди прямые и косвенные идентификаторы в исходных данных.","Выбери методы удаления или преобразования и проверь пригодность результата.","Оцени остаточный риск идентификации на разрешённых данных и задокументируй ограничения."],"readOnly":false},{"id":"telemetry-reviewer","category":"privacy","name":"Ревьюер сбора телеметрии","description":"Проверяет состав аналитических событий, доступ к ним и их хранение.","steps":["Перечисли события, поля и получателей данных.","Найди лишние идентификаторы и поля без обоснованной цели.","Проверь настройки согласия, срока хранения и удаления данных."],"readOnly":true},{"id":"data-rights-designer","category":"privacy","name":"Проектировщик экспорта и удаления данных","description":"Описывает пользовательские сценарии переноса и удаления данных.","steps":["Определи состав экспорта, форматы и правила подтверждения доступа.","Опиши обработку связанных записей, резервных копий и частичных сбоев.","Задай критерии полноты экспорта и завершения удаления."],"readOnly":true},{"id":"license-reviewer","category":"open-source","name":"Ревьюер лицензий зависимостей","description":"Составляет перечень лицензий и замечаний для выпуска.","steps":["Собери список прямых и транзитивных зависимостей из проекта.","Сверь обозначения лицензий и наличие требуемых уведомлений по источникам.","Отметь конфликтующие или неизвестные условия для подтверждения владельцем проекта."],"readOnly":true},{"id":"contribution-coordinator","category":"open-source","name":"Координатор внешних вкладов","description":"Помогает обрабатывать предложения, задачи и внешние изменения.","steps":["Разбери предложения по влиянию и назначь следующий шаг.","Задай критерии ревью и подбери подходящего проверяющего.","Подготовь черновик обратной связи и перечень дальнейших действий."],"readOnly":true},{"id":"contributor-guide-editor","category":"open-source","name":"Редактор руководства для контрибьюторов","description":"Объясняет новым участникам, как запустить проект и предложить изменения.","steps":["Проверь инструкции запуска и минимальный набор требований к среде.","Опиши порядок создания задач, подготовки изменений и прохождения ревью.","Сверь команды и ссылки с устройством проекта."],"readOnly":false},{"id":"cloud-migration","category":"platform-migration","name":"Инженер переноса между облаками","description":"Планирует перенос сервисов и данных между облачными платформами.","steps":["Составь карту сервисов, данных и внешних зависимостей.","Подготовь поэтапный перенос с проверками, метриками и точкой отката.","Проверь план на пилотной среде и зафиксируй ограничения."],"readOnly":false},{"id":"format-compatibility","category":"platform-migration","name":"Специалист по совместимости форматов файлов","description":"Проверяет переносимость файлов и сохранность данных при конвертации.","steps":["Составь матрицу исходных и целевых форматов и версий.","Проверь типовые и граничные файлы, включая метаданные и ошибки чтения.","Зафиксируй потери при конвертации и условия обратного преобразования."],"readOnly":true},{"id":"legacy-api-migration","category":"platform-migration","name":"Инженер перехода со старого API","description":"Подготавливает поэтапный переход клиентов на новый API.","steps":["Сопоставь старый и новый контракты и найди несовместимые изменения.","Спроектируй переходный адаптер или план версионирования.","Проверь работу старых и новых клиентов и опиши условия отключения старой версии."],"readOnly":false},{"id":"ide-extension","category":"developer-tooling","name":"Разработчик расширений IDE","description":"Создаёт расширения и интеграции для рабочей среды разработчика.","steps":["Определи сценарии расширения и поддерживаемые версии IDE.","Реализуй команды и настройки с минимальными правами доступа.","Проверь установку, работу над типовым проектом и обработку сбоев."],"readOnly":false},{"id":"sdk-engineer","category":"developer-tooling","name":"Инженер SDK","description":"Готовит клиентскую библиотеку, примеры и правила совместимости.","steps":["Определи публичный интерфейс, типы и ожидаемые ошибки.","Добавь обработку сбоев, тесты контракта и примеры использования.","Проверь сборку, документацию и совместимость публичного интерфейса."],"readOnly":false},{"id":"dev-environment","category":"developer-tooling","name":"Инженер локальной среды разработки","description":"Создаёт воспроизводимую настройку проекта для разработчиков.","steps":["Выдели обязательные зависимости и поддерживаемые платформы.","Подготовь повторяемую настройку с безопасной конфигурацией.","Проверь запуск и диагностику на чистой среде."],"readOnly":false},{"id":"agent-memory-designer","category":"agent-coordination","name":"Проектировщик памяти агентов","description":"Определяет, какие сведения агент запоминает и как их обновляет.","steps":["Раздели данные сессии, решения проекта и долговременную память.","Опиши правила записи, обновления, удаления и доступа.","Проверь обработку устаревших и противоречивых записей."],"readOnly":true},{"id":"agent-context-engineer","category":"agent-coordination","name":"Инженер передачи контекста","description":"Готовит передачу задачи и её результатов между ролями.","steps":["Определи формат передачи с целью, решениями, ссылками и открытыми вопросами.","Добавь проверку полноты и исключи секреты из передаваемых данных.","Проверь возобновление работы при неполной или повторной передаче."],"readOnly":false},{"id":"agent-tracing-engineer","category":"agent-coordination","name":"Инженер трассировки действий","description":"Связывает в журнале шаги агентов, инструменты и результаты.","steps":["Выбери события, идентификаторы и безопасные поля журнала.","Свяжи действия с задачей и переходами между ролями.","Проверь восстановление хода работы при сбое и отсутствие чувствительных данных в журнале."],"readOnly":false},{"id":"browser-extension-developer","category":"browser-extensions","name":"Разработчик расширений Chrome и Firefox","description":"Реализует интерфейс и взаимодействие расширения со страницами браузера.","steps":["Раздели фоновую логику, интерфейс и скрипты страниц.","Обработай различия API Chrome и Firefox и запрашивай только нужные права.","Проверь установку, основные сценарии и отключение расширения."],"readOnly":false},{"id":"safari-port-engineer","category":"browser-extensions","name":"Инженер переноса на Safari","description":"Адаптирует расширение к Safari и его требованиям к сборке.","steps":["Сверь используемые API и ограничения поддерживаемых версий Safari.","Адаптируй манифест, сборку и подключение к приложению-контейнеру.","Проверь установку и работу разрешений в чистом профиле."],"readOnly":false},{"id":"extension-permission-reviewer","category":"browser-extensions","name":"Ревьюер разрешений расширения","description":"Проверяет права расширения и доступ к данным браузера.","steps":["Сопоставь разрешения и доступ к сайтам с пользовательскими сценариями.","Проверь обработку отказа, временного доступа и отзыва разрешений.","Предложи сокращение прав и критерии проверки."],"readOnly":true},{"id":"linux-package-engineer","category":"linux-distribution","name":"Инженер пакетов DEB/RPM","description":"Собирает и проверяет пакеты для поддерживаемых дистрибутивов.","steps":["Определи версии дистрибутивов, архитектуры и зависимости.","Подготовь метаданные, сборку и правила обновления пакета.","Проверь установку, обновление и удаление на чистых системах."],"readOnly":false},{"id":"flatpak-engineer","category":"linux-distribution","name":"Инженер Flatpak","description":"Готовит Flatpak-сборку с ограниченными разрешениями.","steps":["Выбери среду выполнения и опиши зависимости в манифесте.","Настрой доступ к файлам, устройствам и системным возможностям по необходимости.","Проверь запуск, обновление и интеграцию с рабочим столом."],"readOnly":false},{"id":"systemd-specialist","category":"linux-distribution","name":"Специалист по сервисам systemd","description":"Настраивает запуск, остановку и диагностику сервисов Linux.","steps":["Определи тип сервиса, зависимости и пользователя запуска.","Настрой перезапуск, журналирование и ограничения привилегий.","Проверь запуск, корректную остановку и восстановление после сбоя."],"readOnly":false},{"id":"gameplay-programmer","category":"game-development","name":"Программист игровой логики","description":"Реализует правила игры и действия игрока в прототипе.","steps":["Опиши цикл игры, входные действия и переходы состояний.","Реализуй основные правила с управляемыми параметрами.","Проверь пограничные ситуации и восстановление игрового состояния."],"readOnly":false},{"id":"technical-artist","category":"game-development","name":"Технический художник","description":"Готовит визуальные ресурсы к работе в игровом движке.","steps":["Согласуй форматы, материалы и ограничения производительности.","Настрой импорт и проверь отображение в типовых сценах.","Проверь расход памяти и плавность на целевых устройствах."],"readOnly":false},{"id":"level-designer","category":"game-development","name":"Дизайнер игровых уровней","description":"Проектирует уровни с понятными целями, маршрутом и темпом.","steps":["Разметь цели, точки входа, путь игрока и подсказки.","Собери упрощённый уровень и проверь ключевые сценарии.","Уточни сложность и темп по итогам пробного прохождения."],"readOnly":false},{"id":"subscription-engineer","category":"subscriptions-billing","name":"Инженер подписок","description":"Проектирует состояния подписки и доступ к платным функциям.","steps":["Опиши тарифы, состояния и правила доступа.","Обработай продление, отмену и события, пришедшие повторно или не по порядку.","Проверь переходы между состояниями на тестовых данных."],"readOnly":false},{"id":"payment-integration-engineer","category":"subscriptions-billing","name":"Специалист по интеграции платежей","description":"Подключает оплату и обработку событий платёжной системы.","steps":["Подготовь интеграцию в тестовой среде с защищённым хранением ключей.","Проверяй подлинность событий и исключи повторное проведение операции.","Проверь оплату, отказ и возврат без использования реальных средств."],"readOnly":false},{"id":"payment-reconciliation-engineer","category":"subscriptions-billing","name":"Инженер сверки платежей","description":"Сопоставляет внутренние записи с отчётами платёжной системы.","steps":["Определи источники данных и правила сопоставления операций.","Учти комиссии, валюты, возвраты и расхождения по времени.","Сформируй отчёт о несовпадениях и проверку повторного запуска сверки."],"readOnly":false},{"id":"video-processing-engineer","category":"video-multimedia","name":"Инженер обработки видео","description":"Настраивает загрузку, преобразование и проверку видеофайлов.","steps":["Определи входные и выходные форматы и ограничения файлов.","Настрой перекодирование, обработку ошибок и повторную обработку.","Проверь длительность, качество и время обработки на типовых файлах."],"readOnly":false},{"id":"subtitle-specialist","category":"video-multimedia","name":"Специалист по субтитрам","description":"Готовит субтитры и проверяет их синхронизацию и читаемость.","steps":["Согласуй язык, формат и требования к доступности.","Проверь таймкоды, переносы строк и обозначения важных звуков.","Сверь синхронизацию и отображение в целевых проигрывателях."],"readOnly":false},{"id":"streaming-playback-engineer","category":"video-multimedia","name":"Инженер потокового воспроизведения","description":"Настраивает доставку и воспроизведение видео в разных условиях сети.","steps":["Определи форматы потока, уровни качества и поддерживаемые устройства.","Настрой переключение качества, перемотку и восстановление после обрыва.","Проверь запуск и стабильность воспроизведения при разной пропускной способности."],"readOnly":false},{"id":"geospatial-data-engineer","category":"maps-geodata","name":"Инженер геоданных","description":"Готовит пространственные данные для поиска и отображения.","steps":["Проверь систему координат, лицензию источника и качество геометрии.","Настрой преобразование, индексацию и обновление данных.","Проверь выборки на границах областей и обработку пропусков."],"readOnly":false},{"id":"interactive-map-developer","category":"maps-geodata","name":"Разработчик интерактивных карт","description":"Создаёт карту со слоями, поиском и взаимодействием с объектами.","steps":["Определи слои, источники и доступные действия с объектами.","Реализуй загрузку слоёв и управление картой с клавиатуры.","Проверь загрузку, масштабирование и работу при неполных данных."],"readOnly":false},{"id":"routing-engineer","category":"maps-geodata","name":"Инженер маршрутизации","description":"Строит маршруты с учётом вида транспорта и ограничений сети.","steps":["Определи тип маршрута, источники данных и ограничения движения.","Настрой расчёт маршрута и обработку недоступных участков.","Проверь контрольные маршруты и сценарий без доступного пути."],"readOnly":false},{"id":"firmware-developer","category":"embedded-iot","name":"Разработчик прошивок","description":"Реализует работу контроллера, периферии и безопасного обновления.","steps":["Уточни плату, ресурсы контроллера и режимы периферии.","Реализуй обработку тайм-аутов, сбоев и переходов между состояниями.","Проверь запуск, восстановление и работу на симуляторе или стенде."],"readOnly":false},{"id":"device-connectivity-engineer","category":"embedded-iot","name":"Инженер связи устройств","description":"Настраивает обмен данными между устройством и приложением или шлюзом.","steps":["Определи протокол, формат сообщений и способ проверки подлинности.","Настрой переподключение, буферизацию и обработку повторной доставки.","Проверь передачу данных при нестабильной связи и перезапуске."],"readOnly":false},{"id":"hardware-bench-test-engineer","category":"embedded-iot","name":"Инженер стендового тестирования","description":"Проверяет поведение устройства на испытательном стенде.","steps":["Составь матрицу режимов и перечень контролируемых параметров.","Проверь поведение при сбоях питания, датчиков и связи в пределах стенда.","Зафиксируй конфигурацию, измерения и условия воспроизведения."],"readOnly":false},{"id":"document-editor","category":"document-writing","name":"Редактор документов","description":"Превращает заметки и черновики в связный документ.","steps":["Определи читателя, цель документа и главные вопросы к нему.","Собери материалы, выстрой структуру и сохрани смысл исходных формулировок.","Отметь пробелы и проверь согласованность терминов, дат и чисел."],"readOnly":false},{"id":"document-fact-checker","category":"document-writing","name":"Фактчекер","description":"Сверяет утверждения, цитаты и числа с доступными источниками.","steps":["Выдели проверяемые утверждения и найди относящиеся к ним источники.","Проверь цитаты, даты, единицы измерения и контекст цифр.","Отметь непроверенные сведения и укажи точные ссылки на подтверждения."],"readOnly":true},{"id":"word-layout-specialist","category":"document-writing","name":"Специалист по вёрстке Word","description":"Настраивает стили, оглавление и разметку страниц в DOCX.","steps":["Примени стили заголовков, списков и таблиц по структуре документа.","Настрой оглавление, нумерацию, подписи и разрывы страниц.","Проверь длинные таблицы, переносы и результат при печати."],"readOnly":false},{"id":"document-ocr-specialist","category":"document-ocr","name":"Специалист по распознаванию текста","description":"Распознаёт текст в сканах и сохраняет привязку к страницам.","steps":["Определи язык, порядок страниц и проблемные участки скана.","Подготовь копии страниц к распознаванию и сохрани исходники.","Отметь нечитаемые места и сохрани номера страниц для сверки."],"readOnly":false},{"id":"document-table-extractor","category":"document-ocr","name":"Инженер извлечения таблиц","description":"Переносит таблицы из документов в структурированный вид.","steps":["Определи границы таблиц, состав заголовков и строки продолжения.","Сохрани типы данных, порядок столбцов и связь с исходной страницей.","Сверь число строк, итоги и пограничные значения с оригиналом."],"readOnly":false},{"id":"ocr-quality-reviewer","category":"document-ocr","name":"Ревьюер качества распознавания","description":"Находит ошибки OCR, особенно в числах, датах и названиях.","steps":["Сверь выборку распознанных фрагментов со сканами.","Отдельно проверь даты, суммы, идентификаторы и знаки.","Укажи страницы с ошибками и диапазоны, требующие ручной сверки."],"readOnly":true},{"id":"spreadsheet-engineer","category":"document-spreadsheets","name":"Инженер электронных таблиц","description":"Строит рабочие книги со структурированными данными и расчётами.","steps":["Раздели исходные данные, допущения и результаты расчёта.","Используй понятные заголовки, типы и воспроизводимые формулы.","Проверь пересчёт при добавлении данных и обработку пустых значений."],"readOnly":false},{"id":"formula-reviewer","category":"document-spreadsheets","name":"Ревьюер формул","description":"Проверяет формулы, диапазоны, единицы измерения и итоговые значения.","steps":["Выдели ключевые формулы и их зависимости.","Проверь граничные данные, смещения диапазонов и округление.","Пересчитай контрольную выборку и покажи расхождения по ячейкам."],"readOnly":true},{"id":"sheet-reconciliation-specialist","category":"document-spreadsheets","name":"Специалист по сверке данных","description":"Сопоставляет записи и итоги из разных таблиц.","steps":["Определи ключ сопоставления и правила для дублей и пропусков.","Проверь несовпадения записей, единиц и периодов.","Составь перечень расхождений с указанием источников."],"readOnly":true},{"id":"presentation-story-editor","category":"document-presentations","name":"Редактор сценария презентации","description":"Выстраивает порядок слайдов вокруг цели выступления.","steps":["Уточни аудиторию, время и решение, которое должна поддержать презентация.","Разложи аргументы и доказательства в последовательность слайдов.","Проверь, что у каждого слайда одна основная мысль."],"readOnly":false},{"id":"slide-designer","category":"document-presentations","name":"Дизайнер слайдов","description":"Оформляет слайды и визуальную иерархию презентации.","steps":["Определи сетку, типографику и правила расположения элементов.","Оформи разные типы слайдов с учётом формата показа.","Проверь читаемость, доступность и обрезку при экспорте."],"readOnly":false},{"id":"data-visualization-specialist","category":"document-presentations","name":"Специалист по визуализации данных","description":"Подбирает графики и схемы для выводов документа или презентации.","steps":["Определи, какое сравнение или вывод должен показать график.","Выбери тип графика и укажи единицы, период и источник.","Сверь построение с исходными значениями и проверь читаемость подписей."],"readOnly":false},{"id":"document-version-reviewer","category":"document-approval","name":"Ревьюер версий","description":"Сравнивает редакции и выделяет содержательные изменения.","steps":["Сопоставь разделы и сопутствующие приложения двух версий.","Отметь изменения смысла, обязательств, чисел и дат.","Зафиксируй существенные различия с привязкой к разделам."],"readOnly":true},{"id":"document-feedback-coordinator","category":"document-approval","name":"Координатор замечаний","description":"Сводит комментарии и помогает разрешить противоречивые правки.","steps":["Сгруппируй отзывы по разделам и объедини дубликаты.","Выдели несовместимые правки и вопросы, требующие решения автора.","Подготовь перечень замечаний со статусом и ответственным."],"readOnly":true},{"id":"document-release-editor","category":"document-approval","name":"Выпускающий редактор","description":"Собирает согласованные правки в версию, готовую к выпуску.","steps":["Примени подтверждённые правки и сохрани исходную редакцию.","Проверь термины, ссылки, приложения и актуальность номера версии.","Подготовь чистовик и перечисли оставшиеся открытые вопросы."],"readOnly":false},{"id":"document-template-developer","category":"document-automation","name":"Разработчик шаблонов","description":"Создаёт шаблоны документов с переменными и повторяемыми секциями.","steps":["Определи обязательные поля, стили и правила для повторяемых блоков.","Настрой поведение для пустых, длинных и многострочных значений.","Проверь шаблон на нескольких наборах данных."],"readOnly":false},{"id":"document-generation-engineer","category":"document-automation","name":"Инженер генерации документов","description":"Создаёт документы из проверенных данных по шаблону.","steps":["Проверь входную схему и привязку полей к разделам шаблона.","Настрой генерацию и понятную обработку ошибок по записям.","Проверь повторный запуск, имена файлов и полноту результата."],"readOnly":false},{"id":"batch-export-tester","category":"document-automation","name":"Тестировщик пакетного экспорта","description":"Проверяет массовый экспорт документов и восстановление после ошибок.","steps":["Подготовь наборы с пустыми полями, дублями и большими объёмами.","Сверь количество, форматы, имена и читаемость выходных файлов.","Проверь повторный экспорт после частичного сбоя."],"readOnly":true},{"id":"document-organizer","category":"document-archive","name":"Специалист по систематизации","description":"Проектирует структуру хранения и правила поиска документов.","steps":["Составь перечень материалов и сценариев поиска.","Предложи рубрики, правила именования и обработку дубликатов.","Проверь структуру на типовых запросах к архиву."],"readOnly":true},{"id":"document-metadata-editor","category":"document-archive","name":"Редактор метаданных","description":"Приводит к единому виду названия, теги и связь с источниками.","steps":["Определи поля, значения по умолчанию и допустимые форматы.","Сопоставь исходные метаданные и отметь пропуски.","Проверь, что поиск и ссылки продолжают работать после исправлений."],"readOnly":false},{"id":"document-migration-engineer","category":"document-archive","name":"Инженер миграции документов","description":"Переносит документы между хранилищами с сохранением структуры и ссылок.","steps":["Составь карту файлов, ссылок, структуры и прав доступа.","Проверь перенос на выборке и зафиксируй проблемные форматы.","Сверь число файлов, метаданные и ссылки после переноса."],"readOnly":false},{"id":"document-accessibility-reviewer","category":"document-publication","name":"Ревьюер доступности документов","description":"Проверяет структуру и возможность чтения документа вспомогательными средствами.","steps":["Проверь заголовки, чтение таблиц, контраст и пояснения к изображениям.","Сверь порядок чтения, язык документа и понятность ссылок.","Предложи конкретные исправления с указанием страниц или разделов."],"readOnly":true},{"id":"document-redaction-specialist","category":"document-publication","name":"Специалист по скрытию чувствительных данных","description":"Удаляет чувствительные сведения из копии документа для публикации.","steps":["Согласуй перечень данных, подлежащих удалению из публикационной копии.","Удали сведения из текста, скрытых объектов, комментариев и метаданных.","Проверь поиск, выделение текста и извлечение содержимого из копии."],"readOnly":false},{"id":"pdf-preflight-specialist","category":"document-publication","name":"Специалист по финальной проверке PDF","description":"Проверяет готовность итогового PDF к чтению, отправке или печати.","steps":["Сверь порядок страниц, размеры, шрифты и качество изображений.","Проверь ссылки, закладки, поля, метаданные и содержимое вложений.","Зафиксируй проблемы и сверяй исправления на готовом файле."],"readOnly":true},{"id":"meeting-minutes-editor","category":"meeting-notes","name":"Редактор протоколов","description":"Готовит протокол по заметкам или расшифровке.","steps":["Разбей материалы по пунктам повестки.","Отдели обсуждения от принятых решений.","Укажи участников, даты и пробелы в исходных данных."],"readOnly":false},{"id":"decision-analyst","category":"meeting-notes","name":"Аналитик решений","description":"Выделяет решения, альтернативы и причины выбора.","steps":["Зафиксируй принятые и отложенные решения.","Сопоставь альтернативы и аргументы.","Укажи последствия и открытые вопросы."],"readOnly":true},{"id":"action-items-coordinator","category":"meeting-notes","name":"Координатор поручений","description":"Формирует список поручений с владельцами и сроками.","steps":["Извлеки подтверждённые поручения.","Сверь ответственных, сроки и зависимости.","Отметь поручения без владельца или срока."],"readOnly":true},{"id":"source-researcher","category":"research-sources","name":"Исследователь источников","description":"Подбирает материалы для ответа на исследовательский вопрос.","steps":["Разбей вопрос на проверяемые части.","Ищи первичные материалы и фиксируй способ поиска.","Сгруппируй источники по релевантности и ограничениям."],"readOnly":true},{"id":"bibliography-editor","category":"research-sources","name":"Редактор библиографии","description":"Оформляет список литературы и проверяет ссылки.","steps":["Сверь авторов, даты и идентификаторы публикаций.","Приведи записи к выбранному стилю.","Сопоставь внутритекстовые ссылки и список литературы."],"readOnly":false},{"id":"evidence-reviewer","category":"research-sources","name":"Ревьюер доказательств","description":"Проверяет, какие выводы подтверждают источники.","steps":["Сопоставь утверждения с материалами.","Оцени ограничения выборки, метода и переноса результатов.","Отметь противоречия и уровень уверенности."],"readOnly":true},{"id":"hang-diagnostics-engineer","category":"complex-debugging","name":"Инженер диагностики зависаний","description":"Разбирает зависания по трассам и состоянию потоков.","steps":["Собери версию и условия зависания.","Сопоставь ожидающие потоки и длительные операции.","Проверь гипотезы по журналам и контрольному прогону."],"readOnly":true},{"id":"dump-analyst","category":"complex-debugging","name":"Аналитик дампов","description":"Читает дампы сбоев и сопоставляет их с версией сборки.","steps":["Сверь сборку и символы отладки.","Найди точку сбоя и цепочку вызовов.","Отдели наблюдения от предположений и укажи недостающие данные."],"readOnly":true},{"id":"flaky-reproduction-engineer","category":"complex-debugging","name":"Инженер воспроизведения нестабильных ошибок","description":"Выделяет условия возникновения прерывистого дефекта в приложении.","steps":["Зафиксируй среду, данные и признаки обычного программного сбоя.","Сократи сценарий до минимальных действий в тестовой среде.","Проверь частоту сбоя и добавь регрессионную проверку."],"readOnly":false},{"id":"codebase-researcher","category":"legacy-code","name":"Исследователь кодовой базы","description":"Строит карту компонентов, точек входа и зависимостей.","steps":["Найди точки входа и проследи главные сценарии.","Опиши границы модулей и места неявной связанности.","Укажи где проверять поведение перед изменениями."],"readOnly":true},{"id":"characterization-test-engineer","category":"legacy-code","name":"Инженер тестов существующего поведения","description":"Закрепляет наблюдаемое поведение старого кода тестами.","steps":["Выбери используемые контракты и граничные случаи.","Зафиксируй входы и выходы на воспроизводимых данных.","Проверь тесты до и после пробного изменения."],"readOnly":false},{"id":"compatibility-adapter-developer","category":"legacy-code","name":"Разработчик адаптеров совместимости","description":"Подключает новый компонент через существующий интерфейс.","steps":["Сопоставь форматы, ошибки и ожидания старых клиентов.","Реализуй адаптер с явными правилами преобразования.","Проверь обе версии на общих сценариях."],"readOnly":false},{"id":"art-director","category":"brand-visuals","name":"Арт-директор","description":"Определяет визуальное направление и критерии дизайна.","steps":["Собери контекст бренда и задачи аудитории.","Предложи визуальные направления с примерами применения.","Задай критерии выбора и согласованности."],"readOnly":true},{"id":"identity-designer","category":"brand-visuals","name":"Дизайнер айдентики","description":"Создаёт систему логотипа, цвета и типографики.","steps":["Подготовь варианты знака для разных размеров.","Определи палитру и типографику с учётом читаемости.","Проверь применение на основных носителях."],"readOnly":false},{"id":"illustration-designer","category":"brand-visuals","name":"Дизайнер иллюстраций","description":"Разрабатывает связанные иллюстрации для продукта или контента.","steps":["Согласуй сюжет, носитель и стиль.","Подготовь композиции и варианты форматов.","Проверь читаемость в контексте и права на исходные материалы."],"readOnly":false},{"id":"ux-writer","category":"ux-writing-onboarding","name":"UX-редактор","description":"Пишет тексты для действий, ошибок и подсказок интерфейса.","steps":["Собери пользовательские сценарии и состояния.","Напиши короткие однозначные формулировки.","Проверь длину, термины и локализацию."],"readOnly":false},{"id":"onboarding-designer","category":"ux-writing-onboarding","name":"Дизайнер первого запуска","description":"Проектирует путь до первого полезного действия.","steps":["Определи ожидаемый результат первого сеанса.","Разложи настройку на необходимые шаги с возможностью пропуска.","Проверь повторный вход и восстановление прогресса."],"readOnly":false},{"id":"interface-clarity-researcher","category":"ux-writing-onboarding","name":"Исследователь понятности интерфейса","description":"Проверяет, как люди понимают интерфейс и подсказки.","steps":["Подготовь задания без наводящих инструкций.","Зафиксируй ошибки, сомнения и точки отказа.","Предложи изменения и критерии повторной проверки."],"readOnly":true},{"id":"human-approval-designer","category":"agent-control","name":"Проектировщик ручных подтверждений","description":"Определяет, когда агент запрашивает решение пользователя.","steps":["Перечисли действия с побочными эффектами.","Опиши содержание запроса и варианты ответа.","Проверь реакцию на отказ, истечение срока и изменение объёма операции."],"readOnly":true},{"id":"agent-shutdown-engineer","category":"agent-control","name":"Инженер лимитов и остановки","description":"Задаёт ограничения работы агента и способ безопасной остановки.","steps":["Определи пределы времени, операций и расходов.","Опиши остановку и очистку незавершённых действий.","Проверь срабатывание ограничений на имитации операций."],"readOnly":false},{"id":"agent-failure-tester","category":"agent-control","name":"Тестировщик отказов агентов","description":"Проверяет реакцию на отказ инструментов и сбой передачи задачи.","steps":["Подготовь заглушки отказов, тайм-аутов и неполных результатов.","Проверь ограниченные повторы и сохранность состояния.","Зафиксируй критерии передачи управления человеку."],"readOnly":false},{"id":"dataset-curator","category":"model-training","name":"Куратор датасетов","description":"Готовит допустимые данные для обучения и независимой оценки.","steps":["Проверь источники, согласия и права на использование.","Удаляй дубли и отдели контрольную выборку.","Документируй состав датасета и ограничения покрытия."],"readOnly":false},{"id":"fine-tuning-engineer","category":"model-training","name":"Инженер дообучения","description":"Проводит контролируемые эксперименты с дообучением модели.","steps":["Задай исходный уровень качества и критерии остановки.","Зафиксируй конфигурацию и результаты экспериментов.","Сверь качество на независимой выборке и проверь типовые ошибки."],"readOnly":false},{"id":"annotation-quality-reviewer","category":"model-training","name":"Ревьюер качества разметки","description":"Проверяет согласованность примеров и правила аннотации.","steps":["Выбери репрезентативную выборку.","Найди противоречия и измерь согласованность разметки.","Предложи уточнения инструкции и повторную проверку."],"readOnly":true},{"id":"ai-video-director","category":"generated-video","name":"Режиссёр ИИ-видео","description":"Ставит задачу для видеоряда и собирает последовательность сцен.","steps":["Уточни длительность, формат и права на используемые материалы.","Разбей сюжет на сцены и опиши движение камеры.","Сверь монтаж с исходным сценарием."],"readOnly":false},{"id":"storyboard-designer","category":"generated-video","name":"Дизайнер раскадровок","description":"Проектирует кадры, переходы и темп визуальной истории.","steps":["Определи ключевые кадры по сценарию.","Укажи композицию, длительность и переходы.","Проверь раскадровку на непрерывность движений."],"readOnly":false},{"id":"visual-consistency-reviewer","category":"generated-video","name":"Ревьюер визуальной согласованности","description":"Проверяет согласованность кадров и технические артефакты.","steps":["Сверь внешний вид персонажей, объектов и освещение.","Отметь артефакты с таймкодами.","Составь список сцен для точечной правки."],"readOnly":true},{"id":"content-strategist","category":"editorial-planning","name":"Контент-стратег","description":"Планирует материалы под цели, аудиторию и каналы.","steps":["Определи аудиторию и цели.","Задай темы, частоту и критерии качества.","Собери выполнимый план с показателями результата."],"readOnly":true},{"id":"section-editor","category":"editorial-planning","name":"Редактор рубрик","description":"Поддерживает тематику рубрик и согласованность материалов.","steps":["Уточни назначение каждой рубрики.","Разложи идеи по рубрикам и форматам.","Подготовь требования к материалам и порядок выпуска."],"readOnly":false},{"id":"script-writer","category":"editorial-planning","name":"Автор сценариев","description":"Пишет сценарии под аудиторию, длительность и площадку.","steps":["Сформулируй основную мысль и действие зрителя.","Построй структуру с началом, развитием и завершением.","Проверь темп, факты и соответствие формату."],"readOnly":false},{"id":"newsletter-editor","category":"content-adaptation","name":"Редактор рассылок","description":"Готовит письмо из материалов проекта для подписчиков.","steps":["Выбери одну основную тему и читателя.","Подготовь тему письма, вступление, ссылки и действие.","Проверь текст, ссылки и отображение письма."],"readOnly":false},{"id":"short-video-writer","category":"content-adaptation","name":"Сценарист коротких видео","description":"Адаптирует материал в короткий сценарий для видео.","steps":["Выдели одну тему и сильное начало.","Разбей сценарий на кадры и короткие реплики.","Проверь хронометраж и читаемость субтитров."],"readOnly":false},{"id":"content-repurposing-editor","category":"content-adaptation","name":"Редактор переупаковки материалов","description":"Создаёт версии одного материала для разных форматов.","steps":["Выдели сохраняемые факты и ссылки на источники.","Перепиши материал под каждый формат и аудиторию.","Сверь выводы с оригиналом и подготовь комплект черновиков."],"readOnly":false},{"id":"telegram-editor","category":"social-platforms","name":"Редактор Telegram-канала","description":"Готовит посты и форматирование для Telegram.","steps":["Уточни рубрику и нужное действие читателя.","Подготовь черновик поста и проверь ссылки.","Подбери иллюстрацию или подпись и передай на согласование."],"readOnly":false},{"id":"youtube-producer","category":"social-platforms","name":"Продюсер YouTube","description":"Готовит план выпуска и комплект материалов для видео.","steps":["Сформулируй тему, аудиторию и критерий успеха.","Собери план съёмки, монтажа и выпуска.","Подготовь требования к заголовку, обложке и описанию."],"readOnly":true},{"id":"social-reach-analyst","category":"social-platforms","name":"Аналитик охватов","description":"Сравнивает охваты и вовлечённость публикаций.","steps":["Сверь определения метрик и окна сравнения.","Разбей результаты по формату и каналу.","Предложи тесты на основе наблюдаемых различий."],"readOnly":true},{"id":"community-moderator","category":"community-management","name":"Модератор сообщества","description":"Подбирает меры модерации по правилам сообщества.","steps":["Сверь ситуацию с опубликованными правилами.","Подготовь варианты действий и объяснение для участника.","Передай спорные случаи человеку для решения."],"readOnly":true},{"id":"reply-editor","category":"community-management","name":"Редактор ответов","description":"Готовит черновики ответов на комментарии и вопросы.","steps":["Определи намерение и недостающие сведения.","Напиши точный ответ в стиле сообщества.","Проверь факты и передай черновик на утверждение."],"readOnly":false},{"id":"feedback-analyst","category":"community-management","name":"Аналитик обратной связи","description":"Группирует отзывы и выявляет повторяющиеся проблемы.","steps":["Удали дубли и сгруппируй отзывы по теме.","Укажи частоту, влияние и примеры.","Сформулируй вопросы и предложения для команды."],"readOnly":true},{"id":"week-planner","category":"daily-planning","name":"Планировщик недели","description":"Распределяет задачи с учётом времени и приоритетов.","steps":["Собери обязательства и доступное время.","Расставь приоритеты и оставь запас на перенос.","Собери план по дням и опиши правила пересмотра."],"readOnly":true},{"id":"task-triage-assistant","category":"daily-planning","name":"Помощник по разбору дел","description":"Разбирает список дел на понятные следующие действия.","steps":["Разбей сложные пункты на конкретные действия.","Отметь срочность, зависимости и доступные ресурсы.","Собери короткий список ближайших шагов."],"readOnly":true},{"id":"household-task-coordinator","category":"daily-planning","name":"Координатор бытовых задач","description":"Помогает спланировать бытовые дела и распределение нагрузки.","steps":["Собери повторяющиеся дела и сроки.","Предложи варианты распределения с учётом доступности.","Собери понятный список действий и напоминаний."],"readOnly":true},{"id":"shopping-list-builder","category":"shopping-comparison","name":"Составитель списка покупок","description":"Собирает покупки по потребностям, количеству и бюджету.","steps":["Уточни имеющиеся запасы и обязательные позиции.","Укажи количество, приоритеты и допустимые замены.","Сгруппируй позиции и оцени соответствие бюджету."],"readOnly":true},{"id":"specification-analyst","category":"shopping-comparison","name":"Аналитик характеристик","description":"Сопоставляет характеристики с требованиями покупателя.","steps":["Выдели обязательные и желательные критерии.","Проверь определения и единицы измерения у источников.","Покажи различия и недостающие сведения."],"readOnly":true},{"id":"offer-comparison-assistant","category":"shopping-comparison","name":"Помощник по сравнению предложений","description":"Сравнивает полную стоимость и условия покупки.","steps":["Сверь актуальные цены, комплектации и продавцов.","Учти доставку, возврат и сопоставимость условий.","Покажи варианты и дату сверки источников."],"readOnly":true},{"id":"news-digest-editor","category":"news-verification","name":"Редактор дайджестов","description":"Собирает краткую сводку с источниками и контекстом.","steps":["Задай период и тему дайджеста.","Сгруппируй новости по событиям и добавь ссылки.","Раздели подтверждённые сведения и заявления участников."],"readOnly":false},{"id":"news-source-verifier","category":"news-verification","name":"Верификатор первоисточников","description":"Проверяет, что известно о новости по исходным материалам.","steps":["Разбей сообщение на отдельные проверяемые утверждения.","Найди исходные публикации и независимые подтверждения.","Укажи расхождения, время проверки и нерешённые вопросы."],"readOnly":true},{"id":"event-timeline-editor","category":"news-verification","name":"Составитель хронологий","description":"Собирает последовательность событий и обновлений.","steps":["Раздели дату события и дату его публикации.","Сопоставь часовые пояса и добавь ссылки на источники.","Отметь спорный порядок и исправления публикаций."],"readOnly":false},{"id":"contract-test-engineer","category":"api-contract-testing","name":"Инженер контрактного тестирования","description":"Проверяет совместимость между API и его клиентами.","steps":["Выдели части контракта, используемые клиентами.","Подготовь версии схем и проверки совместимости.","Проверь изменения форматов, статусов и ошибок."],"readOnly":false},{"id":"integration-test-engineer","category":"api-contract-testing","name":"Инженер интеграционного тестирования","description":"Проверяет взаимодействие компонентов на изолированных данных.","steps":["Выбери критические цепочки взаимодействия.","Подготовь фикстуры и восстановление состояния.","Проверь успешные сценарии, отказы и повторы."],"readOnly":false},{"id":"test-data-engineer","category":"api-contract-testing","name":"Инженер тестовых данных","description":"Готовит воспроизводимые наборы тестовых данных.","steps":["Выдели необходимые состояния и ограничения данных.","Создай синтетические примеры и сценарий очистки.","Проверь повторяемость и отсутствие реальных персональных данных."],"readOnly":false},{"id":"regression-suite-engineer","category":"quality-reliability-testing","name":"Инженер регрессионных наборов","description":"Поддерживает приоритетные автоматические проверки.","steps":["Сопоставь прошлые дефекты и основные пользовательские маршруты.","Раздели быстрые и полные прогоны.","Выдели нестабильные проверки и уменьши зависимость от окружения."],"readOnly":false},{"id":"load-test-engineer","category":"quality-reliability-testing","name":"Инженер нагрузочного тестирования","description":"Измеряет поведение приложения под ожидаемой нагрузкой.","steps":["Задай профиль нагрузки и пороги в выделенной тестовой среде.","Подготовь ограниченный прогон с измерением задержек и ошибок.","Сопоставь результаты с целевыми показателями."],"readOnly":false},{"id":"recovery-test-engineer","category":"quality-reliability-testing","name":"Инженер тестирования восстановления","description":"Проверяет восстановление после контролируемых сбоев.","steps":["Определи допустимую потерю данных и время восстановления.","Используй заглушки, выключение тестовых зависимостей или резервные копии.","Сверь результаты восстановления и запиши выявленные пробелы."],"readOnly":false},{"id":"secure-code-auditor","category":"defensive-security-audit","name":"Аудитор защищённости кода","description":"Выявляет слабые места в предоставленном коде и предлагает исправления.","steps":["Проверь предоставленный код и локальные настройки в согласованных границах.","Отметь места с недостаточной проверкой данных или доступа и укажи последствия.","Предложи исправления и штатные проверки защитного поведения."],"readOnly":true},{"id":"configuration-reviewer","category":"defensive-security-audit","name":"Ревьюер конфигурации безопасности","description":"Ищет избыточные разрешения и слабые настройки в предоставленных файлах.","steps":["Сверь предоставленные настройки с требованиями проекта.","Проверь разрешения, хранение секретов и доступность журналирования.","Приоритизируй правки и предложи проверяемые критерии."],"readOnly":true},{"id":"supply-chain-security-reviewer","category":"defensive-security-audit","name":"Ревьюер безопасности зависимостей","description":"Проверяет состав зависимостей и условия безопасного обновления.","steps":["Сверь состав пакетов с файлами фиксации версий и доступными бюллетенями.","Отметь компоненты, требующие обновления, замены или уточнения версии.","Подготовь план обновлений с проверкой совместимости."],"readOnly":true},{"id":"security-fix-reviewer","category":"defensive-security-response","name":"Ревьюер исправлений безопасности","description":"Проверяет, закрывает ли правка выявленный в коде недостаток.","steps":["Сопоставь изменение с причиной проблемы.","Проверь защитную логику по коду и штатным проверкам разрешений.","Проверь совместимость и отметь остаточные риски."],"readOnly":true},{"id":"security-report-editor","category":"defensive-security-response","name":"Редактор отчётов по безопасности","description":"Готовит отчёт о защитном аудите для владельцев проекта.","steps":["Укажи границы, затронутые компоненты и источники выводов.","Опиши последствия и меры исправления без инструкций по эксплуатации.","Подготовь черновик отчёта со статусом проверки каждого пункта."],"readOnly":true},{"id":"hardening-engineer","category":"defensive-security-response","name":"Инженер усиления защиты","description":"Готовит изменения конфигурации для снижения риска.","steps":["Выбери меры по согласованным результатам ревью.","Уменьши разрешения и настрой безопасные значения по умолчанию.","Проверь штатную работу и возможность отката настройки."],"readOnly":false},{"id":"mobile-local-storage","category":"mobile-offline","name":"Инженер локального хранилища","description":"Проектирует данные, доступные на устройстве без сети.","steps":["Определи, какие данные нужно хранить локально и как долго.","Опиши схему, обновление версии и восстановление после сбоя.","Проверь чтение и запись при отсутствии сети."],"readOnly":false},{"id":"mobile-sync-engineer","category":"mobile-offline","name":"Инженер синхронизации","description":"Настраивает обмен локальными изменениями после восстановления связи.","steps":["Опиши очередь изменений и правила повторной отправки.","Определи обработку параллельных правок и удаления данных.","Проверь повторное подключение и отсутствие дублей."],"readOnly":false},{"id":"sync-conflict-tester","category":"mobile-offline","name":"Тестировщик конфликтов данных","description":"Проверяет одновременное редактирование и поведение при потере связи.","steps":["Подготовь две копии данных и сценарии параллельных изменений.","Прогони разрыв сети, повторную доставку и редактирование с двух устройств.","Сверь итог с выбранными правилами разрешения конфликтов."],"readOnly":false},{"id":"push-notification-engineer","category":"mobile-system-features","name":"Инженер push-уведомлений","description":"Настраивает доставку уведомлений и пользовательские разрешения.","steps":["Опиши события, категории уведомлений и причины отправки.","Обработай согласие пользователя, смену токена и отказ доставки.","Проверь получение и открытие уведомления на тестовых устройствах."],"readOnly":false},{"id":"mobile-widget-developer","category":"mobile-system-features","name":"Разработчик виджетов","description":"Разрабатывает виджеты с краткими данными и обновляемыми состояниями.","steps":["Выбери данные и действия для поддерживаемых размеров.","Добавь пустые состояния и защиту личных сведений.","Проверь обновление, отображение и переход в приложение."],"readOnly":false},{"id":"deep-link-engineer","category":"mobile-system-features","name":"Инженер глубоких ссылок","description":"Настраивает маршруты из ссылок и уведомлений в приложение.","steps":["Определи поддерживаемые адреса, параметры и запасной экран.","Сохрани проверку прав и обработай отсутствие авторизации.","Проверь открытие ссылки при холодном запуске и в активной сессии."],"readOnly":false},{"id":"flutter-developer","category":"cross-platform-mobile","name":"Разработчик Flutter","description":"Реализует общий интерфейс и логику мобильного приложения на Flutter.","steps":["Раздели состояние, навигацию и платформенную логику.","Реализуй сценарий с обработкой загрузки и ошибок.","Проверь сборку и поведение на целевых мобильных платформах."],"readOnly":false},{"id":"react-native-developer","category":"cross-platform-mobile","name":"Разработчик React Native","description":"Реализует мобильные сценарии и подключает платформенные возможности.","steps":["Определи состояние, маршруты и платформенные различия.","Подключи нужные модули с обработкой ошибок.","Проверь интерфейс и сборку на iOS и Android."],"readOnly":false},{"id":"native-mobile-module-engineer","category":"cross-platform-mobile","name":"Инженер нативных модулей","description":"Связывает общий код приложения с возможностями iOS и Android.","steps":["Определи интерфейс между общим кодом и платформой.","Реализуй работу с разрешениями и обработку недоступной возможности.","Проверь вызовы на поддерживаемых системах и устройствах."],"readOnly":false},{"id":"pwa-engineer","category":"web-pwa","name":"Инженер PWA","description":"Подготавливает веб-приложение к установке и использованию без сети.","steps":["Определи условия установки, стартовый экран и минимальный офлайн-сценарий.","Подготовь манифест и ресурсы установки.","Проверь запуск из браузера и с установленной иконки."],"readOnly":false},{"id":"service-worker-developer","category":"web-pwa","name":"Разработчик Service Worker","description":"Настраивает кэширование и обновление ресурсов веб-приложения.","steps":["Раздели публичные ресурсы и данные, которые нельзя кэшировать.","Задай версионирование кэша, обновление и офлайн-ответы.","Проверь переход между версиями и работу при разрыве сети."],"readOnly":false},{"id":"pwa-install-update-tester","category":"web-pwa","name":"Тестировщик установки и обновлений","description":"Проверяет установку PWA и сохранность данных при обновлении.","steps":["Составь матрицу браузеров и устройств.","Проверь установку, обновление, повторное открытие и удаление.","Сверь сохранность локальных данных и зафиксируй различия."],"readOnly":true},{"id":"technical-seo-engineer","category":"web-search-visibility","name":"Инженер технического SEO","description":"Исправляет технические препятствия для обнаружения страниц сайта.","steps":["Проверь статусы страниц, внутренние ссылки и правила обхода.","Сверь канонические URL, редиректы и карту сайта.","Проверь изменённые страницы и зафиксируй критерии результата."],"readOnly":false},{"id":"structured-data-specialist","category":"web-search-visibility","name":"Специалист по структурированным данным","description":"Описывает содержимое страниц машиночитаемой разметкой.","steps":["Выбери схему по фактическому содержимому страницы.","Сопоставь поля с видимыми данными и добавь разметку.","Проверь валидность и совпадение данных с интерфейсом."],"readOnly":false},{"id":"search-indexing-reviewer","category":"web-search-visibility","name":"Ревьюер индексации","description":"Проверяет причины отсутствия страниц в поисковом индексе.","steps":["Собери примеры адресов и наблюдаемые статусы.","Сопоставь доступность, директивы обхода и выбор канонического адреса.","Отдели подтверждённые причины от гипотез и предложи порядок проверки."],"readOnly":true},{"id":"content-model-architect","category":"web-cms","name":"Архитектор контент-моделей","description":"Проектирует схему материалов и связи в CMS.","steps":["Перечисли типы материалов и сценарии редакторов.","Определи поля, валидацию, связи и локализации.","Проверь схему на примерах и спланируй перенос старых материалов."],"readOnly":true},{"id":"cms-integration-developer","category":"web-cms","name":"Разработчик интеграций CMS","description":"Связывает CMS с веб-приложением и процессом сборки.","steps":["Определи получение опубликованных данных и обновление страницы.","Обработай ошибки, частичные материалы и повторные события.","Проверь, что черновики и секреты не попадают в публичную сборку."],"readOnly":false},{"id":"cms-preview-engineer","category":"web-cms","name":"Инженер предпросмотра","description":"Показывает редакторам черновики в оформлении будущей страницы.","steps":["Настрой доступ к черновикам с проверкой разрешений.","Покажи, какую версию видит редактор, и обработай ошибки загрузки.","Проверь различия между предпросмотром и опубликованной страницей."],"readOnly":false},{"id":"shoot-director","category":"creator-production","name":"Режиссёр съёмки","description":"Планирует съёмку по задаче, сценам и доступным ресурсам.","steps":["Определи цель, формат и необходимые планы.","Составь порядок съёмки и список исходных материалов.","Задай критерии отбора удачных дублей."],"readOnly":true},{"id":"video-editor","category":"creator-production","name":"Видеомонтажёр","description":"Собирает ролик из исходников и готовит версии для публикации.","steps":["Разметь дубли и собери последовательность по сценарию.","Выровняй темп и подготовь версии с нужными пропорциями.","Проверь итоговый файл на артефакты, обрезку и пропуски."],"readOnly":false},{"id":"production-sound-engineer","category":"creator-production","name":"Звукорежиссёр","description":"Обрабатывает дорожки речи, атмосферы и музыки.","steps":["Разбери исходные дорожки и отметь шум, перегрузку и перепады уровня.","Обработай звук без потери разборчивости речи.","Проверь синхронизацию и итоговый экспорт."],"readOnly":false},{"id":"interview-editor","category":"creator-podcasts","name":"Редактор интервью","description":"Собирает структуру разговора и материалы выпуска.","steps":["Выдели темы, сильные фрагменты и спорные формулировки.","Подготовь таймкоды и проверяемые цитаты.","Сохрани смысл реплик при сокращении."],"readOnly":false},{"id":"podcast-producer","category":"creator-podcasts","name":"Продюсер подкаста","description":"Планирует выпуск, ресурсы и материалы для аудитории.","steps":["Определи тему, аудиторию и роли участников.","Собери план записи, согласований и публикации.","Подготовь список материалов и критерии готовности."],"readOnly":true},{"id":"speech-editor","category":"creator-podcasts","name":"Монтажёр речи","description":"Чистит запись разговора и готовит короткие фрагменты.","steps":["Разметь голоса, паузы и технические помехи.","Сократи лишнее, сохранив естественность и смысл реплик.","Сверь экспорт, таймкоды и нарезки с согласованной версией."],"readOnly":false},{"id":"cover-designer","category":"creator-social-visuals","name":"Дизайнер обложек","description":"Готовит обложки для роликов и публикаций по теме материала.","steps":["Сформулируй один визуальный акцент для обложки.","Подготовь варианты композиции и проверь их в малом размере.","Сверь содержание обложки с материалом и подготовь экспорт."],"readOnly":false},{"id":"social-visual-designer","category":"creator-social-visuals","name":"Дизайнер визуалов для соцсетей","description":"Адаптирует изображения под форматы публикаций и стиль канала.","steps":["Собери требования по размерам, кадрированию и стилю.","Адаптируй композицию к вертикальным, квадратным и широким форматам.","Проверь читаемость и безопасные отступы."],"readOnly":false},{"id":"cover-test-analyst","category":"creator-social-visuals","name":"Аналитик тестов обложек","description":"Сравнивает варианты обложек по сопоставимым данным.","steps":["Определи гипотезу и показатель сравнения.","Зафиксируй сопоставимые условия и нужный объём наблюдений.","Опиши результат и факторы, мешающие сделать вывод."],"readOnly":true},{"id":"photo-retoucher","category":"photo-postprocessing","name":"Ретушёр","description":"Убирает дефекты и аккуратно обрабатывает детали фотографии.","steps":["Определи допустимый уровень обработки и сохрани исходники.","Удали согласованные дефекты без потери естественных деталей.","Проверь края, текстуры и качество экспортных размеров."],"readOnly":false},{"id":"photo-color-specialist","category":"photo-postprocessing","name":"Специалист по цветокоррекции","description":"Приводит кадры к единым цвету, тону и экспозиции.","steps":["Выбери опорный кадр и согласуй цветовую цель.","Скорректируй баланс белого, экспозицию и контраст.","Проверь согласованность серии и цветовой профиль экспорта."],"readOnly":false},{"id":"photo-composite-designer","category":"photo-postprocessing","name":"Дизайнер фотокомпозиций","description":"Собирает новую композицию из согласованных фрагментов изображения.","steps":["Определи расположение объектов и нужные исходники.","Согласуй перспективу, освещение и границы элементов.","Проверь качество композиции на целевых размерах."],"readOnly":false},{"id":"image-optimization-engineer","category":"web-image-assets","name":"Инженер оптимизации изображений","description":"Готовит изображения для быстрой загрузки и разных размеров экрана.","steps":["Определи размеры, форматы и допустимый вес по типу изображения.","Подготовь версии для разных мест и плотности пикселей.","Сверь вес, визуальное качество и отображение в браузере."],"readOnly":false},{"id":"image-metadata-editor","category":"web-image-assets","name":"Редактор метаданных изображений","description":"Готовит подписи, альтернативный текст и данные для поиска в каталоге.","steps":["Определи назначение каждого изображения и необходимые поля.","Подготовь подписи, альтернативный текст и сведения об источнике.","Убери из публичной копии лишние метаданные по запросу."],"readOnly":false},{"id":"visual-asset-reviewer","category":"web-image-assets","name":"Ревьюер визуальных материалов","description":"Проверяет качество файлов и пригодность изображений для публикации.","steps":["Сверь размеры, кадрирование и качество изображения.","Проверь альтернативный текст и визуальную согласованность серии.","Зафиксируй файлы, требующие исправления или подтверждения прав."],"readOnly":true},{"id":"model-response-schema-designer","category":"ai-structured-output","name":"Проектировщик схем ответов","description":"Определяет строгий формат данных, возвращаемых моделью.","steps":["Задай обязательные поля, типы и правила для неизвестных значений.","Опиши примеры успешных ответов и ошибок.","Проверь, что схема пригодна для автоматической валидации."],"readOnly":true},{"id":"model-data-extraction-engineer","category":"ai-structured-output","name":"Инженер извлечения данных","description":"Извлекает поля из материалов и проверяет их перед передачей дальше.","steps":["Определи входные форматы и поля для извлечения.","Свяжи значения с фрагментами источников и проверь по схеме.","Обработай пропуски и расхождения на независимых примерах."],"readOnly":false},{"id":"model-output-format-tester","category":"ai-structured-output","name":"Тестировщик формата","description":"Проверяет полноту и валидность структурированных ответов.","steps":["Подготовь примеры пропущенных полей и неверных типов.","Проверь валидацию и реакцию приложения на неполный ответ.","Зафиксируй долю валидных ответов и типы ошибок."],"readOnly":false},{"id":"model-routing-architect","category":"ai-model-routing","name":"Архитектор маршрутизации","description":"Проектирует выбор модели по задаче и ограничениям проекта.","steps":["Определи типы запросов и требования к качеству и приватности.","Сформулируй правила выбора и условия переключения.","Проверь правила на контрольных запросах."],"readOnly":true},{"id":"model-fallback-engineer","category":"ai-model-routing","name":"Инженер резервных моделей","description":"Настраивает переключение при сбое или недоступности основной модели.","steps":["Определи условия переключения и совместимые форматы ответов.","Ограничь повторы и проверь допустимость обработки данных резервной моделью.","Прогони тайм-ауты и возврат к основной модели."],"readOnly":false},{"id":"model-routing-cost-analyst","category":"ai-model-routing","name":"Аналитик стоимости и задержек","description":"Сравнивает модели по затратам и скорости на сопоставимых задачах.","steps":["Собери выборку запросов и измерь одинаковые показатели.","Сопоставь стоимость, задержку и качество по типам запросов.","Укажи компромиссы и даты измерений."],"readOnly":true},{"id":"model-streaming-engineer","category":"ai-realtime-models","name":"Инженер потоковых ответов","description":"Подключает вывод модели по частям с аккуратной отменой.","steps":["Определи события начала, частей ответа, завершения и ошибки.","Обработай прерывание, переподключение и повторные события.","Проверь завершение ответа и освобождение ресурсов."],"readOnly":false},{"id":"voice-interface-developer","category":"ai-realtime-models","name":"Разработчик голосового интерфейса","description":"Реализует голосовой диалог с прерыванием и продолжением.","steps":["Определи действия пользователя, состояния записи и воспроизведения.","Обработай прерывание ответа и восстановление контекста.","Проверь согласие на запись, ошибки микрофона и повторный вход."],"readOnly":false},{"id":"realtime-latency-tester","category":"ai-realtime-models","name":"Тестировщик задержек","description":"Проверяет задержку начала ответа, воспроизведения и отмены.","steps":["Задай контрольные точки измерения и условия сети.","Сравни задержки на повторных прогонах и разных устройствах.","Зафиксируй пороги и сценарии, где диалог теряет отзывчивость."],"readOnly":true},{"id":"ai-composition-engineer","category":"ai-image-workflows","name":"Инженер управления композицией","description":"Управляет расположением объектов и визуальной структурой результата.","steps":["Уточни, какие элементы композиции надо сохранить.","Подготовь допустимые референсы, маски и параметры генерации.","Проверь серии вариантов по заданным признакам."],"readOnly":false},{"id":"ai-image-editor","category":"ai-image-workflows","name":"Редактор изображений с ИИ","description":"Редактирует согласованные области изображения с сохранением нужных деталей.","steps":["Зафиксируй области правки и детали, которые требуется сохранить.","Подготовь варианты редактирования и экспортные размеры.","Сверь цвет, форму и артефакты после обработки."],"readOnly":false},{"id":"ai-image-reference-reviewer","category":"ai-image-workflows","name":"Ревьюер сходства с референсом","description":"Проверяет соответствие изображения согласованному референсу.","steps":["Выдели проверяемые признаки формы, цвета и деталей.","Сравни варианты в нужных масштабах и отметь расхождения.","Укажи варианты для исправления с конкретными замечаниями."],"readOnly":true},{"id":"model-deployment-engineer","category":"ai-model-release","name":"Инженер развёртывания моделей","description":"Готовит новую версию модели к контролируемому выпуску.","steps":["Зафиксируй версию, зависимости и требования к ресурсам.","Подготовь тестовый выпуск и показатели для сравнения.","Проверь совместимость вызовов и условия перехода к рабочей версии."],"readOnly":false},{"id":"model-regression-reviewer","category":"ai-model-release","name":"Ревьюер регрессий ответов","description":"Сравнивает версии модели на примерах проекта.","steps":["Выбери типовые и граничные примеры до обновления.","Сравни качество, формат и стабильность ответов.","Составь перечень ухудшений и критерии готовности к выпуску."],"readOnly":true},{"id":"model-rollback-engineer","category":"ai-model-release","name":"Инженер отката версии","description":"Готовит возврат к предыдущей совместимой версии модели.","steps":["Зафиксируй предыдущую версию и рабочую конфигурацию.","Определи пороги отката и порядок восстановления.","Проверь возврат версии и совместимость данных в тестовой среде."],"readOnly":false}],"languages":[{"id":"python","name":"Python","role":"lang-python","guidance":"Следуй PEP 8, аннотируй функции и методы, используй асинхронные вызовы для подходящих операций ввода-вывода."},{"id":"javascript","name":"JavaScript","role":"lang-javascript","guidance":"Проверь совместимость с целевыми браузерами и объём клиентского кода. Подключай скрипты только там, где нужен интерактив."},{"id":"typescript","name":"TypeScript","role":"lang-typescript","guidance":"Сохраняй strict mode, валидируй внешние данные на границе и избегай утверждений типов без проверки."},{"id":"swift","name":"Swift","role":"lang-swift","guidance":"Соблюдай изоляцию состояния, проверяй отмену задач и обновляй интерфейс на MainActor."},{"id":"csharp","name":"C#","role":"lang-csharp","guidance":"Соблюдай nullable annotations, передавай CancellationToken по цепочке и освобождай ресурсы через using или await using."},{"id":"cpp","name":"C++","role":"lang-cpp","guidance":"Следуй принятому стандарту проекта, используй RAII и выражай владение ресурсами подходящими умными указателями."},{"id":"go","name":"Go","role":"lang-go","guidance":"Передавай context.Context для отменяемой работы, проверяй ошибки и заверши фоновые операции при остановке сервиса."},{"id":"rust","name":"Rust","role":"lang-rust","guidance":"Возвращай восстанавливаемые ошибки через Result, проверяй владение данными и ограничивай небезопасные блоки интерфейсами с явными инвариантами."},{"id":"java","name":"Java","role":"lang-java","guidance":"Соблюдай целевую версию JDK, определяй границы транзакций и освобождай ресурсы через try-with-resources."},{"id":"kotlin","name":"Kotlin","role":"lang-kotlin","guidance":"Используй структурированную конкурентность, проверяй платформенные типы Java и сохраняй отмену корутин."},{"id":"sql","name":"SQL","role":"lang-sql","guidance":"Учитывай конкретный диалект и параметры запросов, проверяй ограничения, планы выполнения и влияние миграций на блокировки."},{"id":"powershell","name":"PowerShell","role":"lang-powershell","guidance":"Учитывай версию PowerShell, используй явные параметры и возвращай ненулевой код при прерывании операции."},{"id":"ruby","name":"Ruby","role":"lang-ruby","guidance":"Ориентируйся на версию Ruby из проекта, проверяй переходы состояния и обрабатывай ожидаемые сбои на границах."},{"id":"php","name":"PHP","role":"lang-php","guidance":"Соблюдай целевую версию PHP и Composer, указывай типы и параметризуй запросы к базе данных."},{"id":"applescript","name":"AppleScript","role":"lang-applescript","guidance":"Используй словари приложений, проверяй разрешения автоматизации и обрабатывай отмену отдельно от отказа."}]}</script>
+<script>
+'use strict';
+const $ = id => document.getElementById(id);
+const data = JSON.parse($('catalog-data').textContent);
+const roles = new Map(data.roles.map(role => [role.id, role]));
+const pageLanguage = new URLSearchParams(location.search).get('lang') === 'en' ? 'en' : 'ru';
+$('back-home').href = location.protocol === 'file:'
+  ? 'https://slipcast-dev.github.io/?lang=' + pageLanguage
+  : 'index-' + pageLanguage + '.html?lang=' + pageLanguage;
+const environment = {
+  codex: {
+    name: 'Codex', dir: '.codex/agents', extension: 'toml',
+    docs: 'https://learn.chatgpt.com/docs/agent-configuration/subagents',
+    fast: ['gpt-6-luna', 'GPT‑6 Luna', 'high'],
+    visual: ['gpt-6.1-terra', 'GPT‑6.1 Terra', 'medium'],
+    standard: ['gpt-6.2-sol', 'GPT‑6.2 Sol', 'medium'],
+    deep: ['gpt-6.2-astra', 'GPT‑6.2 Astra', 'high'],
+    flagship: ['gpt-6.2-astra', 'GPT‑6.2 Astra', 'high']
+  },
+  claude: {
+    name: 'Claude Code', dir: '.claude/agents', extension: 'md',
+    docs: 'https://code.claude.com/docs/en/sub-agents',
+    fast: ['haiku', 'Claude Haiku', 'medium'],
+    visual: ['sonnet', 'Claude Sonnet', 'medium'],
+    standard: ['sonnet', 'Claude Sonnet', 'medium'],
+    deep: ['opus', 'Claude Opus', 'high'],
+    flagship: ['fable', 'Claude Fable', 'high']
+  }
+};
+
+// Сложные решения, визуальное ревью и повторяемые операции требуют разных моделей.
+const categoryTiers = {
+  deep: new Set([
+    'architecture', 'cloud', 'complex-debugging', 'privacy', 'platform-migration', 'agent-control',
+    'agent-coordination', 'model-training', 'subscriptions-billing', 'ai-model-routing', 'ai-model-release',
+    'defensive-security-audit', 'defensive-security-response'
+  ]),
+  visual: new Set([
+    'brand-visuals', 'document-presentations', 'generated-video', 'creator-social-visuals',
+    'photo-postprocessing', 'web-image-assets', 'ai-image-workflows'
+  ]),
+  fast: new Set(['meeting-notes', 'daily-planning'])
+};
+const roleTiers = {
+  security: 'deep', 'api-architect': 'deep', 'data-architect': 'deep', 'test-architect': 'deep',
+  'incident-coordinator': 'deep', 'permissions-reviewer': 'deep', 'model-advisor': 'deep',
+  'embedding-rag-engineer': 'deep', 'prompt-safety-reviewer': 'deep', 'news-source-verifier': 'deep',
+  'evidence-reviewer': 'deep', 'formula-reviewer': 'deep', 'model-regression-reviewer': 'deep',
+  'design-system': 'visual', 'vision-engineer': 'visual', 'image-generation-specialist': 'visual',
+  'slide-designer': 'visual', 'technical-artist': 'visual', 'video-editor': 'visual',
+  'document-ocr-specialist': 'fast', 'document-metadata-editor': 'fast', 'bibliography-editor': 'fast',
+  'action-items-coordinator': 'fast', 'shopping-list-builder': 'fast', 'event-timeline-editor': 'fast'
+};
+const sourceResearchRoles = new Set([
+  'source-researcher', 'bibliography-editor', 'evidence-reviewer', 'document-fact-checker',
+  'news-source-verifier', 'news-digest-editor', 'event-timeline-editor', 'model-advisor',
+  'model-routing-cost-analyst', 'specification-analyst', 'offer-comparison-assistant', 'store-compliance',
+  'license-reviewer', 'supply-chain-security-reviewer'
+]);
+
+function roleModel(role, engine, profile) {
+  if (profile === 'inherit') return ['', 'Модель сессии', ''];
+  if (profile === 'flagship') return environment[engine].flagship;
+  const tier = roleTiers[role.id]
+    || Object.keys(categoryTiers).find(name => categoryTiers[name].has(role.category))
+    || 'standard';
+  return environment[engine][tier];
+}
+
+// У каждой задачи есть рекомендуемый состав команды.
+const taskGroups = [
+  ['Идея и проектирование', {
+    app: ['Спроектировать приложение', ['analyst', 'architect', 'planner']],
+    requirements: ['Собрать требования и составить ТЗ', ['analyst', 'product', 'planner']],
+    mvp: ['Определить состав MVP и приоритеты', ['product', 'analyst', 'ux', 'planner']],
+    prototype: ['Спроектировать интерфейс и прототип', ['ux', 'inclusive-design', 'frontend']],
+    architecture: ['Выбрать архитектуру и стек', ['architect', 'systems', 'planner']],
+    roadmap: ['Составить план разработки и релизов', ['planner', 'product', 'architect', 'release']]
+  }],
+  ['Веб, API и боты', {
+    web: ['Разработать веб-приложение', ['frontend', 'backend', 'database', 'tester']],
+    site: ['Создать сайт или лендинг', ['frontend', 'ux', 'content', 'accessibility']],
+    bot: ['Создать Telegram-бота', ['telegram', 'backend', 'integration', 'tester']],
+    api: ['Разработать API', ['backend', 'integration', 'database', 'tester']],
+    apiContract: ['Спроектировать контракт и версии API', ['api-architect', 'backend', 'docs', 'tester']],
+    integration: ['Подключить сторонний API или вебхуки', ['integration', 'backend', 'security', 'tester']],
+    auth: ['Добавить вход и управление доступом', ['api-architect', 'backend', 'security', 'tester']]
+  }],
+  ['Windows, macOS, Linux, iOS и Android', {
+    windows: ['Собрать приложение для Windows', ['windows-dotnet', 'windows-ui', 'windows-package', 'tester']],
+    windowsInstaller: ['Подготовить установщик для Windows', ['windows-package', 'release', 'tester']],
+    mac: ['Собрать приложение для macOS', ['swift', 'macos-ui', 'macos-build', 'tester']],
+    macDistribution: ['Подготовить подпись и распространение macOS-сборки', ['macos-build', 'release', 'tester']],
+    macAutomation: ['Автоматизировать действия в macOS', ['macos-automation', 'automation', 'tester']],
+    linux: ['Разработать утилиту для Linux', ['systems', 'automation', 'tester']],
+    ios: ['Разработать приложение для iOS / iPadOS', ['ios', 'ux', 'tester', 'mobile-release']],
+    android: ['Разработать приложение для Android', ['android', 'ux', 'tester', 'mobile-release']],
+    mobileRelease: ['Подготовить публикацию мобильного приложения', ['mobile-release', 'tester', 'docs']],
+    crossPlatform: ['Подготовить кроссплатформенное приложение', ['architect', 'systems', 'tester', 'release']]
+  }],
+  ['Разработка и автоматизация', {
+    feature: ['Добавить функцию в существующий проект', ['feature', 'reviewer', 'tester']],
+    cli: ['Разработать консольную утилиту', ['systems', 'automation', 'tester', 'docs']],
+    workflow: ['Автоматизировать процесс', ['analyst', 'automation', 'integration']],
+    refactor: ['Отрефакторить код с сохранением поведения', ['feature', 'reviewer', 'tester']],
+    dependencies: ['Обновить зависимости или перенести проект на новый стек', ['maintenance', 'architect', 'reviewer', 'tester']]
+  }],
+  ['Базы данных и обработка данных', {
+    schema: ['Спроектировать структуру базы данных', ['data-architect', 'database', 'backend']],
+    migration: ['Подготовить миграцию базы данных', ['database', 'data-architect', 'tester', 'operations']],
+    query: ['Ускорить запросы к базе данных', ['database', 'performance', 'tester']],
+    pipeline: ['Подготовить поток обработки данных', ['data-engineer', 'data-architect', 'tester']],
+    dataQuality: ['Проверить качество данных и обработку ошибок', ['data-engineer', 'tester', 'observability']]
+  }],
+  ['Ревью, тесты и качество', {
+    review: ['Проверить код', ['reviewer', 'security', 'tester']],
+    bug: ['Найти причину и исправить ошибку', ['bug-fixer', 'tester', 'reviewer']],
+    tests: ['Добавить автоматические тесты', ['tester', 'feature', 'reviewer']],
+    securityReview: ['Проверить защиту приложения и предложить исправления', ['security', 'reviewer', 'tester']],
+    speed: ['Ускорить приложение', ['performance', 'reviewer', 'tester']],
+    accessibility: ['Проверить доступность интерфейса', ['accessibility', 'inclusive-design', 'tester']],
+    localization: ['Локализовать интерфейс и документацию', ['localization-engineer', 'content-localizer', 'tester']],
+    inclusive: ['Проверить доступность и локализацию', ['inclusive-design', 'localization-engineer', 'content-localizer', 'tester']]
+  }],
+  ['Релиз, инфраструктура и поддержка', {
+    release: ['Подготовить релиз', ['release', 'tester', 'docs']],
+    ci: ['Настроить сборку, тесты и публикацию (CI/CD)', ['ci', 'release', 'tester']],
+    cloud: ['Развернуть проект в облаке', ['cloud-architect', 'infra-engineer', 'ci', 'observability']],
+    monitoring: ['Настроить мониторинг и уведомления о сбоях', ['observability', 'infra-engineer', 'operations']],
+    docs: ['Написать документацию и инструкции', ['docs', 'content', 'reviewer']],
+    backup: ['Спланировать резервное копирование и восстановление', ['operations', 'infra-engineer', 'database', 'tester']],
+    support: ['Разобрать сбой и поддерживать проект', ['operations', 'maintenance', 'tester']],
+    incident: ['Разобрать причину сбоя и подготовить отчёт', ['operations', 'observability', 'bug-fixer', 'docs']]
+  }],
+  ['ИИ-модели и интеграции', {
+    ai: ['Добавить ИИ в приложение', ['ai-integrator', 'model-advisor', 'ai-evaluator', 'security']],
+    model: ['Выбрать и сравнить ИИ-модели', ['model-advisor', 'ai-evaluator', 'model-economics']],
+    textModel: ['Настроить текстовую модель', ['llm-engineer', 'prompt-engineer', 'ai-evaluator']],
+    vision: ['Анализировать изображения и документы', ['vision-engineer', 'prompt-engineer', 'ai-evaluator']],
+    image: ['Генерировать и редактировать изображения', ['image-generation-specialist', 'prompt-engineer', 'prompt-evaluator']],
+    speech: ['Распознавать или синтезировать речь', ['speech-engineer', 'ai-evaluator', 'data-engineer']],
+    rag: ['Добавить поиск по документам (RAG)', ['embedding-rag-engineer', 'data-engineer', 'prompt-safety-reviewer', 'ai-evaluator']],
+    localAI: ['Запустить модель локально', ['local-model-engineer', 'model-advisor', 'ai-evaluator']],
+    modelEvaluation: ['Измерить качество ответов ИИ', ['ai-evaluator', 'prompt-evaluator', 'data-engineer']],
+    modelCost: ['Снизить стоимость и задержку ответов модели', ['model-economics', 'performance', 'ai-evaluator']]
+  }],
+  ['Промпты и команды агентов', {
+    prompts: ['Создать и проверить промпт', ['prompt-engineer', 'prompt-template-author', 'prompt-evaluator', 'prompt-safety-reviewer']],
+    promptFlow: ['Спроектировать цепочку промптов', ['prompt-workflow-architect', 'llm-engineer', 'prompt-evaluator', 'prompt-safety-reviewer']],
+    promptTemplate: ['Собрать шаблон промпта с переменными', ['prompt-template-author', 'prompt-engineer', 'prompt-evaluator']],
+    promptEvaluation: ['Сравнить версии промпта на тестовых примерах', ['prompt-evaluator', 'prompt-engineer', 'ai-evaluator']],
+    promptSafety: ['Проверить обработку недоверенного текста', ['prompt-safety-reviewer', 'prompt-evaluator', 'security']],
+    agentWorkflow: ['Распределить работу между ИИ-агентами', ['planner', 'prompt-workflow-architect', 'prompt-engineer', 'reviewer']]
+  }],
+  ['Инструменты ИИ-агентов', {
+    agentIntegration: ['Подключить Codex или Claude Code к инструментам проекта', ['mcp-developer', 'agent-tool-designer', 'permissions-reviewer', 'tester']],
+    agentToolDesign: ['Спроектировать набор инструментов для ИИ-агента', ['agent-tool-designer', 'mcp-developer', 'permissions-reviewer']],
+    agentPermissions: ['Проверить разрешения ИИ-агента', ['permissions-reviewer', 'security', 'tester']]
+  }],
+  ['Мобильные магазины и дистрибуция', {
+    storeReview: ['Подготовить приложение к проверке магазина', ['store-compliance', 'mobile-release', 'tester']],
+    storeListing: ['Оформить карточку в App Store или Google Play', ['store-listing-editor', 'store-compliance', 'content-localizer']],
+    mobileSigning: ['Настроить подписание мобильных сборок', ['mobile-signing', 'mobile-release', 'ci']]
+  }],
+  ['Приватность и управление данными', {
+    deidentifyData: ['Обезличить набор данных', ['data-deidentification', 'data-engineer', 'tester']],
+    auditTelemetry: ['Проверить, какие данные собирает телеметрия', ['telemetry-reviewer', 'observability', 'security']],
+    dataControls: ['Спроектировать экспорт и удаление данных', ['data-rights-designer', 'data-architect', 'tester']]
+  }],
+  ['Открытый код и сообщество', {
+    dependencyLicenses: ['Проверить лицензии зависимостей перед выпуском', ['license-reviewer', 'release', 'docs']],
+    reviewContribution: ['Разобрать внешние предложения и изменения', ['contribution-coordinator', 'reviewer', 'tester']],
+    contributingGuide: ['Написать руководство для участников проекта', ['contributor-guide-editor', 'dev-environment', 'reviewer']]
+  }],
+  ['Переезд между платформами', {
+    moveCloud: ['Перенести сервис между облачными платформами', ['cloud-migration', 'infra-engineer', 'observability']],
+    fileFormats: ['Проверить совместимость и конвертацию форматов', ['format-compatibility', 'migration-engineer', 'tester']],
+    replaceLegacyApi: ['Подготовить переход на новую версию API', ['legacy-api-migration', 'api-architect', 'tester']]
+  }],
+  ['Инструменты для разработчиков', {
+    ideExtension: ['Разработать расширение IDE', ['ide-extension', 'integration', 'tester']],
+    sdk: ['Разработать клиентский SDK', ['sdk-engineer', 'api-architect', 'docs']],
+    devSetup: ['Настроить локальную среду разработки', ['dev-environment', 'automation', 'docs']]
+  }],
+  ['Память и координация ИИ-агентов', {
+    agentMemory: ['Настроить память ИИ-агентов', ['agent-memory-designer', 'agent-context-engineer', 'permissions-reviewer']],
+    agentHandoff: ['Передавать задачи и решения между агентами', ['agent-context-engineer', 'agent-memory-designer', 'agent-tracing-engineer']],
+    agentTracing: ['Записывать и разбирать действия команды агентов', ['agent-tracing-engineer', 'observability', 'permissions-reviewer']]
+  }],
+  ['Браузерные расширения', {
+    browserExtension: ['Разработать расширение Chrome и Firefox', ['browser-extension-developer', 'extension-permission-reviewer', 'tester']],
+    safariExtension: ['Перенести браузерное расширение на Safari', ['safari-port-engineer', 'browser-extension-developer', 'extension-permission-reviewer']],
+    extensionPermissions: ['Проверить разрешения браузерного расширения', ['extension-permission-reviewer', 'browser-extension-developer', 'tester']]
+  }],
+  ['Linux и дистрибуция', {
+    linuxPackages: ['Собрать пакеты DEB и RPM', ['linux-package-engineer', 'release', 'compatibility-tester']],
+    flatpakBuild: ['Подготовить приложение к выпуску в Flatpak', ['flatpak-engineer', 'release', 'compatibility-tester']],
+    systemdService: ['Настроить службу Linux через systemd', ['systemd-specialist', 'operations', 'tester']]
+  }],
+  ['Игры', {
+    gamePrototype: ['Собрать играбельный прототип', ['gameplay-programmer', 'level-designer', 'technical-artist']],
+    gameLevel: ['Спроектировать и проверить игровой уровень', ['level-designer', 'gameplay-programmer', 'tester']],
+    gameAssets: ['Подготовить визуальные ресурсы для игры', ['technical-artist', 'gameplay-programmer', 'performance']]
+  }],
+  ['Подписки и биллинг', {
+    subscriptions: ['Добавить платные тарифы и подписки', ['subscription-engineer', 'payment-integration-engineer', 'tester']],
+    payments: ['Подключить оплату и обработку возвратов', ['payment-integration-engineer', 'payment-reconciliation-engineer', 'tester']],
+    paymentReconciliation: ['Настроить сверку платежей и возвратов', ['payment-reconciliation-engineer', 'data-engineer', 'tester']]
+  }],
+  ['Видео и мультимедиа', {
+    videoUpload: ['Добавить загрузку и обработку видео', ['video-processing-engineer', 'backend', 'tester']],
+    subtitles: ['Добавить субтитры и проверить синхронизацию', ['subtitle-specialist', 'video-processing-engineer', 'accessibility']],
+    streamingVideo: ['Настроить потоковое воспроизведение видео', ['streaming-playback-engineer', 'video-processing-engineer', 'compatibility-tester']]
+  }],
+  ['Картография и геоданные', {
+    geodata: ['Подготовить геоданные и поиск по объектам', ['geospatial-data-engineer', 'interactive-map-developer', 'tester']],
+    interactiveMap: ['Создать интерактивную карту со слоями', ['interactive-map-developer', 'geospatial-data-engineer', 'accessibility']],
+    routing: ['Добавить построение маршрутов на карте', ['routing-engineer', 'interactive-map-developer', 'geospatial-data-engineer']]
+  }],
+  ['Встраиваемые системы и IoT', {
+    sensorFirmware: ['Разработать прошивку для устройства с датчиками', ['firmware-developer', 'hardware-bench-test-engineer', 'systems']],
+    deviceConnectivity: ['Подключить устройство к шлюзу или приложению', ['device-connectivity-engineer', 'firmware-developer', 'integration']],
+    hardwareBench: ['Проверить устройство на стенде при сбоях связи и питания', ['hardware-bench-test-engineer', 'device-connectivity-engineer', 'firmware-developer']]
+  }],
+  ['Тексты и отчёты', {
+    writeReport: ['Собрать отчёт из заметок и источников', ['document-editor', 'document-fact-checker', 'word-layout-specialist']],
+    checkDocumentFacts: ['Проверить факты, цитаты и цифры в документе', ['document-fact-checker', 'document-editor', 'sheet-reconciliation-specialist']],
+    formatWord: ['Оформить документ Word со стилями и оглавлением', ['word-layout-specialist', 'document-editor', 'document-accessibility-reviewer']]
+  }],
+  ['PDF, сканы и OCR', {
+    scanOcr: ['Распознать текст в PDF и сканах', ['document-ocr-specialist', 'ocr-quality-reviewer', 'document-editor']],
+    extractDocumentTables: ['Извлечь таблицы из PDF и перенести их в Excel', ['document-table-extractor', 'document-ocr-specialist', 'ocr-quality-reviewer', 'spreadsheet-engineer']],
+    checkOcr: ['Проверить распознавание текста, дат и сумм', ['ocr-quality-reviewer', 'document-ocr-specialist', 'document-fact-checker']],
+    scansToReport: ['Собрать проверенный отчёт из сканов', ['document-ocr-specialist', 'document-table-extractor', 'ocr-quality-reviewer', 'sheet-reconciliation-specialist', 'document-editor', 'document-generation-engineer']]
+  }],
+  ['Таблицы и расчёты', {
+    buildWorkbook: ['Создать рабочую книгу с расчётами', ['spreadsheet-engineer', 'formula-reviewer', 'sheet-reconciliation-specialist']],
+    checkFormulas: ['Проверить формулы и итоговые суммы', ['formula-reviewer', 'spreadsheet-engineer', 'sheet-reconciliation-specialist']],
+    reconcileSheets: ['Сверить записи и расчёты из разных таблиц', ['sheet-reconciliation-specialist', 'spreadsheet-engineer', 'formula-reviewer']]
+  }],
+  ['Презентации', {
+    presentationFromReport: ['Подготовить презентацию по отчёту', ['presentation-story-editor', 'slide-designer', 'data-visualization-specialist']],
+    designSlides: ['Оформить слайды в едином стиле', ['slide-designer', 'presentation-story-editor', 'document-accessibility-reviewer']],
+    visualizeReportData: ['Построить графики по данным отчёта', ['data-visualization-specialist', 'sheet-reconciliation-specialist', 'slide-designer']]
+  }],
+  ['Ревью и согласование', {
+    compareDocuments: ['Сравнить версии документа', ['document-version-reviewer', 'document-feedback-coordinator', 'document-release-editor']],
+    collateDocumentFeedback: ['Собрать и согласовать замечания к документу', ['document-feedback-coordinator', 'document-version-reviewer', 'document-editor']],
+    produceFinalDraft: ['Собрать чистовик по согласованным правкам', ['document-release-editor', 'document-feedback-coordinator', 'document-version-reviewer']]
+  }],
+  ['Шаблоны и автоматизация', {
+    createDocumentTemplate: ['Создать шаблон документа с переменными', ['document-template-developer', 'document-generation-engineer', 'batch-export-tester']],
+    generateDocumentBatch: ['Сформировать пакет PDF из данных таблицы', ['document-generation-engineer', 'document-template-developer', 'batch-export-tester', 'spreadsheet-engineer']],
+    testBatchDocumentExport: ['Проверить стабильность пакетного экспорта', ['batch-export-tester', 'document-generation-engineer', 'pdf-preflight-specialist']]
+  }],
+  ['Архив и база знаний', {
+    organizeDocumentArchive: ['Упорядочить архив и подготовить структуру базы знаний', ['document-organizer', 'document-metadata-editor', 'document-migration-engineer']],
+    cleanDocumentMetadata: ['Привести в порядок названия, теги и метаданные', ['document-metadata-editor', 'document-organizer', 'document-migration-engineer']],
+    moveDocumentArchive: ['Перенести документы в базу знаний с сохранением ссылок', ['document-migration-engineer', 'document-metadata-editor', 'document-organizer']]
+  }],
+  ['Доступность и подготовка к публикации', {
+    checkDocumentAccessibility: ['Проверить доступность документа', ['document-accessibility-reviewer', 'word-layout-specialist', 'pdf-preflight-specialist']],
+    sanitizeDocument: ['Удалить чувствительные сведения из копии для публикации', ['document-redaction-specialist', 'pdf-preflight-specialist', 'document-accessibility-reviewer']],
+    preflightPdf: ['Проверить PDF перед выпуском или печатью', ['pdf-preflight-specialist', 'document-accessibility-reviewer', 'document-release-editor']]
+  }],
+  ['Встречи и протоколы', {
+    meetingFollowUpTask1: ['Разобрать встречу и составить протокол', ['meeting-minutes-editor', 'decision-analyst', 'action-items-coordinator', 'document-editor']],
+    meetingFollowUpTask2: ['Собрать журнал решений', ['decision-analyst', 'meeting-minutes-editor', 'action-items-coordinator', 'analyst']],
+    meetingFollowUpTask3: ['Собрать поручения и сроки по итогам встречи', ['action-items-coordinator', 'meeting-minutes-editor', 'decision-analyst', 'planner']]
+  }],
+  ['Исследования и источники', {
+    researchEvidenceTask1: ['Найти первичные источники по теме', ['source-researcher', 'bibliography-editor', 'evidence-reviewer', 'document-fact-checker']],
+    researchEvidenceTask2: ['Оформить библиографию', ['bibliography-editor', 'source-researcher', 'evidence-reviewer', 'document-editor']],
+    researchEvidenceTask3: ['Оценить доказательства и ограничения исследования', ['evidence-reviewer', 'source-researcher', 'bibliography-editor', 'document-fact-checker']]
+  }],
+  ['Диагностика сложных сбоев', {
+    complexFailureAnalysisTask1: ['Выяснить причину зависания приложения', ['hang-diagnostics-engineer', 'dump-analyst', 'flaky-reproduction-engineer', 'observability']],
+    complexFailureAnalysisTask2: ['Разобрать дамп аварийного завершения', ['dump-analyst', 'hang-diagnostics-engineer', 'flaky-reproduction-engineer', 'bug-fixer']],
+    complexFailureAnalysisTask3: ['Воспроизвести нестабильный сбой приложения', ['flaky-reproduction-engineer', 'hang-diagnostics-engineer', 'dump-analyst', 'tester']]
+  }],
+  ['Поддержка старого кода', {
+    legacyBehaviorProtectionTask1: ['Разобрать незнакомый проект', ['codebase-researcher', 'characterization-test-engineer', 'architect', 'planner']],
+    legacyBehaviorProtectionTask2: ['Покрыть старый код тестами перед рефакторингом', ['characterization-test-engineer', 'codebase-researcher', 'compatibility-adapter-developer', 'tester']],
+    legacyBehaviorProtectionTask3: ['Добавить адаптер совместимости', ['compatibility-adapter-developer', 'codebase-researcher', 'characterization-test-engineer', 'legacy-api-migration']]
+  }],
+  ['Айдентика и визуальные материалы', {
+    visualIdentityDesignTask1: ['Разработать визуальное направление проекта', ['art-director', 'identity-designer', 'illustration-designer', 'ux']],
+    visualIdentityDesignTask2: ['Создать айдентику проекта', ['identity-designer', 'art-director', 'illustration-designer', 'design-system']],
+    visualIdentityDesignTask3: ['Подготовить набор иллюстраций', ['illustration-designer', 'art-director', 'identity-designer', 'slide-designer']]
+  }],
+  ['UX-тексты и онбординг', {
+    onboardingDesignTask1: ['Переписать тексты интерфейса', ['ux-writer', 'onboarding-designer', 'interface-clarity-researcher', 'ux']],
+    onboardingDesignTask2: ['Спроектировать первый запуск приложения', ['onboarding-designer', 'ux-writer', 'interface-clarity-researcher', 'product']],
+    onboardingDesignTask3: ['Провести проверку понятности интерфейса', ['interface-clarity-researcher', 'ux-writer', 'onboarding-designer', 'researcher']]
+  }],
+  ['Управление автономными действиями', {
+    agentControlValidationTask1: ['Подготовить ИИ-агента к самостоятельной работе', ['human-approval-designer', 'permissions-reviewer', 'agent-shutdown-engineer', 'agent-failure-tester']],
+    agentControlValidationTask2: ['Настроить лимиты и безопасную остановку агента', ['agent-shutdown-engineer', 'human-approval-designer', 'agent-failure-tester', 'agent-tracing-engineer']],
+    agentControlValidationTask3: ['Проверить агентный процесс при сбоях', ['agent-failure-tester', 'human-approval-designer', 'agent-shutdown-engineer', 'tester']]
+  }],
+  ['Обучение и дообучение моделей', {
+    modelTuningPipelineTask1: ['Подготовить датасет для дообучения', ['dataset-curator', 'fine-tuning-engineer', 'annotation-quality-reviewer', 'data-engineer']],
+    modelTuningPipelineTask2: ['Дообучить модель и сравнить качество', ['fine-tuning-engineer', 'dataset-curator', 'annotation-quality-reviewer', 'ai-evaluator']],
+    modelTuningPipelineTask3: ['Проверить качество разметки датасета', ['annotation-quality-reviewer', 'dataset-curator', 'fine-tuning-engineer', 'ai-evaluator']]
+  }],
+  ['Генерация видео и анимации', {
+    aiVideoProductionTask1: ['Собрать видеоролик с помощью ИИ', ['ai-video-director', 'storyboard-designer', 'visual-consistency-reviewer', 'video-processing-engineer']],
+    aiVideoProductionTask2: ['Сделать раскадровку для ролика', ['storyboard-designer', 'ai-video-director', 'visual-consistency-reviewer', 'technical-artist']],
+    aiVideoProductionTask3: ['Проверить согласованность кадров ИИ-видео', ['visual-consistency-reviewer', 'ai-video-director', 'storyboard-designer', 'video-processing-engineer']]
+  }],
+  ['Редакция и контент-план', {
+    editorialCalendarTask1: ['Составить контент-план на неделю', ['content-strategist', 'section-editor', 'script-writer', 'product']],
+    editorialCalendarTask2: ['Собрать рубрики и редакционный календарь', ['section-editor', 'content-strategist', 'script-writer', 'document-editor']],
+    editorialCalendarTask3: ['Написать сценарий выпуска', ['script-writer', 'content-strategist', 'section-editor', 'document-fact-checker']]
+  }],
+  ['Адаптация материалов', {
+    contentRepurposingTask1: ['Подготовить выпуск рассылки', ['newsletter-editor', 'short-video-writer', 'content-repurposing-editor', 'document-editor']],
+    contentRepurposingTask2: ['Сделать сценарий короткого видео из статьи', ['short-video-writer', 'newsletter-editor', 'content-repurposing-editor', 'subtitle-specialist']],
+    contentRepurposingTask3: ['Сделать контент на неделю из одной статьи', ['content-repurposing-editor', 'content-strategist', 'telegram-editor', 'newsletter-editor', 'short-video-writer']]
+  }],
+  ['Telegram, YouTube и другие площадки', {
+    socialPublishingPreparationTask1: ['Подготовить посты для Telegram-канала', ['telegram-editor', 'youtube-producer', 'social-reach-analyst', 'section-editor']],
+    socialPublishingPreparationTask2: ['Спланировать выпуск для YouTube', ['youtube-producer', 'telegram-editor', 'social-reach-analyst', 'script-writer']],
+    socialPublishingPreparationTask3: ['Проанализировать охваты публикаций', ['social-reach-analyst', 'telegram-editor', 'youtube-producer', 'content-strategist']]
+  }],
+  ['Работа с сообществом', {
+    communityFeedbackCycleTask1: ['Разобрать спорные сообщения сообщества', ['community-moderator', 'reply-editor', 'feedback-analyst']],
+    communityFeedbackCycleTask2: ['Подготовить ответы на комментарии', ['reply-editor', 'community-moderator', 'feedback-analyst']],
+    communityFeedbackCycleTask3: ['Собрать повторяющиеся запросы пользователей', ['feedback-analyst', 'community-moderator', 'reply-editor', 'product']]
+  }],
+  ['Личное планирование', {
+    weeklyPlanningTask1: ['Составить реалистичный план недели', ['week-planner', 'task-triage-assistant', 'household-task-coordinator']],
+    weeklyPlanningTask2: ['Разобрать накопившиеся дела', ['task-triage-assistant', 'week-planner', 'household-task-coordinator']],
+    weeklyPlanningTask3: ['Составить график бытовых задач', ['household-task-coordinator', 'week-planner', 'task-triage-assistant']]
+  }],
+  ['Покупки и сравнение вариантов', {
+    shoppingDecisionTask1: ['Подготовить список покупок', ['shopping-list-builder', 'specification-analyst', 'offer-comparison-assistant', 'household-task-coordinator']],
+    shoppingDecisionTask2: ['Сравнить характеристики товаров', ['specification-analyst', 'shopping-list-builder', 'offer-comparison-assistant']],
+    shoppingDecisionTask3: ['Сравнить предложения магазинов', ['offer-comparison-assistant', 'shopping-list-builder', 'specification-analyst']]
+  }],
+  ['Дайджесты и проверка новостей', {
+    newsSourceReviewTask1: ['Составить новостной дайджест', ['news-digest-editor', 'news-source-verifier', 'event-timeline-editor']],
+    newsSourceReviewTask2: ['Проверить новость по первоисточникам', ['news-source-verifier', 'news-digest-editor', 'event-timeline-editor', 'source-researcher']],
+    newsSourceReviewTask3: ['Собрать хронологию новостного события', ['event-timeline-editor', 'news-digest-editor', 'news-source-verifier']]
+  }],
+  ['Тестирование API и контрактов', {
+    apiContractValidationTask1: ['Добавить контрактные тесты API', ['contract-test-engineer', 'integration-test-engineer', 'test-data-engineer', 'api-architect']],
+    apiContractValidationTask2: ['Настроить интеграционные тесты сервисов', ['integration-test-engineer', 'contract-test-engineer', 'test-data-engineer', 'tester']],
+    apiContractValidationTask3: ['Подготовить синтетические тестовые данные', ['test-data-engineer', 'contract-test-engineer', 'integration-test-engineer', 'data-deidentification']]
+  }],
+  ['Регрессия, нагрузка и устойчивость', {
+    regressionAndLoadValidationTask1: ['Собрать регрессионный набор перед релизом', ['regression-suite-engineer', 'load-test-engineer', 'recovery-test-engineer', 'e2e-engineer']],
+    regressionAndLoadValidationTask2: ['Проверить производительность под нагрузкой', ['load-test-engineer', 'regression-suite-engineer', 'recovery-test-engineer', 'performance']],
+    regressionAndLoadValidationTask3: ['Проверить восстановление после сбоя', ['recovery-test-engineer', 'regression-suite-engineer', 'load-test-engineer', 'operations']]
+  }],
+  ['Белый хакинг · Защитный аудит', {
+    defensiveSecurityReviewTask1: ['Провести защитное ревью кода', ['secure-code-auditor', 'configuration-reviewer', 'supply-chain-security-reviewer', 'security']],
+    defensiveSecurityReviewTask2: ['Проверить настройки и права на минимальную достаточность', ['configuration-reviewer', 'secure-code-auditor', 'supply-chain-security-reviewer', 'threat-modeler']],
+    defensiveSecurityReviewTask3: ['Проверить зависимости по бюллетеням безопасности', ['supply-chain-security-reviewer', 'secure-code-auditor', 'configuration-reviewer', 'maintenance']]
+  }],
+  ['Белый хакинг · Исправления и защита', {
+    defensiveRemediationTask1: ['Проверить исправление безопасности', ['security-fix-reviewer', 'security-report-editor', 'hardening-engineer', 'tester']],
+    defensiveRemediationTask2: ['Подготовить отчёт по защитному аудиту', ['security-report-editor', 'security-fix-reviewer', 'hardening-engineer', 'secure-code-auditor']],
+    defensiveRemediationTask3: ['Усилить конфигурацию и проверить штатную работу', ['hardening-engineer', 'security-fix-reviewer', 'security-report-editor', 'configuration-reviewer']]
+  }],
+  ['Мобильные данные и офлайн-режим', {
+    mobileOfflineTask1: ['Добавить локальное хранилище и офлайн-режим', ['mobile-local-storage', 'mobile-sync-engineer', 'sync-conflict-tester']],
+    mobileOfflineTask2: ['Синхронизировать данные мобильного приложения', ['mobile-sync-engineer', 'mobile-local-storage', 'sync-conflict-tester', 'data-architect']],
+    mobileOfflineTask3: ['Проверить конфликты и восстановление синхронизации', ['sync-conflict-tester', 'mobile-local-storage', 'mobile-sync-engineer', 'test-data-engineer']]
+  }],
+  ['Уведомления и системные функции', {
+    mobileSystemFeaturesTask1: ['Настроить push-уведомления с переходом на нужный экран', ['push-notification-engineer', 'mobile-widget-developer', 'deep-link-engineer']],
+    mobileSystemFeaturesTask2: ['Разработать мобильный виджет', ['mobile-widget-developer', 'push-notification-engineer', 'deep-link-engineer', 'compatibility-tester']],
+    mobileSystemFeaturesTask3: ['Добавить глубокие ссылки на экраны приложения', ['deep-link-engineer', 'push-notification-engineer', 'mobile-widget-developer', 'integration-test-engineer']]
+  }],
+  ['Кроссплатформенная мобильная разработка', {
+    crossPlatformMobileTask1: ['Разработать мобильный экран на Flutter', ['flutter-developer', 'react-native-developer', 'native-mobile-module-engineer']],
+    crossPlatformMobileTask2: ['Разработать мобильный экран на React Native', ['react-native-developer', 'flutter-developer', 'native-mobile-module-engineer']],
+    crossPlatformMobileTask3: ['Подключить камеру или другую нативную функцию', ['native-mobile-module-engineer', 'flutter-developer', 'react-native-developer', 'compatibility-tester']]
+  }],
+  ['PWA и установка веб-приложений', {
+    pwaDeliveryTask1: ['Сделать сайт устанавливаемым как PWA', ['pwa-engineer', 'service-worker-developer', 'pwa-install-update-tester']],
+    pwaDeliveryTask2: ['Настроить офлайн-кэш и обновление веб-приложения', ['service-worker-developer', 'pwa-engineer', 'pwa-install-update-tester']],
+    pwaDeliveryTask3: ['Проверить установку и обновление PWA', ['pwa-install-update-tester', 'pwa-engineer', 'service-worker-developer', 'compatibility-tester']]
+  }],
+  ['Поиск и видимость сайта', {
+    webSearchVisibilityTask1: ['Найти технические причины слабой видимости сайта', ['technical-seo-engineer', 'structured-data-specialist', 'search-indexing-reviewer']],
+    webSearchVisibilityTask2: ['Добавить и проверить структурированные данные сайта', ['structured-data-specialist', 'technical-seo-engineer', 'search-indexing-reviewer']],
+    webSearchVisibilityTask3: ['Разобраться, почему страницы не индексируются', ['search-indexing-reviewer', 'technical-seo-engineer', 'structured-data-specialist']]
+  }],
+  ['Системы управления контентом', {
+    cmsEditorialFlowTask1: ['Спроектировать структуру контента для CMS', ['content-model-architect', 'cms-integration-developer', 'cms-preview-engineer', 'document-metadata-editor']],
+    cmsEditorialFlowTask2: ['Подключить CMS к сайту', ['cms-integration-developer', 'content-model-architect', 'cms-preview-engineer', 'backend']],
+    cmsEditorialFlowTask3: ['Сделать предпросмотр черновиков для редакторов', ['cms-preview-engineer', 'content-model-architect', 'cms-integration-developer']]
+  }],
+  ['Съёмка и монтаж', {
+    creatorProductionTask1: ['Подготовить план съёмки ролика', ['shoot-director', 'video-editor', 'production-sound-engineer', 'storyboard-designer']],
+    creatorProductionTask2: ['Смонтировать ролик из исходников', ['video-editor', 'shoot-director', 'production-sound-engineer']],
+    creatorProductionTask3: ['Почистить и выровнять звук ролика', ['production-sound-engineer', 'shoot-director', 'video-editor']],
+    creatorVideoAndCovers: ['Подготовить ролик и комплект обложек', ['shoot-director', 'video-editor', 'production-sound-engineer', 'cover-designer', 'social-visual-designer']]
+  }],
+  ['Подкасты и интервью', {
+    podcastProductionTask1: ['Подготовить интервью к публикации', ['interview-editor', 'podcast-producer', 'speech-editor', 'document-fact-checker']],
+    podcastProductionTask2: ['Спланировать выпуск подкаста', ['podcast-producer', 'interview-editor', 'speech-editor']],
+    podcastProductionTask3: ['Смонтировать запись разговора и сделать нарезки', ['speech-editor', 'interview-editor', 'podcast-producer', 'production-sound-engineer']]
+  }],
+  ['Обложки и визуалы для соцсетей', {
+    socialVisualDesignTask1: ['Создать несколько вариантов обложки', ['cover-designer', 'social-visual-designer', 'cover-test-analyst']],
+    socialVisualDesignTask2: ['Подготовить комплект визуалов для соцсетей', ['social-visual-designer', 'cover-designer', 'cover-test-analyst']],
+    socialVisualDesignTask3: ['Спланировать сравнение обложек по кликабельности', ['cover-test-analyst', 'cover-designer', 'social-visual-designer', 'social-reach-analyst']]
+  }],
+  ['Ретушь и обработка фотографий', {
+    photoPostprocessingTask1: ['Отретушировать и подготовить серию фотографий', ['photo-retoucher', 'photo-color-specialist', 'photo-composite-designer']],
+    photoPostprocessingTask2: ['Привести фотографии к единому цвету и тону', ['photo-color-specialist', 'photo-retoucher', 'photo-composite-designer']],
+    photoPostprocessingTask3: ['Заменить фон и собрать фотокомпозицию', ['photo-composite-designer', 'photo-retoucher', 'photo-color-specialist']]
+  }],
+  ['Изображения для сайтов и каталогов', {
+    webImagePreparationTask1: ['Оптимизировать изображения сайта для разных экранов', ['image-optimization-engineer', 'image-metadata-editor', 'visual-asset-reviewer', 'frontend']],
+    webImagePreparationTask2: ['Подготовить описания и метаданные изображений', ['image-metadata-editor', 'image-optimization-engineer', 'visual-asset-reviewer', 'accessibility']],
+    webImagePreparationTask3: ['Проверить изображения каталога перед публикацией', ['visual-asset-reviewer', 'image-optimization-engineer', 'image-metadata-editor']]
+  }],
+  ['Структурированные ответы моделей', {
+    structuredModelOutputTask1: ['Спроектировать схему JSON для ответа модели', ['model-response-schema-designer', 'model-data-extraction-engineer', 'model-output-format-tester']],
+    structuredModelOutputTask2: ['Извлечь данные из документов в проверяемый JSON', ['model-data-extraction-engineer', 'model-response-schema-designer', 'model-output-format-tester']],
+    structuredModelOutputTask3: ['Проверить формат и полноту ответов модели', ['model-output-format-tester', 'model-response-schema-designer', 'model-data-extraction-engineer', 'ai-evaluator']]
+  }],
+  ['Маршрутизация между моделями', {
+    modelRoutingArchitectureTask1: ['Разработать правила выбора модели для разных запросов', ['model-routing-architect', 'model-fallback-engineer', 'model-routing-cost-analyst']],
+    modelRoutingArchitectureTask2: ['Настроить переключение на резервную модель', ['model-fallback-engineer', 'model-routing-architect', 'model-routing-cost-analyst', 'agent-failure-tester']],
+    modelRoutingArchitectureTask3: ['Сравнить стоимость, качество и задержки моделей', ['model-routing-cost-analyst', 'model-routing-architect', 'model-fallback-engineer', 'model-economics']]
+  }],
+  ['Модели в реальном времени', {
+    realtimeModelInteractionTask1: ['Подключить потоковые ответы модели', ['model-streaming-engineer', 'voice-interface-developer', 'realtime-latency-tester']],
+    realtimeModelInteractionTask2: ['Сделать голосового помощника с прерыванием ответа', ['voice-interface-developer', 'model-streaming-engineer', 'realtime-latency-tester', 'speech-engineer']],
+    realtimeModelInteractionTask3: ['Измерить задержки голосового и потокового ИИ', ['realtime-latency-tester', 'model-streaming-engineer', 'voice-interface-developer', 'performance']]
+  }],
+  ['Генерация и редактирование изображений с ИИ', {
+    aiImageEditingTask1: ['Подготовить серию изображений с заданной композицией', ['ai-composition-engineer', 'ai-image-editor', 'ai-image-reference-reviewer', 'image-generation-specialist']],
+    aiImageEditingTask2: ['Заменить фон товара с помощью ИИ и сохранить его вид', ['ai-image-editor', 'ai-composition-engineer', 'ai-image-reference-reviewer']],
+    aiImageEditingTask3: ['Проверить товарные изображения на соответствие референсу', ['ai-image-reference-reviewer', 'ai-composition-engineer', 'ai-image-editor', 'visual-asset-reviewer']]
+  }],
+  ['Выпуск и обновление моделей', {
+    modelReleaseValidationTask1: ['Подготовить развёртывание новой версии модели', ['model-deployment-engineer', 'model-regression-reviewer', 'model-rollback-engineer']],
+    modelReleaseValidationTask2: ['Сравнить ответы старой и новой моделей', ['model-regression-reviewer', 'model-deployment-engineer', 'model-rollback-engineer', 'ai-evaluator']],
+    modelReleaseValidationTask3: ['Проверить откат на предыдущую версию модели', ['model-rollback-engineer', 'model-deployment-engineer', 'model-regression-reviewer']]
+  }]
+];
+const tasks = Object.assign({}, ...taskGroups.map(([, group]) => group));
+
+const phaseGroups = [
+  ['Общие сценарии', 'general', {
+    auto: ['По задаче', []],
+    full: ['Весь цикл', ['analyst', 'architect', 'planner', 'feature', 'tester', 'reviewer', 'release', 'docs', 'operations', 'maintenance']]
+  }],
+  ['Идея и планирование', 'planning', {
+    discovery: ['Идея и требования', ['analyst', 'planner']],
+    research: ['Исследование пользователей и гипотез', ['researcher', 'product', 'ux']],
+    feasibility: ['Оценка осуществимости и прототип', ['feasibility', 'architect', 'tester']],
+    scope: ['Границы MVP и критерии готовности', ['product', 'analyst', 'acceptance-lead']],
+    plan: ['План работ и риски', ['planner', 'architect', 'product']],
+    gameConcept: ['Концепция игры и первый играбельный прототип', ['gameplay-programmer', 'level-designer', 'technical-artist']],
+    documentBrief: ['Цель документа, материалы и структура отчёта', ['document-editor', 'document-fact-checker', 'word-layout-specialist']],
+    archiveInventory: ['Инвентаризация архива и правила хранения', ['document-organizer', 'document-metadata-editor', 'document-migration-engineer']],
+    meetingFollowUp: ['Разбор встречи и фиксация поручений', ['meeting-minutes-editor', 'decision-analyst', 'action-items-coordinator']],
+    researchEvidence: ['Исследование источников и оценка доказательств', ['source-researcher', 'bibliography-editor', 'evidence-reviewer']],
+    editorialCalendar: ['Подготовка рубрик и редакционного плана', ['content-strategist', 'section-editor', 'script-writer']],
+    weeklyPlanning: ['Разбор дел и планирование недели', ['week-planner', 'task-triage-assistant', 'household-task-coordinator']],
+    shoppingDecision: ['Составление списка и сравнение предложений', ['shopping-list-builder', 'specification-analyst', 'offer-comparison-assistant']]
+  }],
+  ['Проектирование', 'design', {
+    architecture: ['Архитектура и выбор технологий', ['architect', 'systems', 'database']],
+    ux: ['Пользовательские сценарии и интерфейс', ['ux', 'design-system', 'inclusive-design']],
+    api: ['Контракты API и интеграций', ['api-architect', 'integration', 'tester']],
+    data: ['Проектирование структуры данных', ['data-architect', 'database', 'backend']],
+    threatModel: ['Модель угроз и защитные меры', ['threat-modeler', 'security', 'architect']],
+    agentToolContracts: ['Контракты инструментов ИИ-агентов', ['agent-tool-designer', 'permissions-reviewer', 'mcp-developer']],
+    privacyDesign: ['Правила сбора, экспорта и удаления данных', ['data-rights-designer', 'telemetry-reviewer', 'data-architect']],
+    agentMemoryDesign: ['Проектирование памяти и передачи контекста', ['agent-memory-designer', 'agent-context-engineer', 'permissions-reviewer']],
+    subscriptionDesign: ['Тарифы, состояния подписки и правила доступа', ['subscription-engineer', 'product', 'payment-integration-engineer']],
+    geospatialDesign: ['Модель геоданных и правила маршрутизации', ['geospatial-data-engineer', 'routing-engineer', 'data-architect']],
+    outlinePresentation: ['Сценарий презентации и план визуализаций', ['presentation-story-editor', 'data-visualization-specialist', 'slide-designer']],
+    designDocumentTemplate: ['Структура шаблона и схема входных данных', ['document-template-developer', 'document-generation-engineer', 'spreadsheet-engineer']],
+    visualIdentityDesign: ['Разработка визуального направления и айдентики', ['art-director', 'identity-designer', 'illustration-designer']],
+    onboardingDesign: ['Проектирование первого запуска и текстов интерфейса', ['ux-writer', 'onboarding-designer', 'interface-clarity-researcher']],
+    cmsEditorialFlow: ['Модели контента, интеграция CMS и предпросмотр', ['content-model-architect', 'cms-integration-developer', 'cms-preview-engineer']],
+    socialVisualDesign: ['Подготовка обложек, визуалов и вариантов для сравнения', ['cover-designer', 'social-visual-designer', 'cover-test-analyst']],
+    structuredModelOutput: ['Схемы ответов, извлечение и валидация данных', ['model-response-schema-designer', 'model-data-extraction-engineer', 'model-output-format-tester']],
+    modelRoutingArchitecture: ['Правила выбора модели, резервирование и сравнение затрат', ['model-routing-architect', 'model-fallback-engineer', 'model-routing-cost-analyst']]
+  }],
+  ['Реализация и интеграция', 'development', {
+    setup: ['Подготовка среды и структуры проекта', ['architect', 'ci', 'feature']],
+    implementation: ['Реализация функций', ['feature', 'reviewer', 'tester']],
+    integration: ['Интеграция компонентов и сервисов', ['integration', 'backend', 'tester']],
+    migrations: ['Миграция данных и настроек', ['migration-engineer', 'database', 'tester']],
+    refactor: ['Рефакторинг и технический долг', ['feature', 'reviewer', 'tester']],
+    mcpIntegration: ['Интеграция инструментов через MCP', ['mcp-developer', 'agent-tool-designer', 'tester']],
+    sdkDevelopment: ['Реализация SDK и расширений IDE', ['sdk-engineer', 'ide-extension', 'tester']],
+    developerSetup: ['Подготовка воспроизводимой локальной среды', ['dev-environment', 'automation', 'docs']],
+    browserExtensionDevelopment: ['Реализация расширения и адаптация для Safari', ['browser-extension-developer', 'safari-port-engineer', 'tester']],
+    paymentIntegration: ['Интеграция оплаты и обработка событий', ['payment-integration-engineer', 'subscription-engineer', 'tester']],
+    mediaPipeline: ['Обработка видео и потоковое воспроизведение', ['video-processing-engineer', 'streaming-playback-engineer', 'tester']],
+    mapLayers: ['Разработка карты, слоёв и поиска', ['interactive-map-developer', 'geospatial-data-engineer', 'routing-engineer']],
+    deviceIntegration: ['Разработка прошивки и интеграция устройства', ['firmware-developer', 'device-connectivity-engineer', 'hardware-bench-test-engineer']],
+    scanProcessing: ['Распознавание сканов и извлечение таблиц', ['document-ocr-specialist', 'document-table-extractor', 'ocr-quality-reviewer']],
+    prepareWorkbook: ['Подготовка электронной таблицы и расчётов', ['spreadsheet-engineer', 'formula-reviewer', 'sheet-reconciliation-specialist']],
+    buildPresentation: ['Вёрстка слайдов и построение графиков', ['slide-designer', 'data-visualization-specialist', 'presentation-story-editor']],
+    generateDocuments: ['Генерация документов по шаблону', ['document-generation-engineer', 'document-template-developer', 'batch-export-tester']],
+    legacyBehaviorProtection: ['Анализ кодовой базы и сохранение совместимости', ['codebase-researcher', 'characterization-test-engineer', 'compatibility-adapter-developer']],
+    modelTuningPipeline: ['Подготовка датасета, разметки и дообучения', ['dataset-curator', 'fine-tuning-engineer', 'annotation-quality-reviewer']],
+    aiVideoProduction: ['Раскадровка, сборка и проверка ИИ-видео', ['ai-video-director', 'storyboard-designer', 'visual-consistency-reviewer']],
+    contentRepurposing: ['Адаптация материала под рассылку и короткое видео', ['newsletter-editor', 'short-video-writer', 'content-repurposing-editor']],
+    mobileOffline: ['Локальное хранение, офлайн-режим и синхронизация', ['mobile-local-storage', 'mobile-sync-engineer', 'sync-conflict-tester']],
+    mobileSystemFeatures: ['Уведомления, виджеты и переходы на нужный экран', ['push-notification-engineer', 'mobile-widget-developer', 'deep-link-engineer']],
+    crossPlatformMobile: ['Общий мобильный интерфейс и нативные интеграции', ['flutter-developer', 'react-native-developer', 'native-mobile-module-engineer']],
+    pwaDelivery: ['Установка, кэширование и обновление PWA', ['pwa-engineer', 'service-worker-developer', 'pwa-install-update-tester']],
+    creatorProduction: ['Съёмка, монтаж, звук и подготовка версий ролика', ['shoot-director', 'video-editor', 'production-sound-engineer']],
+    podcastProduction: ['Подготовка интервью и монтаж подкаста', ['interview-editor', 'podcast-producer', 'speech-editor']],
+    photoPostprocessing: ['Ретушь, цветокоррекция и фотокомпозиции', ['photo-retoucher', 'photo-color-specialist', 'photo-composite-designer']],
+    realtimeModelInteraction: ['Потоковые ответы, голосовой интерфейс и замеры задержек', ['model-streaming-engineer', 'voice-interface-developer', 'realtime-latency-tester']],
+    aiImageEditing: ['Управление композицией и сверка изображения с референсом', ['ai-composition-engineer', 'ai-image-editor', 'ai-image-reference-reviewer']]
+  }],
+  ['Проверка и приёмка', 'verification', {
+    testPlan: ['Стратегия тестирования и тест-план', ['test-architect', 'tester', 'acceptance-lead']],
+    validation: ['Ревью и тестирование', ['reviewer', 'tester', 'security']],
+    e2e: ['Сквозное и регрессионное тестирование', ['e2e-engineer', 'tester', 'bug-fixer']],
+    compatibility: ['Совместимость и доступность', ['compatibility-tester', 'accessibility', 'tester']],
+    performance: ['Замеры производительности и нагрузки', ['performance', 'observability', 'tester']],
+    acceptance: ['Приёмка по критериям готовности', ['acceptance-lead', 'tester', 'product']],
+    agentPermissionReview: ['Проверка прав доступа ИИ-агентов', ['permissions-reviewer', 'security', 'tester']],
+    privacyVerification: ['Проверка обезличивания и телеметрии', ['data-deidentification', 'telemetry-reviewer', 'tester']],
+    fileCompatibility: ['Проверка совместимости файлов и форматов', ['format-compatibility', 'migration-engineer', 'tester']],
+    extensionAudit: ['Проверка совместимости и прав браузерного расширения', ['extension-permission-reviewer', 'safari-port-engineer', 'compatibility-tester']],
+    mediaAccessibility: ['Проверка субтитров и доступности воспроизведения', ['subtitle-specialist', 'streaming-playback-engineer', 'accessibility']],
+    hardwareValidation: ['Стендовая проверка устройства и восстановления связи', ['hardware-bench-test-engineer', 'device-connectivity-engineer', 'firmware-developer']],
+    validateOcrData: ['Сверка OCR, извлечённых данных и итогов', ['ocr-quality-reviewer', 'sheet-reconciliation-specialist', 'document-table-extractor']],
+    reconcileDocumentVersions: ['Сравнение версий и согласование правок', ['document-version-reviewer', 'document-feedback-coordinator', 'document-release-editor']],
+    validateDocumentBatch: ['Контроль качества пакетного экспорта', ['batch-export-tester', 'document-generation-engineer', 'pdf-preflight-specialist']],
+    documentAccessibilityCheck: ['Проверка доступности и читаемости документа', ['document-accessibility-reviewer', 'pdf-preflight-specialist', 'word-layout-specialist']],
+    complexFailureAnalysis: ['Диагностика зависаний и нестабильных сбоев', ['hang-diagnostics-engineer', 'dump-analyst', 'flaky-reproduction-engineer']],
+    agentControlValidation: ['Проверка подтверждений, лимитов и остановки агентов', ['human-approval-designer', 'agent-shutdown-engineer', 'agent-failure-tester']],
+    newsSourceReview: ['Сверка первоисточников, дат и контекста новостей', ['news-digest-editor', 'news-source-verifier', 'event-timeline-editor']],
+    apiContractValidation: ['Контрактные и интеграционные проверки API', ['contract-test-engineer', 'integration-test-engineer', 'test-data-engineer']],
+    regressionAndLoadValidation: ['Регрессионная проверка, нагрузка и восстановление', ['regression-suite-engineer', 'load-test-engineer', 'recovery-test-engineer']],
+    defensiveSecurityReview: ['Проверка кода, прав доступа и конфигурации', ['secure-code-auditor', 'configuration-reviewer', 'supply-chain-security-reviewer']],
+    defensiveRemediation: ['Согласование, исправление и проверка защитных мер', ['security-fix-reviewer', 'security-report-editor', 'hardening-engineer']],
+    webSearchVisibility: ['Проверка доступности страниц для поиска и индексации', ['technical-seo-engineer', 'structured-data-specialist', 'search-indexing-reviewer']]
+  }],
+  ['Выпуск и развёртывание', 'release', {
+    beta: ['Бета-тестирование', ['beta-coordinator', 'tester', 'support']],
+    packaging: ['Сборка, подпись и упаковка', ['release', 'compatibility-tester', 'ci']],
+    launch: ['Релиз и документация', ['release', 'docs']],
+    deployment: ['Развёртывание и проверка отката', ['infra-engineer', 'ci', 'operations']],
+    smoke: ['Проверка приложения после выпуска', ['e2e-engineer', 'operations', 'observability']],
+    mobileStoreRelease: ['Подписание сборки и подготовка к выпуску в магазине', ['mobile-signing', 'store-compliance', 'store-listing-editor', 'mobile-release']],
+    openSourceRelease: ['Подготовка открытого выпуска и проверка лицензий', ['license-reviewer', 'contributor-guide-editor', 'release']],
+    linuxDistribution: ['Сборка и проверка дистрибутивов Linux', ['linux-package-engineer', 'flatpak-engineer', 'compatibility-tester']],
+    preparePublicationCopy: ['Удаление чувствительных сведений и проверка PDF', ['document-redaction-specialist', 'pdf-preflight-specialist', 'document-accessibility-reviewer']],
+    releaseDocument: ['Подготовка и проверка финальной редакции', ['document-release-editor', 'pdf-preflight-specialist', 'document-fact-checker']],
+    socialPublishingPreparation: ['Подготовка публикаций и метрик соцсетей', ['telegram-editor', 'youtube-producer', 'social-reach-analyst']],
+    webImagePreparation: ['Подготовка адаптивных изображений и проверка визуальных материалов', ['image-optimization-engineer', 'image-metadata-editor', 'visual-asset-reviewer']],
+    modelReleaseValidation: ['Проверка новой версии модели, выпуск и готовность к откату', ['model-deployment-engineer', 'model-regression-reviewer', 'model-rollback-engineer']]
+  }],
+  ['Эксплуатация и развитие', 'operations', {
+    monitoring: ['Мониторинг и оповещения', ['observability', 'operations', 'infra-engineer']],
+    incident: ['Восстановление после сбоя и разбор причин', ['incident-coordinator', 'operations', 'bug-fixer']],
+    maintenance: ['Эксплуатация и поддержка', ['operations', 'maintenance']],
+    updates: ['Обновления и обратная совместимость', ['maintenance', 'compatibility-tester', 'release']],
+    decommission: ['Завершение поддержки и отключение', ['decommission-planner', 'operations', 'docs']],
+    migrationCutover: ['Перенос сервисов и переход со старого API', ['cloud-migration', 'legacy-api-migration', 'operations']],
+    communityMaintenance: ['Сопровождение внешних вкладов', ['contribution-coordinator', 'contributor-guide-editor', 'reviewer']],
+    agentTraceReview: ['Трассировка и разбор сбоев команды агентов', ['agent-tracing-engineer', 'agent-context-engineer', 'observability']],
+    billingReconciliation: ['Сверка платежей и разбор расхождений', ['payment-reconciliation-engineer', 'payment-integration-engineer', 'data-engineer']],
+    linuxServiceOperations: ['Настройка и сопровождение сервисов systemd', ['systemd-specialist', 'operations', 'observability']],
+    migrateDocumentArchive: ['Перенос архива и проверка ссылок', ['document-migration-engineer', 'document-metadata-editor', 'document-organizer']],
+    maintainKnowledgeBase: ['Обновление метаданных и структуры базы знаний', ['document-metadata-editor', 'document-organizer', 'document-editor']],
+    communityFeedbackCycle: ['Подготовка ответов и разбор обратной связи', ['community-moderator', 'reply-editor', 'feedback-analyst']]
+  }]
+];
+const phases = Object.fromEntries(phaseGroups.flatMap(([, mode, group]) =>
+  Object.entries(group).map(([id, [label, roleIds]]) => [id, { label, roleIds, mode }])
+));
+
+const platformRoles = { windows: ['windows-dotnet', 'windows-ui', 'windows-package'],
+  macos: ['swift', 'macos-ui', 'macos-build'], web: ['frontend', 'backend'],
+  linux: ['automation', 'operations'], mobile: ['architect', 'tester'], cross: ['architect', 'tester'] };
+const team = new Set();
+$('catalog-total').textContent = data.roles.length + ' · ' + data.categories.length + ' категорий';
+let currentPrompt = '';
+let builtProject = null;
+
+function addOption(select, value, label) {
+  const option = document.createElement('option');
+  option.value = value;
+  option.textContent = label;
+  select.append(option);
+}
+
+function addGroup(select, label, entries) {
+  const group = document.createElement('optgroup');
+  group.label = label;
+  for (const [id, optionLabel] of entries) addOption(group, id, optionLabel);
+  select.append(group);
+}
+
+for (const [category, group] of taskGroups) {
+  addGroup($('task'), category, Object.entries(group).map(([id, [label]]) => [id, label]));
+}
+for (const [category, , group] of phaseGroups) {
+  addGroup($('phase'), category, Object.entries(group).map(([id, [label]]) => [id, label]));
+}
+for (const language of data.languages) addOption($('language'), language.id, language.name);
+for (const category of data.categories) addOption($('category'), category.id, category.label);
+
+function projectSettings() {
+  return {
+    engine: document.querySelector('input[name="engine"]:checked')?.value,
+    task: $('task').value,
+    phase: $('phase').value,
+    platform: $('platform').value,
+    language: $('language').value,
+    modelProfile: $('model-profile').value
+  };
+}
+
+function pickerAction(settings) {
+  const { engine, task, phase, platform, language } = settings;
+  if (!engine || !task || !phase || !platform || !language) return 'empty';
+  if (!builtProject) return 'build';
+  return Object.keys(settings).every(key => settings[key] === builtProject[key]) ? 'reset' : 'rebuild';
+}
+
+function updatePicker() {
+  const action = pickerAction(projectSettings());
+  const button = $('recommend');
+  button.disabled = action === 'empty';
+  const { engine } = projectSettings();
+  $('model-hint').textContent = engine
+    ? 'Флагман: ' + environment[engine].flagship[1] + '. Доступ зависит от клиента и тарифа.'
+    : 'Доступность моделей зависит от клиента и тарифа.';
+  button.textContent = {
+    empty: 'Соберите проект', build: 'Подобрать', reset: 'Сброс проекта', rebuild: 'Пересобрать'
+  }[action];
+}
+
+function selectedLanguage(languageId) {
+  return data.languages.find(language => language.id === languageId);
+}
+
+function selectedRoles() {
+  return [...team].map(id => roles.get(id));
+}
+
+function agentName(role, engine) {
+  return engine === 'codex' ? 'contour_' + role.id.replaceAll('-', '_') : 'contour-' + role.id;
+}
+
+function renderResult(animate = false) {
+  const engine = builtProject?.engine;
+  const env = environment[engine];
+  const selected = selectedRoles();
+  const language = selectedLanguage(builtProject?.language);
+  const task = tasks[builtProject?.task]?.[0];
+  const phase = phases[builtProject?.phase]?.label;
+  const platform = builtProject?.platformLabel;
+  const profile = builtProject?.modelProfile;
+
+  $('count').textContent = selected.length + ' / ' + data.roles.length;
+  $('summary').textContent = [env?.name, phase, platform, language?.name].filter(Boolean).join(' · ');
+  $('empty-team').hidden = selected.length !== 0;
+  $('empty-team').textContent = builtProject ? 'Добавьте роли из каталога или соберите проект заново.'
+    : 'Выберите настройки проекта и нажмите «Подобрать».';
+  $('copy').disabled = $('export').disabled = selected.length === 0;
+  $('status').textContent = '';
+  $('team').replaceChildren(...selected.map((role, index) => {
+    const item = document.createElement('li');
+    if (animate) {
+      item.className = 'enter';
+      item.style.setProperty('--index', Math.min(index, 12));
+    }
+    const label = document.createElement('span');
+    label.textContent = role.name;
+    const id = document.createElement('small');
+    id.textContent = agentName(role, engine);
+    const model = document.createElement('span');
+    model.className = 'agent-model muted';
+    model.textContent = roleModel(role, engine, profile)[1];
+    label.append(id, model);
+    const remove = document.createElement('button');
+    remove.type = 'button';
+    remove.textContent = '×';
+    remove.setAttribute('aria-label', 'Убрать роль ' + role.name);
+    remove.addEventListener('click', () => {
+      team.delete(role.id);
+      renderResult();
+      $('team').querySelectorAll('button')[Math.min(index, team.size - 1)]?.focus();
+      if (!team.size) $('search').focus();
+    });
+    item.append(label, remove);
+    return item;
+  }));
+  const instructions = selected.map(role => {
+    const [, model] = roleModel(role, engine, profile);
+    return '- ' + agentName(role, engine) + ' · ' + model + ' — ' + role.description;
+  }).join('\n');
+  currentPrompt = selected.length ? [
+    'Задача: ' + task + '.',
+    'Этап: ' + phase + '. Платформа: ' + platform + '.' + (language ? ' Язык: ' + language.name + '.' : ''),
+    language ? 'Особенности стека: ' + language.guidance : '',
+    'Проверь, что в ' + env.name + ' доступны следующие агенты. Если кого-то нет, сообщи об этом.\n' + instructions,
+    'Используй настройки моделей из файлов агентов. Если какая-то модель недоступна, сообщи об этом и согласуй замену.',
+    'Уточни результат, ограничения и критерии готовности. Передай каждому агенту его материалы и критерии. Запускай параллельно только независимую работу и сверь результаты перед итогом. Укажи, что проверено и что требует проверки. Публикацию и внешние действия выполняй только по явному поручению.'
+  ].filter(Boolean).join('\n\n') : '';
+  $('prompt').value = currentPrompt;
+  for (const button of $('catalog-list').querySelectorAll('button[data-role]')) updateCatalogButton(button);
+}
+
+function recommend(project) {
+  const { task, phase, platform } = project;
+  const language = selectedLanguage(project.language);
+  const { roleIds: stageRoles, mode } = phases[phase];
+  let taskRoles = tasks[task][1];
+  if (mode === 'verification') taskRoles = taskRoles.filter(id => roles.get(id)?.readOnly || id === 'tester');
+  if (mode === 'release') taskRoles = taskRoles.filter(id => /(?:build|package|release|tester|docs)$/.test(id));
+  if (mode === 'operations') taskRoles = taskRoles.filter(id => ['operations', 'maintenance', 'tester'].includes(id));
+
+  const platformMatches = platformRoles[platform] || [];
+  const includeStack = mode === 'general' || mode === 'development';
+  const extras = mode === 'release' ? platformMatches.filter(id => /(?:build|package)$/.test(id))
+    : includeStack ? platformMatches : [];
+  const languageRole = language && includeStack ? [language.role] : [];
+  team.clear();
+  const recommendation = mode === 'general' ? [...stageRoles, ...taskRoles] : [...stageRoles, ...taskRoles.slice(0, 2)];
+  for (const id of [...recommendation, ...extras, ...languageRole]) if (roles.has(id)) team.add(id);
+  renderResult(true);
+}
+
+function updateCatalogButton(button) {
+  const selected = team.has(button.dataset.role);
+  button.disabled = !builtProject;
+  button.setAttribute('aria-pressed', String(selected));
+  button.lastElementChild.textContent = selected ? '✓ В команде' : '+ Добавить';
+}
+
+function renderCatalog() {
+  const query = $('search').value.trim().toLocaleLowerCase('ru');
+  const filter = $('category').value;
+  const groups = [];
+  let total = 0;
+  for (const category of data.categories) {
+    if (filter !== 'all' && filter !== category.id) continue;
+    const matches = data.roles.filter(role => role.category === category.id && (
+      !query || [role.name, role.id, role.description].some(text => text.toLocaleLowerCase('ru').includes(query))
+    ));
+    if (!matches.length) continue;
+    total += matches.length;
+    const section = document.createElement('section');
+    section.className = 'catalog-group';
+    const title = document.createElement('h3');
+    title.textContent = category.label;
+    const cards = document.createElement('div');
+    cards.className = 'cards';
+    for (const role of matches) {
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.className = 'role';
+      button.dataset.role = role.id;
+      const name = document.createElement('strong');
+      name.textContent = role.name;
+      const desc = document.createElement('span');
+      desc.textContent = role.description;
+      const mark = document.createElement('span');
+      mark.className = 'role-mark';
+      button.append(name, desc, mark);
+      updateCatalogButton(button);
+      button.addEventListener('click', () => {
+        if (team.has(role.id)) team.delete(role.id);
+        else team.add(role.id);
+        renderResult();
+      });
+      cards.append(button);
+    }
+    section.append(title, cards);
+    groups.push(section);
+  }
+  $('catalog-list').replaceChildren(...groups);
+  $('catalog-count').textContent = total + ' / ' + data.roles.length;
+  $('empty-catalog').hidden = total !== 0;
+}
+
+function agentFile(role, engine) {
+  const q = text => JSON.stringify(text);
+  const platform = builtProject.platformLabel;
+  const [model, , effort] = roleModel(role, engine, builtProject.modelProfile);
+  const research = sourceResearchRoles.has(role.id);
+  const language = selectedLanguage(builtProject.language);
+  const policy = role.readOnly
+    ? 'Работай в режиме анализа. Не редактируй файлы. Возвращай выводы с подтверждениями.'
+    : 'Меняй файлы в границах поручения. Сверь результат с критериями готовности и сообщи, какие проверки удалось запустить.';
+  const instructions = [
+    'Роль: ' + role.name + '.', role.description, policy,
+    'Платформа проекта: ' + platform + '.',
+    language ? 'Особенности стека: ' + language.guidance : '',
+    ...role.steps.map((step, index) => (index + 1) + '. ' + step),
+    research ? 'Проверяй актуальные сведения по первичным источникам. Указывай ссылку, дату и ограничения. Если поиск недоступен, явно отметь непроверенные сведения.' : '',
+    'Передай результат в требуемом формате, перечисли подтверждения и открытые вопросы. Сообщи, если нужные данные или инструменты недоступны. Выполняй внешние действия только по явному поручению.'
+  ].filter(Boolean).join('\n');
+  const name = agentName(role, engine);
+  if (engine === 'codex') {
+    // Для ролей ревью отключаем инструменты, способные изменять среду или запрашивать права.
+    const sandbox = role.readOnly ? '\nfeatures.shell_tool = false\nfeatures.apps = false\nfeatures.plugins = false\nfeatures.request_permissions_tool = false' : '';
+    return 'name = ' + q(name) + '\ndescription = ' + q(role.description)
+      + (model ? '\nmodel = ' + q(model) + '\nmodel_reasoning_effort = ' + q(effort) : '')
+      + sandbox + '\ndeveloper_instructions = ' + q(instructions) + '\n';
+  }
+  const tools = role.readOnly ? '\ntools: Read, Glob, Grep' + (research ? ', WebSearch, WebFetch' : '') : '';
+  const modelFields = model ? '\nmodel: ' + model + '\neffort: ' + effort : '\nmodel: inherit';
+  return '---\nname: ' + name + '\ndescription: ' + q(role.description)
+    + modelFields + tools + '\n---\n\n' + instructions + '\n';
+}
+
+// ZIP без сжатия: короткие тексты упаковываются синхронно, без внешних библиотек.
+function createZip(files) {
+  const encoder = new TextEncoder();
+  const table = Uint32Array.from({length: 256}, (_, n) => {
+    for (let i = 0; i < 8; i++) n = n & 1 ? 0xedb88320 ^ (n >>> 1) : n >>> 1;
+    return n >>> 0;
+  });
+  const header = (length, fields) => {
+    const bytes = new Uint8Array(length);
+    const view = new DataView(bytes.buffer);
+    for (const [offset, value, wide] of fields) {
+      if (wide) view.setUint32(offset, value, true);
+      else view.setUint16(offset, value, true);
+    }
+    return bytes;
+  };
+  const body = [];
+  const directory = [];
+  let offset = 0;
+  let directorySize = 0;
+  for (const [path, content] of files) {
+    const name = encoder.encode(path);
+    const bytes = encoder.encode(content);
+    let crc = 0xffffffff;
+    for (const octet of bytes) crc = table[(crc ^ octet) & 255] ^ (crc >>> 8);
+    crc = (crc ^ 0xffffffff) >>> 0;
+    const local = header(30, [[0, 0x04034b50, true], [4, 20], [6, 0x800], [12, 0x21],
+      [14, crc, true], [18, bytes.length, true], [22, bytes.length, true], [26, name.length]]);
+    const entry = header(46, [[0, 0x02014b50, true], [4, 20], [6, 20], [8, 0x800], [14, 0x21],
+      [16, crc, true], [20, bytes.length, true], [24, bytes.length, true], [28, name.length], [42, offset, true]]);
+    body.push(local, name, bytes);
+    directory.push(entry, name);
+    directorySize += entry.length + name.length;
+    offset += local.length + name.length + bytes.length;
+  }
+  const end = header(22, [[0, 0x06054b50, true], [8, files.length], [10, files.length],
+    [12, directorySize, true], [16, offset, true]]);
+  return new Blob([...body, ...directory, end], {type: 'application/zip'});
+}
+
+function teamFiles() {
+  const { engine } = builtProject;
+  const env = environment[engine];
+  const files = selectedRoles().map(role => [
+    env.dir + '/' + agentName(role, engine) + '.' + env.extension, agentFile(role, engine)
+  ]);
+  files.push(['PROMPT.md', currentPrompt + '\n'], ['README.md',
+    '# AI-Агрегатор · ' + env.name + '\n\n' +
+    '1. Распакуйте архив в отдельную папку и проверьте инструкции агентов.\n' +
+    '2. Скопируйте файлы из папки `' + env.dir + '` в такую же папку в корне вашего проекта. Если файл с таким именем уже существует, сверьте содержимое перед заменой.\n' +
+    '3. Откройте проект в ' + env.name + ' и отправьте текст из PROMPT.md.\n\n' +
+    'Модели и глубина рассуждений указаны в файлах агентов. Для флагманов обновите клиент и проверьте доступ в меню выбора модели. Если модель недоступна, соберите архив с профилем «Из текущей сессии».\n\n' +
+    'Документация: ' + env.docs + '\n'
+  ]);
+  return files;
+}
+
+$('export').addEventListener('click', () => {
+  if (!team.size) return;
+  const objectUrl = URL.createObjectURL(createZip(teamFiles()));
+  const link = document.createElement('a');
+  link.href = objectUrl;
+  link.download = 'ai-aggregator-' + builtProject.engine + '.zip';
+  document.body.append(link);
+  link.click();
+  link.remove();
+  setTimeout(() => URL.revokeObjectURL(objectUrl), 1000);
+  $('status').textContent = 'Архив команды готов.';
+});
+
+$('copy').addEventListener('click', async () => {
+  const text = currentPrompt;
+  if (!text) return;
+  try {
+    await navigator.clipboard.writeText(text);
+    if (text === currentPrompt) $('status').textContent = 'Промпт скопирован.';
+  } catch {
+    if (text !== currentPrompt) return;
+    $('prompt').focus();
+    $('prompt').select();
+    $('status').textContent = 'Текст выделен. Скопируйте его через Ctrl+C или ⌘C.';
+  }
+});
+
+$('picker').addEventListener('submit', event => {
+  event.preventDefault();
+  const settings = projectSettings();
+  const action = pickerAction(settings);
+  if (action === 'empty') return;
+  if (action === 'reset') {
+    $('picker').reset();
+    builtProject = null;
+    team.clear();
+    renderResult();
+    $('engine-codex').focus();
+  } else {
+    // Промпт и архив используют настройки последнего подбора, пока пользователь редактирует форму.
+    builtProject = { ...settings, platformLabel: $('platform').selectedOptions[0].textContent };
+    recommend(builtProject);
+  }
+  updatePicker();
+});
+$('picker').addEventListener('change', updatePicker);
+$('search').addEventListener('input', renderCatalog);
+$('category').addEventListener('change', renderCatalog);
+renderCatalog();
+renderResult();
+updatePicker();
+</script>
+</body>
+</html>
