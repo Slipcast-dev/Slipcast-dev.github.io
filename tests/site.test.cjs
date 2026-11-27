@@ -98,13 +98,15 @@ test('Ошибка сети не удаляет карточки; резервн
 
 test('Сборка включает локальные ресурсы, страницы и точные хеши CSP', () => {
   const pages = fs.readdirSync(dist).filter(file => file.endsWith('.html'));
-  assert.equal(pages.length, 8);
+  assert.equal(pages.length, 9);
   assert.ok(pages.includes('ai-aggregator.html'));
+  assert.ok(pages.includes('ai-aggregator-en.html'));
   assert.ok(fs.existsSync(path.join(root, 'websites.html')), 'Исходник раздела сохранён');
   assert.ok(!fs.existsSync(path.join(dist, 'websites.html')), 'Раздел исключён из публикации');
   const sitemap = fs.readFileSync(path.join(dist, 'sitemap.xml'), 'utf8');
   assert.ok(!sitemap.includes('websites.html'));
   assert.ok(sitemap.includes('https://slipcast-dev.github.io/ai-aggregator.html'));
+  assert.ok(sitemap.includes('https://slipcast-dev.github.io/ai-aggregator-en.html'));
   for (const name of ['i18n.js', 'projects-api.js']) {
     const version = createHash('sha256').update(fs.readFileSync(path.join(dist, name))).digest('hex').slice(0, 12);
     assert.ok(fs.readFileSync(path.join(dist, 'projects.html'), 'utf8').includes(`src="${name}?v=${version}"`));
@@ -345,7 +347,8 @@ test('Раздел скиллов доступен из меню; карточк
   home.click('en');
   assert.equal(menu[0].textContent, 'Applications');
   assert.equal(menu[2].textContent, 'AI Aggregator');
-  assert.equal(menu[2].attrs.href, 'ai-aggregator.html?lang=en');
+  assert.equal(menu[2].attrs.href, 'ai-aggregator-en.html?lang=en');
+  assert.equal(menu[2].attrs.hreflang, 'en');
   assert.equal(menu[3].textContent, 'Telegram Channel');
   assert.equal(menu[3].attrs.href, 'https://t.me/slipcastdev');
   home.click('en');
@@ -419,4 +422,24 @@ test('Карточка приложения скачивает установщ�
   const [englishCard, english] = page.document.querySelector('#project-list').children[0].children;
   assert.match(englishCard.children[1].textContent, /^Read and edit Markdown/);
   assert.equal(english.children[2].children[1].textContent, 'v3.0.0 · 110.7 MB · Windows 10/11 · x64');
+});
+
+test('Английский агрегатор доступен с главной и содержит тот же каталог', () => {
+  const home = setup('index.html', { languages: ['en-US'], protocol: 'https:' });
+  assert.equal(home.document.querySelector('[data-i18n="aiAggregator"]').attrs.href, 'ai-aggregator-en.html?lang=en');
+  const englishHome = fs.readFileSync(path.join(dist, 'index-en.html'), 'utf8');
+  assert.match(englishHome, /href="ai-aggregator-en\.html\?lang=en"[^>]*>AI Aggregator</);
+  const pages = ['ai-aggregator.html', 'ai-aggregator-en.html']
+    .map(name => fs.readFileSync(path.join(dist, name), 'utf8'));
+  const [russian, english] = pages.map(html =>
+    JSON.parse(html.match(/<script id="catalog-data" type="application\/json">([\s\S]+?)<\/script>/)[1]));
+  assert.match(pages[1], /<html lang="en">/);
+  assert.match(pages[1], /<h1>AI Aggregator<\/h1>/);
+  assert.match(pages[1], /<label for="task">Task<\/label>/);
+  assert.match(pages[1], /app: \["Design an application"/);
+  assert.match(pages[1], /full: \["Full lifecycle"/);
+  assert.deepEqual(english.categories.map(category => category.id), russian.categories.map(category => category.id));
+  assert.deepEqual(english.roles.map(role => [role.id, role.steps.length]),
+                   russian.roles.map(role => [role.id, role.steps.length]));
+  assert.doesNotMatch(JSON.stringify(english), /\p{Script=Cyrillic}/u);
 });

@@ -1,0 +1,2894 @@
+{
+  "labels": {
+    "AI-Агрегатор · Slipcast-Dev": "AI Aggregator · Slipcast-Dev",
+    "AI-Агрегатор": "AI Aggregator",
+    "Соберите команду под свой проект. Выберите среду, задачу и стек, затем заберите промпт и файлы агентов.": "Build a team for your project. Choose an environment, task, and stack, then get your prompt and agent files.",
+    "Подберите команду ИИ-агентов для Codex или Claude Code, получите стартовый промпт и скачайте конфигурации.": "Build a team of AI agents for Codex or Claude Code, get a starter prompt, and download the agent configurations.",
+    "Задача": "Task",
+    "Роли": "Roles",
+    "Промпт": "Prompt",
+    "Агенты": "Agents",
+    "Как работает подбор": "How team selection works",
+    "← Назад в терминал": "← Back to the terminal",
+    "Настройки проекта": "Project settings",
+    "Среда": "Environment",
+    "Выберите задачу": "Choose a task",
+    "Этап разработки": "Development stage",
+    "Выберите этап": "Choose a stage",
+    "Платформа": "Platform",
+    "Выберите платформу": "Choose a platform",
+    "Любая": "Any",
+    "Веб": "Web",
+    "Кроссплатформенная": "Cross-platform",
+    "Язык": "Language",
+    "Выберите язык": "Choose a language",
+    "Без привязки к языку": "Language-agnostic",
+    "Модели агентов": "Agent models",
+    "Автоподбор по ролям": "Select by role",
+    "Флагманская модель": "Flagship model",
+    "Из текущей сессии": "Inherit from the current session",
+    "Флагманы: Codex — GPT‑6.2 Astra · Claude Code — Claude Fable. Доступ зависит от клиента и тарифа.": "Flagship models: GPT‑6.2 Astra for Codex and Claude Fable for Claude Code. Availability depends on your client and plan.",
+    "Соберите проект": "Set up your project",
+    "Ваша команда": "Your team",
+    "Выберите настройки проекта и нажмите «Подобрать».": "Choose your project settings and select Build team.",
+    "Стартовый промпт": "Starter prompt",
+    "Скопировать промпт": "Copy prompt",
+    "Скачать ZIP команды": "Download team ZIP",
+    "Каталог ролей": "Role catalog",
+    "После подбора нажмите на роль, чтобы добавить её в команду или убрать.": "After building your team, select a role to add or remove it.",
+    "Все категории": "All categories",
+    "По этому запросу роли не найдены.": "No roles match this search.",
+    "Поиск по каталогу": "Search the role catalog",
+    "Поиск по имени, ID или специализации": "Search by name, ID, or specialty",
+    "Категория ролей": "Role category",
+    "Для интерактивного подбора включите JavaScript.": "Enable JavaScript to build your team.",
+    "Язык раздела": "Page language",
+    "Модель сессии": "Session model",
+    " категорий": " categories",
+    "Подобрать": "Build team",
+    "Сброс проекта": "Reset project",
+    "Пересобрать": "Rebuild team",
+    "Добавьте роли из каталога или соберите проект заново.": "Add roles from the catalog or rebuild your team.",
+    "Убрать роль ": "Remove role: ",
+    "Задача: ": "Task: ",
+    "Этап: ": "Stage: ",
+    ". Платформа: ": ". Platform: ",
+    " Язык: ": " Language: ",
+    "Особенности стека: ": "Stack notes: ",
+    "Проверь, что в ": "Check that ",
+    " доступны следующие агенты. Если кого-то нет, сообщи об этом.\\n": " has the following agents available. Report any that are missing.\\n",
+    "Используй настройки моделей из файлов агентов. Если какая-то модель недоступна, сообщи об этом и согласуй замену.": "Use the model settings from the agent files. If a model is unavailable, report it and agree on a replacement.",
+    "Уточни результат, ограничения и критерии готовности. Передай каждому агенту его материалы и критерии. Запускай параллельно только независимую работу и сверь результаты перед итогом. Укажи, что проверено и что требует проверки. Публикацию и внешние действия выполняй только по явному поручению.": "Clarify the outcome, constraints, and acceptance criteria. Give each agent the materials and criteria it needs. Run independent work in parallel and reconcile the results before reporting back. State what was verified and what still needs checking. Publish or take external actions only when explicitly requested.",
+    "✓ В команде": "✓ On team",
+    "+ Добавить": "+ Add",
+    "Работай в режиме анализа. Не редактируй файлы. Возвращай выводы с подтверждениями.": "Work in review mode. Keep files read-only and support findings with evidence.",
+    "Меняй файлы в границах поручения. Сверь результат с критериями готовности и сообщи, какие проверки удалось запустить.": "Change files within the assigned scope. Check the result against the acceptance criteria and report which checks you ran.",
+    "Роль: ": "Role: ",
+    "Платформа проекта: ": "Project platform: ",
+    "Проверяй актуальные сведения по первичным источникам. Указывай ссылку, дату и ограничения. Если поиск недоступен, явно отметь непроверенные сведения.": "Verify current information against primary sources. Include the link, date, and limitations. If search is unavailable, identify the information you could not verify.",
+    "Передай результат в требуемом формате, перечисли подтверждения и открытые вопросы. Сообщи, если нужные данные или инструменты недоступны. Выполняй внешние действия только по явному поручению.": "Deliver the requested format and list supporting evidence and open questions. Flag unavailable data or tools. Take external actions only when explicitly requested.",
+    "# AI-Агрегатор · ": "# AI Aggregator · ",
+    "1. Распакуйте архив в отдельную папку и проверьте инструкции агентов.\\n": "1. Extract the archive into a separate folder and review the agent instructions.\\n",
+    "2. Скопируйте файлы из папки `": "2. Copy the files from `",
+    "` в такую же папку в корне вашего проекта. Если файл с таким именем уже существует, сверьте содержимое перед заменой.\\n": "` into the matching folder at your project root. If a file with the same name exists, compare the contents before replacing it.\\n",
+    "3. Откройте проект в ": "3. Open the project in ",
+    " и отправьте текст из PROMPT.md.\\n\\n": " and submit the text from PROMPT.md.\\n\\n",
+    "Модели и глубина рассуждений указаны в файлах агентов. Для флагманов обновите клиент и проверьте доступ в меню выбора модели. Если модель недоступна, соберите архив с профилем «Из текущей сессии».\\n\\n": "The agent files specify models and reasoning effort. To use a flagship model, update your client and check availability in the model picker. If a model is unavailable, export again with “Inherit from the current session”.\\n\\n",
+    "Документация: ": "Documentation: ",
+    "Архив команды готов.": "Team archive ready.",
+    "Промпт скопирован.": "Prompt copied.",
+    "Текст выделен. Скопируйте его через Ctrl+C или ⌘C.": "Text selected. Press Ctrl+C or ⌘C to copy it.",
+    "Идея и проектирование": "Discovery and design",
+    "Веб, API и боты": "Web, APIs, and bots",
+    "Windows, macOS, Linux, iOS и Android": "Windows, macOS, Linux, iOS, and Android",
+    "Разработка и автоматизация": "Development and automation",
+    "Базы данных и обработка данных": "Databases and data processing",
+    "Ревью, тесты и качество": "Review, testing, and quality",
+    "Релиз, инфраструктура и поддержка": "Release, infrastructure, and support",
+    "ИИ-модели и интеграции": "AI models and integrations",
+    "Промпты и команды агентов": "Prompts and agent teams",
+    "Общие сценарии": "General workflows",
+    "Проектирование": "Design",
+    "Реализация и интеграция": "Implementation and integration",
+    "Проверка и приёмка": "Verification and acceptance",
+    "Выпуск и развёртывание": "Release and deployment",
+    "Эксплуатация и развитие": "Operations and maintenance",
+    "Идея и планирование": "Discovery and planning",
+    "Архитектура": "Architecture",
+    "Разработка": "Development",
+    "Качество и безопасность": "Quality and security",
+    "Выпуск и эксплуатация": "Release and operations",
+    "Языки программирования": "Programming languages",
+    "Мобильная разработка": "Mobile development",
+    "Данные и ИИ": "Data and AI",
+    "Облако и DevOps": "Cloud and DevOps",
+    "Доступность и локализация": "Accessibility and localization",
+    "Работа с ИИ-моделями": "Working with AI models",
+    "Промпт-инженерия": "Prompt engineering",
+    "Инженерия тестирования и приёмка": "Test engineering and acceptance",
+    "Инструменты ИИ-агентов": "AI agent tools",
+    "Мобильные магазины и дистрибуция": "Mobile app stores and distribution",
+    "Приватность и управление данными": "Privacy and data governance",
+    "Открытый код и сообщество": "Open source and community",
+    "Переезд между платформами": "Platform migration",
+    "Инструменты для разработчиков": "Developer tools",
+    "Память и координация ИИ-агентов": "AI agent memory and coordination",
+    "Браузерные расширения": "Browser extensions",
+    "Linux и дистрибуция": "Linux and distribution",
+    "Игры": "Games",
+    "Подписки и биллинг": "Subscriptions and billing",
+    "Видео и мультимедиа": "Video and multimedia",
+    "Картография и геоданные": "Mapping and geospatial data",
+    "Встраиваемые системы и IoT": "Embedded systems and IoT",
+    "Тексты и отчёты": "Writing and reports",
+    "PDF, сканы и OCR": "PDF, scans, and OCR",
+    "Таблицы и расчёты": "Spreadsheets and calculations",
+    "Презентации": "Presentations",
+    "Ревью и согласование": "Review and approval",
+    "Шаблоны и автоматизация": "Templates and automation",
+    "Архив и база знаний": "Archives and knowledge bases",
+    "Доступность и подготовка к публикации": "Accessibility and publication preparation",
+    "Встречи и протоколы": "Meetings and minutes",
+    "Исследования и источники": "Research and sources",
+    "Диагностика сложных сбоев": "Complex failure diagnostics",
+    "Поддержка старого кода": "Legacy code maintenance",
+    "Айдентика и визуальные материалы": "Brand identity and visuals",
+    "UX-тексты и онбординг": "UX writing and onboarding",
+    "Управление автономными действиями": "Autonomous agent controls",
+    "Обучение и дообучение моделей": "Model training and fine-tuning",
+    "Генерация видео и анимации": "Video and animation generation",
+    "Редакция и контент-план": "Editorial planning",
+    "Адаптация материалов": "Content repurposing",
+    "Telegram, YouTube и другие площадки": "Telegram, YouTube, and other platforms",
+    "Работа с сообществом": "Community management",
+    "Личное планирование": "Personal planning",
+    "Покупки и сравнение вариантов": "Shopping and comparisons",
+    "Дайджесты и проверка новостей": "News digests and verification",
+    "Тестирование API и контрактов": "API and contract testing",
+    "Регрессия, нагрузка и устойчивость": "Regression, load, and resilience",
+    "Белый хакинг · Защитный аудит": "Ethical hacking · Defensive audits",
+    "Белый хакинг · Исправления и защита": "Ethical hacking · Remediation and hardening",
+    "Мобильные данные и офлайн-режим": "Mobile data and offline mode",
+    "Уведомления и системные функции": "Notifications and system features",
+    "Кроссплатформенная мобильная разработка": "Cross-platform mobile development",
+    "PWA и установка веб-приложений": "PWAs and web app installation",
+    "Поиск и видимость сайта": "Search and site visibility",
+    "Системы управления контентом": "Content management systems",
+    "Съёмка и монтаж": "Filming and editing",
+    "Подкасты и интервью": "Podcasts and interviews",
+    "Обложки и визуалы для соцсетей": "Covers and social media visuals",
+    "Ретушь и обработка фотографий": "Photo retouching and editing",
+    "Изображения для сайтов и каталогов": "Images for websites and catalogs",
+    "Структурированные ответы моделей": "Structured model output",
+    "Маршрутизация между моделями": "Model routing",
+    "Модели в реальном времени": "Real-time models",
+    "Генерация и редактирование изображений с ИИ": "AI image generation and editing",
+    "Выпуск и обновление моделей": "Model releases and updates"
+  },
+  "tasks": {
+    "app": "Design an application",
+    "requirements": "Gather requirements and write a specification",
+    "mvp": "Define the MVP scope and priorities",
+    "prototype": "Design an interface and prototype",
+    "architecture": "Choose an architecture and technology stack",
+    "roadmap": "Plan development and releases",
+    "web": "Build a web application",
+    "site": "Create a website or landing page",
+    "bot": "Build a Telegram bot",
+    "api": "Build an API",
+    "apiContract": "Design an API contract and versioning strategy",
+    "integration": "Connect a third-party API or webhooks",
+    "auth": "Add sign-in and access controls",
+    "windows": "Build a Windows application",
+    "windowsInstaller": "Prepare a Windows installer",
+    "mac": "Build a macOS application",
+    "macDistribution": "Sign and distribute a macOS build",
+    "macAutomation": "Automate macOS workflows",
+    "linux": "Build a Linux utility",
+    "ios": "Build an iOS or iPadOS application",
+    "android": "Build an Android application",
+    "mobileRelease": "Prepare a mobile app for release",
+    "crossPlatform": "Prepare a cross-platform application",
+    "feature": "Add a feature to an existing project",
+    "cli": "Build a command-line tool",
+    "workflow": "Automate a workflow",
+    "refactor": "Refactor code while preserving behavior",
+    "dependencies": "Update dependencies or migrate to a new stack",
+    "schema": "Design a database schema",
+    "migration": "Prepare a database migration",
+    "query": "Speed up database queries",
+    "pipeline": "Build a data processing pipeline",
+    "dataQuality": "Check data quality and error handling",
+    "review": "Review code",
+    "bug": "Diagnose and fix a bug",
+    "tests": "Add automated tests",
+    "securityReview": "Review application security and propose fixes",
+    "speed": "Improve application performance",
+    "accessibility": "Review interface accessibility",
+    "localization": "Localize the interface and documentation",
+    "inclusive": "Review accessibility and localization",
+    "release": "Prepare a release",
+    "ci": "Set up builds, tests, and deployment with CI/CD",
+    "cloud": "Deploy a project to the cloud",
+    "monitoring": "Set up monitoring and incident alerts",
+    "docs": "Write documentation and instructions",
+    "backup": "Plan backups and recovery",
+    "support": "Investigate a failure and maintain the project",
+    "incident": "Find the cause of an incident and write a report",
+    "ai": "Add AI to an application",
+    "model": "Select and compare AI models",
+    "textModel": "Configure a text model",
+    "vision": "Analyze images and documents",
+    "image": "Generate and edit images",
+    "speech": "Recognize or synthesize speech",
+    "rag": "Add document search with retrieval-augmented generation",
+    "localAI": "Run a model locally",
+    "modelEvaluation": "Measure the quality of AI responses",
+    "modelCost": "Reduce model cost and latency",
+    "prompts": "Write and test a prompt",
+    "promptFlow": "Design a prompt chain",
+    "promptTemplate": "Build a prompt template with variables",
+    "promptEvaluation": "Compare prompt versions on test examples",
+    "promptSafety": "Check handling of untrusted text",
+    "agentWorkflow": "Divide work among AI agents",
+    "agentIntegration": "Connect Codex or Claude Code to project tools",
+    "agentToolDesign": "Design a toolset for an AI agent",
+    "agentPermissions": "Review AI agent permissions",
+    "storeReview": "Prepare an app for store review",
+    "storeListing": "Create an App Store or Google Play listing",
+    "mobileSigning": "Set up mobile build signing",
+    "deidentifyData": "De-identify a dataset",
+    "auditTelemetry": "Review what telemetry collects",
+    "dataControls": "Design data export and deletion",
+    "dependencyLicenses": "Review dependency licenses before release",
+    "reviewContribution": "Triage external proposals and changes",
+    "contributingGuide": "Write a contributor guide",
+    "moveCloud": "Migrate a service between cloud platforms",
+    "fileFormats": "Test file format compatibility and conversion",
+    "replaceLegacyApi": "Plan a move to a new API version",
+    "ideExtension": "Build an IDE extension",
+    "sdk": "Build a client SDK",
+    "devSetup": "Set up a local development environment",
+    "agentMemory": "Set up AI agent memory",
+    "agentHandoff": "Hand off tasks and decisions between agents",
+    "agentTracing": "Record and analyze team actions",
+    "browserExtension": "Build a Chrome and Firefox extension",
+    "safariExtension": "Port a browser extension to Safari",
+    "extensionPermissions": "Review browser extension permissions",
+    "linuxPackages": "Build DEB and RPM packages",
+    "flatpakBuild": "Prepare an application for release on Flatpak",
+    "systemdService": "Configure a Linux service with systemd",
+    "gamePrototype": "Build a playable prototype",
+    "gameLevel": "Design and test a game level",
+    "gameAssets": "Prepare game assets",
+    "subscriptions": "Add paid plans and subscriptions",
+    "payments": "Integrate payments and refunds",
+    "paymentReconciliation": "Set up payment and refund reconciliation",
+    "videoUpload": "Add video uploads and processing",
+    "subtitles": "Add subtitles and check synchronization",
+    "streamingVideo": "Set up streaming video playback",
+    "geodata": "Prepare geospatial data and feature search",
+    "interactiveMap": "Build an interactive map with layers",
+    "routing": "Add route planning to a map",
+    "sensorFirmware": "Develop firmware for a sensor device",
+    "deviceConnectivity": "Connect a device to a gateway or app",
+    "hardwareBench": "Bench-test a device under connectivity and power failures",
+    "writeReport": "Write a report from notes and sources",
+    "checkDocumentFacts": "Check facts, quotes, and figures in a document",
+    "formatWord": "Format a Word document with styles and a table of contents",
+    "scanOcr": "Recognize text in PDFs and scans",
+    "extractDocumentTables": "Extract tables from PDFs into Excel",
+    "checkOcr": "Verify OCR for text, dates, and amounts",
+    "scansToReport": "Build a verified report from scanned documents",
+    "buildWorkbook": "Create a workbook with calculations",
+    "checkFormulas": "Verify formulas and totals",
+    "reconcileSheets": "Reconcile records and calculations across spreadsheets",
+    "presentationFromReport": "Build a presentation from a report",
+    "designSlides": "Apply a consistent style to slides",
+    "visualizeReportData": "Create charts from report data",
+    "compareDocuments": "Compare document versions",
+    "collateDocumentFeedback": "Consolidate and reconcile document feedback",
+    "produceFinalDraft": "Prepare a clean draft with approved edits",
+    "createDocumentTemplate": "Create a document template with variables",
+    "generateDocumentBatch": "Generate a batch of PDFs from spreadsheet data",
+    "testBatchDocumentExport": "Test batch export reliability",
+    "organizeDocumentArchive": "Organize an archive and structure a knowledge base",
+    "cleanDocumentMetadata": "Standardize document names, tags, and metadata",
+    "moveDocumentArchive": "Migrate documents to a knowledge base and preserve links",
+    "checkDocumentAccessibility": "Check document accessibility",
+    "sanitizeDocument": "Redact sensitive information from a publication copy",
+    "preflightPdf": "Preflight a PDF for release or printing",
+    "meetingFollowUpTask1": "Review a meeting and write minutes",
+    "meetingFollowUpTask2": "Compile a decision log",
+    "meetingFollowUpTask3": "List meeting action items and deadlines",
+    "researchEvidenceTask1": "Find primary sources on a topic",
+    "researchEvidenceTask2": "Format a bibliography",
+    "researchEvidenceTask3": "Assess research evidence and limitations",
+    "complexFailureAnalysisTask1": "Find why an application hangs",
+    "complexFailureAnalysisTask2": "Analyze a crash dump",
+    "complexFailureAnalysisTask3": "Reproduce an intermittent application failure",
+    "legacyBehaviorProtectionTask1": "Understand an unfamiliar project",
+    "legacyBehaviorProtectionTask2": "Test legacy behavior before refactoring",
+    "legacyBehaviorProtectionTask3": "Add a compatibility adapter",
+    "visualIdentityDesignTask1": "Develop a project's visual direction",
+    "visualIdentityDesignTask2": "Create a visual identity",
+    "visualIdentityDesignTask3": "Prepare a set of illustrations",
+    "onboardingDesignTask1": "Rewrite interface copy",
+    "onboardingDesignTask2": "Design a first-run experience",
+    "onboardingDesignTask3": "Test whether users understand the interface",
+    "agentControlValidationTask1": "Prepare an AI agent to work independently",
+    "agentControlValidationTask2": "Set agent limits and a safe stop mechanism",
+    "agentControlValidationTask3": "Test an agent workflow under failure",
+    "modelTuningPipelineTask1": "Prepare a fine-tuning dataset",
+    "modelTuningPipelineTask2": "Fine-tune a model and compare quality",
+    "modelTuningPipelineTask3": "Check dataset annotation quality",
+    "aiVideoProductionTask1": "Create a video with AI",
+    "aiVideoProductionTask2": "Storyboard a video",
+    "aiVideoProductionTask3": "Check consistency between AI video shots",
+    "editorialCalendarTask1": "Plan a week of content",
+    "editorialCalendarTask2": "Define content series and build an editorial calendar",
+    "editorialCalendarTask3": "Write an episode script",
+    "contentRepurposingTask1": "Prepare a newsletter issue",
+    "contentRepurposingTask2": "Turn an article into a short video script",
+    "contentRepurposingTask3": "Turn one article into a week of content",
+    "socialPublishingPreparationTask1": "Prepare Telegram channel posts",
+    "socialPublishingPreparationTask2": "Plan a YouTube episode",
+    "socialPublishingPreparationTask3": "Analyze post reach",
+    "communityFeedbackCycleTask1": "Review disputed community messages",
+    "communityFeedbackCycleTask2": "Draft replies to comments",
+    "communityFeedbackCycleTask3": "Identify recurring user requests",
+    "weeklyPlanningTask1": "Make a realistic weekly plan",
+    "weeklyPlanningTask2": "Work through a backlog of tasks",
+    "weeklyPlanningTask3": "Schedule household tasks",
+    "shoppingDecisionTask1": "Make a shopping list",
+    "shoppingDecisionTask2": "Compare product specifications",
+    "shoppingDecisionTask3": "Compare offers from stores",
+    "newsSourceReviewTask1": "Compile a news digest",
+    "newsSourceReviewTask2": "Verify a news story against primary sources",
+    "newsSourceReviewTask3": "Build a timeline of a news event",
+    "apiContractValidationTask1": "Add API contract tests",
+    "apiContractValidationTask2": "Set up service integration tests",
+    "apiContractValidationTask3": "Prepare synthetic test data",
+    "regressionAndLoadValidationTask1": "Build a pre-release regression suite",
+    "regressionAndLoadValidationTask2": "Test performance under load",
+    "regressionAndLoadValidationTask3": "Test recovery after a failure",
+    "defensiveSecurityReviewTask1": "Conduct a defensive code review",
+    "defensiveSecurityReviewTask2": "Review settings and permissions for least privilege",
+    "defensiveSecurityReviewTask3": "Review dependencies against security advisories",
+    "defensiveRemediationTask1": "Review a security fix",
+    "defensiveRemediationTask2": "Write a defensive audit report",
+    "defensiveRemediationTask3": "Harden configuration and verify normal operation",
+    "mobileOfflineTask1": "Add local storage and offline support",
+    "mobileOfflineTask2": "Synchronize mobile app data",
+    "mobileOfflineTask3": "Test sync conflicts and recovery",
+    "mobileSystemFeaturesTask1": "Set up push notifications that open a specific screen",
+    "mobileSystemFeaturesTask2": "Build a mobile widget",
+    "mobileSystemFeaturesTask3": "Deep-link to app screens",
+    "crossPlatformMobileTask1": "Build a mobile screen with Flutter",
+    "crossPlatformMobileTask2": "Build a mobile screen with React Native",
+    "crossPlatformMobileTask3": "Connect the camera or another native feature",
+    "pwaDeliveryTask1": "Make a website installable as a PWA",
+    "pwaDeliveryTask2": "Set up offline caching and web app updates",
+    "pwaDeliveryTask3": "Test PWA installation and updates",
+    "webSearchVisibilityTask1": "Find technical reasons for low search visibility",
+    "webSearchVisibilityTask2": "Add and validate website structured data",
+    "webSearchVisibilityTask3": "Find why pages are not indexed",
+    "cmsEditorialFlowTask1": "Design a CMS content model",
+    "cmsEditorialFlowTask2": "Connect a CMS to a website",
+    "cmsEditorialFlowTask3": "Add draft previews for editors",
+    "creatorProductionTask1": "Plan a video shoot",
+    "creatorProductionTask2": "Cut a video from source footage",
+    "creatorProductionTask3": "Clean up and level video audio",
+    "creatorVideoAndCovers": "Prepare a video and a set of covers",
+    "podcastProductionTask1": "Prepare an interview for publication",
+    "podcastProductionTask2": "Plan a podcast episode",
+    "podcastProductionTask3": "Edit a conversation recording and produce clips",
+    "socialVisualDesignTask1": "Create several cover options",
+    "socialVisualDesignTask2": "Prepare a set of social media visuals",
+    "socialVisualDesignTask3": "Plan a click-through comparison for covers",
+    "photoPostprocessingTask1": "Retouch and prepare a photo series",
+    "photoPostprocessingTask2": "Match color and tone across photos",
+    "photoPostprocessingTask3": "Replace a background and build a photo composite",
+    "webImagePreparationTask1": "Optimize website images for different screens",
+    "webImagePreparationTask2": "Prepare image captions and metadata",
+    "webImagePreparationTask3": "Review catalog images before publication",
+    "structuredModelOutputTask1": "Design a JSON schema for model responses",
+    "structuredModelOutputTask2": "Extract document data into validated JSON",
+    "structuredModelOutputTask3": "Check model response format and completeness",
+    "modelRoutingArchitectureTask1": "Design rules for routing requests to different models",
+    "modelRoutingArchitectureTask2": "Set up fallback to a backup model",
+    "modelRoutingArchitectureTask3": "Compare model cost, quality, and latency",
+    "realtimeModelInteractionTask1": "Connect streaming model responses",
+    "realtimeModelInteractionTask2": "Build a voice assistant with interruptible responses",
+    "realtimeModelInteractionTask3": "Measure voice and streaming AI latency",
+    "aiImageEditingTask1": "Create an image series with a specified composition",
+    "aiImageEditingTask2": "Replace a product background with AI while preserving its appearance",
+    "aiImageEditingTask3": "Check product images against the reference",
+    "modelReleaseValidationTask1": "Prepare a new model version for deployment",
+    "modelReleaseValidationTask2": "Compare responses from old and new models",
+    "modelReleaseValidationTask3": "Test rollback to the previous model version"
+  },
+  "phases": {
+    "auto": "Based on the task",
+    "full": "Full lifecycle",
+    "discovery": "Discovery and requirements",
+    "research": "User research and hypothesis testing",
+    "feasibility": "Feasibility assessment and prototype",
+    "scope": "MVP scope and acceptance criteria",
+    "plan": "Project plan and risks",
+    "gameConcept": "Game concept and first playable prototype",
+    "documentBrief": "Document purpose, source materials, and report outline",
+    "archiveInventory": "Archive inventory and retention rules",
+    "meetingFollowUp": "Meeting review and action items",
+    "researchEvidence": "Source research and evidence assessment",
+    "editorialCalendar": "Content series and editorial planning",
+    "weeklyPlanning": "Task triage and weekly planning",
+    "shoppingDecision": "Shopping list and offer comparison",
+    "architecture": "Architecture and technology selection",
+    "ux": "User flows and interface design",
+    "api": "API and integration contracts",
+    "data": "Data structure design",
+    "threatModel": "Threat modeling and defensive controls",
+    "agentToolContracts": "AI agent tool contracts",
+    "privacyDesign": "Data collection, export, and deletion rules",
+    "agentMemoryDesign": "Agent memory and context handoff design",
+    "subscriptionDesign": "Pricing plans, subscription states, and access rules",
+    "geospatialDesign": "Geospatial data model and routing rules",
+    "outlinePresentation": "Presentation outline and visualization plan",
+    "designDocumentTemplate": "Document template structure and input schema",
+    "visualIdentityDesign": "Visual direction and brand identity",
+    "onboardingDesign": "Onboarding and interface copy",
+    "cmsEditorialFlow": "Content models, CMS integration, and previews",
+    "socialVisualDesign": "Covers, visuals, and variants for comparison",
+    "structuredModelOutput": "Output schemas, extraction, and validation",
+    "modelRoutingArchitecture": "Model selection, fallback, and cost comparison",
+    "setup": "Development environment and project setup",
+    "implementation": "Feature implementation",
+    "integration": "Component and service integration",
+    "migrations": "Data and settings migration",
+    "refactor": "Refactoring and technical debt",
+    "mcpIntegration": "MCP tool integration",
+    "sdkDevelopment": "SDK and IDE extension development",
+    "developerSetup": "Reproducible local development environment",
+    "browserExtensionDevelopment": "Extension development and Safari porting",
+    "paymentIntegration": "Payment integration and event processing",
+    "mediaPipeline": "Video processing and streaming playback",
+    "mapLayers": "Map, layer, and search development",
+    "deviceIntegration": "Firmware development and device integration",
+    "scanProcessing": "Scan recognition and table extraction",
+    "prepareWorkbook": "Spreadsheet setup and calculations",
+    "buildPresentation": "Slide layout and chart creation",
+    "generateDocuments": "Template-based document generation",
+    "legacyBehaviorProtection": "Codebase analysis and compatibility preservation",
+    "modelTuningPipeline": "Dataset preparation, annotation, and fine-tuning",
+    "aiVideoProduction": "AI video storyboarding, production, and review",
+    "contentRepurposing": "Content adaptation for newsletters and short videos",
+    "mobileOffline": "Local storage, offline operation, and synchronization",
+    "mobileSystemFeatures": "Notifications, widgets, and deep links",
+    "crossPlatformMobile": "Shared mobile interface and native integrations",
+    "pwaDelivery": "PWA installation, caching, and updates",
+    "creatorProduction": "Filming, editing, audio, and delivery formats",
+    "podcastProduction": "Interview preparation and podcast editing",
+    "photoPostprocessing": "Retouching, color grading, and photo compositing",
+    "realtimeModelInteraction": "Streaming responses, voice interfaces, and latency measurements",
+    "aiImageEditing": "Composition control and reference matching",
+    "testPlan": "Test strategy and test plan",
+    "validation": "Review and testing",
+    "e2e": "End-to-end and regression testing",
+    "compatibility": "Compatibility and accessibility",
+    "performance": "Performance measurements and load testing",
+    "acceptance": "Verification against acceptance criteria",
+    "agentPermissionReview": "AI agent access review",
+    "privacyVerification": "De-identification and telemetry review",
+    "fileCompatibility": "File and format compatibility testing",
+    "extensionAudit": "Browser extension compatibility and permission review",
+    "mediaAccessibility": "Subtitle and playback accessibility checks",
+    "hardwareValidation": "Device bench testing and connection recovery",
+    "validateOcrData": "Verification of OCR, extracted data, and totals",
+    "reconcileDocumentVersions": "Version comparison and edit reconciliation",
+    "validateDocumentBatch": "Batch export quality checks",
+    "documentAccessibilityCheck": "Document accessibility and readability checks",
+    "complexFailureAnalysis": "Diagnostics for hangs and intermittent failures",
+    "agentControlValidation": "Agent approvals, limits, and stop controls",
+    "newsSourceReview": "Verification of news sources, dates, and context",
+    "apiContractValidation": "API contract and integration testing",
+    "regressionAndLoadValidation": "Regression, load, and recovery testing",
+    "defensiveSecurityReview": "Code, access, and configuration review",
+    "defensiveRemediation": "Approval, implementation, and verification of defensive fixes",
+    "webSearchVisibility": "Search visibility and indexing checks",
+    "beta": "Beta testing",
+    "packaging": "Building, signing, and packaging",
+    "launch": "Release and documentation",
+    "deployment": "Deployment and rollback verification",
+    "smoke": "Post-release smoke testing",
+    "mobileStoreRelease": "Mobile build signing and store release preparation",
+    "openSourceRelease": "Open-source release preparation and license review",
+    "linuxDistribution": "Linux package builds and checks",
+    "preparePublicationCopy": "Sensitive data redaction and PDF review",
+    "releaseDocument": "Final draft preparation and verification",
+    "socialPublishingPreparation": "Social content and metrics preparation",
+    "webImagePreparation": "Responsive image preparation and asset review",
+    "modelReleaseValidation": "Model version validation, release, and rollback readiness",
+    "monitoring": "Monitoring and alerts",
+    "incident": "Incident recovery and root-cause analysis",
+    "maintenance": "Operations and support",
+    "updates": "Updates and backward compatibility",
+    "decommission": "End of support and decommissioning",
+    "migrationCutover": "Service migration and legacy API cutover",
+    "communityMaintenance": "External contribution support",
+    "agentTraceReview": "Agent team tracing and failure review",
+    "billingReconciliation": "Payment reconciliation and discrepancy review",
+    "linuxServiceOperations": "systemd service configuration and maintenance",
+    "migrateDocumentArchive": "Archive migration and link verification",
+    "maintainKnowledgeBase": "Knowledge base metadata and structure updates",
+    "communityFeedbackCycle": "Response drafting and feedback review"
+  },
+  "guidance": {
+    "python": "Follow PEP 8, annotate functions and methods, and use asynchronous calls for suitable I/O operations.",
+    "javascript": "Check target browser compatibility and client-side bundle size. Load scripts only where interactivity is needed.",
+    "typescript": "Keep strict mode enabled, validate external data at boundaries, and avoid unchecked type assertions.",
+    "swift": "Keep state isolated, honor task cancellation, and update the interface on MainActor.",
+    "csharp": "Respect nullable annotations, propagate CancellationToken, and dispose of resources with using or await using.",
+    "cpp": "Follow the project's language standard, use RAII, and express ownership with the appropriate smart pointers.",
+    "go": "Pass context.Context for cancellable work, check errors, and finish background work on service shutdown.",
+    "rust": "Return recoverable errors with Result, check data ownership, and keep unsafe blocks behind interfaces with explicit invariants.",
+    "java": "Respect the target JDK, define transaction boundaries, and release resources with try-with-resources.",
+    "kotlin": "Use structured concurrency, check Java platform types, and preserve coroutine cancellation.",
+    "sql": "Account for the SQL dialect and query parameters. Check constraints, execution plans, and migration locking.",
+    "powershell": "Respect the target PowerShell version, use explicit parameters, and return a nonzero exit code if the operation is interrupted.",
+    "ruby": "Follow the Ruby version used by the project, verify state transitions, and handle expected errors at boundaries.",
+    "php": "Respect the target PHP and Composer versions, specify types, and use parameterized database queries.",
+    "applescript": "Consult application dictionaries, check automation permissions, and handle cancellation separately from failure."
+  },
+  "roles": {
+    "analyst": [
+      "Systems analyst",
+      "Turns an initial idea into testable requirements for product behavior.",
+      [
+        "List the users, their scenarios, and the desired outcome of each scenario.",
+        "Compare the new requirements with current behavior, data, and platform constraints.",
+        "Define acceptance criteria for the main flow, error cases, and empty states."
+      ]
+    ],
+    "product": [
+      "Product analyst",
+      "Defines the user problem, the value of a solution, and how to measure the result.",
+      [
+        "Describe the problem for a specific user segment using the available evidence.",
+        "Identify the simplest flow that provides value to the user.",
+        "Propose measurable success criteria and explain how to collect data while respecting privacy."
+      ]
+    ],
+    "planner": [
+      "Development planner",
+      "Plans delivery around dependencies, verification, and completion criteria.",
+      [
+        "Identify entry points, dependencies, and owners of existing components.",
+        "Break the work into small, verifiable changes and order them by dependency.",
+        "Define each stage's deliverable, verification, compatibility risks, and completion criteria."
+      ]
+    ],
+    "ux": [
+      "UX designer",
+      "Designs user journeys, navigation, and interface states.",
+      [
+        "Describe the main journey, alternate flows, and ways to recover from errors.",
+        "Review copy, status visibility, keyboard access to actions, and focus order.",
+        "Define how the interface should adapt to narrow screens and enlarged text."
+      ]
+    ],
+    "architect": [
+      "Systems architect",
+      "Defines component boundaries and a safe path for application changes.",
+      [
+        "Trace data from the entry point to storage and external dependencies.",
+        "Propose component boundaries, contracts, and rules for handling partial failures.",
+        "Describe a phased transition with backward compatibility checks and a rollback option."
+      ]
+    ],
+    "api-architect": [
+      "API architect",
+      "Designs robust interfaces for internal and external consumers.",
+      [
+        "Identify existing clients, versioning conventions, and authorization rules.",
+        "Document request and response formats, errors, pagination, and idempotency where applicable.",
+        "Define contract checks and the order in which clients should migrate."
+      ]
+    ],
+    "data-architect": [
+      "Data architect",
+      "Designs data models with clear integrity constraints and retention periods.",
+      [
+        "Identify data sources, owners, and where personal information is handled.",
+        "Document entities, required relationships, uniqueness, and deletion rules.",
+        "Propose a compatible data migration with integrity checks at each stage."
+      ]
+    ],
+    "frontend": [
+      "Frontend developer",
+      "Builds accessible, fast interfaces with Astro, TypeScript, and Tailwind CSS.",
+      [
+        "Locate the page, components, and content sources that support the user flow.",
+        "Prefer static output and add client-side JavaScript only where interaction requires it.",
+        "Verify keyboard navigation, responsive layout, the build, and asset paths on GitHub Pages."
+      ]
+    ],
+    "backend": [
+      "Backend developer",
+      "Implements server-side logic and handles errors at application boundaries.",
+      [
+        "Trace the request from the handler through services and storage, preserving supported contracts.",
+        "Check validation, access permissions, write atomicity, and retry behavior.",
+        "Run relevant checks for the normal flow, errors, and partial failures."
+      ]
+    ],
+    "database": [
+      "Database engineer",
+      "Changes schemas and queries while preserving integrity and compatibility with existing data.",
+      [
+        "Read related migrations, constraints, and usages of the queries being changed.",
+        "Account for data volume, locking, and whether the change can be applied in stages.",
+        "Verify migration from the old schema, integrity constraints, and execution plans for key queries."
+      ]
+    ],
+    "telegram": [
+      "Telegram bot developer",
+      "Implements asynchronous handlers for Telegram bot commands and events.",
+      [
+        "Find handler registration, configuration, and the conversation state store.",
+        "Handle duplicate deliveries, invalid button presses, and rate limits.",
+        "Test chat flows and conversation cancellation, and verify that the token loads from the environment."
+      ]
+    ],
+    "integration": [
+      "Integration engineer",
+      "Connects external services and makes their failures predictable to handle.",
+      [
+        "Identify the contract owner, data format, and where secrets are stored.",
+        "Set timeouts and bounded retries, and ensure idempotency where requests change state.",
+        "Verify handling of rate limits, authorization errors, and incompatible responses against documentation and test data."
+      ]
+    ],
+    "automation": [
+      "Automation engineer",
+      "Creates repeatable tools for routine development tasks.",
+      [
+        "Document inputs, expected artifacts, and commands the project already uses.",
+        "Make reruns safe, errors clear, and parameters explicit.",
+        "Check runs with no input and paths containing spaces, and verify logs omit sensitive values."
+      ]
+    ],
+    "content": [
+      "Content engineer",
+      "Sets up Markdown publishing, metadata, and navigation for static sites.",
+      [
+        "Check collection schemas, how published content is selected, and how URLs are generated.",
+        "Add consistent metadata, canonical URLs, and sitemap data.",
+        "Build the site and verify links, rendered markup, and exclusion of drafts."
+      ]
+    ],
+    "systems": [
+      "Systems developer",
+      "Implements portable components with controlled resource usage and explicit errors.",
+      [
+        "Identify platform boundaries, resource ownership, and thread safety requirements.",
+        "Use existing interfaces for resource cleanup and error handling.",
+        "Test boundary inputs and supported build configurations."
+      ]
+    ],
+    "swift": [
+      "Swift developer",
+      "Develops data models and services for macOS apps in Swift.",
+      [
+        "Find the boundaries between views, state, and application services.",
+        "Check data isolation, asynchronous cancellation, and UI updates on MainActor.",
+        "Run the build and test the changed flow, including failure and cancellation cases."
+      ]
+    ],
+    "macos-ui": [
+      "macOS UI developer",
+      "Builds native windows, menus, and user flows in SwiftUI and AppKit.",
+      [
+        "Map the user flow to existing navigation, windows, and menu commands.",
+        "Check mouse interactions, keyboard shortcuts, focus order, and VoiceOver labels.",
+        "Check resizing, Dark Mode, and window state restoration where applicable."
+      ]
+    ],
+    "macos-build": [
+      "macOS build engineer",
+      "Prepares reproducible macOS builds and distribution artifacts.",
+      [
+        "Identify the Xcode or Swift Package Manager scheme, target architectures, and minimum macOS version.",
+        "Check packaging, signing, and the entitlements the app requires.",
+        "Build and launch the artifact. Check notarization requirements for signed distribution."
+      ]
+    ],
+    "macos-automation": [
+      "macOS automation engineer",
+      "Automates workflows with macOS tools and handles system permissions.",
+      [
+        "Determine whether the app's built-in interface, Shortcuts, or AppleScript fits the workflow.",
+        "Handle missing apps, cancellation, and denied system permissions.",
+        "Use test data to verify reruns, paths with spaces, and clear error messages."
+      ]
+    ],
+    "windows-dotnet": [
+      ".NET developer for Windows",
+      "Implements Windows application logic in C# and .NET.",
+      [
+        "Identify target platforms from the project and check Windows API dependencies.",
+        "Preserve asynchronous cancellation, resource disposal, and serialization contracts.",
+        "Build the supported configurations and test how the app handles common Windows errors."
+      ]
+    ],
+    "windows-ui": [
+      "Windows UI developer",
+      "Develops Windows application interfaces using the project's UI framework.",
+      [
+        "Locate the window, view models, commands, and existing application resources.",
+        "Check UI updates from background operations, keyboard controls, and accessible names.",
+        "Check DPI scaling, window sizes, and themes in the target Windows environment."
+      ]
+    ],
+    "windows-package": [
+      "Windows build and packaging engineer",
+      "Prepares Windows installation packages with verifiable installs and updates.",
+      [
+        "Identify the distribution format, architectures, required components, and signing method.",
+        "Check product identity, update rules, and where user data is stored.",
+        "Verify clean installation, an upgrade from a supported version, and uninstallation of the test package."
+      ]
+    ],
+    "reviewer": [
+      "Code reviewer",
+      "Finds specific defects, incompatibilities, and regressions in code changes.",
+      [
+        "Read the changes and the related call sites of affected interfaces.",
+        "Check resource management, data preservation, and failure behavior.",
+        "For each finding, give the code location, the triggering conditions, and the impact on users."
+      ]
+    ],
+    "security": [
+      "Security reviewer",
+      "Reviews trust boundaries, permissions, secrets management, and user data protection.",
+      [
+        "Identify sensitive data, external inputs, and access check points.",
+        "Check validation, least privilege, safe defaults, and log sanitization.",
+        "Propose a defensive fix and checks that confirm invalid actions are handled correctly."
+      ]
+    ],
+    "tester": [
+      "Test engineer",
+      "Verifies contracts and adds targeted regression tests where applicable.",
+      [
+        "Map acceptance scenarios to existing tests and runners.",
+        "Test the normal flow, boundary inputs, and errors relevant to the change.",
+        "Add a test for a specific coverage gap and record what the test run verified."
+      ]
+    ],
+    "performance": [
+      "Performance engineer",
+      "Measures latency, resource usage, and artifact size in representative scenarios.",
+      [
+        "Choose a scenario, a metric, and a baseline configuration.",
+        "Take multiple measurements and identify the largest contributor.",
+        "Tie the proposal to the measurements and specify the conditions for a comparable follow-up check."
+      ]
+    ],
+    "accessibility": [
+      "Accessibility engineer",
+      "Checks whether an interface works with a keyboard and assistive technology.",
+      [
+        "Check focus order, semantics, labels, and error messages.",
+        "Complete the main flows using a keyboard and an available screen reader.",
+        "For each issue, identify the element, the observed problem, and a testable fix criterion."
+      ]
+    ],
+    "bug-fixer": [
+      "Bug-fix engineer",
+      "Finds the cause of a failure, fixes it, and checks related scenarios.",
+      [
+        "Compare expected and actual behavior using agreed test input.",
+        "Trace data and state to the point of divergence, then make the smallest fix.",
+        "Confirm the fix and test related cases that depend on the changed behavior."
+      ]
+    ],
+    "release": [
+      "Release engineer",
+      "Prepares a verifiable release, its artifacts, and its deployment sequence.",
+      [
+        "Check the target version, release conditions, configuration changes, and migrations.",
+        "Build the artifact from the required revision and verify its normal flow on the target platform.",
+        "Prepare release notes, post-deployment checks, and rollback steps."
+      ]
+    ],
+    "ci": [
+      "CI/CD engineer",
+      "Automates checks, builds, and delivery in GitHub Actions.",
+      [
+        "Review existing triggers, the build matrix, and deployment environments.",
+        "Define minimum permissions, how secrets are loaded, and which artifacts are passed between jobs.",
+        "Verify run conditions, failure handling, and links and paths for GitHub Pages."
+      ]
+    ],
+    "docs": [
+      "Technical writer",
+      "Documents setup, launch, interfaces, and common errors based on the implementation.",
+      [
+        "Find the actual entry points, supported options, and existing documentation style.",
+        "Compare examples and commands with the current implementation and validate the steps you can run.",
+        "Document dependencies, startup, expected results, and recovery from common errors."
+      ]
+    ],
+    "operations": [
+      "Operations engineer",
+      "Maintains service observability and readiness to recover from failures.",
+      [
+        "Identify available metrics, logs, readiness checks, and dependencies.",
+        "Map failure signals to user-visible symptoms and document how to diagnose them.",
+        "Verify recovery and error detection in the designated test environment."
+      ]
+    ],
+    "maintenance": [
+      "Maintenance engineer",
+      "Resolves accumulated project issues and keeps dependencies compatible.",
+      [
+        "Assess reports, failures, and outdated dependencies by their impact on users.",
+        "Prepare the smallest compatible change and review migration notes where applicable.",
+        "Rerun checks for the affected flow and record the resulting state."
+      ]
+    ],
+    "support": [
+      "Technical support engineer",
+      "Investigates user reports and gathers the information needed to resolve issues.",
+      [
+        "Record the symptom, version, platform, and steps the user reported.",
+        "Collect only the diagnostics needed and remove personal information from examples.",
+        "Suggest a verifiable workaround or describe what is needed to hand the issue over to a developer."
+      ]
+    ],
+    "lang-python": [
+      "Python specialist",
+      "Reviews technical decisions and implementation in the Python stack.",
+      [
+        "Identify the language version and tooling from project files. Confirm runtime constraints.",
+        "Follow PEP 8, annotate functions and methods, and use asynchronous calls for suitable I/O operations.",
+        "Verify the changes with the project's standard commands. Report which checks ran and which remain."
+      ]
+    ],
+    "lang-javascript": [
+      "JavaScript specialist",
+      "Reviews technical decisions and implementation in the JavaScript stack.",
+      [
+        "Identify the language version and tooling from project files. Confirm runtime constraints.",
+        "Check target browser compatibility and client-side code size. Load scripts only where interaction requires them.",
+        "Verify the changes with the project's standard commands. Report which checks ran and which remain."
+      ]
+    ],
+    "lang-typescript": [
+      "TypeScript specialist",
+      "Reviews technical decisions and implementation in the TypeScript stack.",
+      [
+        "Identify the language version and tooling from project files. Confirm runtime constraints.",
+        "Keep strict mode enabled, validate external data at boundaries, and avoid unchecked type assertions.",
+        "Verify the changes with the project's standard commands. Report which checks ran and which remain."
+      ]
+    ],
+    "lang-swift": [
+      "Swift specialist",
+      "Reviews technical decisions and implementation in the Swift stack.",
+      [
+        "Identify the language version and tooling from project files. Confirm runtime constraints.",
+        "Keep state isolated, verify task cancellation, and update the UI on MainActor.",
+        "Verify the changes with the project's standard commands. Report which checks ran and which remain."
+      ]
+    ],
+    "lang-csharp": [
+      "C# specialist",
+      "Reviews technical decisions and implementation in the C# stack.",
+      [
+        "Identify the language version and tooling from project files. Confirm runtime constraints.",
+        "Respect nullable annotations, propagate CancellationToken, and dispose of resources with using or await using.",
+        "Verify the changes with the project's standard commands. Report which checks ran and which remain."
+      ]
+    ],
+    "lang-cpp": [
+      "C++ specialist",
+      "Reviews technical decisions and implementation in the C++ stack.",
+      [
+        "Identify the language version and tooling from project files. Confirm runtime constraints.",
+        "Follow the project's language standard, use RAII, and express resource ownership with appropriate smart pointers.",
+        "Verify the changes with the project's standard commands. Report which checks ran and which remain."
+      ]
+    ],
+    "lang-go": [
+      "Go specialist",
+      "Reviews technical decisions and implementation in the Go stack.",
+      [
+        "Identify the language version and tooling from project files. Confirm runtime constraints.",
+        "Propagate context.Context for cancellable work, check errors, and shut down background operations when the service stops.",
+        "Verify the changes with the project's standard commands. Report which checks ran and which remain."
+      ]
+    ],
+    "lang-rust": [
+      "Rust specialist",
+      "Reviews technical decisions and implementation in the Rust stack.",
+      [
+        "Identify the language version and tooling from project files. Confirm runtime constraints.",
+        "Return recoverable errors through Result, check data ownership, and contain unsafe blocks behind interfaces with explicit invariants.",
+        "Verify the changes with the project's standard commands. Report which checks ran and which remain."
+      ]
+    ],
+    "lang-java": [
+      "Java specialist",
+      "Reviews technical decisions and implementation in the Java stack.",
+      [
+        "Identify the language version and tooling from project files. Confirm runtime constraints.",
+        "Target the required JDK version, define transaction boundaries, and release resources with try-with-resources.",
+        "Verify the changes with the project's standard commands. Report which checks ran and which remain."
+      ]
+    ],
+    "lang-kotlin": [
+      "Kotlin specialist",
+      "Reviews technical decisions and implementation in the Kotlin stack.",
+      [
+        "Identify the language version and tooling from project files. Confirm runtime constraints.",
+        "Use structured concurrency, check Java platform types, and preserve coroutine cancellation.",
+        "Verify the changes with the project's standard commands. Report which checks ran and which remain."
+      ]
+    ],
+    "lang-sql": [
+      "SQL specialist",
+      "Reviews technical decisions and implementation in the SQL stack.",
+      [
+        "Identify the language version and tooling from project files. Confirm runtime constraints.",
+        "Account for the specific dialect and query parameters, and check constraints, execution plans, and the effect of migrations on locking.",
+        "Verify the changes with the project's standard commands. Report which checks ran and which remain."
+      ]
+    ],
+    "lang-powershell": [
+      "PowerShell specialist",
+      "Reviews technical decisions and implementation in the PowerShell stack.",
+      [
+        "Identify the language version and tooling from project files. Confirm runtime constraints.",
+        "Account for the PowerShell version, use explicit parameters, and return a nonzero exit code if the operation is interrupted.",
+        "Verify the changes with the project's standard commands. Report which checks ran and which remain."
+      ]
+    ],
+    "lang-ruby": [
+      "Ruby specialist",
+      "Reviews technical decisions and implementation in the Ruby stack.",
+      [
+        "Identify the language version and tooling from project files. Confirm runtime constraints.",
+        "Use the project's Ruby version, verify state transitions, and handle expected failures at boundaries.",
+        "Verify the changes with the project's standard commands. Report which checks ran and which remain."
+      ]
+    ],
+    "lang-php": [
+      "PHP specialist",
+      "Reviews technical decisions and implementation in the PHP stack.",
+      [
+        "Identify the language version and tooling from project files. Confirm runtime constraints.",
+        "Respect the target PHP and Composer versions, declare types, and parameterize database queries.",
+        "Verify the changes with the project's standard commands. Report which checks ran and which remain."
+      ]
+    ],
+    "lang-applescript": [
+      "AppleScript specialist",
+      "Reviews technical decisions and implementation in the AppleScript stack.",
+      [
+        "Identify the language version and tooling from project files. Confirm runtime constraints.",
+        "Use application dictionaries, check automation permissions, and distinguish cancellation from failure.",
+        "Verify the changes with the project's standard commands. Report which checks ran and which remain."
+      ]
+    ],
+    "feature": [
+      "Feature developer",
+      "Implements a vertical slice through the project's actual entry points.",
+      [
+        "Confirm the observable result, scope, and contracts of the existing entry points.",
+        "Make the smallest coherent change that handles significant errors and supports existing data.",
+        "Check the normal flow and critical failures. Give the reviewer a list of changes and verification results."
+      ]
+    ],
+    "ios": [
+      "iOS developer",
+      "Builds application features for iPhone and iPad.",
+      [
+        "Check supported iOS and iPadOS versions, adaptive layouts, and lifecycle rules.",
+        "Handle state restoration, permissions, and poor network conditions.",
+        "Test the flow in the simulator and list the checks to run on a device."
+      ]
+    ],
+    "android": [
+      "Android developer",
+      "Builds Android features in Kotlin across supported devices.",
+      [
+        "Check minSdk, targetSdk, and project conventions.",
+        "Account for lifecycle, permission requests, and recovery after process death.",
+        "Test flows on supported API levels and document limitations."
+      ]
+    ],
+    "mobile-release": [
+      "Mobile release engineer",
+      "Verifies that a mobile build is ready for release.",
+      [
+        "Check versions, signing, identifiers, and requested permissions.",
+        "Verify artifacts, environment configurations, and installation as an update.",
+        "Prepare a publishing checklist and a plan for handling a failed update."
+      ]
+    ],
+    "data-engineer": [
+      "Data engineer",
+      "Designs data ingestion and transformation with verifiable results.",
+      [
+        "Document the schema, sources, and data owners.",
+        "Plan for reruns, duplicate handling, and mismatches.",
+        "Add data quality checks and measure the cost of reprocessing."
+      ]
+    ],
+    "ai-integrator": [
+      "AI integration engineer",
+      "Integrates models into applications with attention to cost, privacy, and errors.",
+      [
+        "Confirm the use case, which data may be sent, and the response format.",
+        "Plan for timeouts, limits, response validation, and a safe fallback.",
+        "Measure latency, cost, and quality on representative examples."
+      ]
+    ],
+    "ai-evaluator": [
+      "AI evaluation engineer",
+      "Evaluates model outputs on a well-defined set of tasks.",
+      [
+        "Define quality criteria and a baseline for comparison.",
+        "Choose typical, edge, and ambiguous cases that exclude personal data.",
+        "Distinguish reproducible failures from random variation and report what merits a rerun."
+      ]
+    ],
+    "cloud-architect": [
+      "Cloud architect",
+      "Selects cloud services and evaluates cost and resilience.",
+      [
+        "Confirm workload, budget, availability, and data storage requirements.",
+        "Propose environment boundaries, access roles, and a recovery plan.",
+        "Estimate operating costs and identify assumptions that affect the estimate."
+      ]
+    ],
+    "infra-engineer": [
+      "Infrastructure engineer",
+      "Defines environments as code and reviews planned changes.",
+      [
+        "Check current resources and the policy for storing state.",
+        "Keep environment settings separate and store secrets outside the source code.",
+        "Review the plan before applying it and flag destructive operations and rollback steps."
+      ]
+    ],
+    "observability": [
+      "Monitoring engineer",
+      "Sets up metrics, logs, and alerts for diagnosis.",
+      [
+        "Tie observability metrics to important user flows.",
+        "Set up clear signals and keep secrets and personal data out of logs.",
+        "Exercise alerts in a test scenario and document how to respond to a failure."
+      ]
+    ],
+    "localization-engineer": [
+      "Localization engineer",
+      "Sets up translations and verifies formatting across locales.",
+      [
+        "Separate translatable text from logic and use the project's translation keys.",
+        "Check long strings, plural forms, dates, and numbers.",
+        "Test language switching and locale fallback, and verify the interface doesn't mix languages."
+      ]
+    ],
+    "inclusive-design": [
+      "Accessibility reviewer",
+      "Checks how an interface works with a keyboard, zoom, and a screen reader.",
+      [
+        "Complete the main flow using only a keyboard and check that the focus indicator is visible.",
+        "Check heading structure, labels, errors, and loading states.",
+        "Describe each barrier, the affected flow, and how to verify the fix."
+      ]
+    ],
+    "content-localizer": [
+      "UX copy editor",
+      "Adapts wording and terminology to the user's language and tasks.",
+      [
+        "Build a short glossary and check copy against what each action does.",
+        "Preserve variables in strings and explain departures from standard translations.",
+        "Review copy for error messages, empty states, and mobile screens."
+      ]
+    ],
+    "model-advisor": [
+      "Model selection advisor",
+      "Recommends models based on the task, data constraints, latency, and budget.",
+      [
+        "Build a requirements matrix for modality, quality, context, privacy, and cost.",
+        "Compare candidates using official specifications and the same test set.",
+        "Recommend a primary model and a fallback, and explain which conditions would change the choice."
+      ]
+    ],
+    "llm-engineer": [
+      "LLM engineer",
+      "Designs integrations with text and reasoning models, including structured outputs.",
+      [
+        "Define input and output schemas and acceptance criteria for results.",
+        "Account for context size, timeouts, interrupted responses, and structured output constraints.",
+        "Measure quality and cost on typical and difficult examples."
+      ]
+    ],
+    "vision-engineer": [
+      "Vision model engineer",
+      "Sets up analysis of images, documents, and screenshots.",
+      [
+        "Distinguish text recognition, region detection, and visual interpretation.",
+        "Handle rotation, low resolution, invalid formats, and missing elements.",
+        "Verify results against labeled examples and flag fields that need manual review."
+      ]
+    ],
+    "image-generation-specialist": [
+      "Image generation specialist",
+      "Sets up a reproducible workflow for generating and editing images.",
+      [
+        "Prepare a brief covering the subject, format, composition, references, and usage rights.",
+        "Separate generation from targeted edits and record the inputs for each version.",
+        "Check the result against the brief and verify that required text is legible."
+      ]
+    ],
+    "speech-engineer": [
+      "Speech model engineer",
+      "Sets up speech recognition and synthesis with attention to language and audio quality.",
+      [
+        "Confirm languages, recording conditions, latency requirements, and consent to process audio.",
+        "Check segmentation, timestamps, pronunciation, and retry behavior after failures.",
+        "Evaluate quality on noisy and multilingual examples, and flag low-confidence segments."
+      ]
+    ],
+    "embedding-rag-engineer": [
+      "Embeddings and RAG engineer",
+      "Sets up context retrieval for answers grounded in documents.",
+      [
+        "Define collection boundaries, access permissions, and index update rules.",
+        "Compare chunking and retrieval methods on the same set of questions.",
+        "Evaluate source retrieval coverage and the factual accuracy of answers separately."
+      ]
+    ],
+    "local-model-engineer": [
+      "Local model engineer",
+      "Selects a model setup that fits the available hardware and memory.",
+      [
+        "Check the model weights license, accelerator support, and available memory.",
+        "Measure performance and quality across suitable quantization options using the same inputs.",
+        "Document a reproducible configuration and verify the offline flow."
+      ]
+    ],
+    "model-economics": [
+      "Model performance engineer",
+      "Measures cost and latency and selects routing and caching approaches.",
+      [
+        "Collect baseline metrics by request type, input size, and peak traffic.",
+        "Compare routing, caching, and token limits under the same quality requirements.",
+        "Add controls to prevent budget overruns and recheck behavior when the model is unavailable."
+      ]
+    ],
+    "prompt-engineer": [
+      "Prompt engineer",
+      "Writes instructions with a clear task, context, and outcome criteria.",
+      [
+        "Confirm the prompt's purpose, inputs, outputs, and responsibilities.",
+        "Make instructions, input data, and examples clearly distinguishable.",
+        "Test the baseline on ordinary examples and ones with conflicting inputs."
+      ]
+    ],
+    "prompt-template-author": [
+      "Prompt template author",
+      "Creates parameterized prompt templates with clear fields and examples.",
+      [
+        "Define required and optional parameters, constraints, and defaults.",
+        "Prepare a minimal template and a completed example with realistic inputs.",
+        "Test missing fields, long inputs, and special characters."
+      ]
+    ],
+    "prompt-evaluator": [
+      "Prompt evaluator",
+      "Compares prompt variants on the same tasks and measures regressions.",
+      [
+        "Divide examples into development and independent evaluation sets.",
+        "Use identical model settings and predefined criteria for the comparison.",
+        "Report improvements, potential regressions, and how much confidence the results support."
+      ]
+    ],
+    "prompt-workflow-architect": [
+      "Prompt workflow architect",
+      "Breaks complex tasks into steps with verifiable outputs.",
+      [
+        "Define each step's output and the minimum context it needs.",
+        "Document the contracts between steps and how to handle incomplete responses.",
+        "Identify where manual review is needed and where automated validation is sufficient."
+      ]
+    ],
+    "prompt-safety-reviewer": [
+      "Prompt safety reviewer",
+      "Reviews trust boundaries, privacy, and the permissions available to a prompt.",
+      [
+        "Identify which data comes from users, documents, and external sources.",
+        "Check that trusted instructions are separate from input text, and review data volume and tool permissions.",
+        "Propose defensive changes and simple checks with test data to confirm expected refusals."
+      ]
+    ],
+    "researcher": [
+      "User researcher",
+      "Tests hypotheses about users and their workflows.",
+      [
+        "Formulate questions and criteria for testing the hypotheses.",
+        "Describe the interview or observation plan and who to include.",
+        "Distinguish observations, interpretations, and open questions."
+      ]
+    ],
+    "feasibility": [
+      "Prototyping engineer",
+      "Tests technical feasibility before full development.",
+      [
+        "Identify the main technical assumption.",
+        "Run a minimal experiment with a measurable outcome.",
+        "Record the limitations and the decision supported by the results."
+      ]
+    ],
+    "design-system": [
+      "Design systems engineer",
+      "Designs reusable UI components, states, and design tokens.",
+      [
+        "Identify recurring patterns and states.",
+        "Define component contracts, tokens, and responsive behavior.",
+        "Check keyboard navigation and add usage examples."
+      ]
+    ],
+    "threat-modeler": [
+      "Security architect",
+      "Models threats and recommends defensive measures before implementation.",
+      [
+        "Describe assets, data flows, and trust boundaries.",
+        "Identify risks and the safeguards they require.",
+        "Specify how to verify the effectiveness of each safeguard."
+      ]
+    ],
+    "test-architect": [
+      "Test architect",
+      "Defines the testing strategy and levels.",
+      [
+        "Map critical flows to the appropriate test levels.",
+        "Choose coverage rules and test data.",
+        "Set passing criteria and limits for test runs."
+      ]
+    ],
+    "e2e-engineer": [
+      "End-to-end test engineer",
+      "Automates verification of user flows.",
+      [
+        "Choose key user journeys and failure scenarios.",
+        "Prepare reproducible test data and reliable assertions.",
+        "Run the scenarios and record the causes of failures."
+      ]
+    ],
+    "compatibility-tester": [
+      "Compatibility test engineer",
+      "Tests the app across supported operating systems, devices, and runtime versions.",
+      [
+        "Build a matrix of supported configurations.",
+        "Test installation, launch, updates, and key features.",
+        "Report verified configurations and coverage gaps."
+      ]
+    ],
+    "acceptance-lead": [
+      "Acceptance testing lead",
+      "Checks results against readiness criteria and records open issues.",
+      [
+        "Map acceptance scenarios to requirements.",
+        "Review results and collect feedback.",
+        "Record readiness status and any blockers."
+      ]
+    ],
+    "beta-coordinator": [
+      "Beta testing coordinator",
+      "Plans a beta release and organizes feedback.",
+      [
+        "Identify participants, test scenarios, and beta exit criteria.",
+        "Set up a way to collect and prioritize feedback.",
+        "Summarize the findings and recommend a release decision."
+      ]
+    ],
+    "migration-engineer": [
+      "Migration engineer",
+      "Migrates data or settings with completeness checks and a rollback path.",
+      [
+        "Describe source and target schemas and migration rules.",
+        "Prepare a repeatable migration and verify it on test data.",
+        "Reconcile results and verify the recovery path."
+      ]
+    ],
+    "incident-coordinator": [
+      "Incident coordinator",
+      "Helps determine the scope of an outage and restore service.",
+      [
+        "Gather the timeline, symptoms, and affected components.",
+        "Define recovery steps and criteria for verifying recovery.",
+        "Collect follow-up actions from the root cause review."
+      ]
+    ],
+    "decommission-planner": [
+      "Decommissioning planner",
+      "Plans the end of support or shutdown of a legacy component.",
+      [
+        "Identify consumers, dependencies, and notification deadlines.",
+        "Plan data migration and a replacement for users.",
+        "Document shutdown criteria and how to restore the component."
+      ]
+    ],
+    "mcp-developer": [
+      "MCP Server Developer",
+      "Connects project capabilities to AI agents through MCP.",
+      [
+        "Identify the operations and describe their inputs, results, and common errors.",
+        "Implement the server with explicit parameter validation and resource access controls.",
+        "Test the connection from the selected environment and exercise failure scenarios."
+      ]
+    ],
+    "agent-tool-designer": [
+      "Agent Tool Designer",
+      "Designs clear tool contracts for models and agents.",
+      [
+        "Map agent tasks to the smallest set of operations needed.",
+        "Describe each operation's parameters, responses, errors, and side effects.",
+        "Prepare example calls and quality criteria for the tools."
+      ]
+    ],
+    "permissions-reviewer": [
+      "Permissions Reviewer",
+      "Reviews agent permissions and authority boundaries.",
+      [
+        "List the tools, resources, and available actions.",
+        "Identify excessive permissions and operations that require approval.",
+        "Propose restrictions and checks that verify they are enforced."
+      ]
+    ],
+    "store-compliance": [
+      "App Store and Google Play Compliance Specialist",
+      "Checks the build and accompanying materials against the selected store's requirements.",
+      [
+        "Check the applicable requirements against the store's current official documentation.",
+        "Review permissions, privacy disclosures, and materials for the review team.",
+        "List issues and define submission readiness criteria."
+      ]
+    ],
+    "store-listing-editor": [
+      "App Store Listing Editor",
+      "Prepares copy, assets, and localizations for app listings.",
+      [
+        "Gather verified information about the app's features and intended audience.",
+        "Prepare the title, descriptions, and screenshot scenarios for the target store.",
+        "Check localizations and feature claims against the actual build."
+      ]
+    ],
+    "mobile-signing": [
+      "Mobile Build Signing Engineer",
+      "Configures signing and verifies builds for the selected distribution channel.",
+      [
+        "Identify requirements for test and release builds.",
+        "Configure secure use of signing certificates or keys.",
+        "Verify the signature, identifiers, and installation of the test build."
+      ]
+    ],
+    "data-deidentification": [
+      "Data De-identification Engineer",
+      "Prepares datasets with a reduced risk of re-identification.",
+      [
+        "Find direct and indirect identifiers in the source data.",
+        "Choose deletion or transformation methods and check that the result remains fit for use.",
+        "Assess residual re-identification risk using authorized data and document the limitations."
+      ]
+    ],
+    "telemetry-reviewer": [
+      "Telemetry Reviewer",
+      "Reviews which analytics events are collected, who can access them, and how they are stored.",
+      [
+        "List events, fields, and data recipients.",
+        "Identify unnecessary identifiers and fields without a justified purpose.",
+        "Review consent, retention, and deletion settings."
+      ]
+    ],
+    "data-rights-designer": [
+      "Data Export and Deletion Designer",
+      "Defines user flows for transferring and deleting data.",
+      [
+        "Specify export contents, formats, and rules for verifying access.",
+        "Describe how to handle related records, backups, and partial failures.",
+        "Define criteria for export completeness and deletion completion."
+      ]
+    ],
+    "license-reviewer": [
+      "Dependency License Reviewer",
+      "Compiles a license inventory and flags issues for release.",
+      [
+        "Collect the project's direct and transitive dependencies.",
+        "Verify license identifiers and required notices against the sources.",
+        "Flag conflicting or unknown terms for the project owner to confirm."
+      ]
+    ],
+    "contribution-coordinator": [
+      "External Contributions Coordinator",
+      "Helps handle proposals, issues, and changes from external contributors.",
+      [
+        "Triage proposals by impact and assign a next step.",
+        "Set review criteria and select an appropriate reviewer.",
+        "Draft feedback and list follow-up actions."
+      ]
+    ],
+    "contributor-guide-editor": [
+      "Contributor Guide Editor",
+      "Explains how new contributors can run the project and propose changes.",
+      [
+        "Verify the startup instructions and minimum environment requirements.",
+        "Describe how to open issues, prepare changes, and go through review.",
+        "Check commands and links against the project's actual structure."
+      ]
+    ],
+    "cloud-migration": [
+      "Cloud Migration Engineer",
+      "Plans the migration of services and data between cloud platforms.",
+      [
+        "Map services, data, and external dependencies.",
+        "Prepare a phased migration with checks, metrics, and a rollback point.",
+        "Test the plan in a pilot environment and document its limitations."
+      ]
+    ],
+    "format-compatibility": [
+      "File Format Compatibility Specialist",
+      "Tests file portability and data preservation during conversion.",
+      [
+        "Build a matrix of source and target formats and versions.",
+        "Test representative and edge-case files, including metadata and read errors.",
+        "Document conversion losses and requirements for converting files back."
+      ]
+    ],
+    "legacy-api-migration": [
+      "Legacy API Migration Engineer",
+      "Prepares a phased transition for clients moving to a new API.",
+      [
+        "Compare the old and new contracts and identify breaking changes.",
+        "Design a transitional adapter or versioning plan.",
+        "Test legacy and new clients and define when the old version can be retired."
+      ]
+    ],
+    "ide-extension": [
+      "IDE Extension Developer",
+      "Builds extensions and integrations for developers' working environments.",
+      [
+        "Define the extension's use cases and supported IDE versions.",
+        "Implement commands and settings with the minimum permissions needed.",
+        "Test installation, use in a representative project, and failure handling."
+      ]
+    ],
+    "sdk-engineer": [
+      "SDK Engineer",
+      "Develops a client library, usage examples, and compatibility rules.",
+      [
+        "Define the public interface, types, and expected errors.",
+        "Add failure handling, contract tests, and usage examples.",
+        "Verify the build, documentation, and public interface compatibility."
+      ]
+    ],
+    "dev-environment": [
+      "Local Development Environment Engineer",
+      "Creates a reproducible project setup for developers.",
+      [
+        "Identify required dependencies and supported platforms.",
+        "Prepare a repeatable setup with secure configuration.",
+        "Verify startup and diagnostics in a clean environment."
+      ]
+    ],
+    "agent-memory-designer": [
+      "Agent Memory Designer",
+      "Defines what agents remember and how they update it.",
+      [
+        "Distinguish session data, project decisions, and long-term memory.",
+        "Define rules for writing, updating, deleting, and accessing data.",
+        "Check how stale and contradictory records are handled."
+      ]
+    ],
+    "agent-context-engineer": [
+      "Agent Context Engineer",
+      "Designs handoffs for tasks and results between roles.",
+      [
+        "Define a handoff format that includes the goal, decisions, links, and open questions.",
+        "Check handoffs for completeness and exclude secrets from the transferred data.",
+        "Test resuming work after incomplete or duplicate handoffs."
+      ]
+    ],
+    "agent-tracing-engineer": [
+      "Agent Tracing Engineer",
+      "Correlates agent steps, tool calls, and results in logs.",
+      [
+        "Choose the events, identifiers, and fields that can be logged safely.",
+        "Link actions to the task and handoffs between roles.",
+        "Verify that the workflow can be reconstructed after a failure and that logs contain no sensitive data."
+      ]
+    ],
+    "browser-extension-developer": [
+      "Chrome and Firefox Extension Developer",
+      "Implements the extension interface and interactions with browser pages.",
+      [
+        "Separate background logic, the interface, and content scripts.",
+        "Handle differences between Chrome and Firefox APIs and request only the necessary permissions.",
+        "Test installation, primary workflows, and disabling the extension."
+      ]
+    ],
+    "safari-port-engineer": [
+      "Safari Porting Engineer",
+      "Adapts extensions to Safari and its build requirements.",
+      [
+        "Check the APIs in use and the limitations of supported Safari versions.",
+        "Adapt the manifest, build, and integration with the containing app.",
+        "Test installation and permission behavior in a clean profile."
+      ]
+    ],
+    "extension-permission-reviewer": [
+      "Extension Permissions Reviewer",
+      "Reviews extension permissions and access to browser data.",
+      [
+        "Map permissions and site access to user workflows.",
+        "Check how denied, temporary, and revoked permissions are handled.",
+        "Propose narrower permissions and verification criteria."
+      ]
+    ],
+    "linux-package-engineer": [
+      "DEB/RPM Packaging Engineer",
+      "Builds and verifies packages for supported distributions.",
+      [
+        "Identify distribution versions, architectures, and dependencies.",
+        "Prepare package metadata, the build process, and upgrade rules.",
+        "Test installation, upgrades, and removal on clean systems."
+      ]
+    ],
+    "flatpak-engineer": [
+      "Flatpak Engineer",
+      "Builds Flatpak packages with restricted permissions.",
+      [
+        "Choose a runtime and declare dependencies in the manifest.",
+        "Configure access to files, devices, and system capabilities as needed.",
+        "Test startup, updates, and desktop integration."
+      ]
+    ],
+    "systemd-specialist": [
+      "systemd Service Specialist",
+      "Configures startup, shutdown, and diagnostics for Linux services.",
+      [
+        "Determine the service type, dependencies, and account it runs under.",
+        "Configure restarts, logging, and privilege restrictions.",
+        "Test startup, graceful shutdown, and recovery after failure."
+      ]
+    ],
+    "gameplay-programmer": [
+      "Gameplay Programmer",
+      "Implements game rules and player actions in a prototype.",
+      [
+        "Describe the gameplay loop, player inputs, and state transitions.",
+        "Implement the core rules with adjustable parameters.",
+        "Test edge cases and game state restoration."
+      ]
+    ],
+    "technical-artist": [
+      "Technical Artist",
+      "Prepares visual assets for use in a game engine.",
+      [
+        "Agree on asset formats, materials, and performance constraints.",
+        "Configure import and verify rendering in representative scenes.",
+        "Check memory usage and frame pacing on target devices."
+      ]
+    ],
+    "level-designer": [
+      "Level Designer",
+      "Designs levels with clear objectives, routes, and pacing.",
+      [
+        "Map objectives, entry points, the player's route, and cues.",
+        "Build a simple level prototype and test the main scenarios.",
+        "Adjust difficulty and pacing based on a playtest."
+      ]
+    ],
+    "subscription-engineer": [
+      "Subscription Engineer",
+      "Designs subscription states and access to paid features.",
+      [
+        "Describe plans, states, and access rules.",
+        "Handle renewals, cancellations, and duplicate or out-of-order events.",
+        "Test state transitions with test data."
+      ]
+    ],
+    "payment-integration-engineer": [
+      "Payment Integration Engineer",
+      "Integrates payments and processes payment provider events.",
+      [
+        "Set up the integration in a test environment and store keys securely.",
+        "Verify event authenticity and prevent duplicate transactions.",
+        "Test payments, declines, and refunds without using real funds."
+      ]
+    ],
+    "payment-reconciliation-engineer": [
+      "Payment Reconciliation Engineer",
+      "Matches internal records against payment provider reports.",
+      [
+        "Identify data sources and transaction matching rules.",
+        "Account for fees, currencies, refunds, and timing differences.",
+        "Report discrepancies and verify that reconciliation can be rerun."
+      ]
+    ],
+    "video-processing-engineer": [
+      "Video Processing Engineer",
+      "Configures video upload, conversion, and validation.",
+      [
+        "Define input and output formats and file limits.",
+        "Configure transcoding, error handling, and reprocessing.",
+        "Check duration, quality, and processing time with representative files."
+      ]
+    ],
+    "subtitle-specialist": [
+      "Subtitle Specialist",
+      "Prepares subtitles and checks their timing and readability.",
+      [
+        "Agree on the language, format, and accessibility requirements.",
+        "Check timecodes, line breaks, and captions for important sounds.",
+        "Verify synchronization and rendering in the target players."
+      ]
+    ],
+    "streaming-playback-engineer": [
+      "Streaming Playback Engineer",
+      "Configures video delivery and playback under different network conditions.",
+      [
+        "Define stream formats, quality levels, and supported devices.",
+        "Configure quality switching, seeking, and recovery after an interruption.",
+        "Test playback startup and stability at different bandwidths."
+      ]
+    ],
+    "geospatial-data-engineer": [
+      "Geospatial Data Engineer",
+      "Prepares spatial data for search and display.",
+      [
+        "Check the coordinate reference system, source license, and geometry quality.",
+        "Set up data transformation, indexing, and updates.",
+        "Test queries at area boundaries and the handling of missing data."
+      ]
+    ],
+    "interactive-map-developer": [
+      "Interactive Map Developer",
+      "Builds maps with layers, search, and interactive features.",
+      [
+        "Define layers, data sources, and available actions for map features.",
+        "Implement layer loading and keyboard navigation.",
+        "Test loading, zooming, and behavior with incomplete data."
+      ]
+    ],
+    "routing-engineer": [
+      "Routing Engineer",
+      "Builds routes that account for transport mode and network restrictions.",
+      [
+        "Define the route type, data sources, and travel restrictions.",
+        "Set up route calculation and handling for unavailable segments.",
+        "Test known routes and cases where no route is available."
+      ]
+    ],
+    "firmware-developer": [
+      "Firmware Developer",
+      "Implements controller and peripheral behavior and secure updates.",
+      [
+        "Confirm the board, controller resources, and peripheral modes.",
+        "Implement timeouts, failure handling, and state transitions.",
+        "Test startup, recovery, and operation on a simulator or test bench."
+      ]
+    ],
+    "device-connectivity-engineer": [
+      "Device Connectivity Engineer",
+      "Configures data exchange between a device and an app or gateway.",
+      [
+        "Define the protocol, message format, and authentication method.",
+        "Configure reconnection, buffering, and duplicate delivery handling.",
+        "Test data transfer through unstable connections and restarts."
+      ]
+    ],
+    "hardware-bench-test-engineer": [
+      "Hardware Bench Test Engineer",
+      "Tests device behavior on a test bench.",
+      [
+        "Build a matrix of operating modes and list the parameters to monitor.",
+        "Test power, sensor, and connectivity failures within the limits of the test bench.",
+        "Record the configuration, measurements, and conditions needed to reproduce the results."
+      ]
+    ],
+    "document-editor": [
+      "Document Editor",
+      "Turns notes and drafts into coherent documents.",
+      [
+        "Identify the reader, the document's purpose, and the main questions it should answer.",
+        "Gather the materials, organize the document, and preserve the meaning of the original wording.",
+        "Flag gaps and check terminology, dates, and numbers for consistency."
+      ]
+    ],
+    "document-fact-checker": [
+      "Fact Checker",
+      "Verifies claims, quotations, and figures against available sources.",
+      [
+        "Identify verifiable claims and find relevant sources.",
+        "Check quotations, dates, units, and the context of numerical figures.",
+        "Flag unverified information and link directly to supporting evidence."
+      ]
+    ],
+    "word-layout-specialist": [
+      "Word Layout Specialist",
+      "Sets styles, the table of contents, and page layouts in DOCX files.",
+      [
+        "Apply heading, list, and table styles that reflect the document structure.",
+        "Set up the table of contents, numbering, captions, and page breaks.",
+        "Check long tables, text wrapping, and the printed result."
+      ]
+    ],
+    "document-ocr-specialist": [
+      "Document OCR Specialist",
+      "Extracts text from scans and keeps it linked to the source pages.",
+      [
+        "Identify the language, page order, and problem areas in the scan.",
+        "Prepare page copies for OCR and preserve the originals.",
+        "Flag illegible passages and keep page numbers for verification."
+      ]
+    ],
+    "document-table-extractor": [
+      "Document Table Extraction Engineer",
+      "Extracts tables from documents into structured formats.",
+      [
+        "Identify table boundaries, header structure, and continuation rows.",
+        "Preserve data types, column order, and references to the source pages.",
+        "Check row counts, totals, and boundary values against the original."
+      ]
+    ],
+    "ocr-quality-reviewer": [
+      "OCR Quality Reviewer",
+      "Detects OCR errors, especially in numbers, dates, and names.",
+      [
+        "Compare a sample of OCR output with the source scans.",
+        "Check dates, amounts, identifiers, and symbols separately.",
+        "Identify pages with errors and passages that need manual verification."
+      ]
+    ],
+    "spreadsheet-engineer": [
+      "Spreadsheet Engineer",
+      "Builds workbooks with structured data and calculations.",
+      [
+        "Separate source data, assumptions, and calculated results.",
+        "Use clear headings, data types, and reproducible formulas.",
+        "Test recalculation when adding data and check how missing values are handled."
+      ]
+    ],
+    "formula-reviewer": [
+      "Formula Reviewer",
+      "Reviews formulas, ranges, units, and final values.",
+      [
+        "Identify key formulas and their dependencies.",
+        "Check boundary inputs, shifted ranges, and rounding.",
+        "Recalculate a verification sample and report discrepancies by cell."
+      ]
+    ],
+    "sheet-reconciliation-specialist": [
+      "Spreadsheet Reconciliation Specialist",
+      "Matches records and totals across spreadsheets.",
+      [
+        "Choose the matching key and rules for duplicates and missing entries.",
+        "Check for discrepancies in records, units, and time periods.",
+        "List discrepancies with their sources."
+      ]
+    ],
+    "presentation-story-editor": [
+      "Presentation Story Editor",
+      "Organizes slides around the presentation's goal.",
+      [
+        "Confirm the audience, time available, and decision the presentation should support.",
+        "Arrange the arguments and evidence into a sequence of slides.",
+        "Check that each slide has one main point."
+      ]
+    ],
+    "slide-designer": [
+      "Slide Designer",
+      "Designs presentation slides and their visual hierarchy.",
+      [
+        "Set the layout grid, typography, and placement rules.",
+        "Design different slide types for the presentation format.",
+        "Check readability, accessibility, and clipping after export."
+      ]
+    ],
+    "data-visualization-specialist": [
+      "Data Visualization Specialist",
+      "Selects charts and diagrams to communicate findings in documents and presentations.",
+      [
+        "Identify the comparison or finding the chart needs to show.",
+        "Choose a chart type and label the units, period, and source.",
+        "Check the plot against the source values and verify that labels are readable."
+      ]
+    ],
+    "document-version-reviewer": [
+      "Document Version Reviewer",
+      "Compares revisions and identifies substantive changes.",
+      [
+        "Match sections and accompanying appendices across the two versions.",
+        "Flag changes in meaning, obligations, figures, and dates.",
+        "Document substantive differences with references to their sections."
+      ]
+    ],
+    "document-feedback-coordinator": [
+      "Document Feedback Coordinator",
+      "Consolidates comments and helps resolve conflicting edits.",
+      [
+        "Group feedback by section and merge duplicates.",
+        "Identify incompatible edits and questions that require the author's decision.",
+        "Prepare a list of comments with their status and owner."
+      ]
+    ],
+    "document-release-editor": [
+      "Document Release Editor",
+      "Incorporates approved edits into a release-ready version.",
+      [
+        "Apply confirmed edits and preserve the original version.",
+        "Check terminology, links, and appendices, and verify that the version number is current.",
+        "Prepare a clean copy and list any remaining open questions."
+      ]
+    ],
+    "document-template-developer": [
+      "Document Template Developer",
+      "Creates document templates with variables and repeatable sections.",
+      [
+        "Define required fields, styles, and rules for repeatable blocks.",
+        "Set behavior for empty, long, and multiline values.",
+        "Test the template with several datasets."
+      ]
+    ],
+    "document-generation-engineer": [
+      "Document Generation Engineer",
+      "Generates documents from validated data using a template.",
+      [
+        "Verify the input schema and the mapping from fields to template sections.",
+        "Configure document generation and clear error handling for individual records.",
+        "Verify reruns, filenames, and output completeness."
+      ]
+    ],
+    "batch-export-tester": [
+      "Batch Export Tester",
+      "Tests bulk document export and recovery after errors.",
+      [
+        "Prepare large test datasets and cases with blank fields and duplicates.",
+        "Verify the count, formats, filenames, and readability of the output files.",
+        "Test rerunning the export after a partial failure."
+      ]
+    ],
+    "document-organizer": [
+      "Document Organization Specialist",
+      "Designs document storage structures and search rules.",
+      [
+        "Inventory the materials and common search scenarios.",
+        "Propose categories, naming rules, and a way to handle duplicates.",
+        "Test the structure with typical archive queries."
+      ]
+    ],
+    "document-metadata-editor": [
+      "Document Metadata Editor",
+      "Standardizes titles, tags, and source references.",
+      [
+        "Define fields, default values, and accepted formats.",
+        "Map existing metadata to the new fields and flag gaps.",
+        "Check that search and links still work after the corrections."
+      ]
+    ],
+    "document-migration-engineer": [
+      "Document Migration Engineer",
+      "Moves documents between repositories while preserving structure and links.",
+      [
+        "Map files, links, structure, and access permissions.",
+        "Test the migration on a sample and record problematic formats.",
+        "Verify file counts, metadata, and links after migration."
+      ]
+    ],
+    "document-accessibility-reviewer": [
+      "Document Accessibility Reviewer",
+      "Reviews document structure and readability with assistive technology.",
+      [
+        "Check headings, table navigation, contrast, and image descriptions.",
+        "Verify reading order, document language, and clear link text.",
+        "Propose specific fixes and identify the affected pages or sections."
+      ]
+    ],
+    "document-redaction-specialist": [
+      "Document Redaction Specialist",
+      "Removes sensitive information from documents prepared for publication.",
+      [
+        "Agree on which data to remove from the publication copy.",
+        "Remove the information from text, hidden objects, comments, and metadata.",
+        "Check the publication copy through search, text selection, and content extraction."
+      ]
+    ],
+    "pdf-preflight-specialist": [
+      "PDF Preflight Specialist",
+      "Verifies that the final PDF is ready to read, send, or print.",
+      [
+        "Check page order, page sizes, fonts, and image quality.",
+        "Verify links, bookmarks, fields, metadata, and attachment contents.",
+        "Record issues and confirm the fixes in the final file."
+      ]
+    ],
+    "meeting-minutes-editor": [
+      "Meeting Minutes Editor",
+      "Prepares minutes from notes or a transcript.",
+      [
+        "Organize the material by agenda item.",
+        "Distinguish discussion from decisions made.",
+        "List participants, dates, and gaps in the source material."
+      ]
+    ],
+    "decision-analyst": [
+      "Decision Analyst",
+      "Identifies decisions, alternatives, and the reasoning behind choices.",
+      [
+        "Record decisions made and decisions deferred.",
+        "Compare alternatives and supporting arguments.",
+        "Document consequences and open questions."
+      ]
+    ],
+    "action-items-coordinator": [
+      "Action Item Coordinator",
+      "Compiles action items with owners and deadlines.",
+      [
+        "Extract confirmed action items.",
+        "Verify owners, deadlines, and dependencies.",
+        "Flag items missing an owner or deadline."
+      ]
+    ],
+    "source-researcher": [
+      "Source Researcher",
+      "Finds materials that address a research question.",
+      [
+        "Break the question into verifiable parts.",
+        "Find primary sources and document the search method.",
+        "Group sources by relevance and limitations."
+      ]
+    ],
+    "bibliography-editor": [
+      "Bibliography Editor",
+      "Formats bibliographies and verifies references.",
+      [
+        "Verify authors, dates, and publication identifiers.",
+        "Format entries according to the selected citation style.",
+        "Match in-text citations to bibliography entries."
+      ]
+    ],
+    "evidence-reviewer": [
+      "Evidence Reviewer",
+      "Checks which conclusions the sources support.",
+      [
+        "Match claims to the supporting material.",
+        "Assess limitations of the sample and method and how broadly the findings apply.",
+        "Flag contradictions and state the level of confidence."
+      ]
+    ],
+    "hang-diagnostics-engineer": [
+      "Hang Diagnostics Engineer",
+      "Investigates hangs using traces and thread states.",
+      [
+        "Record the affected version and the conditions under which the hang occurs.",
+        "Correlate waiting threads with long-running operations.",
+        "Test hypotheses using logs and a controlled run."
+      ]
+    ],
+    "dump-analyst": [
+      "Crash Dump Analyst",
+      "Analyzes crash dumps and matches them to the relevant build.",
+      [
+        "Verify the build and debug symbols.",
+        "Locate the crash point and call stack.",
+        "Distinguish observations from assumptions and identify missing data."
+      ]
+    ],
+    "flaky-reproduction-engineer": [
+      "Intermittent Bug Reproduction Engineer",
+      "Identifies the conditions behind intermittent application bugs.",
+      [
+        "Record the environment, data, and symptoms of a routine software failure.",
+        "Reduce the scenario to the smallest set of actions in a test environment.",
+        "Measure the failure frequency and add a regression check."
+      ]
+    ],
+    "codebase-researcher": [
+      "Codebase Researcher",
+      "Maps components, entry points, and dependencies.",
+      [
+        "Find the entry points and trace the main workflows.",
+        "Describe module boundaries and areas of implicit coupling.",
+        "Identify where to verify behavior before making changes."
+      ]
+    ],
+    "characterization-test-engineer": [
+      "Characterization Test Engineer",
+      "Captures the observed behavior of existing code in tests.",
+      [
+        "Choose the contracts in use and relevant edge cases.",
+        "Record inputs and outputs using reproducible test data.",
+        "Run the tests before and after a trial change."
+      ]
+    ],
+    "compatibility-adapter-developer": [
+      "Compatibility Adapter Developer",
+      "Connects a new component through an existing interface.",
+      [
+        "Map formats, errors, and existing client expectations.",
+        "Implement the adapter with explicit transformation rules.",
+        "Test both versions against the same scenarios."
+      ]
+    ],
+    "art-director": [
+      "Art Director",
+      "Defines visual direction and design criteria.",
+      [
+        "Gather brand context and identify what the audience needs to do.",
+        "Propose visual directions with examples of how each would be used.",
+        "Set criteria for choosing a direction and applying it consistently."
+      ]
+    ],
+    "identity-designer": [
+      "Brand Identity Designer",
+      "Creates a visual identity system for logos, colors, and typography.",
+      [
+        "Prepare logo variants for different sizes.",
+        "Choose a palette and typography with readability in mind.",
+        "Check how the identity works across its primary media."
+      ]
+    ],
+    "illustration-designer": [
+      "Illustration Designer",
+      "Develops a cohesive set of illustrations for a product or content.",
+      [
+        "Agree on the subject, medium, and style.",
+        "Prepare compositions and format options.",
+        "Check whether the illustrations read clearly in context and verify rights to source materials."
+      ]
+    ],
+    "ux-writer": [
+      "UX Writer",
+      "Writes interface copy for actions, errors, and guidance.",
+      [
+        "Collect user flows and interface states.",
+        "Write short, unambiguous copy.",
+        "Check length, terminology, and localization."
+      ]
+    ],
+    "onboarding-designer": [
+      "Onboarding Designer",
+      "Designs the path to the user's first useful action.",
+      [
+        "Define the intended outcome of the first session.",
+        "Break setup into essential steps and include a way to skip them.",
+        "Test returning to the app and restoring progress."
+      ]
+    ],
+    "interface-clarity-researcher": [
+      "Interface Usability Researcher",
+      "Tests how people interpret the interface and its guidance.",
+      [
+        "Prepare tasks without leading instructions.",
+        "Record errors, hesitation, and points where users give up.",
+        "Propose changes and criteria for retesting."
+      ]
+    ],
+    "human-approval-designer": [
+      "Human Approval Workflow Designer",
+      "Defines when an agent asks the user to make a decision.",
+      [
+        "List actions with side effects.",
+        "Specify what the approval request should include and how the user can respond.",
+        "Test how the agent handles a denial, an expired request, or a change in the scope of the operation."
+      ]
+    ],
+    "agent-shutdown-engineer": [
+      "Agent Limits and Shutdown Engineer",
+      "Sets operational limits for agents and defines how to stop them safely.",
+      [
+        "Define limits on time, operations, and spending.",
+        "Describe how to stop and clean up unfinished actions.",
+        "Verify that limits are enforced with simulated operations."
+      ]
+    ],
+    "agent-failure-tester": [
+      "Agent Failure Tester",
+      "Tests agent behavior when tools fail or task handoffs break down.",
+      [
+        "Prepare stubs that simulate failures, timeouts, and incomplete results.",
+        "Verify that retries are bounded and state is preserved.",
+        "Document the criteria for handing control to a person."
+      ]
+    ],
+    "dataset-curator": [
+      "Dataset Curator",
+      "Prepares eligible data for training and independent evaluation.",
+      [
+        "Check sources, consent, and usage rights.",
+        "Remove duplicates and set aside a holdout dataset.",
+        "Document the dataset's composition and coverage limitations."
+      ]
+    ],
+    "fine-tuning-engineer": [
+      "Fine-Tuning Engineer",
+      "Runs controlled model fine-tuning experiments.",
+      [
+        "Establish a quality baseline and stopping criteria.",
+        "Record each experiment's configuration and results.",
+        "Evaluate quality on a holdout dataset and check for common errors."
+      ]
+    ],
+    "annotation-quality-reviewer": [
+      "Annotation Quality Reviewer",
+      "Checks example consistency and annotation guidelines.",
+      [
+        "Select a representative sample.",
+        "Identify conflicting labels and measure annotation agreement.",
+        "Propose clarifications to the guidelines and a follow-up review."
+      ]
+    ],
+    "ai-video-director": [
+      "AI Video Director",
+      "Defines the visual brief and assembles the scene sequence.",
+      [
+        "Clarify the runtime, format, and rights to the materials.",
+        "Break the story into scenes and describe camera movement.",
+        "Check the edit against the original script."
+      ]
+    ],
+    "storyboard-designer": [
+      "Storyboard Designer",
+      "Plans shots, transitions, and pacing for a visual story.",
+      [
+        "Identify key shots in the script.",
+        "Specify composition, duration, and transitions.",
+        "Check the storyboard for continuity of movement."
+      ]
+    ],
+    "visual-consistency-reviewer": [
+      "Visual Consistency Reviewer",
+      "Checks shot continuity and identifies visual artifacts.",
+      [
+        "Check the appearance of characters and objects, along with the lighting.",
+        "Log artifacts with timecodes.",
+        "List the scenes that need targeted fixes."
+      ]
+    ],
+    "content-strategist": [
+      "Content Strategist",
+      "Plans content around goals, audiences, and publishing channels.",
+      [
+        "Define the audience and goals.",
+        "Set topics, publishing frequency, and quality criteria.",
+        "Build a realistic plan with success metrics."
+      ]
+    ],
+    "section-editor": [
+      "Section Editor",
+      "Maintains each editorial section's focus and keeps its content consistent.",
+      [
+        "Clarify the purpose of each section.",
+        "Organize ideas by section and format.",
+        "Define content requirements and a publishing sequence."
+      ]
+    ],
+    "script-writer": [
+      "Scriptwriter",
+      "Writes scripts tailored to the audience, runtime, and platform.",
+      [
+        "Define the main message and the action viewers should take.",
+        "Structure the script with a beginning, development, and conclusion.",
+        "Check pacing, factual accuracy, and fit with the format."
+      ]
+    ],
+    "newsletter-editor": [
+      "Newsletter Editor",
+      "Turns project content into an email for subscribers.",
+      [
+        "Choose one main topic and identify the target reader.",
+        "Draft the subject line, introduction, links, and call to action.",
+        "Proofread the copy, test the links, and check how the email renders."
+      ]
+    ],
+    "short-video-writer": [
+      "Short-Form Video Writer",
+      "Adapts existing material into a short video script.",
+      [
+        "Choose one topic and write a strong opening.",
+        "Break the script into shots and short lines.",
+        "Check the runtime and caption readability."
+      ]
+    ],
+    "content-repurposing-editor": [
+      "Content Repurposing Editor",
+      "Adapts one piece of content for multiple formats.",
+      [
+        "Identify the facts and source links each version should retain.",
+        "Rewrite the material for each format and audience.",
+        "Check the conclusions against the original and assemble the drafts."
+      ]
+    ],
+    "telegram-editor": [
+      "Telegram Channel Editor",
+      "Drafts and formats posts for Telegram.",
+      [
+        "Clarify the content series and the action readers should take.",
+        "Draft the post and check the links.",
+        "Choose an illustration or caption and submit the draft for approval."
+      ]
+    ],
+    "youtube-producer": [
+      "YouTube Producer",
+      "Plans a YouTube release and specifies the materials it needs.",
+      [
+        "Define the topic, audience, and success criterion.",
+        "Plan the shoot, edit, and release.",
+        "Prepare requirements for the title, thumbnail, and description."
+      ]
+    ],
+    "social-reach-analyst": [
+      "Social Reach Analyst",
+      "Compares reach and engagement across posts.",
+      [
+        "Verify metric definitions and comparison periods.",
+        "Break down results by format and channel.",
+        "Propose tests based on observed differences."
+      ]
+    ],
+    "community-moderator": [
+      "Community Moderator",
+      "Identifies moderation options under the community rules.",
+      [
+        "Review the situation against the published rules.",
+        "Prepare response options and an explanation for the member.",
+        "Escalate disputed cases to a human for a decision."
+      ]
+    ],
+    "reply-editor": [
+      "Reply Editor",
+      "Drafts replies to comments and questions.",
+      [
+        "Identify the person's intent and any missing information.",
+        "Write an accurate reply in the community's voice.",
+        "Verify the facts and submit the draft for approval."
+      ]
+    ],
+    "feedback-analyst": [
+      "Feedback Analyst",
+      "Groups feedback and identifies recurring problems.",
+      [
+        "Remove duplicates and group feedback by topic.",
+        "Document frequency, impact, and examples.",
+        "Prepare questions and proposals for the team."
+      ]
+    ],
+    "week-planner": [
+      "Weekly Planner",
+      "Schedules tasks based on available time and priorities.",
+      [
+        "List commitments and available time.",
+        "Set priorities and leave room for rescheduling.",
+        "Build a day-by-day plan and define when to revise it."
+      ]
+    ],
+    "task-triage-assistant": [
+      "Task Triage Assistant",
+      "Turns a to-do list into clear next actions.",
+      [
+        "Break complex tasks into specific actions.",
+        "Flag urgency, dependencies, and available resources.",
+        "Create a short list of next steps."
+      ]
+    ],
+    "household-task-coordinator": [
+      "Household Task Coordinator",
+      "Plans household chores and helps distribute the work.",
+      [
+        "List recurring chores and deadlines.",
+        "Propose ways to divide the work based on availability.",
+        "Create a clear list of actions and reminders."
+      ]
+    ],
+    "shopping-list-builder": [
+      "Shopping List Builder",
+      "Plans purchases around needs, quantities, and budget.",
+      [
+        "Check what's already on hand and identify essential items.",
+        "Specify quantities, priorities, and acceptable substitutes.",
+        "Group the items and check whether the list fits the budget."
+      ]
+    ],
+    "specification-analyst": [
+      "Product Specifications Analyst",
+      "Compares product specifications against the buyer's requirements.",
+      [
+        "Identify must-have and preferred criteria.",
+        "Check definitions and units in the sources.",
+        "Highlight differences and missing information."
+      ]
+    ],
+    "offer-comparison-assistant": [
+      "Offer Comparison Assistant",
+      "Compares total purchase costs and terms.",
+      [
+        "Verify current prices, configurations, and sellers.",
+        "Account for shipping, returns, and differences in terms.",
+        "Show the options and the date the sources were checked."
+      ]
+    ],
+    "news-digest-editor": [
+      "News Digest Editor",
+      "Compiles a concise news summary with sources and context.",
+      [
+        "Define the digest's time period and topic.",
+        "Group coverage by event and include source links.",
+        "Distinguish confirmed facts from statements by the parties involved."
+      ]
+    ],
+    "news-source-verifier": [
+      "Primary Source Verifier",
+      "Checks what original sources establish about a news story.",
+      [
+        "Break the report into individual verifiable claims.",
+        "Find the original publications and independent corroboration.",
+        "Document discrepancies, the time of verification, and open questions."
+      ]
+    ],
+    "event-timeline-editor": [
+      "Event Timeline Editor",
+      "Builds a timeline of events and updates.",
+      [
+        "Record event dates and publication dates separately.",
+        "Reconcile time zones and add source links.",
+        "Flag disputed sequences and published corrections."
+      ]
+    ],
+    "contract-test-engineer": [
+      "Contract Test Engineer",
+      "Checks compatibility between an API and its clients.",
+      [
+        "Identify the parts of the contract clients rely on.",
+        "Prepare versioned schemas and compatibility checks.",
+        "Check changes to formats, status codes, and errors."
+      ]
+    ],
+    "integration-test-engineer": [
+      "Integration Test Engineer",
+      "Tests component interactions with isolated data.",
+      [
+        "Choose critical interaction flows.",
+        "Prepare fixtures and a way to reset state.",
+        "Test successful flows, failures, and retries."
+      ]
+    ],
+    "test-data-engineer": [
+      "Test Data Engineer",
+      "Prepares reproducible test datasets.",
+      [
+        "Identify the required data states and constraints.",
+        "Create synthetic examples and a cleanup procedure.",
+        "Verify repeatability and confirm that the data contains no real personal information."
+      ]
+    ],
+    "regression-suite-engineer": [
+      "Regression Test Suite Engineer",
+      "Maintains high-priority automated checks.",
+      [
+        "Map past defects to key user journeys.",
+        "Separate quick checks from full test runs.",
+        "Flag flaky tests and reduce their dependence on the environment."
+      ]
+    ],
+    "load-test-engineer": [
+      "Load Test Engineer",
+      "Measures how an application behaves under expected load.",
+      [
+        "Set a load profile and thresholds in a dedicated test environment.",
+        "Prepare a bounded test run that measures latency and errors.",
+        "Compare the results with the targets."
+      ]
+    ],
+    "recovery-test-engineer": [
+      "Recovery Test Engineer",
+      "Tests recovery after controlled failures.",
+      [
+        "Define acceptable data loss and recovery time.",
+        "Use stubs, suspend test dependencies, or restore from backups.",
+        "Verify recovery results and record any gaps."
+      ]
+    ],
+    "secure-code-auditor": [
+      "Secure Code Auditor",
+      "Reviews supplied code for security weaknesses and proposes fixes.",
+      [
+        "Review the supplied code and local settings within the agreed scope.",
+        "Identify gaps in input validation or access controls and describe their impact.",
+        "Propose fixes and routine checks that confirm the safeguards work."
+      ]
+    ],
+    "configuration-reviewer": [
+      "Security Configuration Reviewer",
+      "Reviews supplied configuration files for excessive permissions and weak settings.",
+      [
+        "Check the supplied settings against project requirements.",
+        "Review permissions, secret storage, and logging availability.",
+        "Prioritize fixes and propose verifiable acceptance criteria."
+      ]
+    ],
+    "supply-chain-security-reviewer": [
+      "Dependency Security Reviewer",
+      "Reviews dependencies and plans safe updates.",
+      [
+        "Check installed dependencies against lockfiles and available security advisories.",
+        "Flag components that need an update, replacement, or version confirmation.",
+        "Prepare an update plan with compatibility checks."
+      ]
+    ],
+    "security-fix-reviewer": [
+      "Security Fix Reviewer",
+      "Checks whether a patch addresses an identified weakness in the code.",
+      [
+        "Check that the change addresses the root cause.",
+        "Review the defensive logic and use routine permission checks to verify it.",
+        "Check compatibility and record any remaining risks."
+      ]
+    ],
+    "security-report-editor": [
+      "Security Report Editor",
+      "Prepares a defensive audit report for project owners.",
+      [
+        "Document the scope, affected components, and evidence for each finding.",
+        "Describe the impact and remediation while omitting exploitation instructions.",
+        "Draft a report showing the verification status of each finding."
+      ]
+    ],
+    "hardening-engineer": [
+      "Security Hardening Engineer",
+      "Prepares configuration changes that reduce risk.",
+      [
+        "Choose measures based on the agreed review findings.",
+        "Reduce permissions and configure secure defaults.",
+        "Verify normal operation and confirm that the settings can be rolled back."
+      ]
+    ],
+    "mobile-local-storage": [
+      "Local Storage Engineer",
+      "Designs on-device data storage for offline use.",
+      [
+        "Define what data to store locally and for how long.",
+        "Specify the schema, version upgrades, and failure recovery.",
+        "Test reads and writes without a network connection."
+      ]
+    ],
+    "mobile-sync-engineer": [
+      "Mobile Sync Engineer",
+      "Synchronizes local changes when connectivity returns.",
+      [
+        "Describe the change queue and retry rules.",
+        "Define how to handle concurrent edits and deletions.",
+        "Test reconnection and check for duplicate changes."
+      ]
+    ],
+    "sync-conflict-tester": [
+      "Sync Conflict Tester",
+      "Tests concurrent editing and behavior when connectivity is lost.",
+      [
+        "Prepare two copies of the data and concurrent-edit scenarios.",
+        "Test network loss, duplicate delivery, and editing from two devices.",
+        "Check that the outcome follows the chosen conflict resolution rules."
+      ]
+    ],
+    "push-notification-engineer": [
+      "Push Notification Engineer",
+      "Configures notification delivery and user permissions.",
+      [
+        "Define notification triggers, categories, and reasons for sending.",
+        "Handle user consent, token changes, and delivery failures.",
+        "Test receiving and opening notifications on test devices."
+      ]
+    ],
+    "mobile-widget-developer": [
+      "Mobile Widget Developer",
+      "Builds widgets that show concise information and update as state changes.",
+      [
+        "Choose data and actions for the supported widget sizes.",
+        "Add empty states and protect private information.",
+        "Verify updates, rendering, and navigation into the app."
+      ]
+    ],
+    "deep-link-engineer": [
+      "Deep Link Engineer",
+      "Routes links and notifications to the right screens in the app.",
+      [
+        "Define supported URLs, parameters, and a fallback screen.",
+        "Preserve permission checks and handle signed-out users.",
+        "Test links on a cold start and during an active session."
+      ]
+    ],
+    "flutter-developer": [
+      "Flutter Developer",
+      "Builds shared mobile UI and application logic in Flutter.",
+      [
+        "Separate state, navigation, and platform-specific logic.",
+        "Implement the user flow with loading and error states.",
+        "Verify the build and behavior on the target mobile platforms."
+      ]
+    ],
+    "react-native-developer": [
+      "React Native Developer",
+      "Implements mobile flows and integrates platform features.",
+      [
+        "Define state, routes, and platform differences.",
+        "Integrate the required modules and handle failures.",
+        "Verify the interface and build on iOS and Android."
+      ]
+    ],
+    "native-mobile-module-engineer": [
+      "Native Mobile Module Engineer",
+      "Connects shared app code to iOS and Android capabilities.",
+      [
+        "Define the interface between shared code and each platform.",
+        "Handle permissions and unavailable features.",
+        "Test module calls on supported operating systems and devices."
+      ]
+    ],
+    "pwa-engineer": [
+      "PWA Engineer",
+      "Prepares a web app for installation and offline use.",
+      [
+        "Define installation requirements, the starting screen, and a minimal offline flow.",
+        "Prepare the web app manifest and installation assets.",
+        "Test launch from the browser and the installed app icon."
+      ]
+    ],
+    "service-worker-developer": [
+      "Service Worker Developer",
+      "Configures web app caching and asset updates.",
+      [
+        "Distinguish public assets from data that must stay out of the cache.",
+        "Define cache versioning, update behavior, and offline responses.",
+        "Test upgrades and behavior when the network drops."
+      ]
+    ],
+    "pwa-install-update-tester": [
+      "PWA Installation and Update Tester",
+      "Tests PWA installation and verifies that updates preserve data.",
+      [
+        "Create a browser and device test matrix.",
+        "Test installation, updating, reopening, and removal.",
+        "Verify that local data is preserved where expected and record differences."
+      ]
+    ],
+    "technical-seo-engineer": [
+      "Technical SEO Engineer",
+      "Fixes technical barriers to search engines discovering website pages.",
+      [
+        "Check page status codes, internal links, and crawl rules.",
+        "Verify canonical URLs, redirects, and the sitemap.",
+        "Check the changed pages and record criteria for success."
+      ]
+    ],
+    "structured-data-specialist": [
+      "Structured Data Specialist",
+      "Adds machine-readable markup that describes page content.",
+      [
+        "Choose a schema that reflects the actual page content.",
+        "Map fields to visible content and add the markup.",
+        "Validate the markup and check it against what users see."
+      ]
+    ],
+    "search-indexing-reviewer": [
+      "Search Indexing Reviewer",
+      "Investigates why pages are missing from a search index.",
+      [
+        "Collect example URLs and their observed statuses.",
+        "Compare page accessibility, crawl directives, and canonical selection.",
+        "Record confirmed causes, label hypotheses, and propose a verification sequence."
+      ]
+    ],
+    "content-model-architect": [
+      "Content Model Architect",
+      "Designs CMS content types and their relationships.",
+      [
+        "List content types and editorial workflows.",
+        "Define fields, validation, relationships, and localization.",
+        "Test the schema with examples and plan the migration of existing content."
+      ]
+    ],
+    "cms-integration-developer": [
+      "CMS Integration Developer",
+      "Connects a CMS to the web app and build process.",
+      [
+        "Define how published content is fetched and how pages are updated.",
+        "Handle errors, incomplete content, and duplicate events.",
+        "Verify that the public build excludes drafts and secrets."
+      ]
+    ],
+    "cms-preview-engineer": [
+      "CMS Preview Engineer",
+      "Lets editors see drafts in the layout of the future page.",
+      [
+        "Set up permission checks for draft access.",
+        "Show editors which version they are viewing and handle loading errors.",
+        "Check for differences between the preview and published page."
+      ]
+    ],
+    "shoot-director": [
+      "Shoot Director",
+      "Plans a shoot around its goals, scenes, and available resources.",
+      [
+        "Define the goal, format, and required shots.",
+        "Create a shooting order and list the source materials.",
+        "Set criteria for selecting the strongest takes."
+      ]
+    ],
+    "video-editor": [
+      "Video Editor",
+      "Edits footage and prepares versions for publication.",
+      [
+        "Log the takes and assemble a sequence that follows the script.",
+        "Refine the pacing and prepare versions in the required aspect ratios.",
+        "Check the final export for artifacts, cropping issues, and gaps."
+      ]
+    ],
+    "production-sound-engineer": [
+      "Sound Engineer",
+      "Processes dialogue, ambience, and music tracks.",
+      [
+        "Review the source tracks and note noise, clipping, and level changes.",
+        "Process the audio while keeping speech intelligible.",
+        "Check synchronization and the final export."
+      ]
+    ],
+    "interview-editor": [
+      "Interview Editor",
+      "Shapes the interview and prepares supporting materials for release.",
+      [
+        "Identify themes, strong excerpts, and wording that may need review.",
+        "Prepare timecodes and verifiable quotations.",
+        "Preserve the speakers' meaning when making cuts."
+      ]
+    ],
+    "podcast-producer": [
+      "Podcast Producer",
+      "Plans the episode, production resources, and materials for listeners.",
+      [
+        "Define the topic, audience, and participant roles.",
+        "Plan recording, approvals, and publication.",
+        "List the required materials and set release criteria."
+      ]
+    ],
+    "speech-editor": [
+      "Dialogue Editor",
+      "Cleans up recorded conversation and prepares short excerpts.",
+      [
+        "Mark speakers, pauses, and recording problems.",
+        "Trim unnecessary material while preserving natural delivery and meaning.",
+        "Check the export, timecodes, and clips against the approved edit."
+      ]
+    ],
+    "cover-designer": [
+      "Cover Designer",
+      "Designs covers and thumbnails that reflect the subject of a video or post.",
+      [
+        "Choose one visual focal point for the cover.",
+        "Create layout options and test them at a small size.",
+        "Check that the cover reflects the content and prepare the export."
+      ]
+    ],
+    "social-visual-designer": [
+      "Social Media Visual Designer",
+      "Adapts images to post formats and the channel's visual style.",
+      [
+        "Gather size, cropping, and style requirements.",
+        "Adapt the composition to portrait, square, and landscape formats.",
+        "Check readability and safe margins."
+      ]
+    ],
+    "cover-test-analyst": [
+      "Cover Test Analyst",
+      "Compares cover designs using comparable data.",
+      [
+        "Define the hypothesis and comparison metric.",
+        "Set comparable conditions and the required sample size.",
+        "Describe the result and the factors that limit the conclusions."
+      ]
+    ],
+    "photo-retoucher": [
+      "Photo Retoucher",
+      "Removes blemishes and carefully refines photographic details.",
+      [
+        "Agree on the extent of editing and preserve the originals.",
+        "Remove the agreed defects while preserving natural detail.",
+        "Check edges, textures, and quality at the exported sizes."
+      ]
+    ],
+    "photo-color-specialist": [
+      "Photo Color Correction Specialist",
+      "Makes color, tone, and exposure consistent across photos.",
+      [
+        "Choose a reference frame and agree on the target look.",
+        "Adjust white balance, exposure, and contrast.",
+        "Check consistency across the set and verify the export color profile."
+      ]
+    ],
+    "photo-composite-designer": [
+      "Photo Compositing Designer",
+      "Builds a new composition from approved image elements.",
+      [
+        "Decide where objects should go and identify the required source images.",
+        "Match perspective, lighting, and edges across elements.",
+        "Check composite quality at the target sizes."
+      ]
+    ],
+    "image-optimization-engineer": [
+      "Image Optimization Engineer",
+      "Prepares images for fast loading and different screen sizes.",
+      [
+        "Define dimensions, formats, and file size limits by image type.",
+        "Prepare variants for different placements and pixel densities.",
+        "Check file size, visual quality, and browser rendering."
+      ]
+    ],
+    "image-metadata-editor": [
+      "Image Metadata Editor",
+      "Prepares captions, alt text, and metadata for catalog search.",
+      [
+        "Identify each image's purpose and required fields.",
+        "Write captions and alt text, and record source information.",
+        "Remove unnecessary metadata from the public copy when requested."
+      ]
+    ],
+    "visual-asset-reviewer": [
+      "Visual Asset Reviewer",
+      "Checks file quality and whether images are ready to publish.",
+      [
+        "Verify dimensions, cropping, and image quality.",
+        "Check alt text and visual consistency across the set.",
+        "Flag files that need corrections or rights verification."
+      ]
+    ],
+    "model-response-schema-designer": [
+      "Model Response Schema Designer",
+      "Defines a strict format for data returned by a model.",
+      [
+        "Specify required fields, data types, and rules for unknown values.",
+        "Provide examples of successful responses and errors.",
+        "Verify that the schema supports automated validation."
+      ]
+    ],
+    "model-data-extraction-engineer": [
+      "Model Data Extraction Engineer",
+      "Extracts fields from source materials and validates them before handoff.",
+      [
+        "Define input formats and the fields to extract.",
+        "Link extracted values to source passages and validate them against the schema.",
+        "Check how missing values and discrepancies are handled on independent examples."
+      ]
+    ],
+    "model-output-format-tester": [
+      "Model Output Format Tester",
+      "Checks that structured model responses are complete and valid.",
+      [
+        "Create examples with missing fields and incorrect types.",
+        "Test validation and the app's handling of incomplete responses.",
+        "Record the rate of valid responses and the types of errors."
+      ]
+    ],
+    "model-routing-architect": [
+      "Model Routing Architect",
+      "Designs model selection rules around tasks and project constraints.",
+      [
+        "Define request types and their quality and privacy requirements.",
+        "Define model selection and switching rules.",
+        "Verify the rules against a test set of requests."
+      ]
+    ],
+    "model-fallback-engineer": [
+      "Model Fallback Engineer",
+      "Configures failover when the primary model fails or becomes unavailable.",
+      [
+        "Define failover conditions and compatible response formats.",
+        "Limit retries and verify that the fallback model may process the data.",
+        "Test timeouts and the switch back to the primary model."
+      ]
+    ],
+    "model-routing-cost-analyst": [
+      "Model Cost and Latency Analyst",
+      "Compares model costs and response times on comparable tasks.",
+      [
+        "Assemble a representative set of requests and measure the same metrics for each model.",
+        "Compare cost, latency, and quality by request type.",
+        "Report trade-offs and measurement dates."
+      ]
+    ],
+    "model-streaming-engineer": [
+      "Model Streaming Engineer",
+      "Streams model responses in chunks and handles cancellation cleanly.",
+      [
+        "Define events for stream start, response chunks, completion, and errors.",
+        "Handle interruption, reconnection, and duplicate events.",
+        "Verify response completion and resource cleanup."
+      ]
+    ],
+    "voice-interface-developer": [
+      "Voice Interface Developer",
+      "Builds voice conversations that users can interrupt and resume.",
+      [
+        "Define user actions and recording and playback states.",
+        "Handle response interruption and restore conversation context.",
+        "Test recording consent, microphone errors, and return to the session."
+      ]
+    ],
+    "realtime-latency-tester": [
+      "Real-Time Latency Tester",
+      "Measures delays in response start, playback, and cancellation.",
+      [
+        "Define measurement points and network conditions.",
+        "Compare delays across repeated runs and devices.",
+        "Record thresholds and scenarios where the conversation becomes less responsive."
+      ]
+    ],
+    "ai-composition-engineer": [
+      "AI Image Composition Engineer",
+      "Controls object placement and visual structure in generated images.",
+      [
+        "Clarify which elements of the composition must be preserved.",
+        "Prepare permitted references, masks, and generation settings.",
+        "Check batches of variants against the specified criteria."
+      ]
+    ],
+    "ai-image-editor": [
+      "AI Image Editor",
+      "Edits agreed areas of an image while preserving specified details.",
+      [
+        "Record the areas to edit and details to preserve.",
+        "Prepare editing variants and export sizes.",
+        "Check color, shape, and any artifacts after editing."
+      ]
+    ],
+    "ai-image-reference-reviewer": [
+      "AI Image Reference Reviewer",
+      "Checks whether a generated image matches the agreed reference.",
+      [
+        "Identify specific features of shape, color, and detail to check.",
+        "Compare variants at the required scales and flag differences.",
+        "Identify variants that need revisions and provide specific notes."
+      ]
+    ],
+    "model-deployment-engineer": [
+      "Model Deployment Engineer",
+      "Prepares a new model version for a controlled rollout.",
+      [
+        "Record the version, dependencies, and resource requirements.",
+        "Prepare a test rollout and define metrics for comparison.",
+        "Check API call compatibility and set criteria for promotion to production."
+      ]
+    ],
+    "model-regression-reviewer": [
+      "Model Response Regression Reviewer",
+      "Compares model versions using examples from the project.",
+      [
+        "Select typical cases and edge cases before the update.",
+        "Compare response quality, format, and consistency.",
+        "List regressions and define release readiness criteria."
+      ]
+    ],
+    "model-rollback-engineer": [
+      "Model Rollback Engineer",
+      "Prepares a rollback to the previous compatible model version.",
+      [
+        "Record the previous version and its working configuration.",
+        "Define rollback thresholds and recovery steps.",
+        "Verify rollback and data compatibility in a test environment."
+      ]
+    ]
+  }
+}

@@ -139,10 +139,14 @@
     // Параметр сохраняет язык между локальными файлами даже при изоляции хранилищ браузером.
     document.querySelectorAll('a[href]').forEach(link => {
       const href = link.getAttribute('href');
-      if (!/^(index|index-ru|index-en|projects|websites|developer|skills-agents|ai-aggregator)\.html(?:[?#]|$)/.test(href)) return;
+      if (!/^(index|index-ru|index-en|projects|websites|developer|skills-agents|ai-aggregator(?:-en)?)\.html(?:[?#]|$)/.test(href)) return;
       const url = new URL(href, location.href);
       if (location.protocol !== 'file:' && /\/index(?:-ru|-en)?\.html$/.test(url.pathname)) {
         url.pathname = url.pathname.replace(/index(?:-ru|-en)?\.html$/, language === 'en' ? 'index-en.html' : 'index-ru.html');
+      }
+      if (/\/ai-aggregator(?:-en)?\.html$/.test(url.pathname)) {
+        url.pathname = url.pathname.replace(/ai-aggregator(?:-en)?\.html$/, language === 'en' ? 'ai-aggregator-en.html' : 'ai-aggregator.html');
+        link.setAttribute('hreflang', language);
       }
       url.searchParams.set('lang', language);
       link.setAttribute('href', url.pathname.split('/').pop() + url.search + url.hash);

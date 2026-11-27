@@ -1,6 +1,7 @@
 import { cp, mkdir, readdir, readFile, rm, writeFile } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
 import { fileURLToPath } from 'node:url';
+import { buildEnglishAggregator } from './localize-aggregator.mjs';
 const source = fileURLToPath(new URL('../site/', import.meta.url));
 const destination = fileURLToPath(new URL('../dist/', import.meta.url));
 await rm(destination, { recursive: true, force: true });
@@ -17,6 +18,7 @@ const englishHome = russianHome
   .replace('<html lang="ru">', '<html lang="en">')
   .replaceAll('Программное обеспечение, ИИ Агенты, Скилы', 'Software, AI Agents, Skills')
   .replaceAll('Личный терминал — Slipcast-Dev', 'Personal Terminal — Slipcast-Dev')
+  .replace('href="ai-aggregator.html" data-i18n="aiAggregator" hreflang="ru">AI-Агрегатор', 'href="ai-aggregator-en.html?lang=en" data-i18n="aiAggregator" hreflang="en">AI Aggregator')
   .replace('<title>Личный терминал</title>', '<title>Personal Terminal — Slipcast-Dev</title>')
   .replace('<link rel="canonical" href="https://slipcast-dev.github.io/">', '<link rel="canonical" href="https://slipcast-dev.github.io/index-en.html">')
   .replace('<meta property="og:url" content="https://slipcast-dev.github.io/">', '<meta property="og:url" content="https://slipcast-dev.github.io/index-en.html">')
@@ -28,6 +30,9 @@ const russianShareHome = russianHome
   .replace('<link rel="canonical" href="https://slipcast-dev.github.io/">', '<link rel="canonical" href="https://slipcast-dev.github.io/index-ru.html">')
   .replace('<meta property="og:url" content="https://slipcast-dev.github.io/">', '<meta property="og:url" content="https://slipcast-dev.github.io/index-ru.html">');
 await writeFile(`${destination}/index-ru.html`, russianShareHome);
+const russianAggregator = await readFile(destination + 'ai-aggregator.html', 'utf8');
+const englishAggregator = await buildEnglishAggregator(russianAggregator);
+await writeFile(destination + 'ai-aggregator-en.html', englishAggregator);
 for (const entry of await readdir(destination, { withFileTypes: true })) {
   if (!entry.isFile() || !entry.name.endsWith('.html')) continue;
   const path = `${destination}/${entry.name}`;

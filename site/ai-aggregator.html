@@ -6,6 +6,8 @@
 <title>AI-Агрегатор · Slipcast-Dev</title>
 <meta name="description" content="Подберите команду ИИ-агентов для Codex или Claude Code, получите стартовый промпт и скачайте конфигурации.">
 <link rel="canonical" href="https://slipcast-dev.github.io/ai-aggregator.html">
+<link rel="alternate" hreflang="ru" href="https://slipcast-dev.github.io/ai-aggregator.html">
+<link rel="alternate" hreflang="en" href="https://slipcast-dev.github.io/ai-aggregator-en.html">
 <style>
 :root{color-scheme:dark;--bg:#000;--panel:#060d08;--panel2:#09130c;--line:#1b482c;--text:#d8ffe6;--muted:#9ab8a5;--mint:#00ff66;--focus:#b5ffcf;--mono:"SFMono-Regular",Consolas,"Liberation Mono",monospace}
 *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--text);font:15px/1.5 var(--mono)}
@@ -33,6 +35,11 @@ button{min-height:42px;padding:8px 13px}button:hover:not(:disabled){border-color
 @media(max-width:370px){.cards{grid-template-columns:1fr}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation:none!important;transition:none!important}}
 
+.aggregator-languages{position:absolute;right:22px;top:18px;display:flex;gap:4px;padding:3px;border:1px solid var(--line);border-radius:5px;background:var(--bg)}
+.aggregator-languages a{display:grid;place-items:center;min-width:42px;min-height:38px;padding:4px;border:1px solid transparent;border-radius:3px;color:var(--muted);font-size:.78rem;text-decoration:none}
+.aggregator-languages a:is(:hover,[aria-current=page]){color:var(--mint);border-color:var(--line);background:var(--panel2)}
+@media(max-width:650px){.hero{padding-top:74px}}
+
 /* Тот же фон, шрифт и цвет акцента для всех раскрывающихся списков. */
 .theme-select{position:relative;min-width:0}
 .theme-select-trigger{width:100%;min-height:44px;display:flex;align-items:center;gap:10px;justify-content:space-between;text-align:left;padding:8px 11px}
@@ -48,6 +55,10 @@ button{min-height:42px;padding:8px 13px}button:hover:not(:disabled){border-color
 </style>
 </head>
 <body>
+<nav class="aggregator-languages" aria-label="Язык раздела">
+  <a href="ai-aggregator.html?lang=ru" data-aggregator-language="ru" aria-current="page" hreflang="ru" lang="ru">RU</a>
+  <a href="ai-aggregator-en.html?lang=en" data-aggregator-language="en" hreflang="en" lang="en">EN</a>
+</nav>
 <main class="container">
   <header class="hero">
     <div><h1>AI-Агрегатор</h1><p>Соберите команду под свой проект. Выберите среду, задачу и стек, затем заберите промпт и файлы агентов.</p></div>
@@ -109,7 +120,19 @@ button{min-height:42px;padding:8px 13px}button:hover:not(:disabled){border-color
 const $ = id => document.getElementById(id);
 const data = JSON.parse($('catalog-data').textContent);
 const roles = new Map(data.roles.map(role => [role.id, role]));
-const pageLanguage = new URLSearchParams(location.search).get('lang') === 'en' ? 'en' : 'ru';
+const pageLanguage = document.documentElement.lang;
+const requestedLanguage = new URLSearchParams(location.search).get('lang');
+if (location.protocol !== 'file:' && requestedLanguage !== pageLanguage &&
+    ['ru', 'en'].includes(requestedLanguage)) {
+  const nextPage = requestedLanguage === 'en' ? 'ai-aggregator-en.html' : 'ai-aggregator.html';
+  location.replace(nextPage + location.search + location.hash);
+}
+for (const link of document.querySelectorAll('[data-aggregator-language]')) {
+  if (location.protocol === 'file:') link.href = 'https://slipcast-dev.github.io/' + link.getAttribute('href');
+  link.addEventListener('click', () => {
+    try { localStorage.setItem('slipcast-language', link.dataset.aggregatorLanguage); } catch { /* Ссылки работают без хранилища. */ }
+  });
+}
 const terminalUrl = location.protocol === 'file:'
   ? 'https://slipcast-dev.github.io/?lang=' + pageLanguage
   : 'index-' + pageLanguage + '.html?lang=' + pageLanguage;
@@ -845,14 +868,14 @@ function updateCatalogButton(button) {
 }
 
 function renderCatalog() {
-  const query = $('search').value.trim().toLocaleLowerCase('ru');
+  const query = $('search').value.trim().toLocaleLowerCase(pageLanguage);
   const filter = $('category').value;
   const groups = [];
   let total = 0;
   for (const category of data.categories) {
     if (filter !== 'all' && filter !== category.id) continue;
     const matches = data.roles.filter(role => role.category === category.id && (
-      !query || [role.name, role.id, role.description].some(text => text.toLocaleLowerCase('ru').includes(query))
+      !query || [role.name, role.id, role.description].some(text => text.toLocaleLowerCase(pageLanguage).includes(query))
     ));
     if (!matches.length) continue;
     total += matches.length;
@@ -1175,12 +1198,12 @@ updatePicker();
       if (event.key.length !== 1 || event.ctrlKey || event.metaKey || event.altKey) return;
       event.preventDefault();
       const now = Date.now();
-      const character = event.key.toLocaleLowerCase('ru');
+      const character = event.key.toLocaleLowerCase(pageLanguage);
       search = now - lastKeyTime > 700 ? character : search + character;
       lastKeyTime = now;
       for (let step = 0; step < entries.length; step += 1) {
         const index = (active + step + (search.length === 1 ? 1 : 0)) % entries.length;
-        if (!entries[index].option.label.toLocaleLowerCase('ru').startsWith(search)) continue;
+        if (!entries[index].option.label.toLocaleLowerCase(pageLanguage).startsWith(search)) continue;
         focusOption(index);
         break;
       }
