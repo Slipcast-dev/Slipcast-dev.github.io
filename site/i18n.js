@@ -3,21 +3,15 @@
   'use strict';
   const strings = {
     ru: {
-      skillsAgents: 'Скиллы и агенты', skillsAgentsNav: 'Скиллы и\u00a0агенты', telegramChannel: 'Telegram-канал', aiAggregator: 'AI-Агрегатор',
-      skillsAgentsTitle: 'Скиллы и агенты — Slipcast-Dev',
-      skillsAgentsDescription: 'Коллекции скиллов для Codex и Claude Code: архивы для скачивания.',
+      skillsTitleLabel: 'Скиллы', telegramChannel: 'Telegram-канал', aiAggregator: 'AI-Агрегатор',
+      skillsTitle: 'Скиллы — Slipcast-Dev',
+      skillsDescription: 'Коллекции скиллов для Codex и Claude Code: архивы для скачивания.',
       skillsIntro: 'Коллекции навыков для разработки, анализа, работы с документами и автоматизации.',
-      skillCollections: 'Коллекции скиллов и агентов',
-      filterCollections: 'Фильтр коллекций', allCollections: 'Все', skillsFilter: 'Скиллы', agentsFilter: 'Агенты',
-      noAgents: 'Коллекции агентов пока не опубликованы.',
+      skillCollections: 'Коллекции скиллов',
+      skillCompatibility: 'Фильтр совместимости', allCollections: 'Все',
+      noCompatibleSkills: 'Для выбранной среды пока нет скиллов.',
       codexSkillsDescription: 'Пользовательские навыки для Codex, распределённые по темам: разработка, ИИ, документы, бизнес и личные задачи.',
       claudeSkillsDescription: 'Коллекция Agent Skills для Claude Code: тематические категории, каталог и сценарий установки.',
-      agentPack1Title: 'Проектирование и разработка',
-      agentPack1Description: 'Агенты для анализа требований, архитектуры, разработки, тестирования и выпуска.',
-      agentPack2Title: 'Веб и Telegram-боты',
-      agentPack2Description: 'Агенты для фронтенда, API, баз данных, Telegram-ботов, тестирования и выкладки.',
-      agentPack3Title: 'Рефакторинг, безопасность и оптимизация',
-      agentPack3Description: 'Агенты для рефакторинга, проверки безопасности кода и оптимизации производительности.',
       skillDownload: 'Скачать',
 
       developmentLog: 'Журнал разработок',
@@ -61,21 +55,15 @@
       timeout: 'GitHub не ответил вовремя. Обновление повторится автоматически.', offline: 'Не удалось связаться с GitHub. Проверьте интернет. Обновление повторится автоматически.'
     },
     en: {
-      skillsAgents: 'Skills & Agents', skillsAgentsNav: 'Skills &\u00a0Agents', telegramChannel: 'Telegram Channel', aiAggregator: 'AI Aggregator',
-      skillsAgentsTitle: 'Skills & Agents — Slipcast-Dev',
-      skillsAgentsDescription: 'Skill collections for Codex and Claude Code: downloadable archives.',
+      skillsTitleLabel: 'Skills', telegramChannel: 'Telegram Channel', aiAggregator: 'AI Aggregator',
+      skillsTitle: 'Skills — Slipcast-Dev',
+      skillsDescription: 'Skill collections for Codex and Claude Code: downloadable archives.',
       skillsIntro: 'Skill collections for development, analysis, documents and automation.',
-      skillCollections: 'Skill and agent collections',
-      filterCollections: 'Filter collections', allCollections: 'All', skillsFilter: 'Skills', agentsFilter: 'Agents',
-      noAgents: 'No agent collections have been published yet.',
+      skillCollections: 'Skill collections',
+      skillCompatibility: 'Compatibility filter', allCollections: 'All',
+      noCompatibleSkills: 'No skills are available for this environment yet.',
       codexSkillsDescription: 'User skills for Codex, organized by topic: development, AI, documents, business and everyday tasks.',
       claudeSkillsDescription: 'An Agent Skills collection for Claude Code, with topic categories, a catalog and an installation script.',
-      agentPack1Title: 'Design and development',
-      agentPack1Description: 'Agents for requirements, architecture, development, testing and releases.',
-      agentPack2Title: 'Web and Telegram bots',
-      agentPack2Description: 'Agents for frontend, APIs, databases, Telegram bots, testing and deployment.',
-      agentPack3Title: 'Refactoring, security and optimization',
-      agentPack3Description: 'Agents for refactoring, defensive code review and performance optimization.',
       skillDownload: 'Download',
 
       developmentLog: 'Development Log',
@@ -142,8 +130,8 @@
     document.querySelectorAll('[data-i18n-placeholder]').forEach(node => { node.setAttribute('placeholder', t(node.dataset.i18nPlaceholder)); });
     document.querySelectorAll('[data-i18n-content]').forEach(node => { node.content = t(node.dataset.i18nContent); });
     const page = document.body.dataset.page;
-    document.title = t(page === 'skills-agents' ? 'skillsAgentsTitle' : page === 'developer' ? 'developerTitle' : page === 'websites' ? 'websitesTitle' : page === 'projects' ? 'projectsTitle' : 'homeTitle');
-    document.querySelector('meta[name="description"]').content = t(page === 'skills-agents' ? 'skillsAgentsDescription' : page === 'developer' ? 'developerMetaDescription' : page === 'websites' ? 'websitesMetaDescription' : page === 'projects' ? 'projectsDescription' : 'homeDescription');
+    document.title = t(page === 'skills-agents' ? 'skillsTitle' : page === 'developer' ? 'developerTitle' : page === 'websites' ? 'websitesTitle' : page === 'projects' ? 'projectsTitle' : 'homeTitle');
+    document.querySelector('meta[name="description"]').content = t(page === 'skills-agents' ? 'skillsDescription' : page === 'developer' ? 'developerMetaDescription' : page === 'websites' ? 'websitesMetaDescription' : page === 'projects' ? 'projectsDescription' : 'homeDescription');
     document.querySelectorAll('[data-language]').forEach(button => {
       const active = button.dataset.language === language;
       button.setAttribute('aria-pressed', String(active));

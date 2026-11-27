@@ -13,7 +13,7 @@
   <meta name="twitter:card" content="summary">
   <meta name="theme-color" content="#000000">
   <meta name="description" content="Коллекции скиллов для Codex и Claude Code: архивы для скачивания.">
-  <title>Скиллы и агенты — Slipcast-Dev</title>
+  <title>Скиллы — Slipcast-Dev</title>
   <script src="i18n.js"></script>
   <style>
     .language-switch { position: absolute; z-index: 2; top: 18px; right: 22px; display: flex; gap: 4px; padding: 3px; border: 1px solid #00ff6640; border-radius: 5px; background: #000; }
@@ -84,22 +84,22 @@
   <header class="topbar">
     <nav class="topbar-inner" aria-label="Навигация сайта" data-i18n-label="navigation">
       <a class="home-link" href="index.html" data-i18n="terminal">← Терминал</a>
-      <a class="path" href="skills-agents.html" aria-current="page">~/skills-agents</a>
+      <a class="path" href="skills-agents.html" aria-current="page">~/skills</a>
     </nav>
   </header>
   <main>
     <header class="intro">
-      <h1 data-i18n="skillsAgents">Скиллы и агенты</h1>
+      <h1 data-i18n="skillsTitleLabel">Скиллы</h1>
       <p data-i18n="skillsIntro">Коллекции навыков для разработки, анализа, работы с документами и автоматизации.</p>
     </header>
-    <div class="collection-filters" role="group" aria-label="Фильтр коллекций" data-i18n-label="filterCollections">
+    <div class="collection-filters" role="group" aria-label="Фильтр совместимости" data-i18n-label="skillCompatibility">
       <button type="button" data-filter="all" aria-pressed="true" data-i18n="allCollections">Все</button>
-      <button type="button" data-filter="skills" aria-pressed="false" data-i18n="skillsFilter">Скиллы</button>
-      <button type="button" data-filter="agents" aria-pressed="false" data-i18n="agentsFilter">Агенты</button>
+      <button type="button" data-filter="codex" aria-pressed="false">Codex</button>
+      <button type="button" data-filter="claude" aria-pressed="false">Claude Code</button>
     </div>
-    <p id="empty-collections" class="load-status" role="status" data-i18n="noAgents" hidden>Коллекции агентов пока не опубликованы.</p>
-    <ol class="project-list" aria-label="Коллекции скиллов и агентов" data-i18n-label="skillCollections">
-      <li data-collection="skills">
+    <p id="empty-collections" class="load-status" role="status" data-i18n="noCompatibleSkills" hidden>Для выбранной среды пока нет скиллов.</p>
+    <ol class="project-list" aria-label="Коллекции скиллов" data-i18n-label="skillCollections">
+      <li data-compatibility="codex">
         <a class="project-card" href="downloads/codex-skills.zip" download="codex-skills.zip" aria-labelledby="codex-skills-title codex-skills-download">
           <span class="status">Codex · SKILL.md</span>
           <h2 id="codex-skills-title">codex-skills</h2>
@@ -107,7 +107,7 @@
           <span class="collection-download" id="codex-skills-download" data-i18n="skillDownload">Скачать</span>
         </a>
       </li>
-      <li data-collection="skills">
+      <li data-compatibility="claude">
         <a class="project-card" href="downloads/claude-skills.zip" download="claude-skills.zip" aria-labelledby="claude-skills-title claude-skills-download">
           <span class="status">Claude Code · SKILL.md</span>
           <h2 id="claude-skills-title">claude-skills</h2>
@@ -115,45 +115,21 @@
           <span class="collection-download" id="claude-skills-download" data-i18n="skillDownload">Скачать</span>
         </a>
       </li>
-      <li data-collection="agents">
-        <a class="project-card" href="https://github.com/Slipcast-dev/Slipcast-dev.github.io/releases/latest/download/claude-agents-design-development.zip" download="claude-agents-design-development.zip" aria-labelledby="design-development-title design-development-download">
-          <span class="status">Claude Code · Agents</span>
-          <h2 id="design-development-title" data-i18n="agentPack1Title">Проектирование и разработка</h2>
-          <p data-i18n="agentPack1Description">Агенты для анализа требований, архитектуры, разработки, тестирования и выпуска.</p>
-          <span class="collection-download" id="design-development-download" data-i18n="skillDownload">Скачать</span>
-        </a>
-      </li>
-      <li data-collection="agents">
-        <a class="project-card" href="https://github.com/Slipcast-dev/Slipcast-dev.github.io/releases/latest/download/claude-agents-web-telegram.zip" download="claude-agents-web-telegram.zip" aria-labelledby="web-telegram-title web-telegram-download">
-          <span class="status">Claude Code · Agents</span>
-          <h2 id="web-telegram-title" data-i18n="agentPack2Title">Веб и Telegram-боты</h2>
-          <p data-i18n="agentPack2Description">Агенты для фронтенда, API, баз данных, Telegram-ботов, тестирования и выкладки.</p>
-          <span class="collection-download" id="web-telegram-download" data-i18n="skillDownload">Скачать</span>
-        </a>
-      </li>
-      <li data-collection="agents">
-        <a class="project-card" href="https://github.com/Slipcast-dev/Slipcast-dev.github.io/releases/latest/download/claude-agents-refactoring-security-optimization.zip" download="claude-agents-refactoring-security-optimization.zip" aria-labelledby="refactoring-security-optimization-title refactoring-security-optimization-download">
-          <span class="status">Claude Code · Agents</span>
-          <h2 id="refactoring-security-optimization-title" data-i18n="agentPack3Title">Рефакторинг, безопасность и оптимизация</h2>
-          <p data-i18n="agentPack3Description">Агенты для рефакторинга, проверки безопасности кода и оптимизации производительности.</p>
-          <span class="collection-download" id="refactoring-security-optimization-download" data-i18n="skillDownload">Скачать</span>
-        </a>
-      </li>
     </ol>
     <footer class="end"><a class="back" href="index.html" data-i18n="back">← Назад в терминал</a></footer>
   </main>
 
   <script>
-    // Фильтруем локальные карточки. Выбор сохраняется при смене языка.
+    // Фильтруем карточки по среде. Смена языка не меняет выбранную совместимость.
     const filterButtons = document.querySelectorAll('[data-filter]');
-    const collections = document.querySelectorAll('[data-collection]');
+    const collections = document.querySelectorAll('[data-compatibility]');
     const emptyCollections = document.querySelector('#empty-collections');
     filterButtons.forEach(button => {
       button.addEventListener('click', () => {
         const selected = button.dataset.filter;
         filterButtons.forEach(control => control.setAttribute('aria-pressed', String(control === button)));
         collections.forEach(collection => {
-          collection.hidden = selected !== 'all' && collection.dataset.collection !== selected;
+          collection.hidden = selected !== 'all' && collection.dataset.compatibility !== selected;
         });
         emptyCollections.hidden = Array.from(collections).some(collection => !collection.hidden);
       });

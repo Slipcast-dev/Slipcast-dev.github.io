@@ -332,11 +332,11 @@ test('Медленный локальный JSON не задерживает о�
 
 test('Раздел скиллов доступен из меню; карточки скачивают архивы, фильтры и перевод работают', () => {
   const home = setup('index.html', { languages: ['ru'], seen: true });
-  const navigation = home.document.querySelector('[data-i18n="skillsAgentsNav"]');
-  assert.equal(navigation.textContent, 'Скиллы и\u00a0агенты');
-  assert.equal(navigation.attrs.href, 'skills-agents.html?v=2&lang=ru');
+  const navigation = home.document.querySelector('[data-i18n="skillsTitleLabel"]');
+  assert.equal(navigation.textContent, 'Скиллы');
+  assert.equal(navigation.attrs.href, 'skills-agents.html?v=3&lang=ru');
   const menu = home.nodes.filter(node => (node.attrs.class || '').split(' ').includes('nav-button'));
-  assert.deepEqual(menu.map(node => node.dataset.i18n), ['projects', 'skillsAgentsNav', 'aiAggregator', 'telegramChannel', 'developer']);
+  assert.deepEqual(menu.map(node => node.dataset.i18n), ['projects', 'skillsTitleLabel', 'aiAggregator', 'telegramChannel', 'developer']);
   assert.equal(menu[3].attrs.href, 'https://t.me/slipcastdev');
   assert.equal(menu[4].attrs.href, 'developer.html?lang=ru');
   assert.equal(menu[2].textContent, 'AI-Агрегатор');
@@ -349,12 +349,12 @@ test('Раздел скиллов доступен из меню; карточк
   assert.equal(menu[3].textContent, 'Telegram Channel');
   assert.equal(menu[3].attrs.href, 'https://t.me/slipcastdev');
   home.click('en');
-  assert.equal(navigation.textContent, 'Skills &\u00a0Agents');
-  assert.equal(navigation.attrs.href, 'skills-agents.html?v=2&lang=en');
+  assert.equal(navigation.textContent, 'Skills');
+  assert.equal(navigation.attrs.href, 'skills-agents.html?v=3&lang=en');
 
   const page = setup('skills-agents.html', { languages: ['ru'] });
-  assert.equal(page.document.querySelector('h1').textContent, 'Скиллы и агенты');
-  assert.equal(page.document.title, 'Скиллы и агенты — Slipcast-Dev');
+  assert.equal(page.document.querySelector('h1').textContent, 'Скиллы');
+  assert.equal(page.document.title, 'Скиллы — Slipcast-Dev');
   const builtPage = fs.readFileSync(path.join(dist, 'skills-agents.html'), 'utf8');
   for (const name of ['codex-skills.zip', 'claude-skills.zip']) {
     const url = 'downloads/' + name;
@@ -365,38 +365,36 @@ test('Раздел скиллов доступен из меню; карточк
     const version = createHash('sha256').update(archive).digest('hex').slice(0, 16);
     assert.ok(builtPage.includes(`href="${url}?v=${version}" download="${name}"`));
   }
-  const cards = page.document.querySelectorAll('[data-collection]');
-  const agents = cards.filter(card => card.dataset.collection === 'agents');
-  const skills = cards.filter(card => card.dataset.collection === 'skills');
-  assert.equal(agents.length, 3);
-  assert.equal(skills.length, 2);
-  const assets = [
+  const cards = page.document.querySelectorAll('[data-compatibility]');
+  assert.deepEqual(cards.map(card => card.dataset.compatibility), ['codex', 'claude']);
+  assert.doesNotMatch(builtPage, /claude-agents-.*\.zip/);
+  for (const name of [
     'claude-agents-design-development.zip',
     'claude-agents-web-telegram.zip',
     'claude-agents-refactoring-security-optimization.zip'
-  ];
-  for (const name of assets) {
-    const link = page.nodes.find(node => node.tag === 'a' && node.attrs.download === name);
-    assert.equal(link.attrs.href, 'https://github.com/Slipcast-dev/Slipcast-dev.github.io/releases/latest/download/' + name);
+  ]) {
     assert.ok(fs.statSync(path.join(dist, 'downloads/agents', name)).size > 0);
   }
-  const choose = name => page.document.querySelector('[data-filter="' + name + '"]').listeners.click[0]();
-  choose('agents');
-  assert.ok(agents.every(card => !card.hidden));
-  assert.ok(skills.every(card => card.hidden));
+  const filter = name => page.document.querySelector('[data-filter="' + name + '"]');
+  const choose = name => filter(name).listeners.click[0]();
+  const visible = () => cards.filter(card => !card.hidden).map(card => card.dataset.compatibility);
+  assert.deepEqual(visible(), ['codex', 'claude']);
+  choose('codex');
+  assert.deepEqual(visible(), ['codex']);
+  assert.equal(filter('codex').attrs['aria-pressed'], 'true');
+  assert.equal(filter('all').attrs['aria-pressed'], 'false');
+  choose('claude');
+  assert.deepEqual(visible(), ['claude']);
+  assert.equal(filter('claude').attrs['aria-pressed'], 'true');
+  assert.equal(filter('codex').attrs['aria-pressed'], 'false');
   assert.equal(page.document.querySelector('#empty-collections').hidden, true);
   page.click('en');
-  assert.equal(page.document.querySelector('h1').textContent, 'Skills & Agents');
-  assert.equal(page.document.title, 'Skills & Agents — Slipcast-Dev');
-  assert.equal(page.document.querySelector('#empty-collections').textContent, 'No agent collections have been published yet.');
-  assert.ok(agents.every(card => !card.hidden));
-  assert.ok(skills.every(card => card.hidden));
-  choose('skills');
-  assert.ok(skills.every(card => !card.hidden));
-  assert.ok(agents.every(card => card.hidden));
-  assert.equal(page.document.querySelector('#empty-collections').hidden, true);
+  assert.equal(page.document.querySelector('h1').textContent, 'Skills');
+  assert.equal(page.document.title, 'Skills — Slipcast-Dev');
+  assert.equal(page.document.querySelector('[data-i18n-label="skillCompatibility"]').attrs['aria-label'], 'Compatibility filter');
+  assert.deepEqual(visible(), ['claude']);
   choose('all');
-  assert.ok(cards.every(card => !card.hidden));
+  assert.deepEqual(visible(), ['codex', 'claude']);
 });
 
 test('Карточка приложения скачивает установщик, сборки для других платформ доступны отдельно', () => {
