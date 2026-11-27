@@ -336,7 +336,7 @@ test('Раздел скиллов доступен из меню; карточк
   const home = setup('index.html', { languages: ['ru'], seen: true });
   const navigation = home.document.querySelector('[data-i18n="skillsTitleLabel"]');
   assert.equal(navigation.textContent, 'Скиллы');
-  assert.equal(navigation.attrs.href, 'skills-agents.html?v=4&lang=ru');
+  assert.equal(navigation.attrs.href, 'skills-agents.html?v=5&lang=ru');
   const menu = home.nodes.filter(node => (node.attrs.class || '').split(' ').includes('nav-button'));
   assert.deepEqual(menu.map(node => node.dataset.i18n), ['projects', 'skillsTitleLabel', 'aiAggregator', 'telegramChannel', 'developer']);
   assert.equal(menu[3].attrs.href, 'https://t.me/slipcastdev');
@@ -353,11 +353,13 @@ test('Раздел скиллов доступен из меню; карточк
   assert.equal(menu[3].attrs.href, 'https://t.me/slipcastdev');
   home.click('en');
   assert.equal(navigation.textContent, 'Skills');
-  assert.equal(navigation.attrs.href, 'skills-agents.html?v=4&lang=en');
+  assert.equal(navigation.attrs.href, 'skills-agents.html?v=5&lang=en');
 
   const page = setup('skills-agents.html', { languages: ['ru'] });
   assert.equal(page.document.querySelector('h1').textContent, 'Скиллы');
   assert.equal(page.document.title, 'Скиллы — Slipcast-Dev');
+  assert.ok(page.document.querySelector('.skill-list'));
+  assert.equal(page.document.querySelector('[data-i18n="skillCategoryColumn"]').textContent, 'Категория');
   const builtPage = fs.readFileSync(path.join(dist, 'skills-agents.html'), 'utf8');
   const cards = page.document.querySelectorAll('[data-compatibility]');
   const codexCards = cards.filter(card => card.dataset.compatibility === 'codex');
@@ -373,7 +375,7 @@ test('Раздел скиллов доступен из меню; карточк
     assert.ok(match, link.attrs.href);
     const [, environment, category, version] = match;
     assert.equal(link.attrs.download, environment + '-' + category + '.zip');
-    assert.ok(link.attrs.class.split(' ').includes('project-card'));
+    assert.ok(link.attrs.class.split(' ').includes('skill-entry'));
     const archive = fs.readFileSync(path.join(dist, link.attrs.href.split('?')[0]));
     assert.ok(archive.length > 0);
     assert.equal(version, createHash('sha256').update(archive).digest('hex').slice(0, 16));

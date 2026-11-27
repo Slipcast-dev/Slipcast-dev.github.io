@@ -205,11 +205,12 @@ def card(
     filename = f"{engine}-{category}.zip"
     return (
         f'      <li data-compatibility="{engine}">\n'
-        f'        <a class="project-card" href="downloads/skills/{engine}/{category}.zip?v={digest}" download="{filename}">\n'
-        f'          <span class="status">{name} · SKILL.md</span>\n'
+        f'        <a class="skill-entry" href="downloads/skills/{engine}/{category}.zip?v={digest}" download="{filename}">\n'
+        '          <span class="entry-marker" aria-hidden="true">›</span>\n'
         f'          <h2 data-skill-title-ru="{title_ru}" data-skill-title-en="{title_en}">{title_ru}</h2>\n'
+        f'          <span class="skill-engine">{name}</span>\n'
         f'          <p data-skill-count="{count}">Навыков: {count}</p>\n'
-        '          <span class="collection-download" data-i18n="skillDownload">Скачать ZIP</span>\n'
+        '          <span class="collection-download"><span aria-hidden="true">↓</span><span class="sr-only" data-i18n="skillDownload">Скачать ZIP</span></span>\n'
         '        </a>\n'
         '      </li>\n'
     )
