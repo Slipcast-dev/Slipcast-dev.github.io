@@ -164,7 +164,19 @@
     "Маршрутизация между моделями": "Model routing",
     "Модели в реальном времени": "Real-time models",
     "Генерация и редактирование изображений с ИИ": "AI image generation and editing",
-    "Выпуск и обновление моделей": "Model releases and updates"
+    "Выпуск и обновление моделей": "Model releases and updates",
+    "Интеграция с Finder и системой": "Finder and System Integration",
+    "Приложения в строке меню": "Menu Bar Apps",
+    "Разрешения и приватность macOS": "macOS Permissions and Privacy",
+    "Совместимость со старыми приложениями Windows": "Windows legacy application compatibility",
+    "Интеграция с Проводником Windows": "Windows File Explorer integration",
+    "Корпоративное развёртывание Windows": "Windows enterprise deployment",
+    "Оптимизация моделей на устройстве": "On-device model optimization",
+    "Ответы с проверяемыми источниками": "Answers grounded in verifiable sources",
+    "Обработка документов с разметкой": "Layout-aware document processing",
+    "Версии и совместимость агентов": "Agent versions and compatibility",
+    "Повторяемые прогоны и диагностика": "Reproducible agent runs and diagnostics",
+    "Команды для большого репозитория": "Agent teams for large repositories"
   },
   "tasks": {
     "app": "Design an application",
@@ -407,7 +419,43 @@
     "aiImageEditingTask3": "Check product images against the reference",
     "modelReleaseValidationTask1": "Prepare a new model version for deployment",
     "modelReleaseValidationTask2": "Compare responses from old and new models",
-    "modelReleaseValidationTask3": "Test rollback to the previous model version"
+    "modelReleaseValidationTask3": "Test rollback to the previous model version",
+    "macosFinderSyncActions": "Add Finder Actions and Sync Badges",
+    "macosQuickLookCustomFormat": "Add Quick Look Previews for a Custom Format",
+    "macosSpotlightContentSearch": "Make App Content Searchable in Spotlight",
+    "macosMenuBarUtility": "Build a macOS Menu Bar Utility",
+    "macosManagedLaunchAtLogin": "Add User-Controlled Launch at Login on macOS",
+    "macosSleepWakeRecovery": "Verify Utility Recovery After Sleep",
+    "macosSandboxFileAccess": "Configure File Access in App Sandbox",
+    "macosPermissionDenialHandling": "Handle Denied macOS Permissions",
+    "macosFirstRunPrivacyCheck": "Verify First Launch and Privacy Flows",
+    "modernizeWin32Application": "Modernize a Win32 app while preserving settings and files",
+    "migrateWpfApplication": "Migrate a WPF application to a supported .NET runtime",
+    "verifyWindowsLegacyCompatibility": "Test a Windows application with legacy files and settings",
+    "addWindowsExplorerCommand": "Add a command to the File Explorer context menu",
+    "registerWindowsFileAssociations": "Set up opening files by double-clicking in Windows",
+    "testWindowsExplorerIntegration": "Test the application's File Explorer integration",
+    "prepareWindowsManagedInstall": "Prepare unattended application installation on managed Windows devices",
+    "reviewWindowsDeploymentPolicies": "Review Windows policies for enterprise installation",
+    "testWindowsEnterpriseRollback": "Test upgrades and rollback of a Windows application",
+    "selectOnDeviceQuantization": "Select a quantization format for a local model",
+    "accelerateOnDeviceInference": "Speed up inference on the target device",
+    "compareOnDeviceMemoryAndQuality": "Compare model memory and quality on the target device",
+    "evaluateAiRetrievalQuality": "Improve passage retrieval for model answers",
+    "auditAiAnswerCitations": "Audit citations and links in model answers",
+    "testAiWithMissingEvidence": "Test model answers when sources are insufficient",
+    "extractLayoutAwareDocument": "Extract PDF data while preserving page layout",
+    "restoreDocumentTablesAndDiagrams": "Reconstruct tables and diagrams from a PDF",
+    "verifyExtractedDocumentFidelity": "Verify extracted data against the original document",
+    "updateDualAgentConfig": "Update agent configurations for Codex and Claude Code",
+    "reviewVersionedAgentPrompt": "Review agent instruction changes between versions",
+    "testDualAgentRuntime": "Test agent compatibility in Codex and Claude Code",
+    "designRepeatableAgentRun": "Prepare a reproducible agent test run",
+    "compareAgentExecutionTraces": "Compare runs and identify where context was lost",
+    "testAgentSessionResume": "Test recovery of an interrupted agent session",
+    "divideLargeRepoAgentWork": "Assign agent work across repository modules",
+    "isolateParallelAgentChanges": "Isolate changes from agents working in parallel",
+    "reviewMergedAgentWork": "Review compatibility of changes from multiple agents"
   },
   "phases": {
     "auto": "Based on the task",
@@ -522,7 +570,31 @@
     "linuxServiceOperations": "systemd service configuration and maintenance",
     "migrateDocumentArchive": "Archive migration and link verification",
     "maintainKnowledgeBase": "Knowledge base metadata and structure updates",
-    "communityFeedbackCycle": "Response drafting and feedback review"
+    "communityFeedbackCycle": "Response drafting and feedback review",
+    "macosFinderImplementation": "Implement macOS File Integration",
+    "macosFileIntegrationVerification": "Verify Finder and Spotlight Behavior",
+    "macosMenuBarLifecycleImplementation": "Implement the Menu and Utility Lifecycle",
+    "macosLoginWakeVerification": "Verify Login, Sleep, and Wake",
+    "macosPermissionImplementation": "Implement Sandboxed Access and Permission Prompts",
+    "macosPermissionFlowsVerification": "Verify First Launch, Permission Denial, and Revocation",
+    "windowsLegacyMigrationDesign": "Windows dependency review and migration planning",
+    "windowsLegacyCompatibilityVerification": "Verification of legacy Windows profiles and files",
+    "windowsExplorerIntegrationImplementation": "File Explorer command and file association implementation",
+    "windowsExplorerIntegrationVerification": "Verification of File Explorer actions and integration lifecycle",
+    "windowsManagedDeploymentPreparation": "Package preparation and installation policy review",
+    "windowsManagedUpdateValidation": "Pilot verification of upgrades and rollback",
+    "onDeviceModelProfiling": "Local model profile selection",
+    "onDeviceModelBenchmarks": "Memory, speed and quality benchmarking",
+    "groundedRetrievalEvaluation": "Retrieval labeling and evaluation",
+    "groundedAnswerVerification": "Citation and evidence sufficiency checks",
+    "layoutAwareExtraction": "Block, table and diagram extraction",
+    "documentFidelityVerification": "Layout and value verification against the source",
+    "agentConfigParity": "Shared instructions, model configuration, and tool access",
+    "agentVersionValidation": "Validate the new agent version in Codex and Claude Code",
+    "agentRunBaseline": "Baseline runs and trace comparison",
+    "agentRunRecovery": "Divergence diagnosis and session recovery",
+    "agentRepositoryBoundaries": "Ownership boundaries and change isolation",
+    "agentChangeIntegration": "Integrate and review changes from multiple agents"
   },
   "guidance": {
     "python": "Follow PEP 8, annotate functions and methods, and use asynchronous calls for suitable I/O operations.",
@@ -2889,6 +2961,330 @@
         "Record the previous version and its working configuration.",
         "Define rollback thresholds and recovery steps.",
         "Verify rollback and data compatibility in a test environment."
+      ]
+    ],
+    "macos-finder-extension-engineer": [
+      "Finder Extension Engineer",
+      "Designs Finder actions and status badges for folders managed by the app.",
+      [
+        "Define the supported folders, actions, and sync states. Use Finder Sync only for synchronization scenarios.",
+        "Share only the data the extension needs and avoid long-running work while handling Finder requests.",
+        "Test the menu and badges with multiple files selected, an unavailable folder, and a Finder restart."
+      ]
+    ],
+    "macos-quick-look-developer": [
+      "Quick Look Extension Developer",
+      "Adds Finder previews for a custom file format.",
+      [
+        "Check the file type identifier and configure a Quick Look extension for the supported format.",
+        "Bound processing time and input size. Return a clear result for an empty, corrupt, or oversized file.",
+        "Use test files to verify that the preview opens in Finder without launching the main app."
+      ]
+    ],
+    "macos-spotlight-search-engineer": [
+      "Spotlight Search Engineer",
+      "Makes relevant app content searchable while keeping the index current and respecting privacy.",
+      [
+        "Decide whether to index app records or custom files, then choose the appropriate Spotlight mechanism.",
+        "Map searchable fields to app data. Exclude sensitive records and account for index updates and deletions.",
+        "Test searching, opening a result, refreshing after an edit, and removing a result when its source is deleted."
+      ]
+    ],
+    "macos-menu-bar-developer": [
+      "Menu Bar App Developer",
+      "Builds menu bar utilities with clear status and accessible controls.",
+      [
+        "Choose MenuBarExtra or NSStatusItem based on the UI requirements and minimum supported macOS version.",
+        "Separate app state from the menu. Provide clear settings and quit commands, plus accessible labels.",
+        "Test keyboard use, reopening the menu, and status updates while work runs in the background."
+      ]
+    ],
+    "macos-background-task-engineer": [
+      "Background Task Engineer",
+      "Implements user-controlled launch at login and reliable background work.",
+      [
+        "Separate work that runs while the app is open from work that genuinely requires a separate process.",
+        "If launch at login is needed, check whether SMAppService applies. Make registration user-controlled and handle denial.",
+        "Make repeated starts safe. Test cancellation, process termination, and recovery after sleep."
+      ]
+    ],
+    "macos-sleep-wake-tester": [
+      "Sleep and Wake QA Engineer",
+      "Tests job restarts, UI state, and recovery after macOS sleeps.",
+      [
+        "Define observable test cases for sleep, wake, network interruption, and a new login session.",
+        "On a test device, verify that jobs resume or restart cleanly without duplication.",
+        "Record the macOS version, steps, expected result, and actual result. List any cases the current environment cannot verify."
+      ]
+    ],
+    "macos-app-sandbox-engineer": [
+      "App Sandbox Engineer",
+      "Configures the minimum sandbox entitlements for legitimate file and network operations.",
+      [
+        "List the operations the app requires and map them to the minimum App Sandbox entitlements.",
+        "Use the system file or folder picker. Persist access to a selected resource only when needed and handle stale access grants.",
+        "Test the signed build with allowed resources, after access is revoked, and after the user cancels file selection."
+      ]
+    ],
+    "macos-system-permissions-specialist": [
+      "macOS System Permissions Specialist",
+      "Implements clear permission requests and graceful behavior when a user denies access.",
+      [
+        "Tie each prompt to a specific user action. Check the purpose and required usage descriptions for the APIs in use.",
+        "Handle denial, restrictions, and revocation. Offer a manual route to System Settings when appropriate.",
+        "Verify the flows on supported macOS versions, including relaunching the app without a granted permission."
+      ]
+    ],
+    "macos-first-run-tester": [
+      "First-Run QA Engineer",
+      "Tests first launch on a clean profile, on-demand permission prompts, and behavior after denial.",
+      [
+        "Start a test build in a clean profile and verify that the main UI works before optional permissions are requested.",
+        "Exercise grant, denial, revocation, and relaunch. Check that permission prompts follow user actions.",
+        "Record the macOS version, build type, and outcome for each permission in a test matrix."
+      ]
+    ],
+    "windows-win32-compatibility-engineer": [
+      "Win32 engineer",
+      "Modernizes Win32 components while preserving application settings, files, and behavior.",
+      [
+        "Identify the minimum supported Windows version and review the APIs, architecture, and dependencies used by the code.",
+        "Record settings and user file formats. Update compatible components in small steps while preserving source data.",
+        "Verify startup, opening legacy files, and settings upgrades on supported versions of Windows."
+      ]
+    ],
+    "windows-wpf-migration-engineer": [
+      "WPF migration engineer",
+      "Moves WPF applications to a supported .NET runtime while preserving key workflows.",
+      [
+        "Inventory WPF dependencies, XAML resources, and workflows that must survive the migration.",
+        "Prepare an incremental migration that preserves bindings and user edits and allows a return to the previous version.",
+        "Verify display scaling, keyboard navigation, opening legacy files, and loading user settings."
+      ]
+    ],
+    "windows-application-compatibility-tester": [
+      "Windows compatibility tester",
+      "Tests application compatibility with legacy files, settings, and Windows versions.",
+      [
+        "Build a matrix of supported Windows versions, architectures, and upgrade paths.",
+        "Test clean installs and upgrades with copies of legacy files and profiles.",
+        "Record reproducible discrepancies, user impact, and verification results after fixes."
+      ]
+    ],
+    "windows-explorer-extension-developer": [
+      "File Explorer extension developer",
+      "Adds application actions to File Explorer and keeps the shell responsive.",
+      [
+        "Define context-menu workflows, supported file types, and behavior when multiple items are selected.",
+        "Use supported integration mechanisms, move lengthy work out of the shell, and handle launch errors.",
+        "Verify discovery, execution, and removal of the command through installation, upgrades, and uninstall."
+      ]
+    ],
+    "windows-file-association-engineer": [
+      "Windows file association engineer",
+      "Registers file types and File Explorer launch behavior while honoring the user's choices.",
+      [
+        "Define file extensions, supported actions, and application launch arguments.",
+        "Register associations through supported means and verify paths containing spaces and Unicode.",
+        "Test double-click launch, the default-app selection flow, and cleanup on uninstall."
+      ]
+    ],
+    "windows-shell-integration-tester": [
+      "Windows shell integration tester",
+      "Tests File Explorer actions, file associations, and shell behavior under ordinary failures.",
+      [
+        "Cover opening files, context menus, multiple selections, and standard user accounts.",
+        "Test different paths and file types and verify behavior after an application upgrade or uninstall.",
+        "Record reproducible delays, failures, and discrepancies on a test machine."
+      ]
+    ],
+    "windows-managed-installation-engineer": [
+      "Windows managed installation engineer",
+      "Prepares Windows application installation on managed devices with useful logs and clear results.",
+      [
+        "Identify the package format, installation scope, dependencies, and managed device requirements.",
+        "Configure unattended installation with logging, installation detection, and predictable handling of repeated runs.",
+        "Verify clean installation, upgrades, and uninstall on pilot devices with the agreed configuration."
+      ]
+    ],
+    "windows-policy-specialist": [
+      "Windows policy specialist",
+      "Reviews how application installation and operation interact with organizational Windows policies.",
+      [
+        "Document applicable organizational policies, roles, and permissions needed to install and run the application.",
+        "Define a supported least-privilege configuration and coordinate changes with the policy owner.",
+        "Review reports from the pilot group and document configuration discrepancies for the administrator."
+      ]
+    ],
+    "windows-update-rollback-tester": [
+      "Windows update and rollback tester",
+      "Tests application upgrades, return to a previous version, and preservation of user data.",
+      [
+        "Prepare a matrix of installation versions, upgrade paths, and baseline profiles for the pilot group.",
+        "Test successful and interrupted upgrades on test devices, then perform the documented rollback.",
+        "Compare settings, saved files, and logs after rollback and record measurable readiness criteria."
+      ]
+    ],
+    "model-quantization-engineer": [
+      "Quantization engineer",
+      "Selects a weight format and precision for the target device.",
+      [
+        "Record the model, license terms, target device and formats supported by the runtime. Define the minimum acceptable quality.",
+        "Compare a reference and several quantization formats on the same examples, context lengths and generation settings.",
+        "Identify viable memory-quality trade-offs, report measured results and state when to fall back to the reference."
+      ]
+    ],
+    "on-device-inference-engineer": [
+      "Inference performance specialist",
+      "Improves local inference speed within memory, thermal and stability limits.",
+      [
+        "Measure cold start, time to first token and generation throughput on representative short and long requests.",
+        "Change one runtime parameter at a time. Check compute placement, batch size and context cache within memory limits.",
+        "Repeat the measurements under sustained load and save the reproducible configuration, degradation thresholds and fallback."
+      ]
+    ],
+    "on-device-model-quality-analyst": [
+      "Memory and quality analyst",
+      "Compares peak memory usage with model quality on realistic scenarios.",
+      [
+        "Define scenarios, reference answers and an available system memory budget. Include long context and concurrent requests where applicable.",
+        "Separate weight memory, cache growth and runtime overhead. Score answer quality and failure rates on the same examples.",
+        "Build a scenario-to-profile matrix with memory headroom and mark the limits beyond which the configuration needs retesting."
+      ]
+    ],
+    "retrieval-quality-engineer": [
+      "Retrieval quality engineer",
+      "Verifies that retrieval finds the passages needed to answer a question.",
+      [
+        "Build an evaluation set with labeled relevant passages, synonyms, dates and access filters.",
+        "Compare baseline and candidate retrieval by top-result recall, ranking quality and latency. Diagnose missed passages.",
+        "Separate retrieval errors from generation errors, suggest indexing or ranking changes and retain representative regression examples."
+      ]
+    ],
+    "answer-citation-reviewer": [
+      "Citation reviewer",
+      "Checks claims and quotations against accessible source versions.",
+      [
+        "Identify verifiable claims. Open each cited passage and record its version, page or identifier.",
+        "Check whether the source supports the wording, date, number and context. Flag inaccessible and conflicting sources separately.",
+        "Return a review table with the evidence passage, status and suggested correction. Clearly mark unverified conclusions."
+      ]
+    ],
+    "insufficient-evidence-tester": [
+      "Insufficient-evidence response tester",
+      "Tests how a model handles missing or conflicting evidence.",
+      [
+        "Prepare paired queries with sufficient and insufficient evidence. Include incomplete, contradictory and outdated sources.",
+        "Check that the model distinguishes supported facts from assumptions, asks for clarification where needed and cites only available materials.",
+        "Measure unsupported claims and unnecessary abstentions. Save critical examples for repeat runs."
+      ]
+    ],
+    "multimodal-document-extractor": [
+      "Multimodal extraction engineer",
+      "Extracts text and visual objects with page and block references.",
+      [
+        "Define the output schema, page numbers and block coordinates. Distinguish embedded text, scans and images to choose a processing path.",
+        "Preserve reading order, relationships between blocks and links to the original. Explicitly mark missing or uncertain passages.",
+        "Validate the schema and coverage on footnotes, columns and mixed-content pages. Record output limitations."
+      ]
+    ],
+    "document-table-diagram-specialist": [
+      "Table and diagram specialist",
+      "Reconstructs table structures and links labels to diagram elements.",
+      [
+        "Identify headers, merged cells, units, captions and tables that continue across pages.",
+        "Represent tables in structured form and describe diagrams through labeled elements and relationships. Link each object to its page.",
+        "Check rows, columns and labels against the original. Mark ambiguous relationships and cells that need manual review."
+      ]
+    ],
+    "document-original-fidelity-reviewer": [
+      "Source document fidelity reviewer",
+      "Checks extracted fields, tables and references against their source pages.",
+      [
+        "Select reference pages with dense layouts, scans and content that spans page breaks.",
+        "Check values, signs, units, headers, page numbers and reading order. Separate content errors from structural errors.",
+        "List discrepancies with source locations, severity and suggested fixes. Mark any areas that could not be verified."
+      ]
+    ],
+    "agent-config-engineer": [
+      "Agent configuration engineer",
+      "Keeps agent behavior consistent across configuration formats.",
+      [
+        "Map TOML and Markdown frontmatter fields to supported settings.",
+        "Identify common requirements and document differences in models, tools, and permissions.",
+        "Verify that both configurations load and run the reference scenarios in each environment."
+      ]
+    ],
+    "agent-prompt-change-reviewer": [
+      "Agent prompt change reviewer",
+      "Explains how instruction changes affect the contract, permissions, and quality.",
+      [
+        "Compare the old and new instructions and identify contract changes.",
+        "Review tool access, approval boundaries, and output format separately.",
+        "Check findings against reference examples and list the regressions."
+      ]
+    ],
+    "agent-runtime-compat-tester": [
+      "Codex and Claude Code compatibility tester",
+      "Checks that agents load and run the core scenarios in both environments.",
+      [
+        "Set the same inputs, constraints, and acceptance criteria for both environments.",
+        "Verify startup, role restrictions, model inheritance, and error handling.",
+        "Record client versions, discrepancies, and reproducible checks."
+      ]
+    ],
+    "agent-test-scenario-engineer": [
+      "Agent test scenario engineer",
+      "Designs reference runs with fixed inputs and verifiable outputs.",
+      [
+        "Record environment and model versions, fixed inputs, and expected output properties.",
+        "Prepare synthetic tool responses and test data with no secrets.",
+        "Verify measurement repeatability and distinguish failures from acceptable variation."
+      ]
+    ],
+    "agent-log-analyst": [
+      "Agent run log analyst",
+      "Compares run traces and finds the first meaningful divergence.",
+      [
+        "Redact sensitive data and align steps by ID.",
+        "Find the first step where context, available tools, or results diverge.",
+        "Explain the likely cause with evidence and propose a minimal follow-up check."
+      ]
+    ],
+    "agent-session-recovery-tester": [
+      "Agent session recovery tester",
+      "Checks that interrupted runs resume without repeating external actions.",
+      [
+        "Record a checkpoint and interrupt a test run after state is saved.",
+        "Resume with the same inputs and compare completed and remaining steps.",
+        "Check that actions are not duplicated and incomplete checkpoints are reported clearly."
+      ]
+    ],
+    "agent-ownership-coordinator": [
+      "Agent ownership coordinator",
+      "Splits work by module and connects independent changes through shared contracts.",
+      [
+        "Assign write boundaries to each role and owners for shared files.",
+        "Separate parallel work from tasks that depend on a shared contract.",
+        "Define handoff criteria and an integration order."
+      ]
+    ],
+    "agent-change-isolation-engineer": [
+      "Agent change isolation engineer",
+      "Sets up isolated worktrees and prevents overlapping edits.",
+      [
+        "Create worktrees from the agreed base within the project.",
+        "Check that edits stay in assigned files and preserve other contributors’ work.",
+        "Document how to transfer and integrate changes while preserving history."
+      ]
+    ],
+    "agent-integration-reviewer": [
+      "Agent integration reviewer",
+      "Reviews whether changes from multiple contributors work together.",
+      [
+        "Check agreements on interfaces, schemas, and shared dependencies.",
+        "Identify conflicts and review available end-to-end test results.",
+        "Report what is ready to merge and which checks are still pending."
       ]
     ]
   }

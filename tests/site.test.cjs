@@ -498,3 +498,30 @@ test('Каждая задача агрегатора имеет подходящ
     assert.ok(!taskPhases.get('socialPublishingPreparationTask1').has('architecture'));
   }
 });
+
+test('Новые роли агрегатора связаны с задачами, этапами и профилями моделей', () => {
+  const html = fs.readFileSync(path.join(dist, 'ai-aggregator-en.html'), 'utf8');
+  const catalog = JSON.parse(html.match(/<script id="catalog-data" type="application\/json">([\s\S]+?)<\/script>/)[1]);
+  const definitions = html.slice(html.indexOf('const environment = '), html.indexOf('const platformRoles = '));
+  const { environment, roleModel, tasks, phases, taskPhases } = vm.runInNewContext(
+    definitions + '\n({ environment, roleModel, tasks, phases, taskPhases })'
+  );
+  const specialized = catalog.roles.filter(role => Object.hasOwn(role, 'tier'));
+  assert.equal(specialized.length, 36);
+  assert.equal(new Set(specialized.map(role => role.category)).size, 12);
+
+  for (const role of specialized) {
+    const matchingTasks = Object.entries(tasks).filter(([, [, roleIds]]) => roleIds.includes(role.id));
+    const matchingStages = Object.entries(phases).filter(([, stage]) => stage.roleIds.includes(role.id));
+    assert.ok(matchingTasks.some(([task]) =>
+      matchingStages.some(([stage]) => taskPhases.get(task).has(stage))), role.id);
+    for (const engine of ['codex', 'claude']) {
+      assert.equal(roleModel(role, engine, '')[0], environment[engine][role.tier][0], role.id);
+      assert.equal(roleModel(role, engine, 'flagship')[0], environment[engine].flagship[0], role.id);
+      assert.equal(roleModel(role, engine, 'inherit')[0], '', role.id);
+    }
+  }
+  assert.equal(tasks.macosQuickLookCustomFormat[2], 'macos');
+  assert.equal(tasks.addWindowsExplorerCommand[2], 'windows');
+  assert.equal(tasks.auditAiAnswerCitations[2], undefined);
+});
