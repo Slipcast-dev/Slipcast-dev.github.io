@@ -470,3 +470,31 @@ test('Английский агрегатор доступен с главной
                    russian.roles.map(role => [role.id, role.steps.length]));
   assert.doesNotMatch(JSON.stringify(english), /\p{Script=Cyrillic}/u);
 });
+
+test('Каждая задача агрегатора имеет подходящие этапы на обоих языках', () => {
+  for (const page of ['ai-aggregator.html', 'ai-aggregator-en.html']) {
+    const html = fs.readFileSync(path.join(dist, page), 'utf8');
+    const catalogStart = html.indexOf('const taskGroups = ');
+    const catalogEnd = html.indexOf('const platformRoles = ');
+    assert.ok(catalogStart >= 0 && catalogStart < catalogEnd);
+    const { tasks, phases, taskPhases } = vm.runInNewContext(
+      html.slice(catalogStart, catalogEnd) + '\n({ tasks, phases, taskPhases })'
+    );
+    const coveredStages = new Set();
+    assert.equal(taskPhases.size, Object.keys(tasks).length);
+    for (const task of Object.keys(tasks)) {
+      const stages = taskPhases.get(task);
+      assert.ok(stages?.has('auto') && stages.size > 1, task);
+      for (const stage of stages) {
+        assert.ok(Object.hasOwn(phases, stage), task + ': ' + stage);
+        coveredStages.add(stage);
+      }
+    }
+    assert.equal(coveredStages.size, Object.keys(phases).length);
+    assert.ok(taskPhases.get('app').has('architecture'));
+    assert.ok(taskPhases.get('app').has('feasibility'));
+    assert.ok(!taskPhases.get('app').has('socialPublishingPreparation'));
+    assert.ok(taskPhases.get('socialPublishingPreparationTask1').has('socialPublishingPreparation'));
+    assert.ok(!taskPhases.get('socialPublishingPreparationTask1').has('architecture'));
+  }
+});

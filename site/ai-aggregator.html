@@ -74,7 +74,7 @@ button{min-height:42px;padding:8px 13px}button:hover:not(:disabled){border-color
           <input type="radio" name="engine" id="engine-claude" value="claude"><label for="engine-claude">Claude Code</label>
         </div></fieldset>
         <div class="field"><label for="task">Задача</label><select id="task"><option value="" selected disabled>Выберите задачу</option></select></div>
-        <div class="field"><label for="phase">Этап разработки</label><select id="phase"><option value="" selected disabled>Выберите этап</option></select></div>
+        <div class="field"><label for="phase">Этап разработки</label><select id="phase" disabled><option value="" selected disabled>Сначала выберите задачу</option></select></div>
         <div class="field"><label for="platform">Платформа</label><select id="platform">
           <option value="" selected disabled>Выберите платформу</option><option value="any">Любая</option><option value="web">Веб</option><option value="windows">Windows</option><option value="macos">macOS</option><option value="linux">Linux</option><option value="mobile">iOS / Android</option><option value="cross">Кроссплатформенная</option>
         </select></div>
@@ -710,6 +710,166 @@ const phases = Object.fromEntries(phaseGroups.flatMap(([, mode, group]) =>
   Object.entries(group).map(([id, [label, roleIds]]) => [id, { label, roleIds, mode }])
 ));
 
+// Явные связи по идентификаторам не зависят от текста перевода или общих ролей команды.
+const phaseRules = [
+  ['app', 'discovery research feasibility scope plan architecture ux api data threatModel'],
+  ['requirements', 'discovery research scope plan'],
+  ['mvp', 'discovery research feasibility scope plan ux'],
+  ['prototype', 'research feasibility ux architecture compatibility'],
+  ['architecture', 'discovery feasibility plan architecture api data threatModel'],
+  ['roadmap', 'scope plan architecture testPlan launch updates'],
+  ['web', 'full discovery scope architecture ux api data setup implementation integration validation e2e compatibility packaging deployment smoke'],
+  ['site', 'full discovery scope ux setup implementation compatibility webSearchVisibility webImagePreparation packaging deployment smoke'],
+  ['bot', 'full discovery architecture api setup implementation integration apiContractValidation validation deployment smoke monitoring'],
+  ['api', 'full architecture api data implementation integration apiContractValidation validation deployment smoke'],
+  ['apiContract', 'architecture api data apiContractValidation validation'],
+  ['integration', 'api threatModel integration apiContractValidation e2e validation'],
+  ['auth', 'architecture api threatModel implementation integration apiContractValidation validation defensiveSecurityReview'],
+  ['windows mac linux', 'full discovery scope architecture setup implementation compatibility validation packaging deployment smoke'],
+  ['windowsInstaller macDistribution', 'compatibility packaging launch smoke'],
+  ['macAutomation', 'discovery setup implementation integration e2e validation'],
+  ['ios android crossPlatform', 'full discovery scope architecture ux setup implementation crossPlatformMobile mobileSystemFeatures integration compatibility e2e beta packaging mobileStoreRelease'],
+  ['mobileRelease', 'compatibility acceptance beta packaging mobileStoreRelease launch smoke'],
+  ['feature', 'scope architecture setup implementation integration validation e2e acceptance'],
+  ['cli', 'discovery architecture setup implementation compatibility validation packaging'],
+  ['workflow', 'discovery plan setup implementation integration validation e2e'],
+  ['refactor', 'architecture legacyBehaviorProtection refactor validation e2e regressionAndLoadValidation'],
+  ['dependencies', 'architecture legacyBehaviorProtection refactor migrations validation compatibility updates'],
+  ['schema', 'architecture data migrations validation acceptance'],
+  ['migration', 'data migrations fileCompatibility validation smoke migrationCutover'],
+  ['query', 'data performance regressionAndLoadValidation validation monitoring'],
+  ['pipeline', 'data architecture implementation integration validation performance monitoring'],
+  ['dataQuality', 'data validation acceptance monitoring'],
+  ['review', 'validation testPlan defensiveSecurityReview'],
+  ['bug', 'complexFailureAnalysis validation e2e regressionAndLoadValidation'],
+  ['tests', 'testPlan validation apiContractValidation e2e regressionAndLoadValidation acceptance'],
+  ['securityReview', 'threatModel defensiveSecurityReview defensiveRemediation validation'],
+  ['speed', 'performance regressionAndLoadValidation validation monitoring'],
+  ['accessibility', 'ux compatibility validation acceptance'],
+  ['localization inclusive', 'ux compatibility e2e validation acceptance'],
+  ['release', 'compatibility acceptance beta packaging launch deployment smoke'],
+  ['ci', 'setup developerSetup testPlan packaging deployment smoke'],
+  ['cloud', 'architecture threatModel setup deployment smoke monitoring'],
+  ['monitoring', 'setup monitoring incident smoke'],
+  ['docs', 'discovery launch acceptance'],
+  ['backup', 'data plan deployment regressionAndLoadValidation incident maintenance'],
+  ['support', 'monitoring incident maintenance updates decommission'],
+  ['incident', 'complexFailureAnalysis monitoring incident maintenance'],
+  ['ai', 'full discovery architecture structuredModelOutput modelRoutingArchitecture implementation integration validation modelReleaseValidation'],
+  ['model', 'research feasibility modelRoutingArchitecture testPlan validation'],
+  ['textModel', 'structuredModelOutput modelRoutingArchitecture integration validation modelReleaseValidation'],
+  ['vision', 'structuredModelOutput scanProcessing validateOcrData validation'],
+  ['image', 'aiImageEditing socialVisualDesign webImagePreparation validation'],
+  ['speech', 'realtimeModelInteraction integration mediaAccessibility validation'],
+  ['rag', 'architecture data structuredModelOutput implementation integration validation'],
+  ['localAI', 'feasibility architecture setup developerSetup performance modelReleaseValidation'],
+  ['modelEvaluation', 'testPlan validation performance structuredModelOutput modelReleaseValidation'],
+  ['modelCost', 'modelRoutingArchitecture performance regressionAndLoadValidation monitoring'],
+  ['prompts promptTemplate', 'discovery structuredModelOutput implementation validation'],
+  ['promptFlow', 'architecture structuredModelOutput implementation integration validation'],
+  ['promptEvaluation', 'testPlan structuredModelOutput validation'],
+  ['promptSafety', 'threatModel agentPermissionReview agentControlValidation validation'],
+  ['agentWorkflow', 'plan agentToolContracts agentMemoryDesign agentControlValidation agentTraceReview'],
+  ['agentIntegration', 'agentToolContracts mcpIntegration agentPermissionReview integration apiContractValidation'],
+  ['agentToolDesign', 'discovery agentToolContracts mcpIntegration agentPermissionReview'],
+  ['agentPermissions', 'threatModel agentToolContracts agentPermissionReview agentControlValidation'],
+  ['storeReview', 'compatibility acceptance beta mobileStoreRelease'],
+  ['storeListing', 'mobileStoreRelease launch acceptance'],
+  ['mobileSigning', 'packaging mobileStoreRelease deployment smoke'],
+  ['deidentifyData', 'privacyDesign privacyVerification data validation'],
+  ['auditTelemetry', 'privacyDesign privacyVerification monitoring'],
+  ['dataControls', 'privacyDesign data implementation privacyVerification acceptance'],
+  ['dependencyLicenses', 'openSourceRelease defensiveSecurityReview launch'],
+  ['reviewContribution', 'communityMaintenance validation openSourceRelease'],
+  ['contributingGuide', 'developerSetup openSourceRelease communityMaintenance launch'],
+  ['moveCloud', 'architecture data deployment migrationCutover smoke monitoring'],
+  ['fileFormats', 'data fileCompatibility migrations migrationCutover'],
+  ['replaceLegacyApi', 'api legacyBehaviorProtection apiContractValidation migrationCutover updates'],
+  ['ideExtension sdk', 'architecture api sdkDevelopment compatibility apiContractValidation packaging'],
+  ['devSetup', 'setup developerSetup packaging validation'],
+  ['agentMemory', 'agentMemoryDesign privacyDesign agentControlValidation agentTraceReview'],
+  ['agentHandoff', 'agentMemoryDesign agentToolContracts agentControlValidation agentTraceReview'],
+  ['agentTracing', 'agentTraceReview agentControlValidation monitoring'],
+  ['browserExtension', 'architecture browserExtensionDevelopment extensionAudit packaging'],
+  ['safariExtension', 'browserExtensionDevelopment extensionAudit compatibility packaging'],
+  ['extensionPermissions', 'extensionAudit threatModel defensiveSecurityReview'],
+  ['linuxPackages flatpakBuild', 'linuxDistribution compatibility packaging smoke'],
+  ['systemdService', 'linuxServiceOperations deployment monitoring maintenance'],
+  ['gamePrototype', 'gameConcept feasibility ux implementation performance'],
+  ['gameLevel', 'gameConcept ux implementation e2e acceptance'],
+  ['gameAssets', 'gameConcept implementation performance compatibility'],
+  ['subscriptions', 'subscriptionDesign paymentIntegration apiContractValidation billingReconciliation'],
+  ['payments', 'paymentIntegration subscriptionDesign apiContractValidation billingReconciliation'],
+  ['paymentReconciliation', 'billingReconciliation data paymentIntegration validation'],
+  ['videoUpload streamingVideo', 'mediaPipeline compatibility performance mediaAccessibility'],
+  ['subtitles', 'mediaPipeline mediaAccessibility creatorProduction'],
+  ['geodata', 'geospatialDesign data mapLayers validation'],
+  ['interactiveMap routing', 'geospatialDesign mapLayers ux compatibility'],
+  ['sensorFirmware', 'deviceIntegration hardwareValidation architecture'],
+  ['deviceConnectivity', 'deviceIntegration hardwareValidation integration'],
+  ['hardwareBench', 'hardwareValidation testPlan regressionAndLoadValidation'],
+  ['writeReport', 'documentBrief researchEvidence reconcileDocumentVersions releaseDocument'],
+  ['checkDocumentFacts', 'documentBrief researchEvidence validateOcrData reconcileDocumentVersions'],
+  ['formatWord', 'documentBrief reconcileDocumentVersions documentAccessibilityCheck releaseDocument'],
+  ['scanOcr extractDocumentTables', 'scanProcessing validateOcrData validateDocumentBatch'],
+  ['checkOcr', 'scanProcessing validateOcrData validateDocumentBatch'],
+  ['scansToReport', 'documentBrief scanProcessing validateOcrData generateDocuments releaseDocument'],
+  ['buildWorkbook', 'prepareWorkbook validateOcrData validateDocumentBatch'],
+  ['checkFormulas reconcileSheets', 'prepareWorkbook validateOcrData validation'],
+  ['presentationFromReport', 'documentBrief outlinePresentation buildPresentation documentAccessibilityCheck'],
+  ['designSlides visualizeReportData', 'outlinePresentation buildPresentation documentAccessibilityCheck'],
+  ['compareDocuments collateDocumentFeedback', 'reconcileDocumentVersions releaseDocument'],
+  ['produceFinalDraft', 'reconcileDocumentVersions documentAccessibilityCheck releaseDocument'],
+  ['createDocumentTemplate', 'designDocumentTemplate generateDocuments validateDocumentBatch'],
+  ['generateDocumentBatch testBatchDocumentExport', 'designDocumentTemplate generateDocuments validateDocumentBatch releaseDocument'],
+  ['organizeDocumentArchive cleanDocumentMetadata', 'archiveInventory migrateDocumentArchive maintainKnowledgeBase'],
+  ['moveDocumentArchive', 'archiveInventory migrateDocumentArchive maintainKnowledgeBase fileCompatibility'],
+  ['checkDocumentAccessibility', 'documentAccessibilityCheck releaseDocument'],
+  ['sanitizeDocument', 'privacyDesign documentAccessibilityCheck preparePublicationCopy releaseDocument'],
+  ['preflightPdf', 'documentAccessibilityCheck preparePublicationCopy releaseDocument'],
+  ['meetingFollowUpTask1 meetingFollowUpTask2 meetingFollowUpTask3', 'meetingFollowUp'],
+  ['researchEvidenceTask1 researchEvidenceTask2 researchEvidenceTask3', 'researchEvidence documentBrief'],
+  ['complexFailureAnalysisTask1 complexFailureAnalysisTask2 complexFailureAnalysisTask3', 'complexFailureAnalysis regressionAndLoadValidation incident'],
+  ['legacyBehaviorProtectionTask1 legacyBehaviorProtectionTask2 legacyBehaviorProtectionTask3', 'legacyBehaviorProtection refactor validation e2e'],
+  ['visualIdentityDesignTask1 visualIdentityDesignTask2 visualIdentityDesignTask3', 'visualIdentityDesign ux webImagePreparation'],
+  ['onboardingDesignTask1 onboardingDesignTask2 onboardingDesignTask3', 'onboardingDesign ux compatibility'],
+  ['agentControlValidationTask1 agentControlValidationTask2 agentControlValidationTask3', 'agentToolContracts agentPermissionReview agentControlValidation agentTraceReview'],
+  ['modelTuningPipelineTask1 modelTuningPipelineTask2 modelTuningPipelineTask3', 'modelTuningPipeline privacyVerification modelReleaseValidation'],
+  ['aiVideoProductionTask1 aiVideoProductionTask2 aiVideoProductionTask3', 'aiVideoProduction creatorProduction mediaAccessibility'],
+  ['editorialCalendarTask1 editorialCalendarTask2 editorialCalendarTask3', 'editorialCalendar contentRepurposing socialPublishingPreparation'],
+  ['contentRepurposingTask1 contentRepurposingTask2 contentRepurposingTask3', 'editorialCalendar contentRepurposing creatorProduction socialPublishingPreparation'],
+  ['socialPublishingPreparationTask1 socialPublishingPreparationTask2 socialPublishingPreparationTask3', 'editorialCalendar socialVisualDesign socialPublishingPreparation communityFeedbackCycle'],
+  ['communityFeedbackCycleTask1 communityFeedbackCycleTask2 communityFeedbackCycleTask3', 'communityFeedbackCycle'],
+  ['weeklyPlanningTask1 weeklyPlanningTask2 weeklyPlanningTask3', 'weeklyPlanning'],
+  ['shoppingDecisionTask1 shoppingDecisionTask2 shoppingDecisionTask3', 'shoppingDecision'],
+  ['newsSourceReviewTask1 newsSourceReviewTask2 newsSourceReviewTask3', 'researchEvidence newsSourceReview releaseDocument'],
+  ['apiContractValidationTask1 apiContractValidationTask2 apiContractValidationTask3', 'api testPlan integration apiContractValidation e2e'],
+  ['regressionAndLoadValidationTask1 regressionAndLoadValidationTask2 regressionAndLoadValidationTask3', 'testPlan e2e performance regressionAndLoadValidation'],
+  ['defensiveSecurityReviewTask1 defensiveSecurityReviewTask2 defensiveSecurityReviewTask3', 'threatModel defensiveSecurityReview defensiveRemediation'],
+  ['defensiveRemediationTask1 defensiveRemediationTask2 defensiveRemediationTask3', 'defensiveSecurityReview defensiveRemediation validation'],
+  ['mobileOfflineTask1 mobileOfflineTask2 mobileOfflineTask3', 'data mobileOffline e2e regressionAndLoadValidation'],
+  ['mobileSystemFeaturesTask1 mobileSystemFeaturesTask2 mobileSystemFeaturesTask3', 'ux mobileSystemFeatures integration compatibility'],
+  ['crossPlatformMobileTask1 crossPlatformMobileTask2 crossPlatformMobileTask3', 'architecture crossPlatformMobile mobileSystemFeatures compatibility'],
+  ['pwaDeliveryTask1 pwaDeliveryTask2 pwaDeliveryTask3', 'pwaDelivery compatibility e2e packaging'],
+  ['webSearchVisibilityTask1 webSearchVisibilityTask2 webSearchVisibilityTask3', 'webSearchVisibility validation smoke'],
+  ['cmsEditorialFlowTask1 cmsEditorialFlowTask2 cmsEditorialFlowTask3', 'cmsEditorialFlow data integration validation'],
+  ['creatorProductionTask1 creatorProductionTask2 creatorProductionTask3', 'creatorProduction mediaPipeline mediaAccessibility'],
+  ['creatorVideoAndCovers', 'creatorProduction socialVisualDesign mediaAccessibility socialPublishingPreparation'],
+  ['podcastProductionTask1 podcastProductionTask2 podcastProductionTask3', 'podcastProduction mediaAccessibility'],
+  ['socialVisualDesignTask1 socialVisualDesignTask2 socialVisualDesignTask3', 'socialVisualDesign socialPublishingPreparation'],
+  ['photoPostprocessingTask1 photoPostprocessingTask2 photoPostprocessingTask3', 'photoPostprocessing webImagePreparation'],
+  ['webImagePreparationTask1 webImagePreparationTask2 webImagePreparationTask3', 'webImagePreparation compatibility webSearchVisibility'],
+  ['structuredModelOutputTask1 structuredModelOutputTask2 structuredModelOutputTask3', 'structuredModelOutput integration validation'],
+  ['modelRoutingArchitectureTask1 modelRoutingArchitectureTask2 modelRoutingArchitectureTask3', 'modelRoutingArchitecture performance regressionAndLoadValidation monitoring'],
+  ['realtimeModelInteractionTask1 realtimeModelInteractionTask2 realtimeModelInteractionTask3', 'realtimeModelInteraction integration performance regressionAndLoadValidation'],
+  ['aiImageEditingTask1 aiImageEditingTask2 aiImageEditingTask3', 'aiImageEditing photoPostprocessing webImagePreparation'],
+  ['modelReleaseValidationTask1 modelReleaseValidationTask2 modelReleaseValidationTask3', 'modelReleaseValidation validation deployment smoke monitoring']
+];
+const taskPhases = new Map(phaseRules.flatMap(([taskIds, phaseIds]) => {
+  const allowed = new Set(['auto', ...phaseIds.split(' ')]);
+  return taskIds.split(' ').map(id => [id, allowed]);
+}));
+
 const platformRoles = { windows: ['windows-dotnet', 'windows-ui', 'windows-package'],
   macos: ['swift', 'macos-ui', 'macos-build'], web: ['frontend', 'backend'],
   linux: ['automation', 'operations'], mobile: ['architect', 'tester'], cross: ['architect', 'tester'] };
@@ -741,6 +901,22 @@ for (const [category, , group] of phaseGroups) {
 for (const language of data.languages) addOption($('language'), language.id, language.name);
 for (const category of data.categories) addOption($('category'), category.id, category.label);
 
+function syncPhaseOptions() {
+  const allowed = taskPhases.get($('task').value);
+  const select = $('phase');
+  select.disabled = !allowed;
+  select.options[0].textContent = allowed ? 'Выберите этап' : 'Сначала выберите задачу';
+  for (const group of select.querySelectorAll('optgroup')) {
+    group.hidden = true;
+    for (const option of group.children) {
+      option.hidden = !allowed?.has(option.value);
+      if (!option.hidden) group.hidden = false;
+    }
+  }
+  if (!allowed?.has(select.value)) select.value = '';
+  select.dispatchEvent(new Event('optionschange'));
+}
+
 function projectSettings() {
   return {
     engine: document.querySelector('input[name="engine"]:checked')?.value,
@@ -754,7 +930,7 @@ function projectSettings() {
 
 function pickerAction(settings) {
   const { engine, task, phase, platform, language } = settings;
-  if (!engine || !task || !phase || !platform || !language) return 'empty';
+  if (!engine || !platform || !language || !taskPhases.get(task)?.has(phase)) return 'empty';
   if (!builtProject) return 'build';
   return Object.keys(settings).every(key => settings[key] === builtProject[key]) ? 'reset' : 'rebuild';
 }
@@ -1035,6 +1211,7 @@ $('picker').addEventListener('submit', event => {
   if (action === 'empty') return;
   if (action === 'reset') {
     $('picker').reset();
+    syncPhaseOptions();
     builtProject = null;
     team.clear();
     renderResult();
@@ -1046,9 +1223,11 @@ $('picker').addEventListener('submit', event => {
   }
   updatePicker();
 });
+$('task').addEventListener('change', syncPhaseOptions);
 $('picker').addEventListener('change', updatePicker);
 $('search').addEventListener('input', renderCatalog);
 $('category').addEventListener('change', renderCatalog);
+syncPhaseOptions();
 renderCatalog();
 renderResult();
 updatePicker();
@@ -1082,6 +1261,7 @@ updatePicker();
     if (describedBy) trigger.setAttribute('aria-describedby', describedBy);
 
     const entries = [];
+    const groups = [];
     function appendOption(option, group) {
       if (option.disabled || option.parentElement.disabled) return;
       const item = document.createElement('div');
@@ -1108,20 +1288,26 @@ updatePicker();
         group.append(heading);
         for (const option of child.children) appendOption(option, group);
         list.append(group);
+        groups.push({ source: child, item: group });
       }
     }
     if (!entries.length) return;
 
     let active = 0;
+    let available = entries;
     let search = '';
     let lastKeyTime = 0;
     function sync() {
       const selected = select.selectedOptions[0];
       value.textContent = selected?.label || '';
       trigger.setAttribute('aria-label', accessibleName + ': ' + value.textContent);
+      trigger.disabled = select.disabled;
+      for (const { source, item } of groups) item.hidden = source.hidden;
       for (const { option, item } of entries) {
+        item.hidden = option.hidden;
         item.setAttribute('aria-selected', String(option === selected));
       }
+      available = entries.filter(({ option }) => !option.hidden);
     }
 
     function close() {
@@ -1130,13 +1316,14 @@ updatePicker();
     }
 
     function focusOption(index) {
-      active = Math.max(0, Math.min(index, entries.length - 1));
-      const { item } = entries[active];
+      active = Math.max(0, Math.min(index, available.length - 1));
+      const { item } = available[active];
       item.focus({ preventScroll: true });
       item.scrollIntoView({ block: 'nearest' });
     }
 
     function open(last = false) {
+      if (trigger.disabled || !available.length) return;
       const bounds = trigger.getBoundingClientRect();
       const below = window.innerHeight - bounds.bottom;
       const above = bounds.top;
@@ -1146,11 +1333,12 @@ updatePicker();
       list.hidden = false;
       trigger.setAttribute('aria-expanded', 'true');
       search = '';
-      const selectedIndex = entries.findIndex(({ option }) => option.selected);
-      focusOption(selectedIndex < 0 ? (last ? entries.length - 1 : 0) : selectedIndex);
+      const selectedIndex = available.findIndex(({ option }) => option.selected);
+      focusOption(selectedIndex < 0 ? (last ? available.length - 1 : 0) : selectedIndex);
     }
 
     function choose(option) {
+      if (select.disabled || option.hidden) return;
       if (select.value !== option.value) {
         select.value = option.value;
         select.dispatchEvent(new Event('change', { bubbles: true }));
@@ -1178,12 +1366,12 @@ updatePicker();
         case 'Home':
         case 'End':
           event.preventDefault();
-          focusOption(event.key === 'Home' ? 0 : entries.length - 1);
+          focusOption(event.key === 'Home' ? 0 : available.length - 1);
           return;
         case 'Enter':
         case ' ':
           event.preventDefault();
-          choose(entries[active].option);
+          choose(available[active].option);
           return;
         case 'Escape':
           event.preventDefault();
@@ -1201,9 +1389,9 @@ updatePicker();
       const character = event.key.toLocaleLowerCase(pageLanguage);
       search = now - lastKeyTime > 700 ? character : search + character;
       lastKeyTime = now;
-      for (let step = 0; step < entries.length; step += 1) {
-        const index = (active + step + (search.length === 1 ? 1 : 0)) % entries.length;
-        if (!entries[index].option.label.toLocaleLowerCase(pageLanguage).startsWith(search)) continue;
+      for (let step = 0; step < available.length; step += 1) {
+        const index = (active + step + (search.length === 1 ? 1 : 0)) % available.length;
+        if (!available[index].option.label.toLocaleLowerCase(pageLanguage).startsWith(search)) continue;
         focusOption(index);
         break;
       }
@@ -1215,6 +1403,10 @@ updatePicker();
       if (!container.contains(event.target)) close();
     });
     select.addEventListener('change', sync);
+    select.addEventListener('optionschange', () => {
+      close();
+      sync();
+    });
     select.form?.addEventListener('reset', () => queueMicrotask(() => {
       close();
       sync();

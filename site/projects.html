@@ -30,8 +30,8 @@
     .home-link { display: inline-flex; align-items: center; min-height: 44px; font-size: 13px; color: #9fbeaa; transition: color .2s; }
     .home-link:hover { color: var(--green); }
     .path { font-size: 12px; color: var(--green); letter-spacing: .04em; }
-    main { width: min(1000px, calc(100% - 64px)); margin: 0 auto; padding: 116px 0 64px; }
-    .intro { width: 100%; text-align: center; margin: 0 auto 58px; }
+    main { width: min(880px, calc(100% - 48px)); margin: 0 auto; padding: 72px 0 56px; }
+    .intro { text-align: center; margin: 0 auto 32px; }
     h1 { margin: 0; color: var(--green); font-size: clamp(25px, 3.8vw, 36px); line-height: 1.4; font-weight: 700; }
     .intro p { max-width: 650px; margin: 18px auto 0; color: var(--muted); font-size: 13px; line-height: 1.9; }
     .project-search { width: min(640px, 100%); margin: 28px auto 0; display: flex; align-items: center; gap: 12px; padding: 0 16px; border: 1px solid #00ff6650; border-radius: 5px; background: #00ff6608; text-align: left; transition: border-color .2s, box-shadow .2s; }
@@ -39,45 +39,45 @@
     .search-prompt { flex: none; color: var(--green); font-size: 16px; }
     .project-search input { width: 100%; min-width: 0; min-height: 48px; padding: 12px 0; border: 0; outline: none; background: transparent; color: #d8ffe6; caret-color: var(--green); font: inherit; font-size: 16px; line-height: 1.5; }
     .project-search input::placeholder { color: #88a693; opacity: 1; }
-    .project-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 24px; }
-    /* Наклонная грань и градиент повторяют геометрию референса без наклона текста. */
-    .project-card { position: relative; isolation: isolate; min-height: 120px; padding: 18px 40px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; transition: filter .22s ease; }
-    .project-card::before { content: ""; position: absolute; z-index: -1; inset: 0; background: linear-gradient(105deg, #00ff660d, #00ff6605 60%, #0000); clip-path: polygon(28px 0, 100% 0, calc(100% - 28px) 100%, 0 100%); background-color: transparent; transition: background-color .22s ease; }
-    .project-card::after { content: ""; position: absolute; inset: 0 auto 0 0; width: 32px; background: var(--green); opacity: .72; clip-path: polygon(28px 0, 32px 0, 4px 100%, 0 100%); transition: opacity .2s; }
-    /* Подсветка ограничена наведённой карточкой и использует только зелёную палитру. */
-    .project-card:is(:hover, :focus-within) { filter: drop-shadow(0 0 18px #00ff6626); }
-    .project-card:is(:hover, :focus-within)::before { background-color: #00ff6624; }
-    .project-card:is(:hover, :focus-within)::after { opacity: 1; }
+    .project-list { list-style: none; margin: 0; padding: 0; border: 1px solid #00ff6645; border-radius: 5px; }
+    .project-list:empty { border: 0; }
+    /* Описание занимает отдельную колонку. Сборки остаются самостоятельными ссылками. */
+    .project-card { position: relative; isolation: isolate; display: grid; grid-template-columns: minmax(0, 1fr) minmax(230px, .63fr); gap: 24px; align-items: start; padding: 14px 16px 14px 30px; transition: background .18s ease; }
+    .project-card + .project-card { border-top: 1px solid #00ff6630; }
+    .project-card:nth-child(even) { background: #040c06; }
+    .project-card:is(:hover, :focus-within) { background: #091c10; }
+    .project-card > :first-child { min-width: 0; }
+    .project-card > :only-child { grid-column: 1 / -1; }
+    .project-card h2 { position: relative; margin: 0 0 5px; color: #d8ffe6; font-size: clamp(15px, 2.4vw, 19px); font-weight: 600; line-height: 1.35; overflow-wrap: anywhere; }
+    .project-card h2::before { content: "›" / ""; position: absolute; left: -18px; color: var(--green); }
     .project-card:is(:hover, :focus-within) h2 { color: var(--green); }
-    .project-card:is(:hover, :focus-within) .status { color: #a0ffc4; }
-    .project-card:is(:hover, :focus-within) p { color: #c2ebd2; }
-    .status { margin-top: 8px; color: #92e6b3; font-size: 11px; line-height: 1.7; }
-    h2 { margin: 6px 0 8px; color: #d8ffe6; font-size: clamp(18px, 2.5vw, 22px); line-height: 1.4; font-weight: 600; }
-    .project-card p { max-width: 760px; margin: 0; color: #9ab8a5; font-size: 14px; line-height: 1.85; }
-    .project-card h2, .project-card .status, .project-card p { transition: color .22s ease; }
-    .load-status { text-align: center; color: var(--muted); font-size: 13px; line-height: 1.8; margin: 0 0 32px; }
+    .project-card p { max-width: 72ch; margin: 0; color: #b0ccb9; font-size: 14px; line-height: 1.65; overflow-wrap: anywhere; }
+    .status { align-self: center; color: #92e6b3; font-size: 11px; line-height: 1.5; }
+    .load-status { text-align: center; color: var(--muted); font-size: 13px; line-height: 1.8; margin: 0 0 24px; }
     .load-status:empty { display: none; }
-    .project-card h2 { overflow-wrap: anywhere; max-width: 100%; }
-    .project-card { color: inherit; }
-    /* Основная ссылка покрывает карточку, а ссылки выбора сборки доступны поверх неё. */
+    /* Основная ссылка покрывает строку. Ссылки отдельных сборок находятся над ней. */
     .project-card > a::after { content: ""; position: absolute; inset: 0; }
-    .download-options { display: flex; flex-wrap: wrap; justify-content: center; gap: 4px 16px; margin-top: 8px; }
-    .download-options a { position: relative; display: flex; flex-direction: column; align-items: center; gap: 4px; color: var(--green); padding: 8px 4px; font-size: 12px; }
+    .project-card > a:focus-visible { outline: none; }
+    .project-card > a:focus-visible::after { outline: 2px solid var(--green); outline-offset: -2px; }
+    .download-options { display: grid; align-self: center; align-content: start; border-left: 1px solid #00ff6635; padding-left: 12px; }
+    .download-options a { position: relative; display: grid; gap: 2px; align-content: center; min-height: 34px; padding: 5px 6px; border-radius: 3px; color: var(--green); font-size: 12px; line-height: 1.4; overflow-wrap: anywhere; }
+    .download-options a:hover { background: #00ff6614; }
+    .download-options a:focus-visible { outline-offset: -2px; }
     .download-label { text-decoration: underline; text-underline-offset: 3px; }
-    .download-info { color: var(--muted); font-size: 11px; line-height: 1.5; }
+    .download-info { color: #92ae9c; font-size: 11px; line-height: 1.5; }
+    .download-info:empty { display: none; }
     .end { display: flex; justify-content: center; margin-top: 54px; }
     .back { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; border: 1px solid #00ff6670; border-radius: 5px; padding: 11px 20px; color: var(--green); font-size: 13px; transition: background .2s; }
     .back:hover { background: #00ff6614; }
     @media (max-width: 600px) {
       .topbar-inner { padding: 0 136px 0 20px; min-height: 78px; gap: 12px; }
       .path { display: none; }
-      main { width: calc(100% - 36px); padding-top: 72px; }
-      .intro { margin-bottom: 38px; }
-      .intro p { font-size: 12px; padding: 0 8px; }
-      .project-list { gap: 18px; }
-      .project-card { min-height: 132px; padding: 16px 28px; }
-      .project-card p { font-size: 12px; }
-      .status { font-size: 10px; }
+      main { width: calc(100% - 28px); padding-top: 52px; }
+      .intro { margin-bottom: 22px; }
+      .project-card { grid-template-columns: minmax(0, 1fr); gap: 9px; padding: 12px 12px 12px 25px; }
+      .project-card h2::before { left: -14px; }
+      .download-options { border-left: 0; border-top: 1px solid #00ff6635; padding: 4px 0 0; }
+      .download-options a { min-height: 42px; padding-right: 0; padding-left: 0; }
     }
     @media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition: none !important; } }
   </style>
