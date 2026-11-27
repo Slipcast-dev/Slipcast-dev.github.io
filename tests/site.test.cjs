@@ -368,13 +368,7 @@ test('Раздел скиллов доступен из меню; карточк
   const cards = page.document.querySelectorAll('[data-compatibility]');
   assert.deepEqual(cards.map(card => card.dataset.compatibility), ['codex', 'claude']);
   assert.doesNotMatch(builtPage, /claude-agents-.*\.zip/);
-  for (const name of [
-    'claude-agents-design-development.zip',
-    'claude-agents-web-telegram.zip',
-    'claude-agents-refactoring-security-optimization.zip'
-  ]) {
-    assert.ok(fs.statSync(path.join(dist, 'downloads/agents', name)).size > 0);
-  }
+  assert.ok(!fs.existsSync(path.join(dist, 'downloads/agents')));
   const filter = name => page.document.querySelector('[data-filter="' + name + '"]');
   const choose = name => filter(name).listeners.click[0]();
   const visible = () => cards.filter(card => !card.hidden).map(card => card.dataset.compatibility);
