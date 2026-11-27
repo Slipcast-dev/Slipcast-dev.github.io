@@ -10,7 +10,7 @@ Personal website with a terminal interface, black background and green accents. 
 
 - `index.html` — навигация доступна сразу. Цикл команд macOS, Linux, Git и GitHub CLI служит оформлением.
 - `developer.html` — аватар, биография и кнопка открытия чата Telegram `@slipcast666` в установленном приложении.
-- `skills-agents.html` — «Скиллы и агенты» / Skills & Agents: коллекции `codex-skills` и `claude-skills`, фильтры и прямое скачивание архивов. Все четыре кнопки главного меню находятся в одном ряду. На узких экранах подписи могут переноситься внутри кнопок.
+- `skills-agents.html` — «Скиллы» / Skills. Тематические ZIP и фильтры совместимости Codex и Claude Code.
 - `projects.html` — «Журнал разработок» / Development Log: публичные репозитории, названия, описания и последние опубликованные версии, включая prerelease.
 - `websites.html` — локально сохранённый раздел, исключённый из сборки и sitemap. На опубликованном сайте этот адрес возвращает 404. Исходник содержит фиксированные карточки: [Grizzly](https://slipcast-dev.github.io/grizzly-website/), [Koto](https://slipcast-dev.github.io/koto-website/) и [VibeWave](https://slipcast-dev.github.io/vibewave-website/), с изолированными живыми превью.
 
@@ -18,7 +18,15 @@ Personal website with a terminal interface, black background and green accents. 
 
 ## Обновление архивов скиллов
 
-Замени `site/downloads/codex-skills.zip` или `site/downloads/claude-skills.zip`, сохранив имя файла. Перед добавлением архива исключи папки `.git` и локальные секреты. Затем запусти `npm run validate` и отправь коммит в `main`. GitHub Pages опубликует новую сборку. Ссылка карточки получает версию из содержимого ZIP, поэтому после публикации и загрузки страницы браузер скачает актуальный архив.
+Исходные коллекции лежат в папке `site/downloads/`. Для обновления замени нужный исходный ZIP, сохранив имя, затем пересобери тематические ZIP и карточки. Команда использует Python 3.11+ и временную директорию.
+
+```sh
+skills_work="$(mktemp -d)"
+python3 scripts/package-skill-categories.py --source site/downloads --destination "$skills_work/categories" --install
+npm run validate
+```
+
+Проверь изменения в карточках и архивах и отправь их в `main` вместе с обновлённым исходным ZIP. Для каждой категории в сайт попадает отдельный архив с контрольной суммой в URL. Категории берутся из каталога Codex и структуры коллекции Claude Code. Скрипт проверяет пути, содержимое и сведения о лицензиях перед упаковкой.
 
 ## Запуск и проверки
 

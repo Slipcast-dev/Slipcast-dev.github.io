@@ -6,10 +6,12 @@ const source = fileURLToPath(new URL('../site/', import.meta.url));
 const destination = fileURLToPath(new URL('../dist/', import.meta.url));
 await rm(destination, { recursive: true, force: true });
 await mkdir(destination, { recursive: true });
-// Раздел веб-сайтов остаётся в исходниках для локальной работы, но не попадает в GitHub Pages.
+// В GitHub Pages отправляются тематические ZIP. Исходные полные коллекции хранятся в репозитории.
+const sourceOnly = new Set(['websites.html', 'downloads/codex-skills.zip', 'downloads/claude-skills.zip']
+  .map(path => source + path));
 await cp(source, destination, {
   recursive: true,
-  filter: path => path !== source + 'websites.html'
+  filter: path => !sourceOnly.has(path)
 });
 // Роботы превью не выполняют JS и не различают язык по query-параметру на GitHub Pages.
 // Отдельный HTML даёт английское описание непосредственно в HTTP-ответе.
@@ -41,14 +43,6 @@ for (const entry of await readdir(destination, { withFileTypes: true })) {
   for (const name of ['i18n.js', 'projects-api.js']) {
     const version = createHash('sha256').update(await readFile(destination + name)).digest('hex').slice(0, 12);
     html = html.replaceAll(`src="${name}"`, `src="${name}?v=${version}"`);
-  }
-  if (entry.name === 'skills-agents.html') {
-    // После замены ZIP меняется адрес скачивания, чтобы браузер получил архив из новой сборки.
-    for (const archive of ['codex-skills.zip', 'claude-skills.zip']) {
-      const relativePath = `downloads/${archive}`;
-      const version = createHash('sha256').update(await readFile(destination + relativePath)).digest('hex').slice(0, 16);
-      html = html.replace(`href="${relativePath}"`, `href="${relativePath}?v=${version}"`);
-    }
   }
   // Разрешены только локальные JS-файлы и точные хеши встроенных сценариев этой сборки.
   const hashes = [...html.matchAll(/<script\b[^>]*>([\s\S]*?)<\/script>/g)]
