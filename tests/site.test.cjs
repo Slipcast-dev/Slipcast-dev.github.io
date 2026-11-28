@@ -336,7 +336,7 @@ test('Раздел скиллов доступен из меню; карточк
   const home = setup('index.html', { languages: ['ru'], seen: true });
   const navigation = home.document.querySelector('[data-i18n="skillsTitleLabel"]');
   assert.equal(navigation.textContent, 'Скиллы');
-  assert.equal(navigation.attrs.href, 'skills-agents.html?v=6&lang=ru');
+  assert.equal(navigation.attrs.href, 'skills-agents.html?v=7&lang=ru');
   const menu = home.nodes.filter(node => (node.attrs.class || '').split(' ').includes('nav-button'));
   assert.deepEqual(menu.map(node => node.dataset.i18n), ['projects', 'skillsTitleLabel', 'aiAggregator', 'telegramChannel', 'developer']);
   assert.equal(menu[3].attrs.href, 'https://t.me/slipcastdev');
@@ -353,7 +353,7 @@ test('Раздел скиллов доступен из меню; карточк
   assert.equal(menu[3].attrs.href, 'https://t.me/slipcastdev');
   home.click('en');
   assert.equal(navigation.textContent, 'Skills');
-  assert.equal(navigation.attrs.href, 'skills-agents.html?v=6&lang=en');
+  assert.equal(navigation.attrs.href, 'skills-agents.html?v=7&lang=en');
 
   const page = setup('skills-agents.html', { languages: ['ru'] });
   assert.equal(page.document.querySelector('h1').textContent, 'Скиллы');
@@ -370,6 +370,10 @@ test('Раздел скиллов доступен из меню; карточк
   const links = page.nodes.filter(node => node.tag === 'a' && node.attrs.download);
   assert.equal(links.length, cards.length);
   assert.equal(new Set(links.map(link => link.attrs.href)).size, cards.length);
+  assert.deepEqual(
+    links.filter(link => /project-verification\.zip\?/.test(link.attrs.href)).map(link => link.attrs.download).sort(),
+    ['claude-project-verification.zip', 'codex-project-verification.zip']
+  );
   for (const link of links) {
     const match = link.attrs.href.match(/^downloads\/skills\/(codex|claude)\/([a-z0-9-]+)\.zip\?v=([a-f0-9]{16})$/);
     assert.ok(match, link.attrs.href);

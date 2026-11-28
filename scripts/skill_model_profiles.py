@@ -24,7 +24,7 @@ DOCS = {
     "claude": ("https://code.claude.com/docs/en/model-config", "https://code.claude.com/docs/en/skills"),
 }
 FAMILIES = {
-    "engineering": {"development", "devops-cloud", "testing-quality", "software-engineering", "agents-ai", "ai-agents"},
+    "engineering": {"development", "devops-cloud", "testing-quality", "software-engineering", "agents-ai", "ai-agents", "project-verification"},
     "defensive": {"security-privacy", "security-compliance"},
     "analysis": {"data-analytics", "industry-operations", "education-learning", "education-research"},
     "sensitive": {"finance-personal", "personal-finance", "health-care", "health-wellness", "legal-compliance", "legal-government"},
@@ -77,6 +77,8 @@ def recommended_profile(category: str, skill: str) -> tuple[str, str]:
         return "deep", family
     if VISUAL.search(skill):
         return "visual", family
+    if category == "project-verification" and skill != "feed-format-drift-check":
+        return "deep", family
     if FOCUSED.search(skill):
         return "quick", family
     return "standard", family

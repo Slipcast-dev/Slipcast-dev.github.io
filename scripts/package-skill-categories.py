@@ -17,6 +17,9 @@ from zipfile import ZIP_DEFLATED, ZipFile, ZipInfo
 from skill_model_profiles import model_guide, optimize_skill
 
 ROOT = Path(__file__).resolve().parents[1]
+PROJECT_SKILLS = {
+    "project-verification": ("Проверки проектов и совместимости", "Project and compatibility checks"),
+}
 ENGINES = {"codex": ("Codex", ".agents"), "claude": ("Claude Code", ".claude")}
 SLUG = re.compile(r"[a-z0-9][a-z0-9-]*")
 LICENSE_DECLARATION = re.compile(
@@ -278,20 +281,25 @@ def main() -> None:
             directory: Path,
             original: str,
             counterpart: dict[str, bytes] | None = None,
+            local: bool = False,
         ) -> None:
             if not SLUG.fullmatch(name):
                 raise ValueError(f"Unexpected skill identifier: {name}")
             files = read_skill(directory)
             reason = review_reason(files)
             if reason:
+                if local:
+                    raise ValueError(f"Local skill {original} failed review: {reason}")
                 counters[engine, reason] += 1
                 return
             frontmatter, body = split_frontmatter(files["SKILL.md"].decode("utf-8-sig"))
             license_name = copy_known_license(files, frontmatter, body, counterpart)
+            if local and not license_name:
+                license_name = "NOASSERTION"
             if not license_name:
                 counters[engine, "license_not_found"] += 1
                 return
-            if engine == "codex":
+            if engine == "codex" and not local:
                 checked_codex[name] = files
             packages[engine, slug].append((name, files, license_name, original))
             counters[engine, "included"] += 1
@@ -314,6 +322,20 @@ def main() -> None:
                     "claude", slug, name, skill.parent, skill.parent.relative_to(claude).as_posix(),
                     checked_codex.get(name),
                 )
+
+        # Собственные скиллы хранятся отдельно от исходных коллекций.
+        for engine, categories in (("codex", codex_categories), ("claude", claude_categories)):
+            for slug, titles in PROJECT_SKILLS.items():
+                if slug in categories:
+                    raise ValueError(f"Duplicate category: {engine}/{slug}")
+                source = ROOT / "content/skills" / engine / slug
+                skills = sorted(source.glob("*/SKILL.md"))
+                if not skills:
+                    raise ValueError(f"No project skills in {source}")
+                categories[slug] = titles
+                for skill in skills:
+                    directory = skill.parent
+                    collect(engine, slug, directory.name, directory, directory.relative_to(ROOT).as_posix(), local=True)
 
         destination = args.destination
         destination.mkdir(parents=True, exist_ok=False)
