@@ -79,6 +79,8 @@
     .load-status:empty { display: none; }
     .back { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; border: 1px solid #00ff6670; border-radius: 5px; padding: 11px 20px; color: var(--green); font-size: 13px; transition: background .2s; }
     .intro .back { margin-top: 14px; }
+    #page-start { scroll-margin-top: 82px; }
+    .page-end { text-align: center; margin-top: 32px; }
     .back:hover { background: #00ff6614; }
     @media (max-width: 600px) {
       main { width: min(660px, calc(100% - 28px)); padding-top: 80px; }
@@ -102,7 +104,7 @@
   </div>
   <main>
     <header class="intro">
-      <h1 data-i18n="skillsTitleLabel">Скиллы</h1>
+      <h1 id="page-start" tabindex="-1" data-i18n="skillsTitleLabel">Скиллы</h1>
       <a class="back" href="index.html" data-i18n="back">← Назад в терминал</a>
     </header>
     <div class="collection-filters" role="group" aria-label="Фильтр совместимости" data-i18n-label="skillCompatibility">
@@ -270,6 +272,50 @@
       <section class="skill-topic" data-skill-topic="web" aria-labelledby="topic-web">
         <h2 id="topic-web" data-skill-title-ru="Веб-разработка" data-skill-title-en="Web development">Веб-разработка</h2>
         <ul class="skill-list">
+      <li id="collection-codex-backend-engineering" data-compatibility="codex" data-entry-topic="web" data-collection="codex/backend-engineering">
+        <a class="skill-entry" href="downloads/skills/codex/backend-engineering.zip?v=3e262ea1e8373ad3" download="codex-backend-engineering.zip">
+          <div class="skill-entry-title">
+            <h3 data-skill-title-ru="Бэкенд и надёжность данных" data-skill-title-en="Backend and data reliability">Бэкенд и надёжность данных</h3>
+            <span class="skill-summary" data-skill-title-ru="Совместимая пагинация и согласованность транзакций" data-skill-title-en="Compatible pagination and transaction consistency">Совместимая пагинация и согласованность транзакций</span>
+          </div>
+          <span class="skill-engine">Codex</span>
+          <p data-skill-count="2">Навыков: 2</p>
+          <span class="collection-download"><span aria-hidden="true">↓</span> <span data-i18n="skillDownload">Скачать ZIP</span></span>
+        </a>
+      </li>
+      <li id="collection-claude-backend-engineering" data-compatibility="claude" data-entry-topic="web" data-collection="claude/backend-engineering">
+        <a class="skill-entry" href="downloads/skills/claude/backend-engineering.zip?v=9cff39b16b537de1" download="claude-backend-engineering.zip">
+          <div class="skill-entry-title">
+            <h3 data-skill-title-ru="Бэкенд и надёжность данных" data-skill-title-en="Backend and data reliability">Бэкенд и надёжность данных</h3>
+            <span class="skill-summary" data-skill-title-ru="Совместимая пагинация и согласованность транзакций" data-skill-title-en="Compatible pagination and transaction consistency">Совместимая пагинация и согласованность транзакций</span>
+          </div>
+          <span class="skill-engine">Claude Code</span>
+          <p data-skill-count="2">Навыков: 2</p>
+          <span class="collection-download"><span aria-hidden="true">↓</span> <span data-i18n="skillDownload">Скачать ZIP</span></span>
+        </a>
+      </li>
+      <li id="collection-codex-web-design-systems" data-compatibility="codex" data-entry-topic="web" data-collection="codex/web-design-systems">
+        <a class="skill-entry" href="downloads/skills/codex/web-design-systems.zip?v=6480b95a097f49da" download="codex-web-design-systems.zip">
+          <div class="skill-entry-title">
+            <h3 data-skill-title-ru="Веб-дизайн и дизайн-системы" data-skill-title-en="Web design and design systems">Веб-дизайн и дизайн-системы</h3>
+            <span class="skill-summary" data-skill-title-ru="Адаптивные макеты и дизайн-токены" data-skill-title-en="Responsive layouts and design tokens">Адаптивные макеты и дизайн-токены</span>
+          </div>
+          <span class="skill-engine">Codex</span>
+          <p data-skill-count="2">Навыков: 2</p>
+          <span class="collection-download"><span aria-hidden="true">↓</span> <span data-i18n="skillDownload">Скачать ZIP</span></span>
+        </a>
+      </li>
+      <li id="collection-claude-web-design-systems" data-compatibility="claude" data-entry-topic="web" data-collection="claude/web-design-systems">
+        <a class="skill-entry" href="downloads/skills/claude/web-design-systems.zip?v=a8669e6fcb2c8b23" download="claude-web-design-systems.zip">
+          <div class="skill-entry-title">
+            <h3 data-skill-title-ru="Веб-дизайн и дизайн-системы" data-skill-title-en="Web design and design systems">Веб-дизайн и дизайн-системы</h3>
+            <span class="skill-summary" data-skill-title-ru="Адаптивные макеты и дизайн-токены" data-skill-title-en="Responsive layouts and design tokens">Адаптивные макеты и дизайн-токены</span>
+          </div>
+          <span class="skill-engine">Claude Code</span>
+          <p data-skill-count="2">Навыков: 2</p>
+          <span class="collection-download"><span aria-hidden="true">↓</span> <span data-i18n="skillDownload">Скачать ZIP</span></span>
+        </a>
+      </li>
       <li id="collection-codex-web-development" data-compatibility="codex" data-entry-topic="web" data-collection="codex/web-development">
         <a class="skill-entry" href="downloads/skills/codex/web-development.zip?v=30ce2c13fba1bbaf" download="codex-web-development.zip">
           <div class="skill-entry-title">
@@ -314,11 +360,121 @@
           <span class="collection-download"><span aria-hidden="true">↓</span> <span data-i18n="skillDownload">Скачать ZIP</span></span>
         </a>
       </li>
+      <li id="collection-codex-web-storefronts" data-compatibility="codex" data-entry-topic="web" data-collection="codex/web-storefronts">
+        <a class="skill-entry" href="downloads/skills/codex/web-storefronts.zip?v=9cf4d6ffedf9f377" download="codex-web-storefronts.zip">
+          <div class="skill-entry-title">
+            <h3 data-skill-title-ru="Интернет-магазин и оформление заказа" data-skill-title-en="Storefront and checkout">Интернет-магазин и оформление заказа</h3>
+            <span class="skill-summary" data-skill-title-ru="Состояния каталога, корзина и сценарии заказа на тестовых данных" data-skill-title-en="Catalog states, carts and checkout with test data">Состояния каталога, корзина и сценарии заказа на тестовых данных</span>
+          </div>
+          <span class="skill-engine">Codex</span>
+          <p data-skill-count="2">Навыков: 2</p>
+          <span class="collection-download"><span aria-hidden="true">↓</span> <span data-i18n="skillDownload">Скачать ZIP</span></span>
+        </a>
+      </li>
+      <li id="collection-claude-web-storefronts" data-compatibility="claude" data-entry-topic="web" data-collection="claude/web-storefronts">
+        <a class="skill-entry" href="downloads/skills/claude/web-storefronts.zip?v=eabe33bff4971210" download="claude-web-storefronts.zip">
+          <div class="skill-entry-title">
+            <h3 data-skill-title-ru="Интернет-магазин и оформление заказа" data-skill-title-en="Storefront and checkout">Интернет-магазин и оформление заказа</h3>
+            <span class="skill-summary" data-skill-title-ru="Состояния каталога, корзина и сценарии заказа на тестовых данных" data-skill-title-en="Catalog states, carts and checkout with test data">Состояния каталога, корзина и сценарии заказа на тестовых данных</span>
+          </div>
+          <span class="skill-engine">Claude Code</span>
+          <p data-skill-count="2">Навыков: 2</p>
+          <span class="collection-download"><span aria-hidden="true">↓</span> <span data-i18n="skillDownload">Скачать ZIP</span></span>
+        </a>
+      </li>
+      <li id="collection-codex-web-observability" data-compatibility="codex" data-entry-topic="web" data-collection="codex/web-observability">
+        <a class="skill-entry" href="downloads/skills/codex/web-observability.zip?v=ea28102c7829b5ef" download="codex-web-observability.zip">
+          <div class="skill-entry-title">
+            <h3 data-skill-title-ru="Мониторинг и диагностика веб-приложений" data-skill-title-en="Web observability and incident triage">Мониторинг и диагностика веб-приложений</h3>
+            <span class="skill-summary" data-skill-title-ru="Контракт событий браузера и разбор сбоев по журналам" data-skill-title-en="Client telemetry contracts and incident triage">Контракт событий браузера и разбор сбоев по журналам</span>
+          </div>
+          <span class="skill-engine">Codex</span>
+          <p data-skill-count="2">Навыков: 2</p>
+          <span class="collection-download"><span aria-hidden="true">↓</span> <span data-i18n="skillDownload">Скачать ZIP</span></span>
+        </a>
+      </li>
+      <li id="collection-claude-web-observability" data-compatibility="claude" data-entry-topic="web" data-collection="claude/web-observability">
+        <a class="skill-entry" href="downloads/skills/claude/web-observability.zip?v=1b9b61dd6c7c709b" download="claude-web-observability.zip">
+          <div class="skill-entry-title">
+            <h3 data-skill-title-ru="Мониторинг и диагностика веб-приложений" data-skill-title-en="Web observability and incident triage">Мониторинг и диагностика веб-приложений</h3>
+            <span class="skill-summary" data-skill-title-ru="Контракт событий браузера и разбор сбоев по журналам" data-skill-title-en="Client telemetry contracts and incident triage">Контракт событий браузера и разбор сбоев по журналам</span>
+          </div>
+          <span class="skill-engine">Claude Code</span>
+          <p data-skill-count="2">Навыков: 2</p>
+          <span class="collection-download"><span aria-hidden="true">↓</span> <span data-i18n="skillDownload">Скачать ZIP</span></span>
+        </a>
+      </li>
+      <li id="collection-codex-frontend-engineering" data-compatibility="codex" data-entry-topic="web" data-collection="codex/frontend-engineering">
+        <a class="skill-entry" href="downloads/skills/codex/frontend-engineering.zip?v=fffb1cd849a0a4a8" download="codex-frontend-engineering.zip">
+          <div class="skill-entry-title">
+            <h3 data-skill-title-ru="Фронтенд и состояния интерфейса" data-skill-title-en="Frontend and UI states">Фронтенд и состояния интерфейса</h3>
+            <span class="skill-summary" data-skill-title-ru="Загрузка, ошибки, повтор запроса и регрессионные сценарии" data-skill-title-en="Loading, errors, retries and UI regression checks">Загрузка, ошибки, повтор запроса и регрессионные сценарии</span>
+          </div>
+          <span class="skill-engine">Codex</span>
+          <p data-skill-count="2">Навыков: 2</p>
+          <span class="collection-download"><span aria-hidden="true">↓</span> <span data-i18n="skillDownload">Скачать ZIP</span></span>
+        </a>
+      </li>
+      <li id="collection-claude-frontend-engineering" data-compatibility="claude" data-entry-topic="web" data-collection="claude/frontend-engineering">
+        <a class="skill-entry" href="downloads/skills/claude/frontend-engineering.zip?v=379eff24b932a35a" download="claude-frontend-engineering.zip">
+          <div class="skill-entry-title">
+            <h3 data-skill-title-ru="Фронтенд и состояния интерфейса" data-skill-title-en="Frontend and UI states">Фронтенд и состояния интерфейса</h3>
+            <span class="skill-summary" data-skill-title-ru="Загрузка, ошибки, повтор запроса и регрессионные сценарии" data-skill-title-en="Loading, errors, retries and UI regression checks">Загрузка, ошибки, повтор запроса и регрессионные сценарии</span>
+          </div>
+          <span class="skill-engine">Claude Code</span>
+          <p data-skill-count="2">Навыков: 2</p>
+          <span class="collection-download"><span aria-hidden="true">↓</span> <span data-i18n="skillDownload">Скачать ZIP</span></span>
+        </a>
+      </li>
         </ul>
       </section>
       <section class="skill-topic" data-skill-topic="ai-data" aria-labelledby="topic-ai-data">
         <h2 id="topic-ai-data" data-skill-title-ru="ИИ, агенты и данные" data-skill-title-en="AI, agents and data">ИИ, агенты и данные</h2>
         <ul class="skill-list">
+      <li id="collection-codex-ai-knowledge-bases" data-compatibility="codex" data-entry-topic="ai-data" data-collection="codex/ai-knowledge-bases">
+        <a class="skill-entry" href="downloads/skills/codex/ai-knowledge-bases.zip?v=ea1478cfa4afe010" download="codex-ai-knowledge-bases.zip">
+          <div class="skill-entry-title">
+            <h3 data-skill-title-ru="Базы знаний и обновление индекса" data-skill-title-en="Knowledge bases and index refresh">Базы знаний и обновление индекса</h3>
+            <span class="skill-summary" data-skill-title-ru="Загрузка документов, версии, дубли и контроль обновления" data-skill-title-en="Ingestion, versions, deduplication and refresh checks">Загрузка документов, версии, дубли и контроль обновления</span>
+          </div>
+          <span class="skill-engine">Codex</span>
+          <p data-skill-count="2">Навыков: 2</p>
+          <span class="collection-download"><span aria-hidden="true">↓</span> <span data-i18n="skillDownload">Скачать ZIP</span></span>
+        </a>
+      </li>
+      <li id="collection-claude-ai-knowledge-bases" data-compatibility="claude" data-entry-topic="ai-data" data-collection="claude/ai-knowledge-bases">
+        <a class="skill-entry" href="downloads/skills/claude/ai-knowledge-bases.zip?v=00fc523fc1d509cd" download="claude-ai-knowledge-bases.zip">
+          <div class="skill-entry-title">
+            <h3 data-skill-title-ru="Базы знаний и обновление индекса" data-skill-title-en="Knowledge bases and index refresh">Базы знаний и обновление индекса</h3>
+            <span class="skill-summary" data-skill-title-ru="Загрузка документов, версии, дубли и контроль обновления" data-skill-title-en="Ingestion, versions, deduplication and refresh checks">Загрузка документов, версии, дубли и контроль обновления</span>
+          </div>
+          <span class="skill-engine">Claude Code</span>
+          <p data-skill-count="2">Навыков: 2</p>
+          <span class="collection-download"><span aria-hidden="true">↓</span> <span data-i18n="skillDownload">Скачать ZIP</span></span>
+        </a>
+      </li>
+      <li id="collection-codex-ai-model-selection" data-compatibility="codex" data-entry-topic="ai-data" data-collection="codex/ai-model-selection">
+        <a class="skill-entry" href="downloads/skills/codex/ai-model-selection.zip?v=18ed03f24bd3fb5b" download="codex-ai-model-selection.zip">
+          <div class="skill-entry-title">
+            <h3 data-skill-title-ru="Выбор и резервирование ИИ-моделей" data-skill-title-en="AI model selection and fallback">Выбор и резервирование ИИ-моделей</h3>
+            <span class="skill-summary" data-skill-title-ru="Качество, стоимость, задержка и проверка резервной модели" data-skill-title-en="Quality, cost, latency and fallback checks">Качество, стоимость, задержка и проверка резервной модели</span>
+          </div>
+          <span class="skill-engine">Codex</span>
+          <p data-skill-count="2">Навыков: 2</p>
+          <span class="collection-download"><span aria-hidden="true">↓</span> <span data-i18n="skillDownload">Скачать ZIP</span></span>
+        </a>
+      </li>
+      <li id="collection-claude-ai-model-selection" data-compatibility="claude" data-entry-topic="ai-data" data-collection="claude/ai-model-selection">
+        <a class="skill-entry" href="downloads/skills/claude/ai-model-selection.zip?v=2c66f99021f6ee44" download="claude-ai-model-selection.zip">
+          <div class="skill-entry-title">
+            <h3 data-skill-title-ru="Выбор и резервирование ИИ-моделей" data-skill-title-en="AI model selection and fallback">Выбор и резервирование ИИ-моделей</h3>
+            <span class="skill-summary" data-skill-title-ru="Качество, стоимость, задержка и проверка резервной модели" data-skill-title-en="Quality, cost, latency and fallback checks">Качество, стоимость, задержка и проверка резервной модели</span>
+          </div>
+          <span class="skill-engine">Claude Code</span>
+          <p data-skill-count="2">Навыков: 2</p>
+          <span class="collection-download"><span aria-hidden="true">↓</span> <span data-i18n="skillDownload">Скачать ZIP</span></span>
+        </a>
+      </li>
       <li id="collection-codex-data-analytics" data-compatibility="codex" data-entry-topic="ai-data" data-collection="codex/data-analytics">
         <a class="skill-entry" href="downloads/skills/codex/data-analytics.zip?v=58af5d80a56a50a4" download="codex-data-analytics.zip">
           <div class="skill-entry-title">
@@ -381,6 +537,28 @@
           <span class="collection-download"><span aria-hidden="true">↓</span> <span data-i18n="skillDownload">Скачать ZIP</span></span>
         </a>
       </li>
+      <li id="collection-codex-ai-multimodal" data-compatibility="codex" data-entry-topic="ai-data" data-collection="codex/ai-multimodal">
+        <a class="skill-entry" href="downloads/skills/codex/ai-multimodal.zip?v=89166998636d1bd0" download="codex-ai-multimodal.zip">
+          <div class="skill-entry-title">
+            <h3 data-skill-title-ru="Мультимодальный анализ" data-skill-title-en="Multimodal analysis">Мультимодальный анализ</h3>
+            <span class="skill-summary" data-skill-title-ru="Проверяемые выводы по изображениям, PDF и видео" data-skill-title-en="Evidence from images, PDFs and video">Проверяемые выводы по изображениям, PDF и видео</span>
+          </div>
+          <span class="skill-engine">Codex</span>
+          <p data-skill-count="2">Навыков: 2</p>
+          <span class="collection-download"><span aria-hidden="true">↓</span> <span data-i18n="skillDownload">Скачать ZIP</span></span>
+        </a>
+      </li>
+      <li id="collection-claude-ai-multimodal" data-compatibility="claude" data-entry-topic="ai-data" data-collection="claude/ai-multimodal">
+        <a class="skill-entry" href="downloads/skills/claude/ai-multimodal.zip?v=fbab9cf1cf68777c" download="claude-ai-multimodal.zip">
+          <div class="skill-entry-title">
+            <h3 data-skill-title-ru="Мультимодальный анализ" data-skill-title-en="Multimodal analysis">Мультимодальный анализ</h3>
+            <span class="skill-summary" data-skill-title-ru="Проверяемые выводы по изображениям, PDF и видео" data-skill-title-en="Evidence from images, PDFs and video">Проверяемые выводы по изображениям, PDF и видео</span>
+          </div>
+          <span class="skill-engine">Claude Code</span>
+          <p data-skill-count="2">Навыков: 2</p>
+          <span class="collection-download"><span aria-hidden="true">↓</span> <span data-i18n="skillDownload">Скачать ZIP</span></span>
+        </a>
+      </li>
       <li id="collection-codex-ai-data-quality" data-compatibility="codex" data-entry-topic="ai-data" data-collection="codex/ai-data-quality">
         <a class="skill-entry" href="downloads/skills/codex/ai-data-quality.zip?v=abe6d1a9f752fb25" download="codex-ai-data-quality.zip">
           <div class="skill-entry-title">
@@ -430,6 +608,50 @@
           <span class="collection-download"><span aria-hidden="true">↓</span> <span data-i18n="skillDownload">Скачать ZIP</span></span>
         </a>
       </li>
+      <li id="collection-codex-brand-visual-production" data-compatibility="codex" data-entry-topic="content-design" data-collection="codex/brand-visual-production">
+        <a class="skill-entry" href="downloads/skills/codex/brand-visual-production.zip?v=7c34af937fa28361" download="codex-brand-visual-production.zip">
+          <div class="skill-entry-title">
+            <h3 data-skill-title-ru="Айдентика и визуальные материалы" data-skill-title-en="Brand identity and visual production">Айдентика и визуальные материалы</h3>
+            <span class="skill-summary" data-skill-title-ru="Арт-дирекция, форматы и приёмка визуальных материалов" data-skill-title-en="Art direction, formats and visual quality checks">Арт-дирекция, форматы и приёмка визуальных материалов</span>
+          </div>
+          <span class="skill-engine">Codex</span>
+          <p data-skill-count="2">Навыков: 2</p>
+          <span class="collection-download"><span aria-hidden="true">↓</span> <span data-i18n="skillDownload">Скачать ZIP</span></span>
+        </a>
+      </li>
+      <li id="collection-claude-brand-visual-production" data-compatibility="claude" data-entry-topic="content-design" data-collection="claude/brand-visual-production">
+        <a class="skill-entry" href="downloads/skills/claude/brand-visual-production.zip?v=ac758dd00f2041ac" download="claude-brand-visual-production.zip">
+          <div class="skill-entry-title">
+            <h3 data-skill-title-ru="Айдентика и визуальные материалы" data-skill-title-en="Brand identity and visual production">Айдентика и визуальные материалы</h3>
+            <span class="skill-summary" data-skill-title-ru="Арт-дирекция, форматы и приёмка визуальных материалов" data-skill-title-en="Art direction, formats and visual quality checks">Арт-дирекция, форматы и приёмка визуальных материалов</span>
+          </div>
+          <span class="skill-engine">Claude Code</span>
+          <p data-skill-count="2">Навыков: 2</p>
+          <span class="collection-download"><span aria-hidden="true">↓</span> <span data-i18n="skillDownload">Скачать ZIP</span></span>
+        </a>
+      </li>
+      <li id="collection-codex-video-content-production" data-compatibility="codex" data-entry-topic="content-design" data-collection="codex/video-content-production">
+        <a class="skill-entry" href="downloads/skills/codex/video-content-production.zip?v=0e2bf3326bddf6db" download="codex-video-content-production.zip">
+          <div class="skill-entry-title">
+            <h3 data-skill-title-ru="Видео, раскадровки и субтитры" data-skill-title-en="Video, storyboards and captions">Видео, раскадровки и субтитры</h3>
+            <span class="skill-summary" data-skill-title-ru="Сценарий, монтажная разбивка, субтитры и обложки" data-skill-title-en="Scripts, shot lists, captions and thumbnails">Сценарий, монтажная разбивка, субтитры и обложки</span>
+          </div>
+          <span class="skill-engine">Codex</span>
+          <p data-skill-count="2">Навыков: 2</p>
+          <span class="collection-download"><span aria-hidden="true">↓</span> <span data-i18n="skillDownload">Скачать ZIP</span></span>
+        </a>
+      </li>
+      <li id="collection-claude-video-content-production" data-compatibility="claude" data-entry-topic="content-design" data-collection="claude/video-content-production">
+        <a class="skill-entry" href="downloads/skills/claude/video-content-production.zip?v=732c797b31a6d781" download="claude-video-content-production.zip">
+          <div class="skill-entry-title">
+            <h3 data-skill-title-ru="Видео, раскадровки и субтитры" data-skill-title-en="Video, storyboards and captions">Видео, раскадровки и субтитры</h3>
+            <span class="skill-summary" data-skill-title-ru="Сценарий, монтажная разбивка, субтитры и обложки" data-skill-title-en="Scripts, shot lists, captions and thumbnails">Сценарий, монтажная разбивка, субтитры и обложки</span>
+          </div>
+          <span class="skill-engine">Claude Code</span>
+          <p data-skill-count="2">Навыков: 2</p>
+          <span class="collection-download"><span aria-hidden="true">↓</span> <span data-i18n="skillDownload">Скачать ZIP</span></span>
+        </a>
+      </li>
       <li id="collection-codex-design-creative" data-compatibility="codex" data-entry-topic="content-design" data-collection="codex/design-creative">
         <a class="skill-entry" href="downloads/skills/codex/design-creative.zip?v=263af8e0760d4d4e" download="codex-design-creative.zip">
           <div class="skill-entry-title">
@@ -447,6 +669,28 @@
           </div>
           <span class="skill-engine">Claude Code</span>
           <p data-skill-count="43">Навыков: 43</p>
+          <span class="collection-download"><span aria-hidden="true">↓</span> <span data-i18n="skillDownload">Скачать ZIP</span></span>
+        </a>
+      </li>
+      <li id="collection-codex-editorial-production" data-compatibility="codex" data-entry-topic="content-design" data-collection="codex/editorial-production">
+        <a class="skill-entry" href="downloads/skills/codex/editorial-production.zip?v=f8a342491422c2dd" download="codex-editorial-production.zip">
+          <div class="skill-entry-title">
+            <h3 data-skill-title-ru="Редакционный план и переработка контента" data-skill-title-en="Editorial planning and repurposing">Редакционный план и переработка контента</h3>
+            <span class="skill-summary" data-skill-title-ru="План публикаций и адаптация материалов по каналам" data-skill-title-en="Editorial schedules and adaptation across formats">План публикаций и адаптация материалов по каналам</span>
+          </div>
+          <span class="skill-engine">Codex</span>
+          <p data-skill-count="2">Навыков: 2</p>
+          <span class="collection-download"><span aria-hidden="true">↓</span> <span data-i18n="skillDownload">Скачать ZIP</span></span>
+        </a>
+      </li>
+      <li id="collection-claude-editorial-production" data-compatibility="claude" data-entry-topic="content-design" data-collection="claude/editorial-production">
+        <a class="skill-entry" href="downloads/skills/claude/editorial-production.zip?v=5acea238a1167981" download="claude-editorial-production.zip">
+          <div class="skill-entry-title">
+            <h3 data-skill-title-ru="Редакционный план и переработка контента" data-skill-title-en="Editorial planning and repurposing">Редакционный план и переработка контента</h3>
+            <span class="skill-summary" data-skill-title-ru="План публикаций и адаптация материалов по каналам" data-skill-title-en="Editorial schedules and adaptation across formats">План публикаций и адаптация материалов по каналам</span>
+          </div>
+          <span class="skill-engine">Claude Code</span>
+          <p data-skill-count="2">Навыков: 2</p>
           <span class="collection-download"><span aria-hidden="true">↓</span> <span data-i18n="skillDownload">Скачать ZIP</span></span>
         </a>
       </li>
@@ -754,6 +998,7 @@
       </section>
       <!-- skill-category-cards:end -->
     </div>
+    <footer class="page-end"><a class="back" href="#page-start" data-i18n="backToTop">↑ В начало</a></footer>
   </main>
 
   <script>

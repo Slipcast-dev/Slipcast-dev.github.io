@@ -29,9 +29,9 @@
       searchProjects: 'Поиск проектов', searchProjectsPlaceholder: 'Найти проект…',
       searchProjectsLabel: 'Поиск по названию, описанию или версии', noMatchingProjects: 'Проекты не найдены. Попробуйте другой запрос.',
       developerTitle: 'Разработчик — Slipcast-Dev', developerMetaDescription: 'Страница разработчика Slipcast-Dev.',
-      bioIntro: 'Я разработчик на стыке кода, искусственного интеллекта и автоматизации. Создаю приложения и цифровые инструменты, в которых ИИ становится частью рабочего процесса: помогает анализировать данные, принимать решения и выполнять задачи.',
-      bioAgents: 'Проектирую ИИ-агентов, подключаю их к API и сервисам, выстраиваю совместную работу нескольких агентов — от поиска информации до выполнения последовательных действий. Уделяю внимание точности, управляемости и понятным границам их самостоятельности.',
-      bioApproach: 'Мой подход — превращать смелые идеи в продуманные продукты. Чистый код, простая архитектура и технологии, которые приносят ощутимую пользу.',
+      bioIntro: 'Мои проекты обычно начинаются с фразы «опять это вручную». Из таких задач вырастают приложения, инструменты для разработки и автоматизация. Особенно люблю момент, когда длинная цепочка действий превращается в одну команду.',
+      bioAgents: 'ИИ-агентов я собираю как небольшую команду. У каждого своя работа: найти источники, проверить выводы, подготовить результат. Доступы, правила передачи задач и момент, когда нужно позвать человека, закладываю сразу.',
+      bioApproach: 'Для меня хорошая программа выдерживает передачу из рук в руки: другой человек может её запустить, понять результат и разобраться, если что-то пойдёт не по плану. Поэтому я вкладываюсь в ясный интерфейс, читаемый код и понятные способы исправить сбой.',
       telegramContact: 'Написать в Telegram ↗',
       websitesTitle: 'Вэб-сайты — Slipcast-Dev', websitesMetaDescription: 'Сайты Grizzly, Koto и VibeWave от Slipcast-Dev с живыми превью.',
       websiteList: 'Сайты Slipcast-Dev', visitWebsite: 'Открыть сайт ↗',
@@ -43,7 +43,7 @@
       projectsDescription: 'Публичные проекты Slipcast-dev: версии, названия и описания из GitHub.',
       heading: 'Личный сайт — разработчик, приложения, скиллы и агенты', developer: 'Разработчик', projects: 'Приложения', websites: 'Вэб-сайты',
       terminalSummary: 'Декоративная анимация команд macOS, Linux и GitHub CLI.',
-      sections: 'Разделы сайта', navigation: 'Навигация сайта', back: '← Назад в терминал', terminal: '← Терминал',
+      sections: 'Разделы сайта', navigation: 'Навигация сайта', back: '← Назад в терминал', backToTop: '↑ В начало', terminal: '← Терминал',
       websitesDescription: 'Раздел для портфолио веб-сайтов: дизайн, разработка и ссылки на опубликованные работы.',
       // ID репозитория сохраняется при переименовании приложения.
       projectDescriptions: {
@@ -92,9 +92,9 @@
       searchProjects: 'Project search', searchProjectsPlaceholder: 'Find a project…',
       searchProjectsLabel: 'Search by name, description or version', noMatchingProjects: 'No matching projects. Try another search.',
       developerTitle: 'Developer — Slipcast-Dev', developerMetaDescription: 'About the developer behind Slipcast-Dev.',
-      bioIntro: 'I am a developer working at the intersection of code, artificial intelligence and automation. I build applications and digital tools that make AI part of the workflow: helping analyze data, make decisions and carry out tasks.',
-      bioAgents: 'I design AI agents, connect them to APIs and services, and orchestrate collaboration between multiple agents — from finding information to carrying out sequences of actions. I focus on accuracy, control and clear boundaries for their autonomy.',
-      bioApproach: 'My approach is to turn bold ideas into thoughtfully designed products. Clean code, simple architecture and technology that delivers tangible value.',
+      bioIntro: 'Most of my projects start with the same thought: here I go doing this by hand again. That is where my apps, developer tools, and automations come from. My favorite moment is when a long chain of steps becomes one command.',
+      bioAgents: 'I build AI agents as a small team. Each has a job: find sources, check a conclusion, or prepare the result. I define permissions, handoffs, and when to bring in a person up front.',
+      bioApproach: 'Good software holds up when it changes hands. Someone else can run it, understand the result, and work out what happened if things go wrong. That is why I care about clear interfaces, readable code, and predictable recovery.',
       telegramContact: 'Message me on Telegram ↗',
       websitesTitle: 'Websites — Slipcast-Dev', websitesMetaDescription: 'Grizzly, Koto and VibeWave websites by Slipcast-Dev, with live previews.',
       websiteList: 'Slipcast-Dev websites', visitWebsite: 'Visit website ↗',
@@ -106,7 +106,7 @@
       projectsDescription: 'Public Slipcast-dev projects: releases, names and descriptions from GitHub.',
       heading: 'Personal website — developer, applications, skills and agents', developer: 'Developer', projects: 'Applications', websites: 'Websites',
       terminalSummary: 'Decorative macOS, Linux and GitHub CLI command animation.',
-      sections: 'Website sections', navigation: 'Website navigation', back: '← Back to terminal', terminal: '← Terminal',
+      sections: 'Website sections', navigation: 'Website navigation', back: '← Back to terminal', backToTop: '↑ Back to top', terminal: '← Terminal',
       websitesDescription: 'A website portfolio section for design, development and links to published work.',
       // ID репозитория сохраняется при переименовании приложения.
       projectDescriptions: {

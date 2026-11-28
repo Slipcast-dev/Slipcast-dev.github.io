@@ -62,6 +62,8 @@
     .download-info:empty { display: none; }
     .back { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; border: 1px solid #00ff6670; border-radius: 5px; padding: 11px 20px; color: var(--green); font-size: 13px; transition: background .2s; }
     .intro .back { margin-top: 14px; }
+    #page-start { scroll-margin-top: 82px; }
+    .page-end { text-align: center; margin-top: 32px; }
     .back:hover { background: #00ff6614; }
     @media (max-width: 600px) {
       main { width: calc(100% - 28px); padding-top: 80px; }
@@ -81,7 +83,7 @@
   </div>
   <main>
     <header class="intro">
-      <h1 data-i18n="developmentLog">Журнал разработок</h1>
+      <h1 id="page-start" tabindex="-1" data-i18n="developmentLog">Журнал разработок</h1>
       <a class="back" href="index.html" data-i18n="back">← Назад в терминал</a>
       <div class="project-search" role="search" aria-label="Поиск проектов" data-i18n-label="searchProjects">
         <span class="search-prompt" aria-hidden="true">&gt;_</span>
@@ -91,6 +93,7 @@
     <p id="load-status" class="load-status" role="status" data-i18n="loadingProjects">Загрузка публичных проектов…</p>
     <ol id="project-list" class="project-list" aria-label="Публичные проекты Slipcast-dev" data-i18n-label="projectList" aria-busy="true"></ol>
     <noscript><p class="load-status">Включите JavaScript для загрузки проектов. / Enable JavaScript to load projects. <a href="https://github.com/Slipcast-dev?tab=repositories">GitHub repositories / Репозитории GitHub</a>.</p></noscript>
+    <footer class="page-end"><a class="back" href="#page-start" data-i18n="backToTop">↑ В начало</a></footer>
   </main>
 
   <script src="projects-data.js"></script>

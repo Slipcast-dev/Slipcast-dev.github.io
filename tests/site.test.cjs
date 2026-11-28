@@ -39,7 +39,7 @@ test('Меню доступно сразу, а терминал начинает
 
 test('Страницы разработчика и сайтов переведены; Telegram, аватар и превью подключены', () => {
   const page = setup('developer.html', { languages: ['en'] });
-  assert.ok(page.document.querySelector('[data-i18n="bioIntro"]').textContent.startsWith('I am a developer'));
+  assert.ok(page.document.querySelector('[data-i18n="bioIntro"]').textContent.startsWith('Most of my projects'));
   assert.equal(page.document.querySelector('.telegram-button').attrs.href, 'tg://resolve?domain=slipcast666');
   const developer = fs.readFileSync(path.join(root, 'developer.html'), 'utf8');
   const actions = developer.match(/<div class="contact">([\s\S]*?)<\/div>\s*<div class="biography">/)[1];
@@ -50,13 +50,15 @@ test('Страницы разработчика и сайтов переведе
     const markup = fs.readFileSync(path.join(root, name), 'utf8');
     assert.match(markup, /<h1[^>]*>[^<]+<\/h1>\s*<a class="back"[^>]*data-i18n="back"/);
     assert.equal([...markup.matchAll(/data-i18n="back"/g)].length, 1);
+    assert.match(markup, /<h1 id="page-start" tabindex="-1"/);
+    assert.match(markup, /<footer class="page-end"><a[^>]*href="#page-start" data-i18n="backToTop"/);
   }
   for (const name of ['developer.html', 'projects.html', 'skills-agents.html', 'websites.html']) {
     const markup = fs.readFileSync(path.join(root, name), 'utf8');
     assert.doesNotMatch(markup, /class="topbar"|class="path"/);
   }
   page.click('ru');
-  assert.ok(page.document.querySelector('[data-i18n="bioIntro"]').textContent.startsWith('Я разработчик'));
+  assert.ok(page.document.querySelector('[data-i18n="bioIntro"]').textContent.startsWith('Мои проекты'));
   assert.ok(fs.existsSync(path.join(root, 'assets/avatar.jpg')));
   const websites = setup('websites.html', { languages: ['en'] });
   assert.equal(websites.document.querySelector('h1').textContent, 'Websites');
@@ -350,7 +352,7 @@ test('Раздел скиллов доступен из меню; карточк
   const home = setup('index.html', { languages: ['ru'], seen: true });
   const navigation = home.document.querySelector('[data-i18n="skillsTitleLabel"]');
   assert.equal(navigation.textContent, 'Скиллы');
-  assert.equal(navigation.attrs.href, 'skills-agents.html?v=11&lang=ru');
+  assert.equal(navigation.attrs.href, 'skills-agents.html?v=12&lang=ru');
   const menu = home.nodes.filter(node => (node.attrs.class || '').split(' ').includes('nav-button'));
   assert.deepEqual(menu.map(node => node.dataset.i18n), ['projects', 'skillsTitleLabel', 'aiAggregator', 'telegramChannel', 'developer']);
   assert.equal(menu[3].attrs.href, 'https://t.me/slipcastdev');
@@ -367,7 +369,7 @@ test('Раздел скиллов доступен из меню; карточк
   assert.equal(menu[3].attrs.href, 'https://t.me/slipcastdev');
   home.click('en');
   assert.equal(navigation.textContent, 'Skills');
-  assert.equal(navigation.attrs.href, 'skills-agents.html?v=11&lang=en');
+  assert.equal(navigation.attrs.href, 'skills-agents.html?v=12&lang=en');
 
   const page = setup('skills-agents.html', { languages: ['ru'] });
   assert.equal(page.document.querySelector('h1').textContent, 'Скиллы');
@@ -382,7 +384,7 @@ test('Раздел скиллов доступен из меню; карточк
   ]);
   assert.deepEqual(new Set(cards.map(card => card.dataset.entryTopic)), new Set(topics.map(topic => topic.dataset.skillTopic)));
   assert.equal(page.document.querySelector('#topic-development').textContent, 'Разработка и тестирование');
-  assert.equal(page.document.querySelectorAll('.skill-summary').length, 16);
+  assert.equal(page.document.querySelectorAll('.skill-summary').length, 38);
   const codexCards = cards.filter(card => card.dataset.compatibility === 'codex');
   const claudeCards = cards.filter(card => card.dataset.compatibility === 'claude');
   assert.ok(codexCards.length > 1 && claudeCards.length > 1);
@@ -420,7 +422,18 @@ test('Раздел скиллов доступен из меню; карточк
     'web-release-quality': ['web', 2],
     'ai-agent-workflows': ['ai-data', 3],
     'ai-data-quality': ['ai-data', 2],
-    'editorial-workflows': ['content-design', 2]
+    'editorial-workflows': ['content-design', 2],
+    'web-design-systems': ['web', 2],
+    'frontend-engineering': ['web', 2],
+    'backend-engineering': ['web', 2],
+    'web-storefronts': ['web', 2],
+    'web-observability': ['web', 2],
+    'ai-model-selection': ['ai-data', 2],
+    'ai-multimodal': ['ai-data', 2],
+    'ai-knowledge-bases': ['ai-data', 2],
+    'brand-visual-production': ['content-design', 2],
+    'editorial-production': ['content-design', 2],
+    'video-content-production': ['content-design', 2]
   };
   const index = JSON.parse(fs.readFileSync(path.join(dist, 'skills-index.json'), 'utf8'));
   for (const [name, [topic, count]] of Object.entries(newPacks)) {
@@ -501,6 +514,10 @@ test('Поиск скиллов индексирует опубликованн�
   }
   assert.equal(search(index, 'скриншоты визуальная регрессия', 'codex')[0]?.entry.name, 'visual-baseline-regression');
   assert.equal(search(index, 'проверить установщик Windows', 'codex')[0]?.entry.name, 'desktop-installer-acceptance');
+  for (const engine of ['codex', 'claude']) {
+    assert.ok(search(index, 'база знаний', engine).slice(0, 10)
+      .some(({ entry }) => entry.name === 'knowledge-base-ingestion'));
+  }
   assert.equal(search(index, 'бессмысленныйпроверочныйзапрос', 'all').length, 0);
 });
 

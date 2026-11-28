@@ -80,6 +80,34 @@ PROJECT_SUMMARIES = {
         "Telegram posts and digests, quotation and link verification",
     ),
 }
+# Авторские наборы с общими темами для Codex и Claude Code.
+NEW_PROJECT_PACKS = {
+    "web-design-systems": ("web", "Веб-дизайн и дизайн-системы", "Web design and design systems",
+                           "Адаптивные макеты и дизайн-токены", "Responsive layouts and design tokens"),
+    "frontend-engineering": ("web", "Фронтенд и состояния интерфейса", "Frontend and UI states",
+                             "Загрузка, ошибки, повтор запроса и регрессионные сценарии", "Loading, errors, retries and UI regression checks"),
+    "backend-engineering": ("web", "Бэкенд и надёжность данных", "Backend and data reliability",
+                            "Совместимая пагинация и согласованность транзакций", "Compatible pagination and transaction consistency"),
+    "web-storefronts": ("web", "Интернет-магазин и оформление заказа", "Storefront and checkout",
+                        "Состояния каталога, корзина и сценарии заказа на тестовых данных", "Catalog states, carts and checkout with test data"),
+    "web-observability": ("web", "Мониторинг и диагностика веб-приложений", "Web observability and incident triage",
+                          "Контракт событий браузера и разбор сбоев по журналам", "Client telemetry contracts and incident triage"),
+    "ai-model-selection": ("ai-data", "Выбор и резервирование ИИ-моделей", "AI model selection and fallback",
+                           "Качество, стоимость, задержка и проверка резервной модели", "Quality, cost, latency and fallback checks"),
+    "ai-multimodal": ("ai-data", "Мультимодальный анализ", "Multimodal analysis",
+                     "Проверяемые выводы по изображениям, PDF и видео", "Evidence from images, PDFs and video"),
+    "ai-knowledge-bases": ("ai-data", "Базы знаний и обновление индекса", "Knowledge bases and index refresh",
+                           "Загрузка документов, версии, дубли и контроль обновления", "Ingestion, versions, deduplication and refresh checks"),
+    "brand-visual-production": ("content-design", "Айдентика и визуальные материалы", "Brand identity and visual production",
+                                "Арт-дирекция, форматы и приёмка визуальных материалов", "Art direction, formats and visual quality checks"),
+    "editorial-production": ("content-design", "Редакционный план и переработка контента", "Editorial planning and repurposing",
+                             "План публикаций и адаптация материалов по каналам", "Editorial schedules and adaptation across formats"),
+    "video-content-production": ("content-design", "Видео, раскадровки и субтитры", "Video, storyboards and captions",
+                                  "Сценарий, монтажная разбивка, субтитры и обложки", "Scripts, shot lists, captions and thumbnails"),
+}
+for slug, (_, ru_title, en_title, ru_summary, en_summary) in NEW_PROJECT_PACKS.items():
+    PROJECT_SKILLS[slug] = (ru_title, en_title)
+    PROJECT_SUMMARIES[slug] = (ru_summary, en_summary)
 # Короткие сценарии использования показываются внутри соответствующих строк каталога.
 PROJECT_USE_CASES = {
     "dev-release-testing": (
@@ -495,6 +523,7 @@ def main() -> None:
         topic_by_category = {category: slug for slug, _, _, categories in TOPICS for category in categories}
         if len(topic_by_category) != sum(len(categories) for _, _, _, categories in TOPICS):
             raise ValueError("A skill category belongs to multiple topics")
+        topic_by_category.update({slug: topic for slug, (topic, *_) in NEW_PROJECT_PACKS.items()})
         cards: dict[str, list[tuple[str, str]]] = defaultdict(list)
         search_index: dict[str, list[tuple[str, str]]] = {}
         for engine, categories in (("codex", codex_categories), ("claude", claude_categories)):

@@ -25,12 +25,15 @@ DOCS = {
 }
 FAMILIES = {
     "engineering": {"development", "devops-cloud", "testing-quality", "software-engineering", "agents-ai", "ai-agents", "project-verification",
-                    "dev-release-testing", "data-import-testing", "web-development", "web-release-quality", "ai-agent-workflows", "ai-data-quality"},
+                    "dev-release-testing", "data-import-testing", "web-development", "web-release-quality", "ai-agent-workflows", "ai-data-quality",
+                    "frontend-engineering", "backend-engineering", "web-storefronts", "web-observability",
+                    "ai-model-selection", "ai-knowledge-bases"},
     "defensive": {"security-privacy", "security-compliance"},
     "analysis": {"data-analytics", "industry-operations", "education-learning", "education-research"},
     "sensitive": {"finance-personal", "personal-finance", "health-care", "health-wellness", "legal-compliance", "legal-government"},
-    "visual": {"design-creative", "product-design"},
-    "writing": {"writing-communication", "marketing-growth", "marketing-sales", "sales-customer", "editorial-workflows"},
+    "visual": {"design-creative", "product-design", "web-design-systems", "ai-multimodal",
+               "brand-visual-production", "video-content-production"},
+    "writing": {"writing-communication", "marketing-growth", "marketing-sales", "sales-customer", "editorial-workflows", "editorial-production"},
     "planning": {"management-operations", "business-leadership", "business-strategy", "people-career", "people-leadership",
                  "product-strategy", "thinking-decisions"},
     "routine": {"home-family", "personal-life", "productivity-tools", "productivity", "travel-lifestyle"},
@@ -57,6 +60,7 @@ CHECKS = {
 VISUAL = re.compile(r"(?:^|-)(?:screenshot|visual|thumbnail|slide|storyboard|image|illustration|photo|ux|chart)(?:-|$)")
 FOCUSED = re.compile(r"(?:^|-)(?:summary|summarizer|checklist|formatter|shortener|classifier|extractor)(?:-|$)")
 COMPLEX = re.compile(r"(?:^|-)(?:architecture|architect|migration|debugging|incident|review|audit|strategy|forecast)(?:-|$)")
+VISUAL_PACKS = {"ai-multimodal", "video-content-production", "brand-visual-production", "web-design-systems"}
 RUSSIAN_LETTER = re.compile(r"[А-Яа-яЁё]")
 
 EFFORT = {
@@ -76,7 +80,7 @@ def recommended_profile(category: str, skill: str) -> tuple[str, str]:
     family = FAMILY_BY_CATEGORY[category]
     if family in {"defensive", "sensitive"} or COMPLEX.search(skill):
         return "deep", family
-    if VISUAL.search(skill):
+    if category in VISUAL_PACKS or VISUAL.search(skill):
         return "visual", family
     if category == "project-verification" and skill != "feed-format-drift-check":
         return "deep", family

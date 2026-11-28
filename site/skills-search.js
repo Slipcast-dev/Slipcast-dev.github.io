@@ -34,6 +34,8 @@
     'агент agent subagent субагент',
     'промпт промт prompt инструкция instruction',
     'поиск search retrieval ранжир',
+    'база базе базы базу базой base',
+    'знан knowledge',
     'безопасн security защита hardening',
     'приватност privacy конфиденц',
     'дизайн design макет прототип prototype',
