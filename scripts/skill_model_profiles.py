@@ -24,12 +24,13 @@ DOCS = {
     "claude": ("https://code.claude.com/docs/en/model-config", "https://code.claude.com/docs/en/skills"),
 }
 FAMILIES = {
-    "engineering": {"development", "devops-cloud", "testing-quality", "software-engineering", "agents-ai", "ai-agents", "project-verification"},
+    "engineering": {"development", "devops-cloud", "testing-quality", "software-engineering", "agents-ai", "ai-agents", "project-verification",
+                    "dev-release-testing", "data-import-testing", "web-development", "web-release-quality", "ai-agent-workflows", "ai-data-quality"},
     "defensive": {"security-privacy", "security-compliance"},
     "analysis": {"data-analytics", "industry-operations", "education-learning", "education-research"},
     "sensitive": {"finance-personal", "personal-finance", "health-care", "health-wellness", "legal-compliance", "legal-government"},
     "visual": {"design-creative", "product-design"},
-    "writing": {"writing-communication", "marketing-growth", "marketing-sales", "sales-customer"},
+    "writing": {"writing-communication", "marketing-growth", "marketing-sales", "sales-customer", "editorial-workflows"},
     "planning": {"management-operations", "business-leadership", "business-strategy", "people-career", "people-leadership",
                  "product-strategy", "thinking-decisions"},
     "routine": {"home-family", "personal-life", "productivity-tools", "productivity", "travel-lifestyle"},
@@ -78,6 +79,10 @@ def recommended_profile(category: str, skill: str) -> tuple[str, str]:
     if VISUAL.search(skill):
         return "visual", family
     if category == "project-verification" and skill != "feed-format-drift-check":
+        return "deep", family
+    if skill == "browser-accessibility-acceptance":
+        return "visual", family
+    if skill in {"desktop-release-artifact-check", "mcp-tool-contract-check", "prompt-model-regression"}:
         return "deep", family
     if FOCUSED.search(skill):
         return "quick", family

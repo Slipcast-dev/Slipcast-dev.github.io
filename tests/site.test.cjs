@@ -336,7 +336,7 @@ test('Раздел скиллов доступен из меню; карточк
   const home = setup('index.html', { languages: ['ru'], seen: true });
   const navigation = home.document.querySelector('[data-i18n="skillsTitleLabel"]');
   assert.equal(navigation.textContent, 'Скиллы');
-  assert.equal(navigation.attrs.href, 'skills-agents.html?v=9&lang=ru');
+  assert.equal(navigation.attrs.href, 'skills-agents.html?v=10&lang=ru');
   const menu = home.nodes.filter(node => (node.attrs.class || '').split(' ').includes('nav-button'));
   assert.deepEqual(menu.map(node => node.dataset.i18n), ['projects', 'skillsTitleLabel', 'aiAggregator', 'telegramChannel', 'developer']);
   assert.equal(menu[3].attrs.href, 'https://t.me/slipcastdev');
@@ -353,7 +353,7 @@ test('Раздел скиллов доступен из меню; карточк
   assert.equal(menu[3].attrs.href, 'https://t.me/slipcastdev');
   home.click('en');
   assert.equal(navigation.textContent, 'Skills');
-  assert.equal(navigation.attrs.href, 'skills-agents.html?v=9&lang=en');
+  assert.equal(navigation.attrs.href, 'skills-agents.html?v=10&lang=en');
 
   const page = setup('skills-agents.html', { languages: ['ru'] });
   assert.equal(page.document.querySelector('h1').textContent, 'Скиллы');
@@ -364,17 +364,26 @@ test('Раздел скиллов доступен из меню; карточк
   const cards = page.document.querySelectorAll('[data-compatibility]');
   const topics = page.document.querySelectorAll('[data-skill-topic]');
   assert.deepEqual(topics.map(topic => topic.dataset.skillTopic), [
-    'development', 'ai-data', 'content-design', 'business', 'security', 'learning', 'personal'
+    'development', 'web', 'ai-data', 'content-design', 'business', 'security', 'learning', 'personal'
   ]);
   assert.deepEqual(new Set(cards.map(card => card.dataset.entryTopic)), new Set(topics.map(topic => topic.dataset.skillTopic)));
   assert.equal(page.document.querySelector('#topic-development').textContent, 'Разработка и тестирование');
-  assert.equal(page.document.querySelectorAll('.skill-summary').length, 2);
+  assert.equal(page.document.querySelectorAll('.skill-summary').length, 16);
   const codexCards = cards.filter(card => card.dataset.compatibility === 'codex');
   const claudeCards = cards.filter(card => card.dataset.compatibility === 'claude');
   assert.ok(codexCards.length > 1 && claudeCards.length > 1);
   assert.equal(cards.length, codexCards.length + claudeCards.length);
 
-  const links = page.nodes.filter(node => node.tag === 'a' && node.attrs.download);
+  const links = page.nodes.filter(node => node.tag === 'a' && (node.attrs.class || '').split(' ').includes('skill-entry') && node.attrs.download);
+  const kitLinks = page.document.querySelectorAll('[data-kit-download]');
+  assert.equal(kitLinks.length, 10);
+  for (const link of kitLinks) {
+    const archive = links.find(row => row.attrs.href.startsWith('downloads/skills/' + link.dataset.kitDownload + '.zip?'));
+    assert.ok(archive, link.dataset.kitDownload);
+    assert.equal(link.attrs.href, archive.attrs.href);
+    assert.equal(link.attrs.download, archive.attrs.download);
+  }
+
   assert.equal(links.length, cards.length);
   assert.equal(new Set(links.map(link => link.attrs.href)).size, cards.length);
   assert.deepEqual(
@@ -395,6 +404,24 @@ test('Раздел скиллов доступен из меню; карточк
   assert.doesNotMatch(builtPage, /href="downloads\/(?:codex|claude)-skills\.zip/);
   assert.doesNotMatch(builtPage, /claude-agents-.*\.zip/);
   assert.ok(!fs.existsSync(path.join(dist, 'downloads/agents')));
+  const newPacks = {
+    'dev-release-testing': ['development', 3],
+    'data-import-testing': ['development', 2],
+    'web-development': ['web', 3],
+    'web-release-quality': ['web', 2],
+    'ai-agent-workflows': ['ai-data', 3],
+    'ai-data-quality': ['ai-data', 2],
+    'editorial-workflows': ['content-design', 2]
+  };
+  const index = JSON.parse(fs.readFileSync(path.join(dist, 'skills-index.json'), 'utf8'));
+  for (const [name, [topic, count]] of Object.entries(newPacks)) {
+    for (const engine of ['codex', 'claude']) {
+      const card = page.document.querySelector('#collection-' + engine + '-' + name);
+      assert.equal(card?.dataset.entryTopic, topic, name);
+      assert.equal(index[engine + '/' + name].length, count, name);
+    }
+  }
+
 
   const filter = name => page.document.querySelector('[data-filter="' + name + '"]');
   const choose = name => filter(name).listeners.click[0]();
@@ -402,6 +429,7 @@ test('Раздел скиллов доступен из меню; карточк
   assert.deepEqual(visible(), cards);
   choose('codex');
   assert.deepEqual(visible(), codexCards);
+  assert.ok(kitLinks.every(link => link.hidden === link.dataset.kitDownload.startsWith('claude/')));
   assert.ok(topics.every(topic => topic.hidden === !codexCards.some(card => card.dataset.entryTopic === topic.dataset.skillTopic)));
   assert.equal(filter('codex').attrs['aria-pressed'], 'true');
   assert.equal(filter('all').attrs['aria-pressed'], 'false');
@@ -422,8 +450,10 @@ test('Раздел скиллов доступен из меню; карточк
   page.click('en');
   assert.equal(page.document.querySelector('h1').textContent, 'Skills');
   assert.equal(page.document.title, 'Skills — Slipcast-Dev');
+  assert.equal(page.document.querySelector('#skill-kits-title').textContent, 'Ready-to-use skill kits');
+  assert.equal(page.document.querySelector('[data-i18n="skillInstallTitle"]').textContent, 'Install and update');
   assert.equal(page.document.querySelector('#topic-development').textContent, 'Development and testing');
-  assert.ok(page.document.querySelectorAll('.skill-summary').every(summary => summary.textContent.startsWith('Skill portability')));
+  assert.equal(page.document.querySelectorAll('.skill-summary').filter(summary => summary.textContent.startsWith('Skill portability')).length, 2);
   assert.equal(page.document.querySelector('[data-i18n-label="skillCompatibility"]').attrs['aria-label'], 'Compatibility filter');
   assert.ok(titles.every(title => title.textContent === title.dataset.skillTitleEn));
   assert.ok(counts.every(count => / skills?$/.test(count.textContent)));

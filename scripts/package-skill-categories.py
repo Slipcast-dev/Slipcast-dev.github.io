@@ -19,15 +19,24 @@ from skill_model_profiles import model_guide, optimize_skill
 ROOT = Path(__file__).resolve().parents[1]
 PROJECT_SKILLS = {
     "project-verification": ("Проверки проектов и совместимости", "Project and compatibility checks"),
+    "dev-release-testing": ("Приёмка релиза и диагностика", "Release acceptance and diagnostics"),
+    "data-import-testing": ("Тестирование импорта данных", "Data import testing"),
+    "web-development": ("Веб-разработка и браузерная приёмка", "Web development and browser acceptance"),
+    "web-release-quality": ("Выпуск и производительность сайта", "Website release and performance"),
+    "ai-agent-workflows": ("Модели, MCP и рабочие процессы агентов", "Models, MCP and agent workflows"),
+    "ai-data-quality": ("Структурированные ответы и качество источников", "Structured outputs and source quality"),
+    "editorial-workflows": ("Telegram и проверка источников", "Telegram editing and source verification"),
 }
 # Общие темы объединяют категории двух платформ и сохраняют адреса ZIP.
 TOPICS = (
     ("development", "Разработка и тестирование", "Development and testing",
-     {"development", "devops-cloud", "project-verification", "software-engineering", "testing-quality"}),
+     {"development", "devops-cloud", "project-verification", "software-engineering", "testing-quality",
+      "dev-release-testing", "data-import-testing"}),
+    ("web", "Веб-разработка", "Web development", {"web-development", "web-release-quality"}),
     ("ai-data", "ИИ, агенты и данные", "AI, agents and data",
-     {"agents-ai", "ai-agents", "data-analytics"}),
+     {"agents-ai", "ai-agents", "data-analytics", "ai-agent-workflows", "ai-data-quality"}),
     ("content-design", "Дизайн, тексты и контент", "Design, writing and content",
-     {"design-creative", "product-design", "writing-communication"}),
+     {"design-creative", "product-design", "writing-communication", "editorial-workflows"}),
     ("business", "Бизнес, продукт и карьера", "Business, product and careers",
      {"business-leadership", "business-strategy", "industry-operations", "management-operations",
       "marketing-growth", "marketing-sales", "people-career", "people-leadership", "product-strategy",
@@ -40,10 +49,46 @@ TOPICS = (
      {"finance-personal", "health-care", "health-wellness", "home-family", "personal-finance",
       "personal-life", "travel-lifestyle"}),
 )
-PROJECT_SUMMARY = (
-    "Совместимость скиллов, установщики, скриншоты, офлайн-синхронизация, RSS/CSV/JSON",
-    "Skill portability, installers, screenshots, offline sync, RSS/CSV/JSON",
-)
+PROJECT_SUMMARIES = {
+    "project-verification": (
+        "Совместимость скиллов, установщики, скриншоты, офлайн-синхронизация, RSS/CSV/JSON",
+        "Skill portability, installers, screenshots, offline sync, RSS/CSV/JSON",
+    ),
+    "dev-release-testing": (
+        "Файлы релиза macOS и Windows, восстановление копий, диагностика Telegram-бота",
+        "macOS and Windows release files, backup restores, Telegram bot diagnostics",
+    ),
+    "data-import-testing": ("Тестовые CSV и JSON, сверка импорта", "CSV and JSON fixtures, import reconciliation"),
+    "web-development": (
+        "Компоненты, доступность в браузере, проверка контракта веб-API",
+        "Components, browser accessibility, web API contract checks",
+    ),
+    "web-release-quality": (
+        "Статический сайт, проверка сборки и бюджет производительности",
+        "Static site release, build verification and performance budgets",
+    ),
+    "ai-data-quality": (
+        "Проверка схемы ответа и качества источников для поиска с генерацией (RAG)",
+        "Response schema and source quality checks for retrieval-augmented generation (RAG)",
+    ),
+    "ai-agent-workflows": (
+        "Совместимость MCP, проверка промптов на разных моделях, передача задач между агентами",
+        "MCP compatibility, prompt regression across models, agent handoffs",
+    ),
+    "editorial-workflows": (
+        "Посты и дайджесты Telegram, проверка цитат и ссылок",
+        "Telegram posts and digests, quotation and link verification",
+    ),
+}
+# Рекомендуемые шаги для задач с несколькими скиллами.
+WORKFLOWS = {
+    "data-import-testing": ("synthetic-import-fixtures", "import-reconciliation"),
+    "web-development": ("frontend-component-contract", "web-api-consumer-contract", "browser-accessibility-acceptance"),
+    "ai-agent-workflows": ("mcp-tool-contract-check", "prompt-model-regression", "agent-handoff-evidence"),
+    "editorial-workflows": ("quotation-source-verification", "telegram-editorial-adaptation"),
+    "web-release-quality": ("static-site-release-check", "web-performance-budget-check"),
+    "ai-data-quality": ("structured-output-schema-check", "retrieval-source-quality-check"),
+}
 ENGINES = {"codex": ("Codex", ".agents"), "claude": ("Claude Code", ".claude")}
 SLUG = re.compile(r"[a-z0-9][a-z0-9-]*")
 LICENSE_DECLARATION = re.compile(
@@ -230,6 +275,18 @@ def export_category(
         "Рекомендации по моделям / Model guidance: [MODEL_GUIDE.md](MODEL_GUIDE.md).\n\n"
         "Лицензии и авторство / Licenses and attribution: ATTRIBUTION.json and skill files.\n"
     )
+    if category in PROJECT_SUMMARIES and category != "project-verification":
+        summary_ru, summary_en = PROJECT_SUMMARIES[category]
+        readme += f"## Состав / Contents\n\n{summary_ru}.\n\n{summary_en}.\n\n"
+        order = WORKFLOWS.get(category)
+        if order:
+            if set(order) != {skill for skill, _, _, _ in skills}:
+                raise ValueError(f"Workflow does not cover all skills: {engine}/{category}")
+            readme += "Рекомендуемый порядок / Suggested order:\n\n"
+            readme += "".join(f"{i}. [{skill}](skills/{skill}/SKILL.md)\n" for i, skill in enumerate(order, 1))
+        else:
+            readme += "Выберите скилл под задачу / Choose a skill for your task:\n\n"
+            readme += "".join(f"- [{skill}](skills/{skill}/SKILL.md)\n" for skill, _, _, _ in skills)
     with ZipFile(path, "w") as archive:
         zip_entry(archive, "README.md", readme.encode())
         zip_entry(archive, "MODEL_GUIDE.md", model_guide(engine, category).encode())
@@ -256,14 +313,14 @@ def card(
     title_ru, title_en = (escape(title) for title in titles)
     filename = f"{engine}-{category}.zip"
     summary = ""
-    if category == "project-verification":
-        summary_ru, summary_en = (escape(line) for line in PROJECT_SUMMARY)
+    if category in PROJECT_SUMMARIES:
+        summary_ru, summary_en = (escape(line) for line in PROJECT_SUMMARIES[category])
         summary = (
             f'            <span class="skill-summary" data-skill-title-ru="{summary_ru}" '
             f'data-skill-title-en="{summary_en}">{summary_ru}</span>\n'
         )
     return (
-        f'      <li data-compatibility="{engine}" data-entry-topic="{topic}" data-collection="{engine}/{category}">\n'
+        f'      <li id="collection-{engine}-{category}" data-compatibility="{engine}" data-entry-topic="{topic}" data-collection="{engine}/{category}">\n'
         f'        <a class="skill-entry" href="downloads/skills/{engine}/{category}.zip?v={digest}" download="{filename}">\n'
         '          <div class="skill-entry-title">\n'
         f'            <h3 data-skill-title-ru="{title_ru}" data-skill-title-en="{title_en}">{title_ru}</h3>\n'
