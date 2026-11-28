@@ -176,7 +176,17 @@
     "Обработка документов с разметкой": "Layout-aware document processing",
     "Версии и совместимость агентов": "Agent versions and compatibility",
     "Повторяемые прогоны и диагностика": "Reproducible agent runs and diagnostics",
-    "Команды для большого репозитория": "Agent teams for large repositories"
+    "Команды для большого репозитория": "Agent teams for large repositories",
+    "Плагины и расширяемость": "Plugins and extensibility",
+    "Наблюдаемость приложений": "Application observability",
+    "Визуальная регрессия интерфейса": "UI visual regression",
+    "Граничные случаи в тестировании": "Edge-case testing",
+    "Windows · Службы и фоновые задачи": "Windows · Services and background tasks",
+    "Windows · Графика и доступность рабочего стола": "Windows · Desktop display and accessibility",
+    "Очереди и фоновые операции": "Queues and background operations",
+    "Надёжность веб-интеграций": "Web integration reliability",
+    "Парсинг публичных источников": "Public source parsing",
+    "Контроль изменений страниц": "Page change monitoring"
   },
   "tasks": {
     "app": "Design an application",
@@ -455,7 +465,37 @@
     "testAgentSessionResume": "Test recovery of an interrupted agent session",
     "divideLargeRepoAgentWork": "Assign agent work across repository modules",
     "isolateParallelAgentChanges": "Isolate changes from agents working in parallel",
-    "reviewMergedAgentWork": "Review compatibility of changes from multiple agents"
+    "reviewMergedAgentWork": "Review compatibility of changes from multiple agents",
+    "addThirdPartyPluginSupport": "Add support for third-party plugins",
+    "buildPluginSdkExample": "Create a plugin SDK and example",
+    "checkPluginCompatibility": "Verify plugin compatibility",
+    "diagnoseSlowRequests": "Set up slow-request diagnostics",
+    "addRequestTracing": "Add end-to-end request tracing",
+    "correlateServiceLogs": "Correlate service logs and traces",
+    "testVisualLayoutRegression": "Check layout after a UI update",
+    "captureResponsiveBaselineSet": "Capture responsive UI baselines",
+    "reviewScreenshotDiffs": "Review screenshot differences",
+    "testImportBoundaryFiles": "Test imports of empty, large, and corrupted files",
+    "designImportPropertyChecks": "Define testable file import rules",
+    "analyzeImportTestFailures": "Analyze edge-case import failures",
+    "launchWindowsBackgroundProcessing": "Run Windows background processing and verify reboot recovery",
+    "configureWindowsScheduledJob": "Schedule a Windows background task",
+    "verifyWindowsServiceRecovery": "Verify Windows service shutdown and recovery",
+    "testWindowsMixedDpiMonitors": "Test a Windows app on two monitors with different scaling",
+    "fixWindowsDesktopDpiLayout": "Fix Windows app layout across DPI changes",
+    "reviewWindowsDesktopKeyboardAccess": "Review keyboard accessibility in a Windows app",
+    "processQueuedBatchesWithoutDuplicates": "Process job batches without duplicate results",
+    "implementBoundedJobRetries": "Implement bounded retries for background jobs",
+    "verifyQueueFailureRecovery": "Test queue recovery after failures",
+    "keepAppWorkingDuringApiOutage": "Keep an app working during an external API outage",
+    "setHttpCacheAndTimeouts": "Configure HTTP caching and timeouts",
+    "verifyExternalApiRecovery": "Verify recovery after a network failure",
+    "aggregatePublicRssAndWebNews": "Combine news from RSS and public pages into one list",
+    "implementAuthorizedHtmlRssParser": "Build an HTML and RSS parser for authorized sources",
+    "validateParsedRecordsAndDuplicates": "Validate extracted records and remove duplicates",
+    "detectSourceMarkupChanges": "Detect markup changes and missing records",
+    "captureParserSelectorBaselines": "Prepare page structure and selector baselines",
+    "reviewParserAfterLayoutChange": "Recheck parser results after a page layout change"
   },
   "phases": {
     "auto": "Based on the task",
@@ -594,7 +634,37 @@
     "agentRunBaseline": "Baseline runs and trace comparison",
     "agentRunRecovery": "Divergence diagnosis and session recovery",
     "agentRepositoryBoundaries": "Ownership boundaries and change isolation",
-    "agentChangeIntegration": "Integrate and review changes from multiple agents"
+    "agentChangeIntegration": "Integrate and review changes from multiple agents",
+    "designPluginContract": "Design the plugin contract",
+    "implementPluginSdk": "Implement the SDK and sample",
+    "validatePluginCompatibility": "Validate plugin compatibility",
+    "defineRequestDiagnosticsMetrics": "Select request diagnostics metrics",
+    "instrumentRequestDiagnostics": "Instrument metrics, traces, and logs",
+    "verifyRequestDiagnosticsUnderLoad": "Verify diagnostics under test load",
+    "captureUiVisualBaselines": "Capture UI reference screenshots",
+    "compareUiVisualScreenshots": "Compare UI screenshots",
+    "triageUiVisualDifferences": "Review visual diffs and responsive layout",
+    "designImportEdgeProperties": "Define import rules and boundaries",
+    "prepareImportBoundaryFixtures": "Prepare edge-case import fixtures",
+    "triageImportEdgeFailures": "Triage edge-case failures",
+    "designWindowsBackgroundLaunch": "Design Windows background task startup",
+    "implementWindowsBackgroundJob": "Implement a Windows service or background job",
+    "validateWindowsServiceRecovery": "Verify Windows service shutdown, restart, and recovery",
+    "planWindowsDisplayMatrix": "Plan a Windows display, resolution, and scaling matrix",
+    "correctWindowsDpiLayout": "Correct Windows layout across scaling changes",
+    "validateWindowsDesktopAccessibility": "Verify accessibility and multi-display behavior",
+    "designBackgroundJobQueue": "Design the queue and deduplication rules",
+    "implementBackgroundJobRetries": "Implement background job retries",
+    "verifyBackgroundQueueFailure": "Verify queue behavior under shutdown and failure",
+    "defineWebIntegrationErrorContract": "Define the external API error contract",
+    "implementWebCacheAndTimeouts": "Implement caching, timeouts, and retries",
+    "validateWebIntegrationRecovery": "Validate web integration recovery",
+    "selectPublicSourcesAndLimits": "Choose public sources and limits",
+    "extractPublicHtmlRssRecords": "Extract records from HTML and RSS",
+    "validatePublicParsedRecords": "Validate and deduplicate parsed records",
+    "capturePageChangeBaselines": "Capture reference pages and expected fields",
+    "detectPublicPageStructureDrift": "Detect markup and selector changes",
+    "retestParserAfterPageChange": "Update selectors and verify extracted records"
   },
   "guidance": {
     "python": "Follow PEP 8, annotate functions and methods, and use asynchronous calls for suitable I/O operations.",
@@ -3285,6 +3355,276 @@
         "Check agreements on interfaces, schemas, and shared dependencies.",
         "Identify conflicts and review available end-to-end test results.",
         "Report what is ready to merge and which checks are still pending."
+      ]
+    ],
+    "plugin-contract-architect": [
+      "Plugin architect",
+      "Designs extension contracts and lifecycle.",
+      [
+        "Define extension points and permission boundaries",
+        "Specify contract versioning and lifecycle",
+        "Define compatibility and failure criteria"
+      ]
+    ],
+    "plugin-sdk-developer": [
+      "Plugin SDK developer",
+      "Implements SDK interfaces and a sample extension.",
+      [
+        "Define public API types and errors",
+        "Create a minimal example plugin",
+        "Verify loading, unloading, and cleanup"
+      ]
+    ],
+    "plugin-compatibility-tester": [
+      "Plugin compatibility tester",
+      "Checks combinations of host, SDK, and extension versions.",
+      [
+        "Build a supported-version matrix",
+        "Test upgrades and unsupported versions with test extensions",
+        "Record results and add regression checks"
+      ]
+    ],
+    "application-metrics-engineer": [
+      "Metrics engineer",
+      "Defines latency, error, and resource saturation metrics.",
+      [
+        "Identify user flows and their metrics",
+        "Limit labels and define aggregation boundaries",
+        "Verify metrics against a test workload"
+      ]
+    ],
+    "request-tracing-engineer": [
+      "Tracing engineer",
+      "Correlates operations and requests across service components.",
+      [
+        "Define instrumentation points and request identifiers",
+        "Propagate context and exclude sensitive fields",
+        "Verify trace completeness and overhead"
+      ]
+    ],
+    "application-log-analyst": [
+      "Application log analyst",
+      "Connects logs, metrics, and traces to explain degradation.",
+      [
+        "Correlate events by time and identifier",
+        "Find the first step with increased latency",
+        "Support the finding with measurements and identify follow-up checks"
+      ]
+    ],
+    "ui-screenshot-engineer": [
+      "UI screenshot engineer",
+      "Creates reproducible reference screenshots.",
+      [
+        "Pin test data, fonts, and page state",
+        "Capture the required viewport sizes",
+        "Record versions and run settings with the screenshots"
+      ]
+    ],
+    "visual-diff-reviewer": [
+      "Visual diff reviewer",
+      "Distinguishes intended design changes from regressions.",
+      [
+        "Compare screenshots of the same states",
+        "Check shifts, clipping, and readability",
+        "Mark meaningful differences and explain required fixes"
+      ]
+    ],
+    "responsive-layout-tester": [
+      "Responsive layout tester",
+      "Tests layouts across screens and with enlarged text.",
+      [
+        "Build a viewport and orientation matrix",
+        "Check overflow, text wrapping, and button access",
+        "Add regression checks for confirmed defects"
+      ]
+    ],
+    "property-testing-engineer": [
+      "Property testing engineer",
+      "Turns input handling rules into testable properties.",
+      [
+        "Define valid boundaries and expected errors",
+        "Verify properties on small synthetic cases",
+        "Check that a rejected import preserves existing data"
+      ]
+    ],
+    "edge-case-fixture-curator": [
+      "Edge-case test data curator",
+      "Prepares reproducible edge-case fixtures.",
+      [
+        "Prepare empty, large, and ordinarily corrupted files",
+        "Document the expected result of each case",
+        "Record a version and reproducible preparation steps"
+      ]
+    ],
+    "test-failure-analyst": [
+      "Test failure analyst",
+      "Separates product defects from bad expectations and environment problems.",
+      [
+        "Compare expectations, fixture version, and test log",
+        "Identify the smallest reproducible case",
+        "Describe the fix area and regression check"
+      ]
+    ],
+    "windows-service-developer": [
+      "Windows Services developer",
+      "Designs Windows services and their lifecycle.",
+      [
+        "Define dependencies and a service account",
+        "Implement normal startup, shutdown, and logging",
+        "Check shutdown while jobs are in progress"
+      ]
+    ],
+    "windows-task-scheduler-engineer": [
+      "Windows Task Scheduler engineer",
+      "Configures transparent scheduling of background jobs.",
+      [
+        "Agree on a schedule and launch conditions",
+        "Configure bounded retries and result logging",
+        "Verify normal launch and reboot recovery on a test machine"
+      ]
+    ],
+    "windows-background-recovery-tester": [
+      "Service recovery tester",
+      "Tests shutdown and recovery of background operations.",
+      [
+        "Prepare a normal scenario and a simulated interruption",
+        "Check reboot and restart on a test machine",
+        "Verify state preservation and no duplicate work"
+      ]
+    ],
+    "windows-dpi-scaling-engineer": [
+      "Windows DPI scaling engineer",
+      "Keeps layouts correct across changes in scale and display.",
+      [
+        "Identify DPI modes and problematic sizes",
+        "Verify layout recalculation when moving a window",
+        "Check text, hit targets, and window placement"
+      ]
+    ],
+    "windows-multiple-monitor-tester": [
+      "Multi-monitor tester",
+      "Tests windows on displays with different scale settings.",
+      [
+        "Build a resolution and scaling matrix",
+        "Test moving windows, disconnecting a monitor, and reopening",
+        "Save screenshots and document reproduction steps"
+      ]
+    ],
+    "windows-keyboard-navigation-reviewer": [
+      "Windows keyboard navigation reviewer",
+      "Reviews focus, shortcuts, and navigation in desktop UI.",
+      [
+        "Check focus order and visibility",
+        "Walk through core flows using only the keyboard",
+        "List inaccessible actions and acceptance criteria"
+      ]
+    ],
+    "job-queue-architect": [
+      "Job queue architect",
+      "Designs job processing and consistency rules.",
+      [
+        "Define units of work, resources, and ordering",
+        "Specify idempotency keys and job states",
+        "Document partial failure behavior"
+      ]
+    ],
+    "bounded-retry-engineer": [
+      "Bounded retry engineer",
+      "Implements bounded retries and duplicate protection.",
+      [
+        "Separate transient and terminal failures",
+        "Implement bounded and delayed retries",
+        "Verify redelivery without duplicated actions"
+      ]
+    ],
+    "queue-failure-tester": [
+      "Queue failure tester",
+      "Tests job processing under interruptions and partial failures.",
+      [
+        "Prepare an isolated queue with synthetic jobs",
+        "Test shutdown, redelivery, and retry exhaustion",
+        "Verify recovery and final state"
+      ]
+    ],
+    "resilient-http-client-engineer": [
+      "HTTP client engineer",
+      "Designs client behavior when an external API fails.",
+      [
+        "Review the error contract and response deadlines",
+        "Set timeouts and retry only eligible requests",
+        "Verify cancellation and user notifications"
+      ]
+    ],
+    "http-cache-specialist": [
+      "HTTP caching specialist",
+      "Defines cache freshness and safe fallback behavior.",
+      [
+        "Identify cacheable responses and privacy boundaries",
+        "Configure cache keys, lifetimes, and revalidation",
+        "Verify that fresh and cached data are distinguished"
+      ]
+    ],
+    "web-network-fault-tester": [
+      "Network failure tester",
+      "Tests UI and data behavior when an external API is unavailable.",
+      [
+        "Simulate timeouts and temporary unavailability with a stub",
+        "Verify the cache, notifications, and absence of duplicates",
+        "Confirm recovery to normal operation"
+      ]
+    ],
+    "public-feed-source-analyst": [
+      "Public source analyst",
+      "Selects public or authorized sources and documents usage limits.",
+      [
+        "Select available RSS feeds, public pages, or official exports",
+        "Check permissions and published limits",
+        "Define the fields and how to determine freshness"
+      ]
+    ],
+    "html-rss-parser-developer": [
+      "HTML/RSS parser developer",
+      "Extracts records from authorized sources into an agreed format.",
+      [
+        "Collect small RSS and HTML fixtures",
+        "Extract fields within source limits and handle errors",
+        "Test empty results and format changes"
+      ]
+    ],
+    "parsed-data-quality-engineer": [
+      "Parsed data quality engineer",
+      "Checks record completeness and provenance and removes duplicates.",
+      [
+        "Define validation fields and deduplication keys",
+        "Check dates, links, and missing records",
+        "Report discrepancies without inventing missing values"
+      ]
+    ],
+    "source-change-monitoring-engineer": [
+      "Source monitoring engineer",
+      "Tracks structural changes in authorized sources.",
+      [
+        "Save baseline public pages and expected fields",
+        "Define checks and an acceptable polling frequency",
+        "Configure an alert for structural changes without noisy triggers"
+      ]
+    ],
+    "parser-selector-tester": [
+      "Parser selector tester",
+      "Tests selector durability on markup fixtures.",
+      [
+        "Prepare saved samples of the old and new structure",
+        "Test missing, duplicate, and reordered fields",
+        "Add a check for every changed field"
+      ]
+    ],
+    "extracted-data-reviewer": [
+      "Extracted data reviewer",
+      "Compares parser results with saved source material.",
+      [
+        "Compare a sample of records with page fixtures",
+        "Flag omissions, duplicates, and mismatched values",
+        "Propose retest criteria after a change"
       ]
     ]
   }

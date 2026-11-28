@@ -507,8 +507,8 @@ test('Новые роли агрегатора связаны с задачам�
     definitions + '\n({ environment, roleModel, tasks, phases, taskPhases })'
   );
   const specialized = catalog.roles.filter(role => Object.hasOwn(role, 'tier'));
-  assert.equal(specialized.length, 36);
-  assert.equal(new Set(specialized.map(role => role.category)).size, 12);
+  assert.equal(specialized.length, 66);
+  assert.equal(new Set(specialized.map(role => role.category)).size, 22);
 
   for (const role of specialized) {
     const matchingTasks = Object.entries(tasks).filter(([, [, roleIds]]) => roleIds.includes(role.id));
@@ -524,4 +524,9 @@ test('Новые роли агрегатора связаны с задачам�
   assert.equal(tasks.macosQuickLookCustomFormat[2], 'macos');
   assert.equal(tasks.addWindowsExplorerCommand[2], 'windows');
   assert.equal(tasks.auditAiAnswerCitations[2], undefined);
+  assert.equal(tasks.launchWindowsBackgroundProcessing[2], 'windows');
+  assert.ok(taskPhases.get('aggregatePublicRssAndWebNews').has('extractPublicHtmlRssRecords'));
+  assert.ok(!taskPhases.get('aggregatePublicRssAndWebNews').has('implementWindowsBackgroundJob'));
+  assert.ok(taskPhases.get('testImportBoundaryFiles').has('prepareImportBoundaryFixtures'));
+  assert.equal(catalog.roles.find(role => role.id === 'visual-diff-reviewer').tier, 'visual');
 });
