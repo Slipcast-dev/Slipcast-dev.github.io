@@ -336,7 +336,7 @@ test('Раздел скиллов доступен из меню; карточк
   const home = setup('index.html', { languages: ['ru'], seen: true });
   const navigation = home.document.querySelector('[data-i18n="skillsTitleLabel"]');
   assert.equal(navigation.textContent, 'Скиллы');
-  assert.equal(navigation.attrs.href, 'skills-agents.html?v=8&lang=ru');
+  assert.equal(navigation.attrs.href, 'skills-agents.html?v=9&lang=ru');
   const menu = home.nodes.filter(node => (node.attrs.class || '').split(' ').includes('nav-button'));
   assert.deepEqual(menu.map(node => node.dataset.i18n), ['projects', 'skillsTitleLabel', 'aiAggregator', 'telegramChannel', 'developer']);
   assert.equal(menu[3].attrs.href, 'https://t.me/slipcastdev');
@@ -353,13 +353,13 @@ test('Раздел скиллов доступен из меню; карточк
   assert.equal(menu[3].attrs.href, 'https://t.me/slipcastdev');
   home.click('en');
   assert.equal(navigation.textContent, 'Skills');
-  assert.equal(navigation.attrs.href, 'skills-agents.html?v=8&lang=en');
+  assert.equal(navigation.attrs.href, 'skills-agents.html?v=9&lang=en');
 
   const page = setup('skills-agents.html', { languages: ['ru'] });
   assert.equal(page.document.querySelector('h1').textContent, 'Скиллы');
   assert.equal(page.document.title, 'Скиллы — Slipcast-Dev');
   assert.ok(page.document.querySelector('.skill-list'));
-  assert.equal(page.document.querySelector('[data-i18n="skillCategoryColumn"]').textContent, 'Категория');
+  assert.equal(page.document.querySelector('[data-i18n="skillCategoryColumn"]').textContent, 'Набор скиллов');
   const builtPage = fs.readFileSync(path.join(dist, 'skills-agents.html'), 'utf8');
   const cards = page.document.querySelectorAll('[data-compatibility]');
   const topics = page.document.querySelectorAll('[data-skill-topic]');
@@ -434,6 +434,37 @@ test('Раздел скиллов доступен из меню; карточк
   assert.deepEqual(visible(), claudeCards);
   choose('all');
   assert.deepEqual(visible(), cards);
+});
+
+test('Поиск скиллов индексирует опубликованные наборы и понимает русские и английские формулировки', () => {
+  const html = fs.readFileSync(path.join(dist, 'skills-agents.html'), 'utf8');
+  const indexName = html.match(/data-index="(skills-index\.json)\?v=([a-f0-9]{12})"/);
+  assert.ok(indexName);
+  const source = fs.readFileSync(path.join(dist, indexName[1]));
+  assert.equal(createHash('sha256').update(source).digest('hex').slice(0, 12), indexName[2]);
+  const data = JSON.parse(source);
+  const rows = [...html.matchAll(/data-collection="([^"]+)"[\s\S]*?data-skill-count="(\d+)"/g)];
+  assert.equal(Object.keys(data).length, rows.length);
+  const window = {};
+  vm.runInNewContext(fs.readFileSync(path.join(dist, 'skills-search.js'), 'utf8'), { window });
+  const { tokens, searchable, search } = window.skillSearch;
+  const index = rows.flatMap(([, key, count]) => {
+    const items = data[key];
+    assert.equal(items.length, Number(count), key);
+    assert.ok(items.every(([id, description]) => id && description), key);
+    const collection = { engine: key.split('/')[0], contextWords: tokens(key) };
+    return items.map(([id, description]) => searchable(collection, id, description));
+  });
+  for (const engine of ['codex', 'claude']) {
+    for (const query of ['офлайн-синхронизация', 'offline sync recovery', 'синхронизация в офлайне']) {
+      const matches = search(index, query, engine);
+      assert.equal(matches[0]?.entry.name, 'offline-sync-recovery', query);
+      assert.ok(matches.every(match => match.entry.collection.engine === engine), query);
+    }
+  }
+  assert.equal(search(index, 'скриншоты визуальная регрессия', 'codex')[0]?.entry.name, 'visual-baseline-regression');
+  assert.equal(search(index, 'проверить установщик Windows', 'codex')[0]?.entry.name, 'desktop-installer-acceptance');
+  assert.equal(search(index, 'бессмысленныйпроверочныйзапрос', 'all').length, 0);
 });
 
 test('Карточка приложения скачивает установщик, сборки для других платформ доступны отдельно', () => {

@@ -102,6 +102,24 @@ def split_frontmatter(text: str) -> tuple[str, str]:
     return (match[1], match[2]) if match else ("", text)
 
 
+def skill_description(contents: bytes) -> str:
+    """Берёт текст описания из поддерживаемых форматов заголовка SKILL.md."""
+    frontmatter, _ = split_frontmatter(contents.decode("utf-8-sig"))
+    match = re.search(r"^description:[ \t]*(.*)((?:\n[ \t]+[^\n]*)*)", frontmatter, re.MULTILINE)
+    if not match:
+        return ""
+    first, continuation = match.groups()
+    value = " ".join((first.strip() if not first.startswith((">", "|")) else "", continuation.strip())).strip()
+    if value.startswith('"') and value.endswith('"'):
+        try:
+            value = json.loads(value)
+        except json.JSONDecodeError:
+            value = value[1:-1]
+    elif value.startswith("'") and value.endswith("'"):
+        value = value[1:-1].replace("''", "'")
+    return " ".join(value.split())
+
+
 def license_files(files: dict[str, bytes]) -> dict[str, bytes]:
     return {
         name: contents
@@ -245,16 +263,15 @@ def card(
             f'data-skill-title-en="{summary_en}">{summary_ru}</span>\n'
         )
     return (
-        f'      <li data-compatibility="{engine}" data-entry-topic="{topic}">\n'
+        f'      <li data-compatibility="{engine}" data-entry-topic="{topic}" data-collection="{engine}/{category}">\n'
         f'        <a class="skill-entry" href="downloads/skills/{engine}/{category}.zip?v={digest}" download="{filename}">\n'
-        '          <span class="entry-marker" aria-hidden="true">›</span>\n'
         '          <div class="skill-entry-title">\n'
         f'            <h3 data-skill-title-ru="{title_ru}" data-skill-title-en="{title_en}">{title_ru}</h3>\n'
         f'{summary}'
         '          </div>\n'
         f'          <span class="skill-engine">{name}</span>\n'
         f'          <p data-skill-count="{count}">Навыков: {count}</p>\n'
-        '          <span class="collection-download"><span aria-hidden="true">↓</span><span class="sr-only" data-i18n="skillDownload">Скачать ZIP</span></span>\n'
+        '          <span class="collection-download"><span aria-hidden="true">↓</span> <span data-i18n="skillDownload">Скачать ZIP</span></span>\n'
         '        </a>\n'
         '      </li>\n'
     )
@@ -302,6 +319,7 @@ def install_generated(destination: Path) -> None:
         for archive in target.glob("*.zip"):
             if not (staged / archive.name).is_file():
                 archive.unlink()
+    shutil.copyfile(destination / "skills-index.json", ROOT / "site/skills-index.json")
     page.write_text(before + start + "\n" + cards + end + after, encoding="utf-8")
 
 
@@ -397,6 +415,7 @@ def main() -> None:
         if len(topic_by_category) != sum(len(categories) for _, _, _, categories in TOPICS):
             raise ValueError("A skill category belongs to multiple topics")
         cards: dict[str, list[tuple[str, str]]] = defaultdict(list)
+        search_index: dict[str, list[tuple[str, str]]] = {}
         for engine, categories in (("codex", codex_categories), ("claude", claude_categories)):
             print(engine, {status: count for (scope, status), count in counters.items() if scope == engine})
             for slug, titles in sorted(categories.items(), key=lambda entry: entry[1][0].casefold()):
@@ -406,8 +425,14 @@ def main() -> None:
                     topic = topic_by_category[slug]
                     row = card(engine, slug, titles, len(skills), digest, topic)
                     cards[topic].append((titles[0].casefold(), row))
+                    search_index[f"{engine}/{slug}"] = [
+                        (skill, skill_description(files["SKILL.md"])) for skill, files, _, _ in skills
+                    ]
                 print(f"  {slug}: {len(skills)}")
         (destination / "cards.html").write_text(render_topics(cards), encoding="utf-8")
+        (destination / "skills-index.json").write_text(
+            json.dumps(search_index, ensure_ascii=False, separators=(",", ":")) + "\n", encoding="utf-8"
+        )
         if args.install:
             install_generated(destination)
 

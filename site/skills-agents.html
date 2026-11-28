@@ -15,6 +15,7 @@
   <meta name="description" content="Архивы скиллов по категориям для Codex и Claude Code.">
   <title>Скиллы — Slipcast-Dev</title>
   <script src="i18n.js"></script>
+  <script src="skills-search.js"></script>
   <style>
     .language-switch { position: absolute; z-index: 2; top: 18px; right: 22px; display: flex; gap: 4px; padding: 3px; border: 1px solid #00ff6640; border-radius: 5px; background: #000; }
     .language-switch button { min-height: 38px; min-width: 42px; padding: 6px 10px; border: 1px solid transparent; border-radius: 3px; background: transparent; color: #77a98a; font: inherit; font-size: 12px; cursor: pointer; }
@@ -34,26 +35,39 @@
     .intro { text-align: center; margin: 0 auto 24px; }
     h1 { margin: 0; color: var(--green); font-size: clamp(25px, 3.8vw, 36px); line-height: 1.4; font-weight: 700; }
     .intro p { max-width: 650px; margin: 18px auto 0; color: var(--muted); font-size: 13px; line-height: 1.9; }
-    .skill-browser { --columns: minmax(0, 1fr) 100px 94px 22px; border: 1px solid #00ff6645; border-radius: 5px; }
-    .skill-columns, .skill-entry { display: grid; grid-template-columns: var(--columns); column-gap: 10px; align-items: center; padding: 0 12px 0 26px; }
-    .skill-columns { min-height: 34px; border-bottom: 1px solid #00ff663d; border-radius: 4px 4px 0 0; background: #07150b; color: #92e6b3; font-size: 11px; }
+    .skill-browser { --columns: minmax(0, 1fr) 91px 80px 110px; }
+    .skill-columns, .skill-entry { display: grid; grid-template-columns: var(--columns); column-gap: 10px; align-items: center; padding: 0 12px; }
+    .skill-columns { min-height: 34px; color: var(--muted); font-size: 11px; }
     .skill-columns span:nth-child(3) { text-align: right; }
-    .skill-topic h2 { margin: 0; padding: 9px 12px 9px 26px; border-block: 1px solid #00ff6630; background: #091a0e; color: #92e6b3; font-size: 12px; line-height: 1.4; }
-    .skill-topic:first-of-type h2 { border-top: 0; }
+    .skill-topic { border: 1px solid #00ff6652; border-radius: 6px; overflow: hidden; }
+    .skill-topic + .skill-topic { margin-top: 16px; }
+    .skill-topic h2 { margin: 0; padding: 12px 14px; border-left: 3px solid var(--green); border-bottom: 1px solid #00ff6652; background: #10281a; color: #c3ffd7; font-size: 15px; line-height: 1.35; }
     .skill-list { list-style: none; margin: 0; padding: 0; }
     .skill-list li + li { border-top: 1px solid #00ff661a; }
     .skill-list li:nth-child(even) { background: #040c06; }
     .skill-entry { grid-template-areas: "title engine count download"; position: relative; min-height: 42px; padding-top: 5px; padding-bottom: 5px; line-height: 1.35; transition: background .16s, color .16s; }
     .skill-entry:is(:hover, :focus-visible) { background: #0a2513; color: var(--green); }
     .skill-entry:focus-visible { outline-offset: -2px; }
-    .entry-marker { position: absolute; left: 11px; top: 50%; transform: translateY(-50%); color: var(--green); opacity: .72; }
     .skill-entry-title { grid-area: title; min-width: 0; }
     .skill-entry h3 { margin: 0; font-size: 13px; font-weight: 600; overflow-wrap: anywhere; }
     .skill-summary { display: block; margin-top: 3px; color: #9ab8a5; font-size: 11px; overflow-wrap: anywhere; }
     .skill-engine { grid-area: engine; color: #92e6b3; font-size: 11px; }
     [data-skill-count] { grid-area: count; margin: 0; color: #9ab8a5; font-size: 11px; font-variant-numeric: tabular-nums; text-align: right; white-space: nowrap; }
-    .collection-download { grid-area: download; justify-self: end; color: var(--green); font-size: 15px; }
-    .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0; }
+    .collection-download { grid-area: download; justify-self: end; display: inline-flex; align-items: center; gap: 5px; padding: 5px 7px; border: 1px solid #00ff6660; border-radius: 4px; color: var(--green); font-size: 11px; white-space: nowrap; }
+    .skill-entry:is(:hover, :focus-visible) .collection-download, .result-download:is(:hover, :focus-visible) { border-color: var(--green); background: #00ff6612; }
+    .skill-search { display: grid; gap: 6px; margin: 0 0 14px; }
+    .skill-search label { color: var(--text); font-size: 13px; font-weight: 600; }
+    .skill-search input { min-width: 0; width: 100%; min-height: 44px; padding: 8px 13px; border: 1px solid #00ff6652; border-radius: 5px; background: #060e08; color: var(--text); font: inherit; font-size: 13px; }
+    .skill-search input::placeholder { color: var(--muted); }
+    .search-status { margin: 0 0 14px; color: var(--muted); font-size: 12px; line-height: 1.5; }
+    .search-status:empty { display: none; }
+    .search-results { display: grid; gap: 8px; margin: 0; padding: 0; list-style: none; }
+    .search-result { display: grid; gap: 6px; padding: 12px; background: #060e08; border: 1px solid #00ff6635; border-radius: 5px; }
+    .search-result h2, .search-result p { margin: 0; overflow-wrap: anywhere; }
+    .search-result h2 { font-size: 14px; color: var(--text); }
+    .search-result p { font-size: 12px; line-height: 1.5; color: var(--muted); }
+    .result-download { justify-self: start; }
+
     .load-status { text-align: center; color: var(--muted); font-size: 13px; line-height: 1.8; margin: 0 0 32px; }
     .load-status:empty { display: none; }
     .end { display: flex; justify-content: center; margin-top: 54px; }
@@ -67,8 +81,7 @@
     }
     @media (max-width: 520px) {
       .skill-columns { display: none; }
-      .skill-entry { grid-template-columns: max-content minmax(0, 1fr) 18px; grid-template-areas: "title title download" "engine count download"; gap: 3px 9px; min-height: 49px; padding: 6px 10px 6px 22px; }
-      .entry-marker { left: 8px; }
+      .skill-entry { grid-template-columns: max-content minmax(0, 1fr) max-content; grid-template-areas: "title title download" "engine count download"; gap: 3px 9px; min-height: 49px; padding: 7px 9px; }
       [data-skill-count] { text-align: left; }
     }
     .collection-filters { display: flex; justify-content: center; flex-wrap: wrap; gap: 8px; margin: 0 0 22px; }
@@ -99,81 +112,81 @@
       <button type="button" data-filter="codex" aria-pressed="false">Codex</button>
       <button type="button" data-filter="claude" aria-pressed="false">Claude Code</button>
     </div>
+    <div class="skill-search">
+      <label for="skill-query" data-i18n="skillSearchLabel">Поиск по скиллам</label>
+      <input type="search" id="skill-query" maxlength="160" autocomplete="off" data-index="skills-index.json" placeholder="Например, офлайн-синхронизация или тестирование API" data-i18n-placeholder="skillSearchPlaceholder" aria-controls="skill-results">
+    </div>
+    <p id="skill-search-status" class="search-status" role="status"></p>
+    <ul id="skill-results" class="search-results" aria-label="Результаты поиска" data-i18n-label="skillSearchResults" hidden></ul>
     <p id="empty-collections" class="load-status" role="status" data-i18n="noCompatibleSkills" hidden>Для выбранной среды пока нет скиллов.</p>
-    <div class="skill-browser" role="region" aria-label="Коллекции скиллов" data-i18n-label="skillCollections">
+    <div id="skills-browser" class="skill-browser" role="region" aria-label="Коллекции скиллов" data-i18n-label="skillCollections">
       <div class="skill-columns" aria-hidden="true">
-        <span data-i18n="skillCategoryColumn">Категория</span><span data-i18n="skillEngineColumn">Среда</span><span data-i18n="skillsTitleLabel">Скиллы</span>
+        <span data-i18n="skillCategoryColumn">Набор скиллов</span><span data-i18n="skillEngineColumn">Среда</span><span data-i18n="skillsTitleLabel">Скиллы</span>
       </div>
       <!-- skill-category-cards:start -->
       <section class="skill-topic" data-skill-topic="development" aria-labelledby="topic-development">
         <h2 id="topic-development" data-skill-title-ru="Разработка и тестирование" data-skill-title-en="Development and testing">Разработка и тестирование</h2>
         <ul class="skill-list">
-      <li data-compatibility="codex" data-entry-topic="development">
+      <li data-compatibility="codex" data-entry-topic="development" data-collection="codex/devops-cloud">
         <a class="skill-entry" href="downloads/skills/codex/devops-cloud.zip?v=cb5e36ed524ca2a8" download="codex-devops-cloud.zip">
-          <span class="entry-marker" aria-hidden="true">›</span>
           <div class="skill-entry-title">
             <h3 data-skill-title-ru="DevOps, облака и эксплуатация" data-skill-title-en="DevOps, Cloud and Reliability">DevOps, облака и эксплуатация</h3>
           </div>
           <span class="skill-engine">Codex</span>
           <p data-skill-count="36">Навыков: 36</p>
-          <span class="collection-download"><span aria-hidden="true">↓</span><span class="sr-only" data-i18n="skillDownload">Скачать ZIP</span></span>
+          <span class="collection-download"><span aria-hidden="true">↓</span> <span data-i18n="skillDownload">Скачать ZIP</span></span>
         </a>
       </li>
-      <li data-compatibility="codex" data-entry-topic="development">
+      <li data-compatibility="codex" data-entry-topic="development" data-collection="codex/project-verification">
         <a class="skill-entry" href="downloads/skills/codex/project-verification.zip?v=b17fdbb8ebcc5fa8" download="codex-project-verification.zip">
-          <span class="entry-marker" aria-hidden="true">›</span>
           <div class="skill-entry-title">
             <h3 data-skill-title-ru="Проверки проектов и совместимости" data-skill-title-en="Project and compatibility checks">Проверки проектов и совместимости</h3>
             <span class="skill-summary" data-skill-title-ru="Совместимость скиллов, установщики, скриншоты, офлайн-синхронизация, RSS/CSV/JSON" data-skill-title-en="Skill portability, installers, screenshots, offline sync, RSS/CSV/JSON">Совместимость скиллов, установщики, скриншоты, офлайн-синхронизация, RSS/CSV/JSON</span>
           </div>
           <span class="skill-engine">Codex</span>
           <p data-skill-count="5">Навыков: 5</p>
-          <span class="collection-download"><span aria-hidden="true">↓</span><span class="sr-only" data-i18n="skillDownload">Скачать ZIP</span></span>
+          <span class="collection-download"><span aria-hidden="true">↓</span> <span data-i18n="skillDownload">Скачать ZIP</span></span>
         </a>
       </li>
-      <li data-compatibility="claude" data-entry-topic="development">
+      <li data-compatibility="claude" data-entry-topic="development" data-collection="claude/project-verification">
         <a class="skill-entry" href="downloads/skills/claude/project-verification.zip?v=890af98e9061bb9b" download="claude-project-verification.zip">
-          <span class="entry-marker" aria-hidden="true">›</span>
           <div class="skill-entry-title">
             <h3 data-skill-title-ru="Проверки проектов и совместимости" data-skill-title-en="Project and compatibility checks">Проверки проектов и совместимости</h3>
             <span class="skill-summary" data-skill-title-ru="Совместимость скиллов, установщики, скриншоты, офлайн-синхронизация, RSS/CSV/JSON" data-skill-title-en="Skill portability, installers, screenshots, offline sync, RSS/CSV/JSON">Совместимость скиллов, установщики, скриншоты, офлайн-синхронизация, RSS/CSV/JSON</span>
           </div>
           <span class="skill-engine">Claude Code</span>
           <p data-skill-count="5">Навыков: 5</p>
-          <span class="collection-download"><span aria-hidden="true">↓</span><span class="sr-only" data-i18n="skillDownload">Скачать ZIP</span></span>
+          <span class="collection-download"><span aria-hidden="true">↓</span> <span data-i18n="skillDownload">Скачать ZIP</span></span>
         </a>
       </li>
-      <li data-compatibility="claude" data-entry-topic="development">
+      <li data-compatibility="claude" data-entry-topic="development" data-collection="claude/software-engineering">
         <a class="skill-entry" href="downloads/skills/claude/software-engineering.zip?v=c86f32cc8e0ad765" download="claude-software-engineering.zip">
-          <span class="entry-marker" aria-hidden="true">›</span>
           <div class="skill-entry-title">
             <h3 data-skill-title-ru="Разработка ПО" data-skill-title-en="Software Engineering">Разработка ПО</h3>
           </div>
           <span class="skill-engine">Claude Code</span>
           <p data-skill-count="116">Навыков: 116</p>
-          <span class="collection-download"><span aria-hidden="true">↓</span><span class="sr-only" data-i18n="skillDownload">Скачать ZIP</span></span>
+          <span class="collection-download"><span aria-hidden="true">↓</span> <span data-i18n="skillDownload">Скачать ZIP</span></span>
         </a>
       </li>
-      <li data-compatibility="codex" data-entry-topic="development">
+      <li data-compatibility="codex" data-entry-topic="development" data-collection="codex/development">
         <a class="skill-entry" href="downloads/skills/codex/development.zip?v=cc1b0e81c78c5d75" download="codex-development.zip">
-          <span class="entry-marker" aria-hidden="true">›</span>
           <div class="skill-entry-title">
             <h3 data-skill-title-ru="Разработка ПО и архитектура" data-skill-title-en="Software Development and Architecture">Разработка ПО и архитектура</h3>
           </div>
           <span class="skill-engine">Codex</span>
           <p data-skill-count="71">Навыков: 71</p>
-          <span class="collection-download"><span aria-hidden="true">↓</span><span class="sr-only" data-i18n="skillDownload">Скачать ZIP</span></span>
+          <span class="collection-download"><span aria-hidden="true">↓</span> <span data-i18n="skillDownload">Скачать ZIP</span></span>
         </a>
       </li>
-      <li data-compatibility="codex" data-entry-topic="development">
+      <li data-compatibility="codex" data-entry-topic="development" data-collection="codex/testing-quality">
         <a class="skill-entry" href="downloads/skills/codex/testing-quality.zip?v=2639c473f51ad3fa" download="codex-testing-quality.zip">
-          <span class="entry-marker" aria-hidden="true">›</span>
           <div class="skill-entry-title">
             <h3 data-skill-title-ru="Тестирование и качество" data-skill-title-en="Testing and Quality">Тестирование и качество</h3>
           </div>
           <span class="skill-engine">Codex</span>
           <p data-skill-count="25">Навыков: 25</p>
-          <span class="collection-download"><span aria-hidden="true">↓</span><span class="sr-only" data-i18n="skillDownload">Скачать ZIP</span></span>
+          <span class="collection-download"><span aria-hidden="true">↓</span> <span data-i18n="skillDownload">Скачать ZIP</span></span>
         </a>
       </li>
         </ul>
@@ -181,48 +194,44 @@
       <section class="skill-topic" data-skill-topic="ai-data" aria-labelledby="topic-ai-data">
         <h2 id="topic-ai-data" data-skill-title-ru="ИИ, агенты и данные" data-skill-title-en="AI, agents and data">ИИ, агенты и данные</h2>
         <ul class="skill-list">
-      <li data-compatibility="codex" data-entry-topic="ai-data">
+      <li data-compatibility="codex" data-entry-topic="ai-data" data-collection="codex/data-analytics">
         <a class="skill-entry" href="downloads/skills/codex/data-analytics.zip?v=58af5d80a56a50a4" download="codex-data-analytics.zip">
-          <span class="entry-marker" aria-hidden="true">›</span>
           <div class="skill-entry-title">
             <h3 data-skill-title-ru="Данные и аналитика" data-skill-title-en="Data and Analytics">Данные и аналитика</h3>
           </div>
           <span class="skill-engine">Codex</span>
           <p data-skill-count="87">Навыков: 87</p>
-          <span class="collection-download"><span aria-hidden="true">↓</span><span class="sr-only" data-i18n="skillDownload">Скачать ZIP</span></span>
+          <span class="collection-download"><span aria-hidden="true">↓</span> <span data-i18n="skillDownload">Скачать ZIP</span></span>
         </a>
       </li>
-      <li data-compatibility="claude" data-entry-topic="ai-data">
+      <li data-compatibility="claude" data-entry-topic="ai-data" data-collection="claude/data-analytics">
         <a class="skill-entry" href="downloads/skills/claude/data-analytics.zip?v=2b0b24b48b7ccfe0" download="claude-data-analytics.zip">
-          <span class="entry-marker" aria-hidden="true">›</span>
           <div class="skill-entry-title">
             <h3 data-skill-title-ru="Данные и аналитика" data-skill-title-en="Data &amp; Analytics">Данные и аналитика</h3>
           </div>
           <span class="skill-engine">Claude Code</span>
           <p data-skill-count="57">Навыков: 57</p>
-          <span class="collection-download"><span aria-hidden="true">↓</span><span class="sr-only" data-i18n="skillDownload">Скачать ZIP</span></span>
+          <span class="collection-download"><span aria-hidden="true">↓</span> <span data-i18n="skillDownload">Скачать ZIP</span></span>
         </a>
       </li>
-      <li data-compatibility="claude" data-entry-topic="ai-data">
+      <li data-compatibility="claude" data-entry-topic="ai-data" data-collection="claude/ai-agents">
         <a class="skill-entry" href="downloads/skills/claude/ai-agents.zip?v=c0c03c705967aabc" download="claude-ai-agents.zip">
-          <span class="entry-marker" aria-hidden="true">›</span>
           <div class="skill-entry-title">
             <h3 data-skill-title-ru="ИИ и агенты" data-skill-title-en="AI &amp; Agents">ИИ и агенты</h3>
           </div>
           <span class="skill-engine">Claude Code</span>
           <p data-skill-count="112">Навыков: 112</p>
-          <span class="collection-download"><span aria-hidden="true">↓</span><span class="sr-only" data-i18n="skillDownload">Скачать ZIP</span></span>
+          <span class="collection-download"><span aria-hidden="true">↓</span> <span data-i18n="skillDownload">Скачать ZIP</span></span>
         </a>
       </li>
-      <li data-compatibility="codex" data-entry-topic="ai-data">
+      <li data-compatibility="codex" data-entry-topic="ai-data" data-collection="codex/agents-ai">
         <a class="skill-entry" href="downloads/skills/codex/agents-ai.zip?v=66131721c49ea5e8" download="codex-agents-ai.zip">
-          <span class="entry-marker" aria-hidden="true">›</span>
           <div class="skill-entry-title">
             <h3 data-skill-title-ru="ИИ, Codex и агенты" data-skill-title-en="AI, Codex and Agents">ИИ, Codex и агенты</h3>
           </div>
           <span class="skill-engine">Codex</span>
           <p data-skill-count="124">Навыков: 124</p>
-          <span class="collection-download"><span aria-hidden="true">↓</span><span class="sr-only" data-i18n="skillDownload">Скачать ZIP</span></span>
+          <span class="collection-download"><span aria-hidden="true">↓</span> <span data-i18n="skillDownload">Скачать ZIP</span></span>
         </a>
       </li>
         </ul>
@@ -230,48 +239,44 @@
       <section class="skill-topic" data-skill-topic="content-design" aria-labelledby="topic-content-design">
         <h2 id="topic-content-design" data-skill-title-ru="Дизайн, тексты и контент" data-skill-title-en="Design, writing and content">Дизайн, тексты и контент</h2>
         <ul class="skill-list">
-      <li data-compatibility="codex" data-entry-topic="content-design">
+      <li data-compatibility="codex" data-entry-topic="content-design" data-collection="codex/design-creative">
         <a class="skill-entry" href="downloads/skills/codex/design-creative.zip?v=263af8e0760d4d4e" download="codex-design-creative.zip">
-          <span class="entry-marker" aria-hidden="true">›</span>
           <div class="skill-entry-title">
             <h3 data-skill-title-ru="Дизайн и творчество" data-skill-title-en="Design and Creative Work">Дизайн и творчество</h3>
           </div>
           <span class="skill-engine">Codex</span>
           <p data-skill-count="39">Навыков: 39</p>
-          <span class="collection-download"><span aria-hidden="true">↓</span><span class="sr-only" data-i18n="skillDownload">Скачать ZIP</span></span>
+          <span class="collection-download"><span aria-hidden="true">↓</span> <span data-i18n="skillDownload">Скачать ZIP</span></span>
         </a>
       </li>
-      <li data-compatibility="claude" data-entry-topic="content-design">
+      <li data-compatibility="claude" data-entry-topic="content-design" data-collection="claude/product-design">
         <a class="skill-entry" href="downloads/skills/claude/product-design.zip?v=df64ed3a769f4fe4" download="claude-product-design.zip">
-          <span class="entry-marker" aria-hidden="true">›</span>
           <div class="skill-entry-title">
             <h3 data-skill-title-ru="Продукт и дизайн" data-skill-title-en="Product &amp; Design">Продукт и дизайн</h3>
           </div>
           <span class="skill-engine">Claude Code</span>
           <p data-skill-count="43">Навыков: 43</p>
-          <span class="collection-download"><span aria-hidden="true">↓</span><span class="sr-only" data-i18n="skillDownload">Скачать ZIP</span></span>
+          <span class="collection-download"><span aria-hidden="true">↓</span> <span data-i18n="skillDownload">Скачать ZIP</span></span>
         </a>
       </li>
-      <li data-compatibility="claude" data-entry-topic="content-design">
+      <li data-compatibility="claude" data-entry-topic="content-design" data-collection="claude/writing-communication">
         <a class="skill-entry" href="downloads/skills/claude/writing-communication.zip?v=32812897d07924a7" download="claude-writing-communication.zip">
-          <span class="entry-marker" aria-hidden="true">›</span>
           <div class="skill-entry-title">
             <h3 data-skill-title-ru="Тексты и коммуникация" data-skill-title-en="Writing &amp; Communication">Тексты и коммуникация</h3>
           </div>
           <span class="skill-engine">Claude Code</span>
           <p data-skill-count="208">Навыков: 208</p>
-          <span class="collection-download"><span aria-hidden="true">↓</span><span class="sr-only" data-i18n="skillDownload">Скачать ZIP</span></span>
+          <span class="collection-download"><span aria-hidden="true">↓</span> <span data-i18n="skillDownload">Скачать ZIP</span></span>
         </a>
       </li>
-      <li data-compatibility="codex" data-entry-topic="content-design">
+      <li data-compatibility="codex" data-entry-topic="content-design" data-collection="codex/writing-communication">
         <a class="skill-entry" href="downloads/skills/codex/writing-communication.zip?v=7ccd9a7ac99f8d66" download="codex-writing-communication.zip">
-          <span class="entry-marker" aria-hidden="true">›</span>
           <div class="skill-entry-title">
             <h3 data-skill-title-ru="Тексты, документы и коммуникация" data-skill-title-en="Writing, Documents and Communication">Тексты, документы и коммуникация</h3>
           </div>
           <span class="skill-engine">Codex</span>
           <p data-skill-count="147">Навыков: 147</p>
-          <span class="collection-download"><span aria-hidden="true">↓</span><span class="sr-only" data-i18n="skillDownload">Скачать ZIP</span></span>
+          <span class="collection-download"><span aria-hidden="true">↓</span> <span data-i18n="skillDownload">Скачать ZIP</span></span>
         </a>
       </li>
         </ul>
@@ -279,114 +284,104 @@
       <section class="skill-topic" data-skill-topic="business" aria-labelledby="topic-business">
         <h2 id="topic-business" data-skill-title-ru="Бизнес, продукт и карьера" data-skill-title-en="Business, product and careers">Бизнес, продукт и карьера</h2>
         <ul class="skill-list">
-      <li data-compatibility="codex" data-entry-topic="business">
+      <li data-compatibility="codex" data-entry-topic="business" data-collection="codex/business-leadership">
         <a class="skill-entry" href="downloads/skills/codex/business-leadership.zip?v=4e8f3a3df01447cb" download="codex-business-leadership.zip">
-          <span class="entry-marker" aria-hidden="true">›</span>
           <div class="skill-entry-title">
             <h3 data-skill-title-ru="Бизнес и руководство" data-skill-title-en="Business and Leadership">Бизнес и руководство</h3>
           </div>
           <span class="skill-engine">Codex</span>
           <p data-skill-count="58">Навыков: 58</p>
-          <span class="collection-download"><span aria-hidden="true">↓</span><span class="sr-only" data-i18n="skillDownload">Скачать ZIP</span></span>
+          <span class="collection-download"><span aria-hidden="true">↓</span> <span data-i18n="skillDownload">Скачать ZIP</span></span>
         </a>
       </li>
-      <li data-compatibility="claude" data-entry-topic="business">
+      <li data-compatibility="claude" data-entry-topic="business" data-collection="claude/business-strategy">
         <a class="skill-entry" href="downloads/skills/claude/business-strategy.zip?v=212122e0a8cd0e86" download="claude-business-strategy.zip">
-          <span class="entry-marker" aria-hidden="true">›</span>
           <div class="skill-entry-title">
             <h3 data-skill-title-ru="Бизнес, стратегия и финансы" data-skill-title-en="Business, Strategy &amp; Finance">Бизнес, стратегия и финансы</h3>
           </div>
           <span class="skill-engine">Claude Code</span>
           <p data-skill-count="144">Навыков: 144</p>
-          <span class="collection-download"><span aria-hidden="true">↓</span><span class="sr-only" data-i18n="skillDownload">Скачать ZIP</span></span>
+          <span class="collection-download"><span aria-hidden="true">↓</span> <span data-i18n="skillDownload">Скачать ZIP</span></span>
         </a>
       </li>
-      <li data-compatibility="codex" data-entry-topic="business">
+      <li data-compatibility="codex" data-entry-topic="business" data-collection="codex/people-career">
         <a class="skill-entry" href="downloads/skills/codex/people-career.zip?v=8a3f51fb11a8fdcc" download="codex-people-career.zip">
-          <span class="entry-marker" aria-hidden="true">›</span>
           <div class="skill-entry-title">
             <h3 data-skill-title-ru="Карьера, HR и команды" data-skill-title-en="Careers, HR and Teams">Карьера, HR и команды</h3>
           </div>
           <span class="skill-engine">Codex</span>
           <p data-skill-count="97">Навыков: 97</p>
-          <span class="collection-download"><span aria-hidden="true">↓</span><span class="sr-only" data-i18n="skillDownload">Скачать ZIP</span></span>
+          <span class="collection-download"><span aria-hidden="true">↓</span> <span data-i18n="skillDownload">Скачать ZIP</span></span>
         </a>
       </li>
-      <li data-compatibility="claude" data-entry-topic="business">
+      <li data-compatibility="claude" data-entry-topic="business" data-collection="claude/people-leadership">
         <a class="skill-entry" href="downloads/skills/claude/people-leadership.zip?v=3f2cd959f6e075de" download="claude-people-leadership.zip">
-          <span class="entry-marker" aria-hidden="true">›</span>
           <div class="skill-entry-title">
             <h3 data-skill-title-ru="Команды, HR и лидерство" data-skill-title-en="People, HR &amp; Leadership">Команды, HR и лидерство</h3>
           </div>
           <span class="skill-engine">Claude Code</span>
           <p data-skill-count="107">Навыков: 107</p>
-          <span class="collection-download"><span aria-hidden="true">↓</span><span class="sr-only" data-i18n="skillDownload">Скачать ZIP</span></span>
+          <span class="collection-download"><span aria-hidden="true">↓</span> <span data-i18n="skillDownload">Скачать ZIP</span></span>
         </a>
       </li>
-      <li data-compatibility="codex" data-entry-topic="business">
+      <li data-compatibility="codex" data-entry-topic="business" data-collection="codex/marketing-growth">
         <a class="skill-entry" href="downloads/skills/codex/marketing-growth.zip?v=65b2752864d8376b" download="codex-marketing-growth.zip">
-          <span class="entry-marker" aria-hidden="true">›</span>
           <div class="skill-entry-title">
             <h3 data-skill-title-ru="Маркетинг, SEO и рост" data-skill-title-en="Marketing, SEO and Growth">Маркетинг, SEO и рост</h3>
           </div>
           <span class="skill-engine">Codex</span>
           <p data-skill-count="70">Навыков: 70</p>
-          <span class="collection-download"><span aria-hidden="true">↓</span><span class="sr-only" data-i18n="skillDownload">Скачать ZIP</span></span>
+          <span class="collection-download"><span aria-hidden="true">↓</span> <span data-i18n="skillDownload">Скачать ZIP</span></span>
         </a>
       </li>
-      <li data-compatibility="claude" data-entry-topic="business">
+      <li data-compatibility="claude" data-entry-topic="business" data-collection="claude/marketing-sales">
         <a class="skill-entry" href="downloads/skills/claude/marketing-sales.zip?v=a3707fec05914ba9" download="claude-marketing-sales.zip">
-          <span class="entry-marker" aria-hidden="true">›</span>
           <div class="skill-entry-title">
             <h3 data-skill-title-ru="Маркетинг, продажи и рост" data-skill-title-en="Marketing, Sales &amp; Growth">Маркетинг, продажи и рост</h3>
           </div>
           <span class="skill-engine">Claude Code</span>
           <p data-skill-count="120">Навыков: 120</p>
-          <span class="collection-download"><span aria-hidden="true">↓</span><span class="sr-only" data-i18n="skillDownload">Скачать ZIP</span></span>
+          <span class="collection-download"><span aria-hidden="true">↓</span> <span data-i18n="skillDownload">Скачать ZIP</span></span>
         </a>
       </li>
-      <li data-compatibility="codex" data-entry-topic="business">
+      <li data-compatibility="codex" data-entry-topic="business" data-collection="codex/industry-operations">
         <a class="skill-entry" href="downloads/skills/codex/industry-operations.zip?v=cc66b1874efebb91" download="codex-industry-operations.zip">
-          <span class="entry-marker" aria-hidden="true">›</span>
           <div class="skill-entry-title">
             <h3 data-skill-title-ru="Отрасли, производство и строительство" data-skill-title-en="Industry, Manufacturing and Construction">Отрасли, производство и строительство</h3>
           </div>
           <span class="skill-engine">Codex</span>
           <p data-skill-count="21">Навыков: 21</p>
-          <span class="collection-download"><span aria-hidden="true">↓</span><span class="sr-only" data-i18n="skillDownload">Скачать ZIP</span></span>
+          <span class="collection-download"><span aria-hidden="true">↓</span> <span data-i18n="skillDownload">Скачать ZIP</span></span>
         </a>
       </li>
-      <li data-compatibility="codex" data-entry-topic="business">
+      <li data-compatibility="codex" data-entry-topic="business" data-collection="codex/sales-customer">
         <a class="skill-entry" href="downloads/skills/codex/sales-customer.zip?v=a1ab0b62c57a59cc" download="codex-sales-customer.zip">
-          <span class="entry-marker" aria-hidden="true">›</span>
           <div class="skill-entry-title">
             <h3 data-skill-title-ru="Продажи и работа с клиентами" data-skill-title-en="Sales and Customer Success">Продажи и работа с клиентами</h3>
           </div>
           <span class="skill-engine">Codex</span>
           <p data-skill-count="76">Навыков: 76</p>
-          <span class="collection-download"><span aria-hidden="true">↓</span><span class="sr-only" data-i18n="skillDownload">Скачать ZIP</span></span>
+          <span class="collection-download"><span aria-hidden="true">↓</span> <span data-i18n="skillDownload">Скачать ZIP</span></span>
         </a>
       </li>
-      <li data-compatibility="codex" data-entry-topic="business">
+      <li data-compatibility="codex" data-entry-topic="business" data-collection="codex/product-strategy">
         <a class="skill-entry" href="downloads/skills/codex/product-strategy.zip?v=04fa3c0127133a59" download="codex-product-strategy.zip">
-          <span class="entry-marker" aria-hidden="true">›</span>
           <div class="skill-entry-title">
             <h3 data-skill-title-ru="Продукт и стратегия" data-skill-title-en="Product and Strategy">Продукт и стратегия</h3>
           </div>
           <span class="skill-engine">Codex</span>
           <p data-skill-count="85">Навыков: 85</p>
-          <span class="collection-download"><span aria-hidden="true">↓</span><span class="sr-only" data-i18n="skillDownload">Скачать ZIP</span></span>
+          <span class="collection-download"><span aria-hidden="true">↓</span> <span data-i18n="skillDownload">Скачать ZIP</span></span>
         </a>
       </li>
-      <li data-compatibility="codex" data-entry-topic="business">
+      <li data-compatibility="codex" data-entry-topic="business" data-collection="codex/management-operations">
         <a class="skill-entry" href="downloads/skills/codex/management-operations.zip?v=907feff025813d4c" download="codex-management-operations.zip">
-          <span class="entry-marker" aria-hidden="true">›</span>
           <div class="skill-entry-title">
             <h3 data-skill-title-ru="Управление, проекты и процессы" data-skill-title-en="Management, Projects and Processes">Управление, проекты и процессы</h3>
           </div>
           <span class="skill-engine">Codex</span>
           <p data-skill-count="81">Навыков: 81</p>
-          <span class="collection-download"><span aria-hidden="true">↓</span><span class="sr-only" data-i18n="skillDownload">Скачать ZIP</span></span>
+          <span class="collection-download"><span aria-hidden="true">↓</span> <span data-i18n="skillDownload">Скачать ZIP</span></span>
         </a>
       </li>
         </ul>
@@ -394,48 +389,44 @@
       <section class="skill-topic" data-skill-topic="security" aria-labelledby="topic-security">
         <h2 id="topic-security" data-skill-title-ru="Безопасность и право" data-skill-title-en="Security and legal">Безопасность и право</h2>
         <ul class="skill-list">
-      <li data-compatibility="codex" data-entry-topic="security">
+      <li data-compatibility="codex" data-entry-topic="security" data-collection="codex/security-privacy">
         <a class="skill-entry" href="downloads/skills/codex/security-privacy.zip?v=644f2ec5e91e0bb3" download="codex-security-privacy.zip">
-          <span class="entry-marker" aria-hidden="true">›</span>
           <div class="skill-entry-title">
             <h3 data-skill-title-ru="Безопасность и приватность" data-skill-title-en="Security and Privacy">Безопасность и приватность</h3>
           </div>
           <span class="skill-engine">Codex</span>
           <p data-skill-count="21">Навыков: 21</p>
-          <span class="collection-download"><span aria-hidden="true">↓</span><span class="sr-only" data-i18n="skillDownload">Скачать ZIP</span></span>
+          <span class="collection-download"><span aria-hidden="true">↓</span> <span data-i18n="skillDownload">Скачать ZIP</span></span>
         </a>
       </li>
-      <li data-compatibility="claude" data-entry-topic="security">
+      <li data-compatibility="claude" data-entry-topic="security" data-collection="claude/security-compliance">
         <a class="skill-entry" href="downloads/skills/claude/security-compliance.zip?v=fbfdfbb9c3828a42" download="claude-security-compliance.zip">
-          <span class="entry-marker" aria-hidden="true">›</span>
           <div class="skill-entry-title">
             <h3 data-skill-title-ru="Безопасность и соответствие требованиям" data-skill-title-en="Security, Privacy &amp; Compliance">Безопасность и соответствие требованиям</h3>
           </div>
           <span class="skill-engine">Claude Code</span>
           <p data-skill-count="26">Навыков: 26</p>
-          <span class="collection-download"><span aria-hidden="true">↓</span><span class="sr-only" data-i18n="skillDownload">Скачать ZIP</span></span>
+          <span class="collection-download"><span aria-hidden="true">↓</span> <span data-i18n="skillDownload">Скачать ZIP</span></span>
         </a>
       </li>
-      <li data-compatibility="claude" data-entry-topic="security">
+      <li data-compatibility="claude" data-entry-topic="security" data-collection="claude/legal-government">
         <a class="skill-entry" href="downloads/skills/claude/legal-government.zip?v=d0537e57a0cc8a85" download="claude-legal-government.zip">
-          <span class="entry-marker" aria-hidden="true">›</span>
           <div class="skill-entry-title">
             <h3 data-skill-title-ru="Право и государственные услуги" data-skill-title-en="Legal &amp; Government">Право и государственные услуги</h3>
           </div>
           <span class="skill-engine">Claude Code</span>
           <p data-skill-count="46">Навыков: 46</p>
-          <span class="collection-download"><span aria-hidden="true">↓</span><span class="sr-only" data-i18n="skillDownload">Скачать ZIP</span></span>
+          <span class="collection-download"><span aria-hidden="true">↓</span> <span data-i18n="skillDownload">Скачать ZIP</span></span>
         </a>
       </li>
-      <li data-compatibility="codex" data-entry-topic="security">
+      <li data-compatibility="codex" data-entry-topic="security" data-collection="codex/legal-compliance">
         <a class="skill-entry" href="downloads/skills/codex/legal-compliance.zip?v=10c2abfd5a6bd127" download="codex-legal-compliance.zip">
-          <span class="entry-marker" aria-hidden="true">›</span>
           <div class="skill-entry-title">
             <h3 data-skill-title-ru="Право, договоры и соответствие" data-skill-title-en="Legal, Contracts and Compliance">Право, договоры и соответствие</h3>
           </div>
           <span class="skill-engine">Codex</span>
           <p data-skill-count="98">Навыков: 98</p>
-          <span class="collection-download"><span aria-hidden="true">↓</span><span class="sr-only" data-i18n="skillDownload">Скачать ZIP</span></span>
+          <span class="collection-download"><span aria-hidden="true">↓</span> <span data-i18n="skillDownload">Скачать ZIP</span></span>
         </a>
       </li>
         </ul>
@@ -443,59 +434,54 @@
       <section class="skill-topic" data-skill-topic="learning" aria-labelledby="topic-learning">
         <h2 id="topic-learning" data-skill-title-ru="Учёба и продуктивность" data-skill-title-en="Learning and productivity">Учёба и продуктивность</h2>
         <ul class="skill-list">
-      <li data-compatibility="claude" data-entry-topic="learning">
+      <li data-compatibility="claude" data-entry-topic="learning" data-collection="claude/thinking-decisions">
         <a class="skill-entry" href="downloads/skills/claude/thinking-decisions.zip?v=0084885cbbe9ced4" download="claude-thinking-decisions.zip">
-          <span class="entry-marker" aria-hidden="true">›</span>
           <div class="skill-entry-title">
             <h3 data-skill-title-ru="Мышление и принятие решений" data-skill-title-en="Thinking &amp; Decision-Making">Мышление и принятие решений</h3>
           </div>
           <span class="skill-engine">Claude Code</span>
           <p data-skill-count="24">Навыков: 24</p>
-          <span class="collection-download"><span aria-hidden="true">↓</span><span class="sr-only" data-i18n="skillDownload">Скачать ZIP</span></span>
+          <span class="collection-download"><span aria-hidden="true">↓</span> <span data-i18n="skillDownload">Скачать ZIP</span></span>
         </a>
       </li>
-      <li data-compatibility="claude" data-entry-topic="learning">
+      <li data-compatibility="claude" data-entry-topic="learning" data-collection="claude/education-research">
         <a class="skill-entry" href="downloads/skills/claude/education-research.zip?v=945b1d6949aebcc2" download="claude-education-research.zip">
-          <span class="entry-marker" aria-hidden="true">›</span>
           <div class="skill-entry-title">
             <h3 data-skill-title-ru="Образование и исследования" data-skill-title-en="Education &amp; Research">Образование и исследования</h3>
           </div>
           <span class="skill-engine">Claude Code</span>
           <p data-skill-count="62">Навыков: 62</p>
-          <span class="collection-download"><span aria-hidden="true">↓</span><span class="sr-only" data-i18n="skillDownload">Скачать ZIP</span></span>
+          <span class="collection-download"><span aria-hidden="true">↓</span> <span data-i18n="skillDownload">Скачать ZIP</span></span>
         </a>
       </li>
-      <li data-compatibility="codex" data-entry-topic="learning">
+      <li data-compatibility="codex" data-entry-topic="learning" data-collection="codex/education-learning">
         <a class="skill-entry" href="downloads/skills/codex/education-learning.zip?v=d68e3bad2e8bbdfd" download="codex-education-learning.zip">
-          <span class="entry-marker" aria-hidden="true">›</span>
           <div class="skill-entry-title">
             <h3 data-skill-title-ru="Обучение и образование" data-skill-title-en="Learning and Education">Обучение и образование</h3>
           </div>
           <span class="skill-engine">Codex</span>
           <p data-skill-count="44">Навыков: 44</p>
-          <span class="collection-download"><span aria-hidden="true">↓</span><span class="sr-only" data-i18n="skillDownload">Скачать ZIP</span></span>
+          <span class="collection-download"><span aria-hidden="true">↓</span> <span data-i18n="skillDownload">Скачать ZIP</span></span>
         </a>
       </li>
-      <li data-compatibility="codex" data-entry-topic="learning">
+      <li data-compatibility="codex" data-entry-topic="learning" data-collection="codex/productivity-tools">
         <a class="skill-entry" href="downloads/skills/codex/productivity-tools.zip?v=773a0434dd02d4cc" download="codex-productivity-tools.zip">
-          <span class="entry-marker" aria-hidden="true">›</span>
           <div class="skill-entry-title">
             <h3 data-skill-title-ru="Продуктивность и инструменты" data-skill-title-en="Productivity and Tools">Продуктивность и инструменты</h3>
           </div>
           <span class="skill-engine">Codex</span>
           <p data-skill-count="112">Навыков: 112</p>
-          <span class="collection-download"><span aria-hidden="true">↓</span><span class="sr-only" data-i18n="skillDownload">Скачать ZIP</span></span>
+          <span class="collection-download"><span aria-hidden="true">↓</span> <span data-i18n="skillDownload">Скачать ZIP</span></span>
         </a>
       </li>
-      <li data-compatibility="claude" data-entry-topic="learning">
+      <li data-compatibility="claude" data-entry-topic="learning" data-collection="claude/productivity">
         <a class="skill-entry" href="downloads/skills/claude/productivity.zip?v=6cc9090750ffb661" download="claude-productivity.zip">
-          <span class="entry-marker" aria-hidden="true">›</span>
           <div class="skill-entry-title">
             <h3 data-skill-title-ru="Продуктивность и рабочие процессы" data-skill-title-en="Productivity &amp; Workflow">Продуктивность и рабочие процессы</h3>
           </div>
           <span class="skill-engine">Claude Code</span>
           <p data-skill-count="75">Навыков: 75</p>
-          <span class="collection-download"><span aria-hidden="true">↓</span><span class="sr-only" data-i18n="skillDownload">Скачать ZIP</span></span>
+          <span class="collection-download"><span aria-hidden="true">↓</span> <span data-i18n="skillDownload">Скачать ZIP</span></span>
         </a>
       </li>
         </ul>
@@ -503,81 +489,74 @@
       <section class="skill-topic" data-skill-topic="personal" aria-labelledby="topic-personal">
         <h2 id="topic-personal" data-skill-title-ru="Личное, здоровье и финансы" data-skill-title-en="Personal life, health and finance">Личное, здоровье и финансы</h2>
         <ul class="skill-list">
-      <li data-compatibility="claude" data-entry-topic="personal">
+      <li data-compatibility="claude" data-entry-topic="personal" data-collection="claude/personal-life">
         <a class="skill-entry" href="downloads/skills/claude/personal-life.zip?v=bbc3dda71c2d36a9" download="claude-personal-life.zip">
-          <span class="entry-marker" aria-hidden="true">›</span>
           <div class="skill-entry-title">
             <h3 data-skill-title-ru="Дом, семья и образ жизни" data-skill-title-en="Home, Family &amp; Lifestyle">Дом, семья и образ жизни</h3>
           </div>
           <span class="skill-engine">Claude Code</span>
           <p data-skill-count="121">Навыков: 121</p>
-          <span class="collection-download"><span aria-hidden="true">↓</span><span class="sr-only" data-i18n="skillDownload">Скачать ZIP</span></span>
+          <span class="collection-download"><span aria-hidden="true">↓</span> <span data-i18n="skillDownload">Скачать ZIP</span></span>
         </a>
       </li>
-      <li data-compatibility="codex" data-entry-topic="personal">
+      <li data-compatibility="codex" data-entry-topic="personal" data-collection="codex/home-family">
         <a class="skill-entry" href="downloads/skills/codex/home-family.zip?v=f15acd2acfddad1e" download="codex-home-family.zip">
-          <span class="entry-marker" aria-hidden="true">›</span>
           <div class="skill-entry-title">
             <h3 data-skill-title-ru="Дом, семья и отношения" data-skill-title-en="Home, Family and Relationships">Дом, семья и отношения</h3>
           </div>
           <span class="skill-engine">Codex</span>
           <p data-skill-count="64">Навыков: 64</p>
-          <span class="collection-download"><span aria-hidden="true">↓</span><span class="sr-only" data-i18n="skillDownload">Скачать ZIP</span></span>
+          <span class="collection-download"><span aria-hidden="true">↓</span> <span data-i18n="skillDownload">Скачать ZIP</span></span>
         </a>
       </li>
-      <li data-compatibility="claude" data-entry-topic="personal">
+      <li data-compatibility="claude" data-entry-topic="personal" data-collection="claude/health-wellness">
         <a class="skill-entry" href="downloads/skills/claude/health-wellness.zip?v=8296f47d1829958c" download="claude-health-wellness.zip">
-          <span class="entry-marker" aria-hidden="true">›</span>
           <div class="skill-entry-title">
             <h3 data-skill-title-ru="Здоровье и благополучие" data-skill-title-en="Health &amp; Wellness">Здоровье и благополучие</h3>
           </div>
           <span class="skill-engine">Claude Code</span>
           <p data-skill-count="25">Навыков: 25</p>
-          <span class="collection-download"><span aria-hidden="true">↓</span><span class="sr-only" data-i18n="skillDownload">Скачать ZIP</span></span>
+          <span class="collection-download"><span aria-hidden="true">↓</span> <span data-i18n="skillDownload">Скачать ZIP</span></span>
         </a>
       </li>
-      <li data-compatibility="codex" data-entry-topic="personal">
+      <li data-compatibility="codex" data-entry-topic="personal" data-collection="codex/health-care">
         <a class="skill-entry" href="downloads/skills/codex/health-care.zip?v=ec769bf3a8e1097e" download="codex-health-care.zip">
-          <span class="entry-marker" aria-hidden="true">›</span>
           <div class="skill-entry-title">
             <h3 data-skill-title-ru="Здоровье и забота" data-skill-title-en="Health and Care">Здоровье и забота</h3>
           </div>
           <span class="skill-engine">Codex</span>
           <p data-skill-count="67">Навыков: 67</p>
-          <span class="collection-download"><span aria-hidden="true">↓</span><span class="sr-only" data-i18n="skillDownload">Скачать ZIP</span></span>
+          <span class="collection-download"><span aria-hidden="true">↓</span> <span data-i18n="skillDownload">Скачать ZIP</span></span>
         </a>
       </li>
-      <li data-compatibility="claude" data-entry-topic="personal">
+      <li data-compatibility="claude" data-entry-topic="personal" data-collection="claude/personal-finance">
         <a class="skill-entry" href="downloads/skills/claude/personal-finance.zip?v=b2a0a887a7a60a0e" download="claude-personal-finance.zip">
-          <span class="entry-marker" aria-hidden="true">›</span>
           <div class="skill-entry-title">
             <h3 data-skill-title-ru="Личные финансы" data-skill-title-en="Personal Finance">Личные финансы</h3>
           </div>
           <span class="skill-engine">Claude Code</span>
           <p data-skill-count="55">Навыков: 55</p>
-          <span class="collection-download"><span aria-hidden="true">↓</span><span class="sr-only" data-i18n="skillDownload">Скачать ZIP</span></span>
+          <span class="collection-download"><span aria-hidden="true">↓</span> <span data-i18n="skillDownload">Скачать ZIP</span></span>
         </a>
       </li>
-      <li data-compatibility="codex" data-entry-topic="personal">
+      <li data-compatibility="codex" data-entry-topic="personal" data-collection="codex/travel-lifestyle">
         <a class="skill-entry" href="downloads/skills/codex/travel-lifestyle.zip?v=47398d34bb5c36cd" download="codex-travel-lifestyle.zip">
-          <span class="entry-marker" aria-hidden="true">›</span>
           <div class="skill-entry-title">
             <h3 data-skill-title-ru="Путешествия, досуг и образ жизни" data-skill-title-en="Travel, Leisure and Lifestyle">Путешествия, досуг и образ жизни</h3>
           </div>
           <span class="skill-engine">Codex</span>
           <p data-skill-count="35">Навыков: 35</p>
-          <span class="collection-download"><span aria-hidden="true">↓</span><span class="sr-only" data-i18n="skillDownload">Скачать ZIP</span></span>
+          <span class="collection-download"><span aria-hidden="true">↓</span> <span data-i18n="skillDownload">Скачать ZIP</span></span>
         </a>
       </li>
-      <li data-compatibility="codex" data-entry-topic="personal">
+      <li data-compatibility="codex" data-entry-topic="personal" data-collection="codex/finance-personal">
         <a class="skill-entry" href="downloads/skills/codex/finance-personal.zip?v=0d510192cc4bcb30" download="codex-finance-personal.zip">
-          <span class="entry-marker" aria-hidden="true">›</span>
           <div class="skill-entry-title">
             <h3 data-skill-title-ru="Финансы, учёт и покупки" data-skill-title-en="Finance, Accounting and Purchasing">Финансы, учёт и покупки</h3>
           </div>
           <span class="skill-engine">Codex</span>
           <p data-skill-count="130">Навыков: 130</p>
-          <span class="collection-download"><span aria-hidden="true">↓</span><span class="sr-only" data-i18n="skillDownload">Скачать ZIP</span></span>
+          <span class="collection-download"><span aria-hidden="true">↓</span> <span data-i18n="skillDownload">Скачать ZIP</span></span>
         </a>
       </li>
         </ul>
@@ -611,9 +590,98 @@
     const collections = document.querySelectorAll('[data-compatibility]');
     const topics = document.querySelectorAll('[data-skill-topic]');
     const emptyCollections = document.querySelector('#empty-collections');
+    const query = document.querySelector('#skill-query');
+    const browser = document.querySelector('#skills-browser');
+    const results = document.querySelector('#skill-results');
+    const status = document.querySelector('#skill-search-status');
+    const { tokens, searchable, search } = window.skillSearch;
+    let selected = 'all';
+    let index = null;
+    let loading = false;
+
+    function indexCollections(entries) {
+      const topicLabels = new Map(Array.from(topics, topic => [
+        topic.dataset.skillTopic, topic.querySelector('h2').dataset
+      ]));
+      return Array.from(collections).flatMap(row => {
+        const title = row.querySelector('h3').dataset;
+        const engineLabel = row.querySelector('.skill-engine').textContent;
+        const topic = topicLabels.get(row.dataset.entryTopic);
+        const collection = {
+          engine: row.dataset.compatibility, title, engineLabel, link: row.querySelector('a'),
+          contextWords: tokens([title.skillTitleRu, title.skillTitleEn, topic.skillTitleRu,
+            topic.skillTitleEn, row.dataset.collection, engineLabel].join(' '))
+        };
+        return (entries[row.dataset.collection] || []).map(([name, description]) => searchable(collection, name, description));
+      });
+    }
+
+    function renderSearch() {
+      const value = query.value?.trim();
+      const { language, t } = window.siteI18n;
+      const inSearch = Boolean(value && index);
+      browser.hidden = inSearch;
+      results.hidden = !inSearch;
+      results.replaceChildren();
+      status.textContent = '';
+      if (!value) return;
+      if (!index) {
+        status.textContent = t(loading ? 'skillSearchLoading' : 'skillSearchError');
+        return;
+      }
+
+      const matches = search(index, value, selected);
+      const limit = 30;
+      if (!matches.length) {
+        status.textContent = t('skillSearchEmpty');
+        return;
+      }
+      const numbers = new Intl.NumberFormat(language);
+      status.textContent = t(matches.length > limit ? 'skillSearchLimited' : 'skillSearchFound')
+        .replace('{count}', numbers.format(matches.length)).replace('{limit}', numbers.format(limit));
+      const make = (tag, text) => {
+        const node = document.createElement(tag);
+        node.textContent = text;
+        return node;
+      };
+      for (const { entry } of matches.slice(0, limit)) {
+        const { collection, name, description } = entry;
+        const item = document.createElement('li');
+        item.className = 'search-result';
+        const title = make('h2', name);
+        const text = make('p', description);
+        const category = language === 'en' ? collection.title.skillTitleEn : collection.title.skillTitleRu;
+        const context = make('p', collection.engineLabel + ' · ' + category);
+        const link = make('a', '↓ ' + t('skillDownloadBundle'));
+        link.className = 'collection-download result-download';
+        link.href = collection.link.href;
+        link.download = collection.link.download;
+        item.append(title, text, context, link);
+        results.append(item);
+      }
+    }
+
+    query.addEventListener('input', async () => {
+      if (query.value.trim() && !index && !loading) {
+        loading = true;
+        renderSearch();
+        try {
+          const response = await fetch(query.dataset.index);
+          if (!response.ok) throw new Error('Skill search index request failed');
+          index = indexCollections(await response.json());
+        } catch {
+          index = null;
+        } finally {
+          loading = false;
+        }
+      }
+      renderSearch();
+    });
+    document.addEventListener('languagechange', renderSearch);
+
     filterButtons.forEach(button => {
       button.addEventListener('click', () => {
-        const selected = button.dataset.filter;
+        selected = button.dataset.filter;
         filterButtons.forEach(control => control.setAttribute('aria-pressed', String(control === button)));
         const visibleTopics = new Set();
         collections.forEach(collection => {
@@ -622,6 +690,7 @@
         });
         topics.forEach(topic => { topic.hidden = !visibleTopics.has(topic.dataset.skillTopic); });
         emptyCollections.hidden = visibleTopics.size > 0;
+        renderSearch();
       });
     });
   </script>

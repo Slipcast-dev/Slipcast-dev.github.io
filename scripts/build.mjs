@@ -40,9 +40,13 @@ for (const entry of await readdir(destination, { withFileTypes: true })) {
   const path = `${destination}/${entry.name}`;
   let html = await readFile(path, 'utf8');
   // Изменённый общий JS получает новый адрес, чтобы старый кеш не ломал новые страницы.
-  for (const name of ['i18n.js', 'projects-api.js']) {
+  for (const name of ['i18n.js', 'projects-api.js', 'skills-search.js']) {
     const version = createHash('sha256').update(await readFile(destination + name)).digest('hex').slice(0, 12);
     html = html.replaceAll(`src="${name}"`, `src="${name}?v=${version}"`);
+  }
+  if (entry.name === 'skills-agents.html') {
+    const indexHash = createHash('sha256').update(await readFile(destination + 'skills-index.json')).digest('hex').slice(0, 12);
+    html = html.replace('data-index="skills-index.json"', `data-index="skills-index.json?v=${indexHash}"`);
   }
   // Разрешены только локальные JS-файлы и точные хеши встроенных сценариев этой сборки.
   const hashes = [...html.matchAll(/<script\b[^>]*>([\s\S]*?)<\/script>/g)]
