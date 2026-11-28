@@ -14,6 +14,8 @@ import stat
 from tempfile import TemporaryDirectory
 from zipfile import ZIP_DEFLATED, ZipFile, ZipInfo
 
+from skill_model_profiles import model_guide, optimize_skill
+
 ROOT = Path(__file__).resolve().parents[1]
 ENGINES = {"codex": ("Codex", ".agents"), "claude": ("Claude Code", ".claude")}
 SLUG = re.compile(r"[a-z0-9][a-z0-9-]*")
@@ -180,15 +182,19 @@ def export_category(
         f"# {russian} / {english} · {name}\n\n"
         f"Перенесите нужные папки из skills/ в {config_dir}/skills/ проекта или домашней папки.\n\n"
         f"Copy the skill folders you need from skills/ to {config_dir}/skills/ in your project or home directory.\n\n"
+        "Рекомендации по моделям / Model guidance: [MODEL_GUIDE.md](MODEL_GUIDE.md).\n\n"
         "Лицензии и авторство / Licenses and attribution: ATTRIBUTION.json and skill files.\n"
     )
     with ZipFile(path, "w") as archive:
         zip_entry(archive, "README.md", readme.encode())
+        zip_entry(archive, "MODEL_GUIDE.md", model_guide(engine, category).encode())
         provenance = [{"skill": skill, "license": license_name, "source_path": origin}
                       for skill, _, license_name, origin in skills]
         zip_entry(archive, "ATTRIBUTION.json", (json.dumps(provenance, indent=2) + "\n").encode())
         for skill, files, _, _ in skills:
             for filename, contents in sorted(files.items()):
+                if filename == "SKILL.md":
+                    contents = optimize_skill(contents, engine, category, skill)
                 zip_entry(archive, f"skills/{skill}/{filename}", contents)
     return hashlib.sha256(path.read_bytes()).hexdigest()[:16]
 
