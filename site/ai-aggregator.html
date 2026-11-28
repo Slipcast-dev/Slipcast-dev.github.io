@@ -20,6 +20,15 @@ button{min-height:42px;padding:8px 13px}button:hover:not(:disabled){border-color
 .project-settings .field{margin:0}
 .project-settings .field{min-width:0}
 .project-settings select{min-width:0;text-overflow:ellipsis}
+.model-settings{display:grid;gap:14px}
+.model-settings fieldset{margin:0}
+.model-settings legend{margin:0 0 6px;padding:0}
+.model-switch{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}
+.model-switch[data-mode-group="openai"]{grid-template-columns:repeat(3,minmax(0,1fr))}
+.model-switch button{min-height:44px;padding:8px 5px;font-size:.82rem;overflow-wrap:anywhere}
+.model-switch button[aria-pressed=true]{background:#0a2613;border-color:#00ff66a0;color:var(--mint)}
+.model-mode-placeholder{width:100%;font-size:.82rem}
+#model-profile-list .theme-select-heading{display:none}
 .recommend{width:100%}.model-hint{font-size:.76rem;color:var(--muted)}.team .agent-model{display:block;margin:2px 0 0}
 .recommend:disabled{opacity:1;background:#0a1710;border-color:var(--line);color:var(--muted)}.heading{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap}.count{font:.79rem var(--mono);color:var(--mint)}.summary,.muted{color:var(--muted);margin:0 0 13px;font-size:.88rem}.team{margin:0 0 18px;padding:0;list-style:none;display:grid;gap:5px}.team li{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:7px 8px 7px 12px;background:var(--panel2);border-radius:7px;border:1px solid transparent}.team li.enter{animation:arrive .34s both;animation-delay:calc(var(--index) * 24ms)}@keyframes arrive{from{opacity:.3;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}.team button{min-height:34px;padding:2px 10px}.team{max-height:270px;overflow-y:auto;scroll-padding:5px;padding:4px}.team small{color:var(--muted);margin-left:7px}.prompt-label{display:block;font-weight:700;margin-bottom:7px}.prompt{font:.8rem/1.55 var(--mono);min-height:145px;flex:1;color:#d7f4e2}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.status{min-height:1.4em;margin:8px 0 0;color:var(--mint);font-size:.8rem}.catalog{margin:28px 0 38px}.catalog summary{display:flex;align-items:center;gap:14px;cursor:pointer;list-style:none;min-height:32px}
 .catalog summary::-webkit-details-marker{display:none}
@@ -69,11 +78,33 @@ button{min-height:42px;padding:8px 13px}button:hover:not(:disabled){border-color
     <form class="panel" id="picker" autocomplete="off">
       <h2>Настройки проекта</h2>
       <div class="project-settings">
-        <div class="field"><label for="model-profile">Модели агентов</label>
-          <select id="model-profile" aria-describedby="model-hint">
-            <option value="" selected disabled>Выберите модель</option>
-          </select>
-          <span class="model-hint" id="model-hint">Доступность моделей зависит от клиента, тарифа и настроек организации.</span>
+        <div class="model-settings">
+          <fieldset>
+            <legend>Платформа ИИ</legend>
+            <div class="model-switch" id="model-providers">
+              <button type="button" data-model-provider="openai" aria-pressed="false">OpenAI</button>
+              <button type="button" data-model-provider="anthropic" aria-pressed="false">Anthropic</button>
+            </div>
+          </fieldset>
+          <fieldset id="model-modes">
+            <legend>Режим</legend>
+            <button type="button" class="model-mode-placeholder" id="model-mode-placeholder" disabled>Сначала выберите платформу ИИ</button>
+            <div class="model-switch" data-mode-group="openai" hidden>
+              <button type="button" data-model-mode="codex" aria-pressed="false">Codex</button>
+              <button type="button" data-model-mode="chatgpt-work" aria-pressed="false">ChatGPT Work</button>
+              <button type="button" data-model-mode="chatgpt" aria-pressed="false">ChatGPT Chat</button>
+            </div>
+            <div class="model-switch" data-mode-group="anthropic" hidden>
+              <button type="button" data-model-mode="claude" aria-pressed="false">Claude Code</button>
+              <button type="button" data-model-mode="claude-chat" aria-pressed="false">Claude Chat</button>
+            </div>
+          </fieldset>
+          <div class="field"><label for="model-profile">Модели агентов</label>
+            <select id="model-profile" aria-describedby="model-hint" disabled>
+              <option value="" selected disabled>Сначала выберите режим</option>
+            </select>
+            <span class="model-hint" id="model-hint">Доступность моделей зависит от клиента, тарифа и настроек организации.</span>
+          </div>
         </div>
         <div class="field"><label for="task">Задача</label><select id="task"><option value="" selected disabled>Выберите задачу</option></select></div>
         <div class="field"><label for="phase">Этап разработки</label><select id="phase" disabled><option value="" selected disabled>Сначала выберите задачу</option></select></div>
@@ -1193,9 +1224,38 @@ function addGroup(select, label, entries) {
   select.append(group);
 }
 
+const modelSelect = $('model-profile');
+const providerButtons = $('model-providers').querySelectorAll('[data-model-provider]');
+const modePanels = $('model-modes').querySelectorAll('[data-mode-group]');
+const modeButtons = $('model-modes').querySelectorAll('[data-model-mode]');
+const modelOptions = new Map();
+let modelProvider = '';
+let modelMode = '';
 for (const [engine, product] of modelGroups) {
   const models = [...modelChoices].filter(([, choice]) => choice.engine === engine);
-  addGroup($('model-profile'), product, models.map(([id, choice]) => [id, choice.product + ' · ' + choice.label]));
+  addGroup(modelSelect, product, models.map(([id, choice]) => [id, choice.label]));
+  modelOptions.set(engine, modelSelect.lastElementChild);
+}
+
+function syncModelOptions() {
+  // Смена среды сбрасывает только модель и закрывает открытый список.
+  providerButtons.forEach(button => {
+    button.setAttribute('aria-pressed', String(button.dataset.modelProvider === modelProvider));
+  });
+  $('model-mode-placeholder').hidden = Boolean(modelProvider);
+  modePanels.forEach(panel => { panel.hidden = panel.dataset.modeGroup !== modelProvider; });
+  modeButtons.forEach(button => {
+    button.setAttribute('aria-pressed', String(button.dataset.modelMode === modelMode));
+  });
+  modelSelect.value = '';
+  modelSelect.disabled = !modelMode;
+  modelSelect.options[0].textContent = modelMode ? 'Выберите модель' : 'Сначала выберите режим';
+  for (const [engine, group] of modelOptions) {
+    group.hidden = engine !== modelMode;
+    for (const option of group.children) option.hidden = group.hidden;
+  }
+  modelSelect.dispatchEvent(new Event('optionschange'));
+  modelSelect.dispatchEvent(new Event('change', { bubbles: true }));
 }
 for (const [category, group] of taskGroups) {
   addGroup($('task'), category, Object.entries(group).map(([id, [label]]) => [id, label]));
@@ -1231,13 +1291,15 @@ function syncTaskOptions() {
 }
 
 function projectSettings() {
+  const modelProfile = modelSelect.value;
+  const engine = modelChoices.get(modelProfile)?.engine;
   return {
-    engine: modelChoices.get($('model-profile').value)?.engine,
+    engine: engine === modelMode ? engine : undefined,
     task: $('task').value,
     phase: $('phase').value,
     platform: $('platform').value,
     language: $('language').value,
-    modelProfile: $('model-profile').value
+    modelProfile
   };
 }
 
@@ -1545,12 +1607,14 @@ $('picker').addEventListener('submit', event => {
   if (action === 'empty') return;
   if (action === 'reset') {
     $('picker').reset();
-    $('model-profile').dispatchEvent(new Event('change'));
+    modelProvider = '';
+    modelMode = '';
+    syncModelOptions();
     syncTaskOptions();
     builtProject = null;
     team.clear();
     renderResult();
-    $('model-profile-trigger')?.focus();
+    providerButtons[0].focus();
   } else {
     // Промпт и архив используют настройки последнего подбора, пока пользователь редактирует форму.
     builtProject = { ...settings, platformLabel: $('platform').selectedOptions[0].textContent };
@@ -1559,8 +1623,19 @@ $('picker').addEventListener('submit', event => {
   updatePicker();
 });
 $('task').addEventListener('change', syncTaskOptions);
-$('model-profile').addEventListener('change', () => {
-  const choice = modelChoices.get($('model-profile').value);
+providerButtons.forEach(button => button.addEventListener('click', () => {
+  if (modelProvider === button.dataset.modelProvider) return;
+  modelProvider = button.dataset.modelProvider;
+  modelMode = '';
+  syncModelOptions();
+}));
+modeButtons.forEach(button => button.addEventListener('click', () => {
+  if (button.closest('[data-mode-group]').hidden || modelMode === button.dataset.modelMode) return;
+  modelMode = button.dataset.modelMode;
+  syncModelOptions();
+}));
+modelSelect.addEventListener('change', () => {
+  const choice = modelChoices.get(modelSelect.value);
   $('model-hint').textContent = choice?.mode === 'chat'
     ? 'Промпт для ' + choice.product + '. Выберите эту модель в своём приложении.'
     : 'Доступность моделей зависит от клиента, тарифа и настроек организации.';
@@ -1568,6 +1643,7 @@ $('model-profile').addEventListener('change', () => {
 $('picker').addEventListener('change', updatePicker);
 $('search').addEventListener('input', renderCatalog);
 $('category').addEventListener('change', renderCatalog);
+syncModelOptions();
 syncTaskOptions();
 renderCatalog();
 renderResult();

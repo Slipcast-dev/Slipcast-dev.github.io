@@ -546,13 +546,23 @@ test('Новые роли агрегатора связаны с задачам�
   assert.equal(catalog.roles.find(role => role.id === 'visual-diff-reviewer').tier, 'visual');
 });
 
-test('Выбор модели начинает форму агрегатора на обоих языках', () => {
-  for (const page of ['ai-aggregator.html', 'ai-aggregator-en.html']) {
+test('Платформа и режим предшествуют моделям; оба языка используют весь каталог режимов', () => {
+  for (const [page, expectedLabels] of [
+    ['ai-aggregator.html', ['Платформа ИИ', 'Режим']],
+    ['ai-aggregator-en.html', ['AI platform', 'Mode']]
+  ]) {
     const html = fs.readFileSync(path.join(dist, page), 'utf8');
     const form = html.match(/<form\b[^>]*\bid="picker"[^>]*>([\s\S]*?)<\/form>/)?.[1];
     assert.ok(form, page);
-    const fields = [...form.matchAll(/<select\b[^>]*\bid="([^"]+)"/g)].map(match => match[1]);
-    assert.deepEqual(fields.slice(0, 2), ['model-profile', 'task'], page);
+    const controls = [...form.matchAll(/\bid="(model-providers|model-modes|model-profile|task)"/g)];
+    assert.deepEqual(controls.map(match => match[1]), ['model-providers', 'model-modes', 'model-profile', 'task'], page);
+    assert.match(form, /<select id="model-profile"[^>]* disabled>/);
+    assert.deepEqual([...form.matchAll(/<legend>([^<]+)<\/legend>/g)].map(match => match[1]), expectedLabels);
+    const start = html.indexOf('const environment = ');
+    const end = html.indexOf('const taskGroups = ');
+    const catalogModes = vm.runInNewContext(html.slice(start, end) + '\nmodelGroups.map(([mode]) => mode).join(",")').split(',');
+    const visibleModes = [...form.matchAll(/data-model-mode="([^"]+)"/g)].map(match => match[1]);
+    assert.deepEqual(visibleModes, catalogModes, page);
   }
 });
 
