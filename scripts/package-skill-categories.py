@@ -80,6 +80,29 @@ PROJECT_SUMMARIES = {
         "Telegram posts and digests, quotation and link verification",
     ),
 }
+# Короткие сценарии использования показываются внутри соответствующих строк каталога.
+PROJECT_USE_CASES = {
+    "dev-release-testing": (
+        "Сверить версии, подписи и SHA‑256 сборок macOS и Windows, проверить восстановление копии и бота уведомлений",
+        "Compare macOS and Windows build versions, signatures and SHA‑256, verify a backup restore and diagnose the release notification bot",
+    ),
+    "data-import-testing": (
+        "Подготовить CSV и JSON с дублями и пропусками, сверить принятые и отклонённые строки",
+        "Create CSV and JSON fixtures with duplicates and missing values, then reconcile accepted and rejected rows",
+    ),
+    "web-development": (
+        "Проверить компонент и API, пройти сценарий в браузере на узком экране и с клавиатуры",
+        "Verify a component and its API, then test the workflow on a narrow viewport and with the keyboard",
+    ),
+    "ai-agent-workflows": (
+        "Сверить контракт MCP, сравнить ответы моделей на контрольных промптах и передать результаты следующему агенту",
+        "Verify the MCP contract, compare models against test prompts and hand off the results to the next agent",
+    ),
+    "editorial-workflows": (
+        "Проверить цитаты и ссылки по источникам, затем подготовить пост или дайджест для Telegram",
+        "Check quotations and links against their sources, then prepare a Telegram post or digest",
+    ),
+}
 # Рекомендуемые шаги для задач с несколькими скиллами.
 WORKFLOWS = {
     "data-import-testing": ("synthetic-import-fixtures", "import-reconciliation"),
@@ -313,8 +336,9 @@ def card(
     title_ru, title_en = (escape(title) for title in titles)
     filename = f"{engine}-{category}.zip"
     summary = ""
-    if category in PROJECT_SUMMARIES:
-        summary_ru, summary_en = (escape(line) for line in PROJECT_SUMMARIES[category])
+    description = PROJECT_USE_CASES.get(category, PROJECT_SUMMARIES.get(category))
+    if description:
+        summary_ru, summary_en = (escape(line) for line in description)
         summary = (
             f'            <span class="skill-summary" data-skill-title-ru="{summary_ru}" '
             f'data-skill-title-en="{summary_en}">{summary_ru}</span>\n'

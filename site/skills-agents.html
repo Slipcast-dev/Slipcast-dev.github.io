@@ -26,15 +26,9 @@
     body { margin: 0; background: #000; color: var(--text); font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace; }
     a { color: inherit; text-decoration: none; -webkit-tap-highlight-color: transparent; }
     :focus-visible { outline: 2px solid var(--green); outline-offset: 6px; }
-    .topbar { border-bottom: 1px solid #00ff6614; }
-    .topbar-inner { max-width: 1120px; min-height: 64px; margin: auto; padding: 0 150px 0 28px; display: flex; align-items: center; justify-content: space-between; gap: 24px; }
-    .home-link { display: inline-flex; align-items: center; min-height: 44px; font-size: 13px; color: #9fbeaa; transition: color .2s; }
-    .home-link:hover { color: var(--green); }
-    .path { font-size: 12px; color: var(--green); letter-spacing: .04em; }
     main { width: min(660px, calc(100% - 48px)); margin: 0 auto; padding: 72px 0 56px; }
     .intro { text-align: center; margin: 0 auto 24px; }
     h1 { margin: 0; color: var(--green); font-size: clamp(25px, 3.8vw, 36px); line-height: 1.4; font-weight: 700; }
-    .intro p { max-width: 650px; margin: 18px auto 0; color: var(--muted); font-size: 13px; line-height: 1.9; }
     .skill-browser { --columns: minmax(0, 1fr) 91px 80px 110px; }
     .skill-columns, .skill-entry { display: grid; grid-template-columns: var(--columns); column-gap: 10px; align-items: center; padding: 0 12px; }
     .skill-columns { min-height: 34px; color: var(--muted); font-size: 11px; }
@@ -68,46 +62,29 @@
     .search-result p { font-size: 12px; line-height: 1.5; color: var(--muted); }
     .result-download { justify-self: start; }
 
-    .skill-kits { margin: 28px 0 20px; }
-    .skill-kits h2 { margin: 0 0 10px; font-size: 16px; }
-    .kit-list, .skill-examples { padding: 0; margin: 0; list-style: none; }
-    .kit-list { display: grid; gap: 6px; }
-    .kit-item { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 6px 14px; align-items: center; padding: 10px 12px; background: #060e08; border: 1px solid #00ff663d; border-radius: 5px; }
-    .kit-item h3, .skill-guides h3 { margin: 0; font-size: 13px; }
-    .kit-item p, .skill-guides p { margin: 4px 0 0; color: var(--muted); font-size: 12px; line-height: 1.55; }
-    .kit-downloads { display: flex; flex-wrap: wrap; gap: 6px; }
-    .kit-downloads a { min-height: 36px; }
-    .kit-downloads a:hover { border-color: var(--green); background: #00ff6612; }
-    .skill-guides { display: grid; gap: 6px; margin: 0 0 20px; }
-    .skill-guide { background: #060e08; border: 1px solid #00ff663d; border-radius: 5px; }
+    .skill-guide { margin: 0 0 16px; background: #060e08; border: 1px solid #00ff663d; border-radius: 5px; }
     .skill-guide summary { min-height: 42px; padding: 11px 12px; cursor: pointer; font-size: 13px; }
     .skill-guide summary::marker { color: var(--green); }
     .guide-body { margin: 0; padding: 0 13px 13px; }
+    .guide-body p { margin: 4px 0 0; color: var(--muted); font-size: 12px; line-height: 1.55; }
+    .install-platforms h3 { margin: 0; font-size: 13px; }
     .install-platforms { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin: 10px 0; }
     .install-platforms > div { padding: 9px; border: 1px solid #00ff662d; border-radius: 4px; }
     .install-platforms dl { margin: 6px 0; font-size: 12px; }
     .install-platforms dt { color: var(--muted); }
     .install-platforms dd { margin: 3px 0 6px; overflow-wrap: anywhere; }
     .install-platforms a { color: var(--green); font-size: 12px; text-decoration: underline; text-underline-offset: 2px; }
-    .guide-body time { color: var(--green); font-size: 12px; }
-    .skill-examples li + li { margin-top: 10px; border-top: 1px solid #00ff662d; padding-top: 10px; }
-    .skill-examples blockquote { margin: 6px 0; padding-left: 8px; border-left: 2px solid #00ff6660; font-size: 12px; line-height: 1.5; }
-    .skill-list li:target .skill-entry { background: #0a2513; }
 
     .load-status { text-align: center; color: var(--muted); font-size: 13px; line-height: 1.8; margin: 0 0 32px; }
     .load-status:empty { display: none; }
-    .end { display: flex; justify-content: center; margin-top: 54px; }
     .back { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; border: 1px solid #00ff6670; border-radius: 5px; padding: 11px 20px; color: var(--green); font-size: 13px; transition: background .2s; }
+    .intro .back { margin-top: 14px; }
     .back:hover { background: #00ff6614; }
     @media (max-width: 600px) {
-      .topbar-inner { padding: 0 136px 0 20px; min-height: 78px; gap: 12px; }
-      .path { display: none; }
-      main { width: min(660px, calc(100% - 28px)); padding-top: 52px; }
-      .intro p { font-size: 12px; padding: 0 8px; }
+      main { width: min(660px, calc(100% - 28px)); padding-top: 80px; }
     }
     @media (max-width: 520px) {
       .skill-columns { display: none; }
-      .kit-item { grid-template-columns: 1fr; }
       .skill-entry { grid-template-columns: max-content minmax(0, 1fr) max-content; grid-template-areas: "title title download" "engine count download"; gap: 3px 9px; min-height: 49px; padding: 7px 9px; }
       [data-skill-count] { text-align: left; }
     }
@@ -123,16 +100,10 @@
     <button type="button" data-language="ru" lang="ru" aria-label="Русский" aria-pressed="false">RU</button>
     <button type="button" data-language="en" lang="en" aria-label="English" aria-pressed="false">EN</button>
   </div>
-  <header class="topbar">
-    <nav class="topbar-inner" aria-label="Навигация сайта" data-i18n-label="navigation">
-      <a class="home-link" href="index.html" data-i18n="terminal">← Терминал</a>
-      <a class="path" href="skills-agents.html" aria-current="page">~/skills</a>
-    </nav>
-  </header>
   <main>
     <header class="intro">
       <h1 data-i18n="skillsTitleLabel">Скиллы</h1>
-      <p data-i18n="skillsIntro">Выберите среду и найдите набор по теме. В ZIP есть скиллы и рекомендации по моделям.</p>
+      <a class="back" href="index.html" data-i18n="back">← Назад в терминал</a>
     </header>
     <div class="collection-filters" role="group" aria-label="Фильтр совместимости" data-i18n-label="skillCompatibility">
       <button type="button" data-filter="all" aria-pressed="true" data-i18n="allCollections">Все</button>
@@ -143,137 +114,42 @@
       <label for="skill-query" data-i18n="skillSearchLabel">Поиск по скиллам</label>
       <input type="search" id="skill-query" maxlength="160" autocomplete="off" data-index="skills-index.json" placeholder="Например, офлайн-синхронизация или тестирование API" data-i18n-placeholder="skillSearchPlaceholder" aria-controls="skill-results">
     </div>
+    <details class="skill-guide">
+      <summary data-i18n="skillInstallTitle">Установка и обновление</summary>
+      <div class="guide-body">
+        <p data-i18n="skillInstallUnpack">Скачайте ZIP для своей платформы и распакуйте его. Из папки skills/ копируйте нужные папки целиком, вместе с SKILL.md и остальными файлами.</p>
+        <div class="install-platforms">
+          <div>
+            <h3>Codex</h3>
+            <dl>
+              <dt data-i18n="skillInstallProject">Для этого проекта</dt>
+              <dd><code>.agents/skills/</code></dd>
+              <dt data-i18n="skillInstallPersonal">Для всех проектов</dt>
+              <dd><code>~/.agents/skills/</code></dd>
+              <dt data-i18n="skillInstallInvoke">Вызов в сессии</dt>
+              <dd><code>$skill-name</code></dd>
+            </dl>
+            <a href="https://learn.chatgpt.com/docs/build-skills#where-codex-loads-local-skills" data-i18n="skillInstallDocsCodex">Документация Codex</a>
+          </div>
+          <div>
+            <h3>Claude Code</h3>
+            <dl>
+              <dt data-i18n="skillInstallProject">Для этого проекта</dt>
+              <dd><code>.claude/skills/</code></dd>
+              <dt data-i18n="skillInstallPersonal">Для всех проектов</dt>
+              <dd><code>~/.claude/skills/</code></dd>
+              <dt data-i18n="skillInstallInvoke">Вызов в сессии</dt>
+              <dd><code>/skill-name</code></dd>
+            </dl>
+            <a href="https://code.claude.com/docs/en/skills#choose-where-skills-load" data-i18n="skillInstallDocsClaude">Документация Claude Code</a>
+          </div>
+        </div>
+        <p data-i18n="skillInstallUpdate">Для обновления скачайте свежий ZIP и замените папки обновляемых скиллов. Если ваш скилл изменён вручную, сначала сохраните эти правки. Если скилл не появился, откройте новую сессию в нужном проекте.</p>
+        <p data-i18n="skillInstallModels">В MODEL_GUIDE.md внутри каждого ZIP указаны модели для обычных и сложных задач. Выбор модели выполняется в вашей сессии.</p>
+      </div>
+    </details>
     <p id="skill-search-status" class="search-status" role="status"></p>
     <ul id="skill-results" class="search-results" aria-label="Результаты поиска" data-i18n-label="skillSearchResults" hidden></ul>
-    <section id="skill-kits" class="skill-kits" aria-labelledby="skill-kits-title">
-      <h2 id="skill-kits-title" data-i18n="skillKitsTitle">Готовые наборы под задачи</h2>
-      <ul class="kit-list">
-        <li class="kit-item">
-          <div>
-            <h3 id="kit-dev-release-testing" data-i18n="skillKitRelease">Выпустить приложение</h3>
-            <p data-i18n="skillKitReleaseSteps">Проверка артефактов macOS и Windows → пробное восстановление резервной копии → диагностика Telegram-бота, если он уведомляет о релизе.</p>
-          </div>
-          <div class="kit-downloads">
-            <a class="collection-download" href="#collection-codex-dev-release-testing" data-kit-download="codex/dev-release-testing" aria-describedby="kit-dev-release-testing"><span aria-hidden="true">↓</span> Codex ZIP</a>
-            <a class="collection-download" href="#collection-claude-dev-release-testing" data-kit-download="claude/dev-release-testing" aria-describedby="kit-dev-release-testing"><span aria-hidden="true">↓</span> Claude Code ZIP</a>
-          </div>
-        </li>
-        <li class="kit-item">
-          <div>
-            <h3 id="kit-data-import-testing" data-i18n="skillKitImport">Проверить импорт данных</h3>
-            <p data-i18n="skillKitImportSteps">Сгенерировать тестовые CSV и JSON → сверить итоги импорта и журнал отклонений.</p>
-          </div>
-          <div class="kit-downloads">
-            <a class="collection-download" href="#collection-codex-data-import-testing" data-kit-download="codex/data-import-testing" aria-describedby="kit-data-import-testing"><span aria-hidden="true">↓</span> Codex ZIP</a>
-            <a class="collection-download" href="#collection-claude-data-import-testing" data-kit-download="claude/data-import-testing" aria-describedby="kit-data-import-testing"><span aria-hidden="true">↓</span> Claude Code ZIP</a>
-          </div>
-        </li>
-        <li class="kit-item">
-          <div>
-            <h3 id="kit-web-development" data-i18n="skillKitWeb">Проверить веб-приложение</h3>
-            <p data-i18n="skillKitWebSteps">Уточнить контракт компонента → проверить запросы к API → пройти сценарий в браузере и с клавиатуры.</p>
-          </div>
-          <div class="kit-downloads">
-            <a class="collection-download" href="#collection-codex-web-development" data-kit-download="codex/web-development" aria-describedby="kit-web-development"><span aria-hidden="true">↓</span> Codex ZIP</a>
-            <a class="collection-download" href="#collection-claude-web-development" data-kit-download="claude/web-development" aria-describedby="kit-web-development"><span aria-hidden="true">↓</span> Claude Code ZIP</a>
-          </div>
-        </li>
-        <li class="kit-item">
-          <div>
-            <h3 id="kit-ai-agent-workflows" data-i18n="skillKitAgents">Проверить агента после обновления</h3>
-            <p data-i18n="skillKitAgentsSteps">Сверить контракт MCP → прогнать промпт на контрольных примерах → передать результаты следующему агенту.</p>
-          </div>
-          <div class="kit-downloads">
-            <a class="collection-download" href="#collection-codex-ai-agent-workflows" data-kit-download="codex/ai-agent-workflows" aria-describedby="kit-ai-agent-workflows"><span aria-hidden="true">↓</span> Codex ZIP</a>
-            <a class="collection-download" href="#collection-claude-ai-agent-workflows" data-kit-download="claude/ai-agent-workflows" aria-describedby="kit-ai-agent-workflows"><span aria-hidden="true">↓</span> Claude Code ZIP</a>
-          </div>
-        </li>
-        <li class="kit-item">
-          <div>
-            <h3 id="kit-editorial-workflows" data-i18n="skillKitEditorial">Подготовить публикацию для Telegram</h3>
-            <p data-i18n="skillKitEditorialSteps">Сверить цитаты и ссылки с источниками → адаптировать материал под формат канала.</p>
-          </div>
-          <div class="kit-downloads">
-            <a class="collection-download" href="#collection-codex-editorial-workflows" data-kit-download="codex/editorial-workflows" aria-describedby="kit-editorial-workflows"><span aria-hidden="true">↓</span> Codex ZIP</a>
-            <a class="collection-download" href="#collection-claude-editorial-workflows" data-kit-download="claude/editorial-workflows" aria-describedby="kit-editorial-workflows"><span aria-hidden="true">↓</span> Claude Code ZIP</a>
-          </div>
-        </li>
-      </ul>
-    </section>
-    <div class="skill-guides">
-      <details class="skill-guide">
-        <summary data-i18n="skillInstallTitle">Установка и обновление</summary>
-        <div class="guide-body">
-          <p data-i18n="skillInstallUnpack">Скачайте ZIP для своей платформы и распакуйте его. Из папки skills/ копируйте нужные папки целиком, вместе с SKILL.md и остальными файлами.</p>
-          <div class="install-platforms">
-            <div>
-              <h3>Codex</h3>
-              <dl>
-                <dt data-i18n="skillInstallProject">Для этого проекта</dt>
-                <dd><code>.agents/skills/</code></dd>
-                <dt data-i18n="skillInstallPersonal">Для всех проектов</dt>
-                <dd><code>~/.agents/skills/</code></dd>
-                <dt data-i18n="skillInstallInvoke">Вызов в сессии</dt>
-                <dd><code>$skill-name</code></dd>
-              </dl>
-              <a href="https://learn.chatgpt.com/docs/build-skills#where-codex-loads-local-skills" data-i18n="skillInstallDocsCodex">Документация Codex</a>
-            </div>
-            <div>
-              <h3>Claude Code</h3>
-              <dl>
-                <dt data-i18n="skillInstallProject">Для этого проекта</dt>
-                <dd><code>.claude/skills/</code></dd>
-                <dt data-i18n="skillInstallPersonal">Для всех проектов</dt>
-                <dd><code>~/.claude/skills/</code></dd>
-                <dt data-i18n="skillInstallInvoke">Вызов в сессии</dt>
-                <dd><code>/skill-name</code></dd>
-              </dl>
-              <a href="https://code.claude.com/docs/en/skills#choose-where-skills-load" data-i18n="skillInstallDocsClaude">Документация Claude Code</a>
-            </div>
-          </div>
-          <p data-i18n="skillInstallUpdate">Для обновления скачайте свежий ZIP и замените папки обновляемых скиллов. Если ваш скилл изменён вручную, сначала сохраните эти правки. Если скилл не появился, откройте новую сессию в нужном проекте.</p>
-          <p data-i18n="skillInstallModels">В MODEL_GUIDE.md внутри каждого ZIP указаны модели для обычных и сложных задач. Выбор модели выполняется в вашей сессии.</p>
-        </div>
-      </details>
-      <details class="skill-guide">
-        <summary data-i18n="skillNewsTitle">Новое и обновлённое</summary>
-        <div class="guide-body">
-          <time datetime="2026-11-28" data-i18n="skillNewsDateNovember">28 ноября 2026</time>
-          <p class="skill-news-platforms">Codex · Claude Code</p>
-          <p data-i18n="skillNewsNovember">Добавлены семь наборов для приёмки релизов, импорта, веб-разработки, проверки ИИ-агентов и данных, а также подготовки публикаций. В каждом архиве есть рекомендации по моделям для его платформы.</p>
-        </div>
-      </details>
-      <details class="skill-guide">
-        <summary data-i18n="skillExamplesTitle">Примеры работы</summary>
-        <ul class="guide-body skill-examples">
-          <li>
-            <h3 data-i18n="skillExampleRelease">Выпуск приложения</h3>
-            <blockquote data-i18n="skillExampleReleasePrompt">Проверь подписанные сборки macOS и Windows из папки release. Сверь версии, контрольные суммы и комплектность файлов.</blockquote>
-            <p data-i18n="skillExampleReleaseResult">Таблица сборок с результатами проверок и список расхождений, которые мешают выпуску.</p>
-          </li>
-          <li>
-            <h3 data-i18n="skillExampleImport">Импорт данных</h3>
-            <blockquote data-i18n="skillExampleImportPrompt">Сгенерируй вымышленные CSV и JSON с дубликатами и пропусками. Укажи ожидаемые результаты импорта для каждого случая.</blockquote>
-            <p data-i18n="skillExampleImportResult">Файлы для тестов и таблица с ожидаемыми числами принятых и отклонённых записей.</p>
-          </li>
-          <li>
-            <h3 data-i18n="skillExampleWeb">Веб-разработка</h3>
-            <blockquote data-i18n="skillExampleWebPrompt">Проверь локальную форму фильтрации на узком экране и с клавиатуры. Зафиксируй, где теряется фокус и когда появляется статус запроса.</blockquote>
-            <p data-i18n="skillExampleWebResult">Сценарии с ожидаемым поведением и воспроизводимые шаги для найденных проблем.</p>
-          </li>
-          <li>
-            <h3 data-i18n="skillExampleAgents">Проверка ИИ-агента</h3>
-            <blockquote data-i18n="skillExampleAgentsPrompt">Сравни новую и прежнюю модели на пяти сохранённых промптах. Отметь нарушения схемы ответа и потерю ссылок на источники.</blockquote>
-            <p data-i18n="skillExampleAgentsResult">Таблица различий по кейсам и примеры ответов, требующих внимания.</p>
-          </li>
-          <li>
-            <h3 data-i18n="skillExampleEditorial">Пост для Telegram</h3>
-            <blockquote data-i18n="skillExampleEditorialPrompt">Сверь цитаты по приложенным источникам и подготовь короткий пост по тексту. Сохрани факты и ссылки.</blockquote>
-            <p data-i18n="skillExampleEditorialResult">Черновик поста и список цитат, для которых не хватило подтверждений.</p>
-          </li>
-        </ul>
-      </details>
-    </div>
     <p id="empty-collections" class="load-status" role="status" data-i18n="noCompatibleSkills" hidden>Для выбранной среды пока нет скиллов.</p>
     <div id="skills-browser" class="skill-browser" role="region" aria-label="Коллекции скиллов" data-i18n-label="skillCollections">
       <div class="skill-columns" aria-hidden="true">
@@ -297,7 +173,7 @@
         <a class="skill-entry" href="downloads/skills/codex/dev-release-testing.zip?v=9dbab4a052c71593" download="codex-dev-release-testing.zip">
           <div class="skill-entry-title">
             <h3 data-skill-title-ru="Приёмка релиза и диагностика" data-skill-title-en="Release acceptance and diagnostics">Приёмка релиза и диагностика</h3>
-            <span class="skill-summary" data-skill-title-ru="Файлы релиза macOS и Windows, восстановление копий, диагностика Telegram-бота" data-skill-title-en="macOS and Windows release files, backup restores, Telegram bot diagnostics">Файлы релиза macOS и Windows, восстановление копий, диагностика Telegram-бота</span>
+            <span class="skill-summary" data-skill-title-ru="Сверить версии, подписи и SHA‑256 сборок macOS и Windows, проверить восстановление копии и бота уведомлений" data-skill-title-en="Compare macOS and Windows build versions, signatures and SHA‑256, verify a backup restore and diagnose the release notification bot">Сверить версии, подписи и SHA‑256 сборок macOS и Windows, проверить восстановление копии и бота уведомлений</span>
           </div>
           <span class="skill-engine">Codex</span>
           <p data-skill-count="3">Навыков: 3</p>
@@ -308,7 +184,7 @@
         <a class="skill-entry" href="downloads/skills/claude/dev-release-testing.zip?v=4a1247a115e75c39" download="claude-dev-release-testing.zip">
           <div class="skill-entry-title">
             <h3 data-skill-title-ru="Приёмка релиза и диагностика" data-skill-title-en="Release acceptance and diagnostics">Приёмка релиза и диагностика</h3>
-            <span class="skill-summary" data-skill-title-ru="Файлы релиза macOS и Windows, восстановление копий, диагностика Telegram-бота" data-skill-title-en="macOS and Windows release files, backup restores, Telegram bot diagnostics">Файлы релиза macOS и Windows, восстановление копий, диагностика Telegram-бота</span>
+            <span class="skill-summary" data-skill-title-ru="Сверить версии, подписи и SHA‑256 сборок macOS и Windows, проверить восстановление копии и бота уведомлений" data-skill-title-en="Compare macOS and Windows build versions, signatures and SHA‑256, verify a backup restore and diagnose the release notification bot">Сверить версии, подписи и SHA‑256 сборок macOS и Windows, проверить восстановление копии и бота уведомлений</span>
           </div>
           <span class="skill-engine">Claude Code</span>
           <p data-skill-count="3">Навыков: 3</p>
@@ -371,7 +247,7 @@
         <a class="skill-entry" href="downloads/skills/codex/data-import-testing.zip?v=48cf571b66e91024" download="codex-data-import-testing.zip">
           <div class="skill-entry-title">
             <h3 data-skill-title-ru="Тестирование импорта данных" data-skill-title-en="Data import testing">Тестирование импорта данных</h3>
-            <span class="skill-summary" data-skill-title-ru="Тестовые CSV и JSON, сверка импорта" data-skill-title-en="CSV and JSON fixtures, import reconciliation">Тестовые CSV и JSON, сверка импорта</span>
+            <span class="skill-summary" data-skill-title-ru="Подготовить CSV и JSON с дублями и пропусками, сверить принятые и отклонённые строки" data-skill-title-en="Create CSV and JSON fixtures with duplicates and missing values, then reconcile accepted and rejected rows">Подготовить CSV и JSON с дублями и пропусками, сверить принятые и отклонённые строки</span>
           </div>
           <span class="skill-engine">Codex</span>
           <p data-skill-count="2">Навыков: 2</p>
@@ -382,7 +258,7 @@
         <a class="skill-entry" href="downloads/skills/claude/data-import-testing.zip?v=dd80cf9ea0474e5e" download="claude-data-import-testing.zip">
           <div class="skill-entry-title">
             <h3 data-skill-title-ru="Тестирование импорта данных" data-skill-title-en="Data import testing">Тестирование импорта данных</h3>
-            <span class="skill-summary" data-skill-title-ru="Тестовые CSV и JSON, сверка импорта" data-skill-title-en="CSV and JSON fixtures, import reconciliation">Тестовые CSV и JSON, сверка импорта</span>
+            <span class="skill-summary" data-skill-title-ru="Подготовить CSV и JSON с дублями и пропусками, сверить принятые и отклонённые строки" data-skill-title-en="Create CSV and JSON fixtures with duplicates and missing values, then reconcile accepted and rejected rows">Подготовить CSV и JSON с дублями и пропусками, сверить принятые и отклонённые строки</span>
           </div>
           <span class="skill-engine">Claude Code</span>
           <p data-skill-count="2">Навыков: 2</p>
@@ -398,7 +274,7 @@
         <a class="skill-entry" href="downloads/skills/codex/web-development.zip?v=30ce2c13fba1bbaf" download="codex-web-development.zip">
           <div class="skill-entry-title">
             <h3 data-skill-title-ru="Веб-разработка и браузерная приёмка" data-skill-title-en="Web development and browser acceptance">Веб-разработка и браузерная приёмка</h3>
-            <span class="skill-summary" data-skill-title-ru="Компоненты, доступность в браузере, проверка контракта веб-API" data-skill-title-en="Components, browser accessibility, web API contract checks">Компоненты, доступность в браузере, проверка контракта веб-API</span>
+            <span class="skill-summary" data-skill-title-ru="Проверить компонент и API, пройти сценарий в браузере на узком экране и с клавиатуры" data-skill-title-en="Verify a component and its API, then test the workflow on a narrow viewport and with the keyboard">Проверить компонент и API, пройти сценарий в браузере на узком экране и с клавиатуры</span>
           </div>
           <span class="skill-engine">Codex</span>
           <p data-skill-count="3">Навыков: 3</p>
@@ -409,7 +285,7 @@
         <a class="skill-entry" href="downloads/skills/claude/web-development.zip?v=08aaddb2f56ef102" download="claude-web-development.zip">
           <div class="skill-entry-title">
             <h3 data-skill-title-ru="Веб-разработка и браузерная приёмка" data-skill-title-en="Web development and browser acceptance">Веб-разработка и браузерная приёмка</h3>
-            <span class="skill-summary" data-skill-title-ru="Компоненты, доступность в браузере, проверка контракта веб-API" data-skill-title-en="Components, browser accessibility, web API contract checks">Компоненты, доступность в браузере, проверка контракта веб-API</span>
+            <span class="skill-summary" data-skill-title-ru="Проверить компонент и API, пройти сценарий в браузере на узком экране и с клавиатуры" data-skill-title-en="Verify a component and its API, then test the workflow on a narrow viewport and with the keyboard">Проверить компонент и API, пройти сценарий в браузере на узком экране и с клавиатуры</span>
           </div>
           <span class="skill-engine">Claude Code</span>
           <p data-skill-count="3">Навыков: 3</p>
@@ -487,7 +363,7 @@
         <a class="skill-entry" href="downloads/skills/codex/ai-agent-workflows.zip?v=52d5caf5605f4a51" download="codex-ai-agent-workflows.zip">
           <div class="skill-entry-title">
             <h3 data-skill-title-ru="Модели, MCP и рабочие процессы агентов" data-skill-title-en="Models, MCP and agent workflows">Модели, MCP и рабочие процессы агентов</h3>
-            <span class="skill-summary" data-skill-title-ru="Совместимость MCP, проверка промптов на разных моделях, передача задач между агентами" data-skill-title-en="MCP compatibility, prompt regression across models, agent handoffs">Совместимость MCP, проверка промптов на разных моделях, передача задач между агентами</span>
+            <span class="skill-summary" data-skill-title-ru="Сверить контракт MCP, сравнить ответы моделей на контрольных промптах и передать результаты следующему агенту" data-skill-title-en="Verify the MCP contract, compare models against test prompts and hand off the results to the next agent">Сверить контракт MCP, сравнить ответы моделей на контрольных промптах и передать результаты следующему агенту</span>
           </div>
           <span class="skill-engine">Codex</span>
           <p data-skill-count="3">Навыков: 3</p>
@@ -498,7 +374,7 @@
         <a class="skill-entry" href="downloads/skills/claude/ai-agent-workflows.zip?v=30cdee75abb4f85f" download="claude-ai-agent-workflows.zip">
           <div class="skill-entry-title">
             <h3 data-skill-title-ru="Модели, MCP и рабочие процессы агентов" data-skill-title-en="Models, MCP and agent workflows">Модели, MCP и рабочие процессы агентов</h3>
-            <span class="skill-summary" data-skill-title-ru="Совместимость MCP, проверка промптов на разных моделях, передача задач между агентами" data-skill-title-en="MCP compatibility, prompt regression across models, agent handoffs">Совместимость MCP, проверка промптов на разных моделях, передача задач между агентами</span>
+            <span class="skill-summary" data-skill-title-ru="Сверить контракт MCP, сравнить ответы моделей на контрольных промптах и передать результаты следующему агенту" data-skill-title-en="Verify the MCP contract, compare models against test prompts and hand off the results to the next agent">Сверить контракт MCP, сравнить ответы моделей на контрольных промптах и передать результаты следующему агенту</span>
           </div>
           <span class="skill-engine">Claude Code</span>
           <p data-skill-count="3">Навыков: 3</p>
@@ -536,7 +412,7 @@
         <a class="skill-entry" href="downloads/skills/codex/editorial-workflows.zip?v=89917d14c121496a" download="codex-editorial-workflows.zip">
           <div class="skill-entry-title">
             <h3 data-skill-title-ru="Telegram и проверка источников" data-skill-title-en="Telegram editing and source verification">Telegram и проверка источников</h3>
-            <span class="skill-summary" data-skill-title-ru="Посты и дайджесты Telegram, проверка цитат и ссылок" data-skill-title-en="Telegram posts and digests, quotation and link verification">Посты и дайджесты Telegram, проверка цитат и ссылок</span>
+            <span class="skill-summary" data-skill-title-ru="Проверить цитаты и ссылки по источникам, затем подготовить пост или дайджест для Telegram" data-skill-title-en="Check quotations and links against their sources, then prepare a Telegram post or digest">Проверить цитаты и ссылки по источникам, затем подготовить пост или дайджест для Telegram</span>
           </div>
           <span class="skill-engine">Codex</span>
           <p data-skill-count="2">Навыков: 2</p>
@@ -547,7 +423,7 @@
         <a class="skill-entry" href="downloads/skills/claude/editorial-workflows.zip?v=ef5d3c8004fa4768" download="claude-editorial-workflows.zip">
           <div class="skill-entry-title">
             <h3 data-skill-title-ru="Telegram и проверка источников" data-skill-title-en="Telegram editing and source verification">Telegram и проверка источников</h3>
-            <span class="skill-summary" data-skill-title-ru="Посты и дайджесты Telegram, проверка цитат и ссылок" data-skill-title-en="Telegram posts and digests, quotation and link verification">Посты и дайджесты Telegram, проверка цитат и ссылок</span>
+            <span class="skill-summary" data-skill-title-ru="Проверить цитаты и ссылки по источникам, затем подготовить пост или дайджест для Telegram" data-skill-title-en="Check quotations and links against their sources, then prepare a Telegram post or digest">Проверить цитаты и ссылки по источникам, затем подготовить пост или дайджест для Telegram</span>
           </div>
           <span class="skill-engine">Claude Code</span>
           <p data-skill-count="2">Навыков: 2</p>
@@ -878,7 +754,6 @@
       </section>
       <!-- skill-category-cards:end -->
     </div>
-    <footer class="end"><a class="back" href="index.html" data-i18n="back">← Назад в терминал</a></footer>
   </main>
 
   <script>
@@ -907,25 +782,12 @@
     const emptyCollections = document.querySelector('#empty-collections');
     const query = document.querySelector('#skill-query');
     const browser = document.querySelector('#skills-browser');
-    const readyKits = document.querySelector('#skill-kits');
-    const kitLinks = document.querySelectorAll('[data-kit-download]');
     const results = document.querySelector('#skill-results');
     const status = document.querySelector('#skill-search-status');
     const { tokens, searchable, search } = window.skillSearch;
     let selected = 'all';
     let index = null;
     let loading = false;
-
-    // Используем версионированные ссылки каталога, чтобы готовый набор всегда скачивал тот же ZIP.
-    const archives = new Map(Array.from(document.querySelectorAll('.skill-entry'), link => [
-      link.getAttribute('href').split('?')[0], link
-    ]));
-    kitLinks.forEach(link => {
-      const archive = archives.get('downloads/skills/' + link.dataset.kitDownload + '.zip');
-      if (!archive) return;
-      link.setAttribute('href', archive.getAttribute('href'));
-      link.setAttribute('download', archive.getAttribute('download'));
-    });
 
     function indexCollections(entries) {
       const topicLabels = new Map(Array.from(topics, topic => [
@@ -949,7 +811,6 @@
       const { language, t } = window.siteI18n;
       const inSearch = Boolean(value && index);
       browser.hidden = inSearch;
-      readyKits.hidden = inSearch;
       results.hidden = !inSearch;
       results.replaceChildren();
       status.textContent = '';
@@ -1012,9 +873,6 @@
       button.addEventListener('click', () => {
         selected = button.dataset.filter;
         filterButtons.forEach(control => control.setAttribute('aria-pressed', String(control === button)));
-        kitLinks.forEach(link => {
-          link.hidden = selected !== 'all' && !link.dataset.kitDownload.startsWith(selected + '/');
-        });
         const visibleTopics = new Set();
         collections.forEach(collection => {
           collection.hidden = selected !== 'all' && collection.dataset.compatibility !== selected;
