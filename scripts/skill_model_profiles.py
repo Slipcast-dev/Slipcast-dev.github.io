@@ -27,12 +27,14 @@ FAMILIES = {
     "engineering": {"development", "devops-cloud", "testing-quality", "software-engineering", "agents-ai", "ai-agents", "project-verification",
                     "dev-release-testing", "data-import-testing", "web-development", "web-release-quality", "ai-agent-workflows", "ai-data-quality",
                     "frontend-engineering", "backend-engineering", "web-storefronts", "web-observability",
-                    "ai-model-selection", "ai-knowledge-bases"},
+                    "ai-model-selection", "ai-knowledge-bases",
+                    "automation-files-documents", "automation-scheduled-jobs", "automation-service-integrations",
+                    "automation-desktop"},
     "defensive": {"security-privacy", "security-compliance"},
     "analysis": {"data-analytics", "industry-operations", "education-learning", "education-research"},
     "sensitive": {"finance-personal", "personal-finance", "health-care", "health-wellness", "legal-compliance", "legal-government"},
     "visual": {"design-creative", "product-design", "web-design-systems", "ai-multimodal",
-               "brand-visual-production", "video-content-production"},
+               "brand-visual-production", "video-content-production", "video-post-production", "image-production", "three-d-animation"},
     "writing": {"writing-communication", "marketing-growth", "marketing-sales", "sales-customer", "editorial-workflows", "editorial-production"},
     "planning": {"management-operations", "business-leadership", "business-strategy", "people-career", "people-leadership",
                  "product-strategy", "thinking-decisions"},
@@ -60,7 +62,8 @@ CHECKS = {
 VISUAL = re.compile(r"(?:^|-)(?:screenshot|visual|thumbnail|slide|storyboard|image|illustration|photo|ux|chart)(?:-|$)")
 FOCUSED = re.compile(r"(?:^|-)(?:summary|summarizer|checklist|formatter|shortener|classifier|extractor)(?:-|$)")
 COMPLEX = re.compile(r"(?:^|-)(?:architecture|architect|migration|debugging|incident|review|audit|strategy|forecast)(?:-|$)")
-VISUAL_PACKS = {"ai-multimodal", "video-content-production", "brand-visual-production", "web-design-systems"}
+VISUAL_PACKS = {"ai-multimodal", "video-content-production", "brand-visual-production", "web-design-systems",
+                "video-post-production", "image-production", "three-d-animation"}
 RUSSIAN_LETTER = re.compile(r"[А-Яа-яЁё]")
 
 EFFORT = {

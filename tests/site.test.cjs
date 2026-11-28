@@ -352,7 +352,7 @@ test('Раздел скиллов доступен из меню; карточк
   const home = setup('index.html', { languages: ['ru'], seen: true });
   const navigation = home.document.querySelector('[data-i18n="skillsTitleLabel"]');
   assert.equal(navigation.textContent, 'Скиллы');
-  assert.equal(navigation.attrs.href, 'skills-agents.html?v=12&lang=ru');
+  assert.equal(navigation.attrs.href, 'skills-agents.html?v=13&lang=ru');
   const menu = home.nodes.filter(node => (node.attrs.class || '').split(' ').includes('nav-button'));
   assert.deepEqual(menu.map(node => node.dataset.i18n), ['projects', 'skillsTitleLabel', 'aiAggregator', 'telegramChannel', 'developer']);
   assert.equal(menu[3].attrs.href, 'https://t.me/slipcastdev');
@@ -369,7 +369,7 @@ test('Раздел скиллов доступен из меню; карточк
   assert.equal(menu[3].attrs.href, 'https://t.me/slipcastdev');
   home.click('en');
   assert.equal(navigation.textContent, 'Skills');
-  assert.equal(navigation.attrs.href, 'skills-agents.html?v=12&lang=en');
+  assert.equal(navigation.attrs.href, 'skills-agents.html?v=13&lang=en');
 
   const page = setup('skills-agents.html', { languages: ['ru'] });
   assert.equal(page.document.querySelector('h1').textContent, 'Скиллы');
@@ -380,11 +380,12 @@ test('Раздел скиллов доступен из меню; карточк
   const cards = page.document.querySelectorAll('[data-compatibility]');
   const topics = page.document.querySelectorAll('[data-skill-topic]');
   assert.deepEqual(topics.map(topic => topic.dataset.skillTopic), [
-    'development', 'web', 'ai-data', 'content-design', 'business', 'security', 'learning', 'personal'
+    'development', 'web', 'ai-data', 'automation', 'content-design', 'business', 'security', 'learning', 'personal'
   ]);
   assert.deepEqual(new Set(cards.map(card => card.dataset.entryTopic)), new Set(topics.map(topic => topic.dataset.skillTopic)));
   assert.equal(page.document.querySelector('#topic-development').textContent, 'Разработка и тестирование');
-  assert.equal(page.document.querySelectorAll('.skill-summary').length, 38);
+  assert.equal(page.document.querySelector('#topic-automation').textContent, 'Автоматизация и интеграции');
+  assert.equal(page.document.querySelectorAll('.skill-summary').length, 52);
   const codexCards = cards.filter(card => card.dataset.compatibility === 'codex');
   const claudeCards = cards.filter(card => card.dataset.compatibility === 'claude');
   assert.ok(codexCards.length > 1 && claudeCards.length > 1);
@@ -433,7 +434,14 @@ test('Раздел скиллов доступен из меню; карточк
     'ai-knowledge-bases': ['ai-data', 2],
     'brand-visual-production': ['content-design', 2],
     'editorial-production': ['content-design', 2],
-    'video-content-production': ['content-design', 2]
+    'video-content-production': ['content-design', 2],
+    'automation-files-documents': ['automation', 3],
+    'automation-scheduled-jobs': ['automation', 3],
+    'automation-service-integrations': ['automation', 2],
+    'automation-desktop': ['automation', 3],
+    'video-post-production': ['content-design', 2],
+    'image-production': ['content-design', 2],
+    'three-d-animation': ['content-design', 2]
   };
   const index = JSON.parse(fs.readFileSync(path.join(dist, 'skills-index.json'), 'utf8'));
   for (const [name, [topic, count]] of Object.entries(newPacks)) {
@@ -473,6 +481,7 @@ test('Раздел скиллов доступен из меню; карточк
   assert.equal(page.document.title, 'Skills — Slipcast-Dev');
   assert.equal(page.document.querySelector('[data-i18n="skillInstallTitle"]').textContent, 'Install and update');
   assert.equal(page.document.querySelector('#topic-development').textContent, 'Development and testing');
+  assert.equal(page.document.querySelector('#topic-automation').textContent, 'Automation and integrations');
   assert.equal(page.document.querySelectorAll('.skill-summary').filter(summary => summary.textContent.startsWith('Skill portability')).length, 2);
   assert.equal(page.document.querySelector('[data-i18n-label="skillCompatibility"]').attrs['aria-label'], 'Compatibility filter');
   assert.ok(titles.every(title => title.textContent === title.dataset.skillTitleEn));
@@ -517,6 +526,15 @@ test('Поиск скиллов индексирует опубликованн�
   for (const engine of ['codex', 'claude']) {
     assert.ok(search(index, 'база знаний', engine).slice(0, 10)
       .some(({ entry }) => entry.name === 'knowledge-base-ingestion'));
+  }
+  for (const engine of ['codex', 'claude']) {
+    for (const [query, skill] of [
+      ['пакетное переименование', 'batch-file-rename-plan'],
+      ['доставка вебхуков', 'webhook-delivery-reliability'],
+      ['3-д анимация', 'three-d-animation-render-qa']
+    ]) {
+      assert.ok(search(index, query, engine).slice(0, 10).some(({ entry }) => entry.name === skill), query);
+    }
   }
   assert.equal(search(index, 'бессмысленныйпроверочныйзапрос', 'all').length, 0);
 });

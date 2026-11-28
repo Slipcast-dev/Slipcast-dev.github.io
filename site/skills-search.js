@@ -44,6 +44,15 @@
     'текст writing copy копирайт редактур editing',
     'контент content публикац publishing',
     'изображен image фото photo graphic',
+    'видео video клип footage',
+    'монтаж editing edit postproduction',
+    'анимац animation',
+    'рендер render rendering',
+    'переимен rename renaming',
+    'расписан schedule scheduled',
+    'уведомлен alert notification',
+    'вебхук webhook',
+    'достав delivery',
     'таблиц spreadsheet excel sheets',
     'презентац presentation slides слайд',
     'перевод translation локализа localization',
@@ -59,7 +68,7 @@
     'a an the in on at to for of by and or with how is find i need my that from using').split(' '));
 
   function tokens(text) {
-    return text.toLowerCase().normalize('NFC').replace(/ё/g, 'е')
+    return text.toLowerCase().normalize('NFC').replace(/ё/g, 'е').replace(/\b3[\s-]*[dд](?![\p{Letter}\p{Number}])/gu, '3d')
       .match(/[\p{Letter}\p{Number}]+/gu) || [];
   }
 
