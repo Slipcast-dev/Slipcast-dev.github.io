@@ -336,7 +336,7 @@ test('Раздел скиллов доступен из меню; карточк
   const home = setup('index.html', { languages: ['ru'], seen: true });
   const navigation = home.document.querySelector('[data-i18n="skillsTitleLabel"]');
   assert.equal(navigation.textContent, 'Скиллы');
-  assert.equal(navigation.attrs.href, 'skills-agents.html?v=7&lang=ru');
+  assert.equal(navigation.attrs.href, 'skills-agents.html?v=8&lang=ru');
   const menu = home.nodes.filter(node => (node.attrs.class || '').split(' ').includes('nav-button'));
   assert.deepEqual(menu.map(node => node.dataset.i18n), ['projects', 'skillsTitleLabel', 'aiAggregator', 'telegramChannel', 'developer']);
   assert.equal(menu[3].attrs.href, 'https://t.me/slipcastdev');
@@ -353,7 +353,7 @@ test('Раздел скиллов доступен из меню; карточк
   assert.equal(menu[3].attrs.href, 'https://t.me/slipcastdev');
   home.click('en');
   assert.equal(navigation.textContent, 'Skills');
-  assert.equal(navigation.attrs.href, 'skills-agents.html?v=7&lang=en');
+  assert.equal(navigation.attrs.href, 'skills-agents.html?v=8&lang=en');
 
   const page = setup('skills-agents.html', { languages: ['ru'] });
   assert.equal(page.document.querySelector('h1').textContent, 'Скиллы');
@@ -362,6 +362,13 @@ test('Раздел скиллов доступен из меню; карточк
   assert.equal(page.document.querySelector('[data-i18n="skillCategoryColumn"]').textContent, 'Категория');
   const builtPage = fs.readFileSync(path.join(dist, 'skills-agents.html'), 'utf8');
   const cards = page.document.querySelectorAll('[data-compatibility]');
+  const topics = page.document.querySelectorAll('[data-skill-topic]');
+  assert.deepEqual(topics.map(topic => topic.dataset.skillTopic), [
+    'development', 'ai-data', 'content-design', 'business', 'security', 'learning', 'personal'
+  ]);
+  assert.deepEqual(new Set(cards.map(card => card.dataset.entryTopic)), new Set(topics.map(topic => topic.dataset.skillTopic)));
+  assert.equal(page.document.querySelector('#topic-development').textContent, 'Разработка и тестирование');
+  assert.equal(page.document.querySelectorAll('.skill-summary').length, 2);
   const codexCards = cards.filter(card => card.dataset.compatibility === 'codex');
   const claudeCards = cards.filter(card => card.dataset.compatibility === 'claude');
   assert.ok(codexCards.length > 1 && claudeCards.length > 1);
@@ -395,15 +402,17 @@ test('Раздел скиллов доступен из меню; карточк
   assert.deepEqual(visible(), cards);
   choose('codex');
   assert.deepEqual(visible(), codexCards);
+  assert.ok(topics.every(topic => topic.hidden === !codexCards.some(card => card.dataset.entryTopic === topic.dataset.skillTopic)));
   assert.equal(filter('codex').attrs['aria-pressed'], 'true');
   assert.equal(filter('all').attrs['aria-pressed'], 'false');
   choose('claude');
   assert.deepEqual(visible(), claudeCards);
+  assert.ok(topics.every(topic => topic.hidden === !claudeCards.some(card => card.dataset.entryTopic === topic.dataset.skillTopic)));
   assert.equal(filter('claude').attrs['aria-pressed'], 'true');
   assert.equal(filter('codex').attrs['aria-pressed'], 'false');
   assert.equal(page.document.querySelector('#empty-collections').hidden, true);
 
-  const titles = page.document.querySelectorAll('[data-skill-title-en]');
+  const titles = page.document.querySelectorAll('[data-skill-title-en]').filter(title => title.tag === 'h3');
   const counts = page.document.querySelectorAll('[data-skill-count]');
   const downloads = page.document.querySelectorAll('[data-i18n="skillDownload"]');
   for (const nodes of [titles, counts, downloads]) assert.equal(nodes.length, cards.length);
@@ -413,6 +422,8 @@ test('Раздел скиллов доступен из меню; карточк
   page.click('en');
   assert.equal(page.document.querySelector('h1').textContent, 'Skills');
   assert.equal(page.document.title, 'Skills — Slipcast-Dev');
+  assert.equal(page.document.querySelector('#topic-development').textContent, 'Development and testing');
+  assert.ok(page.document.querySelectorAll('.skill-summary').every(summary => summary.textContent.startsWith('Skill portability')));
   assert.equal(page.document.querySelector('[data-i18n-label="skillCompatibility"]').attrs['aria-label'], 'Compatibility filter');
   assert.ok(titles.every(title => title.textContent === title.dataset.skillTitleEn));
   assert.ok(counts.every(count => / skills?$/.test(count.textContent)));

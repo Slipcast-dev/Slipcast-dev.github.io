@@ -20,6 +20,30 @@ ROOT = Path(__file__).resolve().parents[1]
 PROJECT_SKILLS = {
     "project-verification": ("Проверки проектов и совместимости", "Project and compatibility checks"),
 }
+# Общие темы объединяют категории двух платформ и сохраняют адреса ZIP.
+TOPICS = (
+    ("development", "Разработка и тестирование", "Development and testing",
+     {"development", "devops-cloud", "project-verification", "software-engineering", "testing-quality"}),
+    ("ai-data", "ИИ, агенты и данные", "AI, agents and data",
+     {"agents-ai", "ai-agents", "data-analytics"}),
+    ("content-design", "Дизайн, тексты и контент", "Design, writing and content",
+     {"design-creative", "product-design", "writing-communication"}),
+    ("business", "Бизнес, продукт и карьера", "Business, product and careers",
+     {"business-leadership", "business-strategy", "industry-operations", "management-operations",
+      "marketing-growth", "marketing-sales", "people-career", "people-leadership", "product-strategy",
+      "sales-customer"}),
+    ("security", "Безопасность и право", "Security and legal",
+     {"legal-compliance", "legal-government", "security-compliance", "security-privacy"}),
+    ("learning", "Учёба и продуктивность", "Learning and productivity",
+     {"education-learning", "education-research", "productivity", "productivity-tools", "thinking-decisions"}),
+    ("personal", "Личное, здоровье и финансы", "Personal life, health and finance",
+     {"finance-personal", "health-care", "health-wellness", "home-family", "personal-finance",
+      "personal-life", "travel-lifestyle"}),
+)
+PROJECT_SUMMARY = (
+    "Совместимость скиллов, установщики, скриншоты, офлайн-синхронизация, RSS/CSV/JSON",
+    "Skill portability, installers, screenshots, offline sync, RSS/CSV/JSON",
+)
 ENGINES = {"codex": ("Codex", ".agents"), "claude": ("Claude Code", ".claude")}
 SLUG = re.compile(r"[a-z0-9][a-z0-9-]*")
 LICENSE_DECLARATION = re.compile(
@@ -208,21 +232,51 @@ def card(
     titles: tuple[str, str],
     count: int,
     digest: str,
+    topic: str,
 ) -> str:
     name = ENGINES[engine][0]
     title_ru, title_en = (escape(title) for title in titles)
     filename = f"{engine}-{category}.zip"
+    summary = ""
+    if category == "project-verification":
+        summary_ru, summary_en = (escape(line) for line in PROJECT_SUMMARY)
+        summary = (
+            f'            <span class="skill-summary" data-skill-title-ru="{summary_ru}" '
+            f'data-skill-title-en="{summary_en}">{summary_ru}</span>\n'
+        )
     return (
-        f'      <li data-compatibility="{engine}">\n'
+        f'      <li data-compatibility="{engine}" data-entry-topic="{topic}">\n'
         f'        <a class="skill-entry" href="downloads/skills/{engine}/{category}.zip?v={digest}" download="{filename}">\n'
         '          <span class="entry-marker" aria-hidden="true">›</span>\n'
-        f'          <h2 data-skill-title-ru="{title_ru}" data-skill-title-en="{title_en}">{title_ru}</h2>\n'
+        '          <div class="skill-entry-title">\n'
+        f'            <h3 data-skill-title-ru="{title_ru}" data-skill-title-en="{title_en}">{title_ru}</h3>\n'
+        f'{summary}'
+        '          </div>\n'
         f'          <span class="skill-engine">{name}</span>\n'
         f'          <p data-skill-count="{count}">Навыков: {count}</p>\n'
         '          <span class="collection-download"><span aria-hidden="true">↓</span><span class="sr-only" data-i18n="skillDownload">Скачать ZIP</span></span>\n'
         '        </a>\n'
         '      </li>\n'
     )
+
+
+def render_topics(cards: dict[str, list[tuple[str, str]]]) -> str:
+    """Группирует готовые строки и сортирует названия внутри каждой темы."""
+    sections = []
+    for slug, title_ru, title_en, _ in TOPICS:
+        if not cards[slug]:
+            continue
+        rows = "".join(row for _, row in sorted(cards[slug], key=lambda entry: entry[0]))
+        sections.append(
+            f'      <section class="skill-topic" data-skill-topic="{slug}" aria-labelledby="topic-{slug}">\n'
+            f'        <h2 id="topic-{slug}" data-skill-title-ru="{escape(title_ru)}" '
+            f'data-skill-title-en="{escape(title_en)}">{escape(title_ru)}</h2>\n'
+            '        <ul class="skill-list">\n'
+            f'{rows}'
+            '        </ul>\n'
+            '      </section>\n'
+        )
+    return "".join(sections)
 
 
 def install_generated(destination: Path) -> None:
@@ -339,16 +393,21 @@ def main() -> None:
 
         destination = args.destination
         destination.mkdir(parents=True, exist_ok=False)
-        cards = []
+        topic_by_category = {category: slug for slug, _, _, categories in TOPICS for category in categories}
+        if len(topic_by_category) != sum(len(categories) for _, _, _, categories in TOPICS):
+            raise ValueError("A skill category belongs to multiple topics")
+        cards: dict[str, list[tuple[str, str]]] = defaultdict(list)
         for engine, categories in (("codex", codex_categories), ("claude", claude_categories)):
             print(engine, {status: count for (scope, status), count in counters.items() if scope == engine})
             for slug, titles in sorted(categories.items(), key=lambda entry: entry[1][0].casefold()):
                 skills = packages.get((engine, slug), [])
                 if skills:
                     digest = export_category(destination / "skills", engine, slug, titles, skills)
-                    cards.append(card(engine, slug, titles, len(skills), digest))
+                    topic = topic_by_category[slug]
+                    row = card(engine, slug, titles, len(skills), digest, topic)
+                    cards[topic].append((titles[0].casefold(), row))
                 print(f"  {slug}: {len(skills)}")
-        (destination / "cards.html").write_text("".join(cards), encoding="utf-8")
+        (destination / "cards.html").write_text(render_topics(cards), encoding="utf-8")
         if args.install:
             install_generated(destination)
 
