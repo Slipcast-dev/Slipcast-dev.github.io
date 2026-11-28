@@ -38,8 +38,9 @@
     .biography p { margin: 0 0 26px; overflow-wrap: anywhere; }
     .biography p:first-child { color: #d2ebdc; }
     .biography p:last-child { margin-bottom: 0; }
-    .contact { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 9px; margin-bottom: 25px; }
-    .contact a { display: inline-flex; align-items: center; justify-content: center; min-height: 48px; padding: 8px 15px; border: 1px solid var(--green); border-radius: 5px; background: #00ff6609; color: var(--green); font-size: 14px; text-align: center; transition: background .2s, box-shadow .2s; }
+    .contact { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); width: fit-content; max-width: 100%; gap: 9px; margin: 0 auto 25px; }
+    .contact .back { grid-column: 1 / -1; justify-self: center; }
+    .contact a { display: inline-flex; align-items: center; justify-content: center; min-height: 48px; padding: 8px 15px; border: 1px solid var(--green); border-radius: 5px; background: #00ff6609; color: var(--green); font-size: 14px; line-height: 1.4; text-align: center; overflow-wrap: anywhere; transition: background .2s, box-shadow .2s; }
     .contact a:hover { background: #00ff661a; box-shadow: 0 0 22px #00ff661c; }
     @media (max-width: 600px) {
       main { width: calc(100% - 40px); padding-top: 80px; }
