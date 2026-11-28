@@ -15,9 +15,9 @@ a{color:var(--mint)}button,input,select,textarea{font:inherit}button{cursor:poin
 button{min-height:42px;padding:8px 13px}button:hover:not(:disabled){border-color:var(--mint)}input,select{width:100%;min-height:44px;padding:8px 11px}textarea{width:100%;padding:12px;resize:vertical}
 [hidden]{display:none!important}.container{width:min(1180px,calc(100% - 42px));margin:auto}
 .hero{text-align:center;padding:76px 0 42px}.hero h1{color:var(--mint);font-size:clamp(1.65rem,4.5vw,2.9rem);line-height:1.2;letter-spacing:.01em;margin:0 0 15px}.hero p:last-child{color:var(--muted);max-width:660px;margin:0 auto;font-size:.9rem}.flow{max-width:455px;margin:24px auto 0;padding:0;list-style:none;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px}.flow li{background:#080f0a;border:1px solid var(--line);border-radius:9px;padding:11px 13px;color:var(--muted);font:500 .78rem/1.4 var(--mono);animation:trace 5s infinite}.flow li:nth-child(2){animation-delay:.32s}.flow li:nth-child(3){animation-delay:.64s}.flow li:nth-child(4){animation-delay:.96s}.flow li:before{content:'◇';color:var(--mint);margin-right:8px}@keyframes trace{0%,67%,100%{border-color:var(--line)}9%{border-color:var(--mint);color:var(--text);transform:translateY(-2px)}}
-.workspace{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;align-items:stretch}.panel{background:var(--panel);border:1px solid var(--line);border-radius:5px;padding:clamp(15px,2.7vw,25px)}.panel h2{font-size:1.35rem;letter-spacing:-.03em;margin:0 0 16px}.field{display:grid;gap:6px;margin:0 0 12px}.field label,legend{font-size:.82rem;color:var(--muted);font-weight:600}fieldset{border:0;padding:0;margin:0 0 14px;min-width:0}.engines{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:7px}.engines input{position:absolute;opacity:0;width:1px;min-height:0}.engines label{display:block;text-align:center;border:1px solid var(--line);border-radius:8px;padding:10px 8px;cursor:pointer;color:var(--muted)}.engines input:checked+label{background:#0a2514;color:var(--mint);border-color:#00ff6680}.engines input:focus-visible+label{outline:2px solid var(--focus);outline-offset:3px}
+.workspace{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;align-items:stretch}.panel{background:var(--panel);border:1px solid var(--line);border-radius:5px;padding:clamp(15px,2.7vw,25px)}.panel h2{font-size:1.35rem;letter-spacing:-.03em;margin:0 0 16px}.field{display:grid;gap:6px;margin:0 0 12px}.field label,legend{font-size:.82rem;color:var(--muted);font-weight:600}fieldset{border:0;padding:0;margin:0 0 14px;min-width:0}
 .primary{background:var(--mint);border-color:var(--mint);color:#072117;font-weight:750}.primary:hover:not(:disabled){background:#a1ffc3}.workspace>.panel{display:flex;flex-direction:column}.project-settings{display:grid;flex:1;align-content:space-evenly;gap:18px;margin-bottom:20px}
-.project-settings fieldset,.project-settings .field{margin:0}
+.project-settings .field{margin:0}
 .project-settings .field{min-width:0}
 .project-settings select{min-width:0;text-overflow:ellipsis}
 .recommend{width:100%}.model-hint{font-size:.76rem;color:var(--muted)}.team .agent-model{display:block;margin:2px 0 0}
@@ -69,24 +69,18 @@ button{min-height:42px;padding:8px 13px}button:hover:not(:disabled){border-color
     <form class="panel" id="picker" autocomplete="off">
       <h2>Настройки проекта</h2>
       <div class="project-settings">
-        <fieldset><legend>Среда</legend><div class="engines">
-          <input type="radio" name="engine" id="engine-codex" value="codex"><label for="engine-codex">Codex</label>
-          <input type="radio" name="engine" id="engine-claude" value="claude"><label for="engine-claude">Claude Code</label>
-        </div></fieldset>
+        <div class="field"><label for="model-profile">Модели агентов</label>
+          <select id="model-profile" aria-describedby="model-hint">
+            <option value="" selected disabled>Выберите модель</option>
+          </select>
+          <span class="model-hint" id="model-hint">Доступность моделей зависит от клиента, тарифа и настроек организации.</span>
+        </div>
         <div class="field"><label for="task">Задача</label><select id="task"><option value="" selected disabled>Выберите задачу</option></select></div>
         <div class="field"><label for="phase">Этап разработки</label><select id="phase" disabled><option value="" selected disabled>Сначала выберите задачу</option></select></div>
         <div class="field"><label for="platform">Платформа</label><select id="platform">
           <option value="" selected disabled>Выберите платформу</option><option value="any">Любая</option><option value="web">Веб</option><option value="windows">Windows</option><option value="macos">macOS</option><option value="linux">Linux</option><option value="mobile">iOS / Android</option><option value="cross">Кроссплатформенная</option>
         </select></div>
         <div class="field"><label for="language">Язык</label><select id="language"><option value="" selected disabled>Выберите язык</option><option value="auto">Без привязки к языку</option></select></div>
-        <div class="field"><label for="model-profile">Модели агентов</label>
-          <select id="model-profile" aria-describedby="model-hint">
-            <option value="">Автоподбор по ролям</option>
-            <option value="flagship">Флагманская модель</option>
-            <option value="inherit">Из текущей сессии</option>
-          </select>
-          <span class="model-hint" id="model-hint">Флагманы: Codex — GPT‑6.2 Astra · Claude Code — Claude Fable. Доступ зависит от клиента и тарифа.</span>
-        </div>
       </div>
       <button id="recommend" type="submit" class="primary recommend" disabled>Соберите проект</button>
     </form>
@@ -158,6 +152,80 @@ const environment = {
   }
 };
 
+// Семейства, доступные в официальных селекторах продуктов. Идентификаторы для чата не передаются в конфигурации агентов.
+const codexModels = [
+  ['gpt-6.2-astra', 'GPT‑6.2 Astra', 'flagship', 'high'],
+  ['gpt-6.2-sol', 'GPT‑6.2 Sol', 'iterative', 'medium'],
+  ['gpt-6-astra', 'GPT‑6 Astra', 'deep', 'medium'],
+  ['gpt-6.1-sol', 'GPT‑6.1 Sol', 'long', 'medium'],
+  ['gpt-6.1-terra', 'GPT‑6.1 Terra', 'visual', 'medium'],
+  ['gpt-6-luna', 'GPT‑6 Luna', 'quick', 'high']
+];
+const chatGptModels = [
+  ['gpt-6.2-instant', 'GPT‑6.2 · Instant', 'quick'],
+  ['gpt-6.2-medium', 'GPT‑6.2 · Medium', 'iterative'],
+  ['gpt-6.2-high', 'GPT‑6.2 · High', 'deep'],
+  ['gpt-6.2-extra-high', 'GPT‑6.2 · Extra High', 'flagship'],
+  ['gpt-6-instant', 'GPT‑6 · Instant', 'quick'],
+  ['gpt-6-medium', 'GPT‑6 · Medium', 'iterative'],
+  ['gpt-6-high', 'GPT‑6 · High', 'deep'],
+  ['gpt-6-extra-high', 'GPT‑6 · Extra High', 'flagship'],
+  ['gpt-6-pro', 'GPT‑6 Pro', 'pro'],
+  ['gpt-5.6-sol', 'GPT‑5.6 Sol', 'long'],
+  ['gpt-5.6-sol-pro', 'GPT‑5.6 Sol Pro', 'pro'],
+  ['gpt-5.6-luna-instant', 'GPT‑5.6 Luna · Instant', 'quick'],
+  ['gpt-5.6-luna-think', 'GPT‑5.6 Luna · Think', 'reasoned']
+];
+const claudeModels = [
+  ['claude-fable-5-2', 'Claude Fable 5.2', 'flagship', 'high'],
+  ['claude-opus-5-5', 'Claude Opus 5.5', 'deep', 'high'],
+  ['claude-sonnet-5-5', 'Claude Sonnet 5.5', 'iterative', 'medium'],
+  ['claude-haiku-5-5', 'Claude Haiku 5.5', 'quick', 'medium'],
+  ['claude-fable-5-1', 'Claude Fable 5.1', 'flagship', 'high'],
+  ['claude-opus-5', 'Claude Opus 5', 'long', 'high'],
+  ['claude-sonnet-5', 'Claude Sonnet 5', 'iterative', 'medium'],
+  ['claude-fable-5', 'Claude Fable 5', 'flagship', 'high'],
+  ['claude-opus-4-8', 'Claude Opus 4.8', 'deep', 'high'],
+  ['claude-opus-4-7', 'Claude Opus 4.7', 'deep', 'high'],
+  ['claude-sonnet-4-6', 'Claude Sonnet 4.6', 'iterative', 'medium'],
+  ['claude-opus-4-6', 'Claude Opus 4.6', 'deep', 'high'],
+  ['claude-opus-4-5-20251101', 'Claude Opus 4.5', 'deep'],
+  ['claude-haiku-4-5-20251001', 'Claude Haiku 4.5', 'quick'],
+  ['claude-sonnet-4-5-20250929', 'Claude Sonnet 4.5', 'iterative']
+];
+const modelGroups = [
+  ['codex', 'Codex', codexModels, 'agents'],
+  ['chatgpt-work', 'ChatGPT Work', codexModels, 'chat'],
+  ['chatgpt', 'ChatGPT Chat', chatGptModels, 'chat'],
+  ['claude', 'Claude Code', claudeModels, 'agents'],
+  ['claude-chat', 'Claude Chat', claudeModels.filter(([id]) => !id.startsWith('claude-opus-4-5') && !id.startsWith('claude-sonnet-4-5')), 'chat']
+];
+const modelChoices = new Map();
+for (const [engine, product, models, mode] of modelGroups) {
+  if (mode === 'agents') {
+    modelChoices.set(engine + ':auto', { engine, product, mode, label: 'Автоподбор по ролям', profile: '', style: 'iterative' });
+    modelChoices.set(engine + ':inherit', { engine, product, mode, label: 'Из текущей сессии', profile: 'inherit', style: 'iterative' });
+  }
+  for (const [id, label, style, effort] of models) {
+    modelChoices.set(engine + ':' + id, { engine, product, label, id, style, effort, mode });
+  }
+}
+
+const modelGuidance = {
+  quick: 'Выполни один чётко ограниченный шаг. Дай краткий результат в запрошенном формате и укажи недостающие входные данные.',
+  reasoned: 'Раздели задачу на несколько коротких проверяемых шагов. Сверь вывод с исходными данными и отметь допущения.',
+  iterative: 'Разбей работу на проверяемые шаги. После каждого изменения сверяй результат с ожидаемым поведением и сообщай об отклонениях.',
+  visual: 'Если приложены изображения, сначала опиши видимые детали и их расположение. Сверяй выводы с исходным материалом и отмечай непроверяемые детали.',
+  long: 'Зафиксируй исходное состояние и ограничения. Работай небольшими этапами, сохраняя ключевые решения и результаты проверок.',
+  deep: 'Сопоставь возможные решения по рискам и критериям готовности. Проверь пограничные случаи, а в итоге приложи подтверждения.',
+  flagship: 'Спланируй работу по зависимостям и критериям приёмки. Разбирай сложные участки отдельно, сверь итог с исходными требованиями и явно отметь оставшиеся риски.',
+  pro: 'Дай проверяемый итоговый результат. Сопоставь варианты и доказательства, явно укажи ограничения и проверь выводы по доступным материалам.'
+};
+
+function modelPrompt(choice) {
+  return 'Модель: ' + choice.product + ' · ' + choice.label + '.\n' + modelGuidance[choice.style];
+}
+
 // Сложные решения, визуальное ревью и повторяемые операции требуют разных моделей.
 const categoryTiers = {
   deep: new Set([
@@ -189,8 +257,11 @@ const sourceResearchRoles = new Set([
 ]);
 
 function roleModel(role, engine, profile) {
-  if (profile === 'inherit') return ['', 'Модель сессии', ''];
-  if (profile === 'flagship') return environment[engine].flagship;
+  const explicit = modelChoices.get(profile);
+  if (explicit?.id && explicit.mode === 'agents' && explicit.engine === engine) return [explicit.id, explicit.label, explicit.effort];
+  const strategy = explicit?.profile ?? profile;
+  if (strategy === 'inherit') return ['', 'Модель сессии', ''];
+  if (strategy === 'flagship') return environment[engine].flagship;
   const tier = role.tier || roleTiers[role.id]
     || Object.keys(categoryTiers).find(name => categoryTiers[name].has(role.category))
     || 'standard';
@@ -1122,6 +1193,10 @@ function addGroup(select, label, entries) {
   select.append(group);
 }
 
+for (const [engine, product] of modelGroups) {
+  const models = [...modelChoices].filter(([, choice]) => choice.engine === engine);
+  addGroup($('model-profile'), product, models.map(([id, choice]) => [id, choice.product + ' · ' + choice.label]));
+}
 for (const [category, group] of taskGroups) {
   addGroup($('task'), category, Object.entries(group).map(([id, [label]]) => [id, label]));
 }
@@ -1157,7 +1232,7 @@ function syncTaskOptions() {
 
 function projectSettings() {
   return {
-    engine: document.querySelector('input[name="engine"]:checked')?.value,
+    engine: modelChoices.get($('model-profile').value)?.engine,
     task: $('task').value,
     phase: $('phase').value,
     platform: $('platform').value,
@@ -1169,7 +1244,7 @@ function projectSettings() {
 function pickerAction(settings) {
   const { engine, task, phase, platform, language } = settings;
   const targetPlatform = tasks[task]?.[2];
-  if (!engine || !platform || !language || (targetPlatform && platform !== targetPlatform)
+  if (!engine || !modelChoices.has(settings.modelProfile) || !platform || !language || (targetPlatform && platform !== targetPlatform)
       || !taskPhases.get(task)?.has(phase)) return 'empty';
   if (!builtProject) return 'build';
   return Object.keys(settings).every(key => settings[key] === builtProject[key]) ? 'reset' : 'rebuild';
@@ -1205,13 +1280,17 @@ function renderResult(animate = false) {
   const phase = phases[builtProject?.phase]?.label;
   const platform = builtProject?.platformLabel;
   const profile = builtProject?.modelProfile;
+  const choice = modelChoices.get(profile);
+  const chat = choice?.mode === 'chat';
 
   $('count').textContent = selected.length + ' / ' + data.roles.length;
-  $('summary').textContent = [env?.name, phase, platform, language?.name].filter(Boolean).join(' · ');
+  $('summary').textContent = [choice?.product, choice?.label, phase, platform, language?.name].filter(Boolean).join(' · ');
   $('empty-team').hidden = selected.length !== 0;
   $('empty-team').textContent = builtProject ? 'Добавьте роли из каталога или соберите проект заново.'
     : 'Выберите настройки проекта и нажмите «Подобрать».';
-  $('copy').disabled = $('export').disabled = selected.length === 0;
+  $('copy').disabled = selected.length === 0;
+  $('export').hidden = Boolean(chat);
+  $('export').disabled = selected.length === 0 || Boolean(chat);
   $('status').textContent = '';
   $('team').replaceChildren(...selected.map((role, index) => {
     const item = document.createElement('li');
@@ -1222,10 +1301,10 @@ function renderResult(animate = false) {
     const label = document.createElement('span');
     label.textContent = role.name;
     const id = document.createElement('small');
-    id.textContent = agentName(role, engine);
+    id.textContent = chat ? '' : agentName(role, engine);
     const model = document.createElement('span');
     model.className = 'agent-model muted';
-    model.textContent = roleModel(role, engine, profile)[1];
+    model.textContent = chat ? choice.label : roleModel(role, engine, profile)[1];
     label.append(id, model);
     const remove = document.createElement('button');
     remove.type = 'button';
@@ -1241,6 +1320,7 @@ function renderResult(animate = false) {
     return item;
   }));
   const instructions = selected.map(role => {
+    if (chat) return '- ' + role.name + ' — ' + role.description;
     const [, model] = roleModel(role, engine, profile);
     return '- ' + agentName(role, engine) + ' · ' + model + ' — ' + role.description;
   }).join('\n');
@@ -1248,9 +1328,17 @@ function renderResult(animate = false) {
     'Задача: ' + task + '.',
     'Этап: ' + phase + '. Платформа: ' + platform + '.' + (language ? ' Язык: ' + language.name + '.' : ''),
     language ? 'Особенности стека: ' + language.guidance : '',
-    'Проверь, что в ' + env.name + ' доступны следующие агенты. Если кого-то нет, сообщи об этом.\n' + instructions,
-    'Используй настройки моделей из файлов агентов. Если какая-то модель недоступна, сообщи об этом и согласуй замену.',
-    'Уточни результат, ограничения и критерии готовности. Передай каждому агенту его материалы и критерии. Запускай параллельно только независимую работу и сверь результаты перед итогом. Укажи, что проверено и что требует проверки. Публикацию и внешние действия выполняй только по явному поручению.'
+    modelPrompt(choice),
+    chat
+      ? (choice.engine === 'chatgpt-work'
+        ? 'Используй доступные инструменты Work для подготовки результата. Сохраняй промежуточные результаты, если работа требует нескольких проходов.\n'
+        : 'Выполни задачу в одном чате, используя роли как точки зрения для проверки результата.\n')
+        + 'Если данных или инструментов не хватает, укажи, что нужно приложить. Не утверждай, что запускал внешних агентов.\n' + instructions
+      : 'Проверь, что в ' + env.name + ' доступны следующие агенты. Если кого-то нет, сообщи об этом.\n' + instructions,
+    chat
+      ? 'Верни готовый результат, допущения и короткий список проверок. Указывай только фактически выполненные действия.'
+      : 'Используй настройки моделей из файлов агентов. Если какая-то модель недоступна, сообщи об этом и согласуй замену.',
+    chat ? '' : 'Уточни результат, ограничения и критерии готовности. Передай каждому агенту его материалы и критерии. Запускай параллельно только независимую работу и сверь результаты перед итогом. Укажи, что проверено и что требует проверки. Публикацию и внешние действия выполняй только по явному поручению.'
   ].filter(Boolean).join('\n\n') : '';
   $('prompt').value = currentPrompt;
   for (const button of $('catalog-list').querySelectorAll('button[data-role]')) updateCatalogButton(button);
@@ -1332,6 +1420,7 @@ function renderCatalog() {
 function agentFile(role, engine) {
   const q = text => JSON.stringify(text);
   const platform = builtProject.platformLabel;
+  const chosen = modelChoices.get(builtProject.modelProfile);
   const [model, , effort] = roleModel(role, engine, builtProject.modelProfile);
   const research = sourceResearchRoles.has(role.id);
   const language = selectedLanguage(builtProject.language);
@@ -1342,6 +1431,7 @@ function agentFile(role, engine) {
     'Роль: ' + role.name + '.', role.description, policy,
     'Платформа проекта: ' + platform + '.',
     language ? 'Особенности стека: ' + language.guidance : '',
+    chosen?.id ? modelGuidance[chosen.style] : '',
     ...role.steps.map((step, index) => (index + 1) + '. ' + step),
     research ? 'Проверяй актуальные сведения по первичным источникам. Указывай ссылку, дату и ограничения. Если поиск недоступен, явно отметь непроверенные сведения.' : '',
     'Передай результат в требуемом формате, перечисли подтверждения и открытые вопросы. Сообщи, если нужные данные или инструменты недоступны. Выполняй внешние действия только по явному поручению.'
@@ -1351,11 +1441,12 @@ function agentFile(role, engine) {
     // Для ролей ревью отключаем инструменты, способные изменять среду или запрашивать права.
     const sandbox = role.readOnly ? '\nfeatures.shell_tool = false\nfeatures.apps = false\nfeatures.plugins = false\nfeatures.request_permissions_tool = false' : '';
     return 'name = ' + q(name) + '\ndescription = ' + q(role.description)
-      + (model ? '\nmodel = ' + q(model) + '\nmodel_reasoning_effort = ' + q(effort) : '')
+      + (model ? '\nmodel = ' + q(model) : '')
+      + (effort ? '\nmodel_reasoning_effort = ' + q(effort) : '')
       + sandbox + '\ndeveloper_instructions = ' + q(instructions) + '\n';
   }
   const tools = role.readOnly ? '\ntools: Read, Glob, Grep' + (research ? ', WebSearch, WebFetch' : '') : '';
-  const modelFields = model ? '\nmodel: ' + model + '\neffort: ' + effort : '\nmodel: inherit';
+  const modelFields = '\nmodel: ' + (model || 'inherit') + (effort ? '\neffort: ' + effort : '');
   return '---\nname: ' + name + '\ndescription: ' + q(role.description)
     + modelFields + tools + '\n---\n\n' + instructions + '\n';
 }
@@ -1401,8 +1492,10 @@ function createZip(files) {
 }
 
 function teamFiles() {
-  const { engine } = builtProject;
+  const { engine, modelProfile } = builtProject;
   const env = environment[engine];
+  const choice = modelChoices.get(modelProfile);
+  if (!env) return [];
   const files = selectedRoles().map(role => [
     env.dir + '/' + agentName(role, engine) + '.' + env.extension, agentFile(role, engine)
   ]);
@@ -1412,13 +1505,14 @@ function teamFiles() {
     '2. Скопируйте файлы из папки `' + env.dir + '` в такую же папку в корне вашего проекта. Если файл с таким именем уже существует, сверьте содержимое перед заменой.\n' +
     '3. Откройте проект в ' + env.name + ' и отправьте текст из PROMPT.md.\n\n' +
     'Модели и глубина рассуждений указаны в файлах агентов. Для флагманов обновите клиент и проверьте доступ в меню выбора модели. Если модель недоступна, соберите архив с профилем «Из текущей сессии».\n\n' +
+    'Модель: ' + choice.label + '\n' +
     'Документация: ' + env.docs + '\n'
   ]);
   return files;
 }
 
 $('export').addEventListener('click', () => {
-  if (!team.size) return;
+  if (!team.size || $('export').disabled) return;
   const objectUrl = URL.createObjectURL(createZip(teamFiles()));
   const link = document.createElement('a');
   link.href = objectUrl;
@@ -1451,11 +1545,12 @@ $('picker').addEventListener('submit', event => {
   if (action === 'empty') return;
   if (action === 'reset') {
     $('picker').reset();
+    $('model-profile').dispatchEvent(new Event('change'));
     syncTaskOptions();
     builtProject = null;
     team.clear();
     renderResult();
-    $('engine-codex').focus();
+    $('model-profile-trigger')?.focus();
   } else {
     // Промпт и архив используют настройки последнего подбора, пока пользователь редактирует форму.
     builtProject = { ...settings, platformLabel: $('platform').selectedOptions[0].textContent };
@@ -1464,6 +1559,12 @@ $('picker').addEventListener('submit', event => {
   updatePicker();
 });
 $('task').addEventListener('change', syncTaskOptions);
+$('model-profile').addEventListener('change', () => {
+  const choice = modelChoices.get($('model-profile').value);
+  $('model-hint').textContent = choice?.mode === 'chat'
+    ? 'Промпт для ' + choice.product + '. Выберите эту модель в своём приложении.'
+    : 'Доступность моделей зависит от клиента, тарифа и настроек организации.';
+});
 $('picker').addEventListener('change', updatePicker);
 $('search').addEventListener('input', renderCatalog);
 $('category').addEventListener('change', renderCatalog);

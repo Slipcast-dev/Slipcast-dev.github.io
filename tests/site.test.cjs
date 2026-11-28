@@ -530,3 +530,66 @@ test('Новые роли агрегатора связаны с задачам�
   assert.ok(taskPhases.get('testImportBoundaryFiles').has('prepareImportBoundaryFixtures'));
   assert.equal(catalog.roles.find(role => role.id === 'visual-diff-reviewer').tier, 'visual');
 });
+
+test('Выбор модели начинает форму агрегатора на обоих языках', () => {
+  for (const page of ['ai-aggregator.html', 'ai-aggregator-en.html']) {
+    const html = fs.readFileSync(path.join(dist, page), 'utf8');
+    const form = html.match(/<form\b[^>]*\bid="picker"[^>]*>([\s\S]*?)<\/form>/)?.[1];
+    assert.ok(form, page);
+    const fields = [...form.matchAll(/<select\b[^>]*\bid="([^"]+)"/g)].map(match => match[1]);
+    assert.deepEqual(fields.slice(0, 2), ['model-profile', 'task'], page);
+  }
+});
+
+test('Точные модели Codex и Claude Code закрепляются в профиле, а чат выделен отдельно', () => {
+  const html = fs.readFileSync(path.join(dist, 'ai-aggregator-en.html'), 'utf8');
+  const start = html.indexOf('const environment = ');
+  const end = html.indexOf('const taskGroups = ');
+  assert.ok(start >= 0 && start < end);
+  const { modelChoices, roleModel } = vm.runInNewContext(
+    html.slice(start, end) + '\n({ modelChoices, roleModel })'
+  );
+  const role = { id: 'model-picker-regression', category: 'planning', tier: 'fast' };
+  for (const [key, id, engine] of [
+    ['codex:gpt-6.2-astra', 'gpt-6.2-astra', 'codex'],
+    ['claude:claude-fable-5-2', 'claude-fable-5-2', 'claude']
+  ]) {
+    const choice = modelChoices.get(key);
+    assert.ok(choice?.label && choice.style, key);
+    assert.equal(choice.id, id, key);
+    assert.equal(choice.engine, engine, key);
+    assert.notEqual(choice.mode, 'chat', key);
+    assert.equal(roleModel(role, engine, key)[0], id, key);
+    assert.notEqual(roleModel(role, engine, '')[0], id, key);
+  }
+  for (const key of ['chatgpt:gpt-6-pro', 'claude-chat:claude-sonnet-5-5']) {
+    const choice = modelChoices.get(key);
+    assert.ok(choice?.label && choice.style, key);
+    assert.equal(choice.mode, 'chat', key);
+  }
+});
+
+test('Промпт учитывает выбранную модель и глубину работы на обоих языках', () => {
+  for (const page of ['ai-aggregator.html', 'ai-aggregator-en.html']) {
+    const html = fs.readFileSync(path.join(dist, page), 'utf8');
+    const start = html.indexOf('const environment = ');
+    const end = html.indexOf('const taskGroups = ');
+    assert.ok(start >= 0 && start < end);
+    const { modelChoices, modelPrompt } = vm.runInNewContext(
+      html.slice(start, end) + '\n({ modelChoices, modelPrompt })'
+    );
+    const guidance = key => {
+      const choice = modelChoices.get(key);
+      assert.ok(choice, key);
+      const prompt = modelPrompt(choice);
+      assert.equal(typeof prompt, 'string', key);
+      assert.ok(prompt.includes(choice.label), key);
+      return prompt.replaceAll(choice.label, '').trim();
+    };
+
+    const instant = guidance('chatgpt:gpt-6.2-instant');
+    const extraHigh = guidance('chatgpt:gpt-6.2-extra-high');
+    assert.notEqual(instant, extraHigh, page);
+    assert.notEqual(guidance('chatgpt:gpt-6-pro'), guidance('claude-chat:claude-sonnet-5-5'), page);
+  }
+});
